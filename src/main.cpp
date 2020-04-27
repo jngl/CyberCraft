@@ -32,7 +32,7 @@ int main() {
 
 		map.draw(window);
 
-		player.update(map);
+		player.update(map, window);
 		player.draw(window);
 
 		window.display();

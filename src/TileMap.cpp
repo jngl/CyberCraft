@@ -57,15 +57,19 @@ const Tile* TileMap::get(const sf::Vector2i &position) const {
 }
 
 bool TileMap::isColliding(sf::Vector2i position) const {
-	const Tile* tile = get(position);
-	if(!tile) {
-		return true;
-	}
-
-	const TileType *type = tile->getType();
+	const TileType *type = getType(position.x , position.y);
 	if (!type){
 		return true;
 	}
 
 	return type->getCollision();
+}
+
+const TileType *TileMap::getType(int x, int y) const {
+	const Tile* tile = get(x, y);
+	if(!tile){
+		return nullptr;
+	}
+
+	return tile->getType();
 }

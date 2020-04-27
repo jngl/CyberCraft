@@ -19,6 +19,8 @@ TileTypeRegistry::TileTypeRegistry() {
 	m_tiles.emplace("water", TileType{8, 5, colorWater, true});
 	m_tiles.emplace("dead bush", TileType{6, 2, colorWood, false});
 	m_tiles.emplace("player", TileType{25, 0, colorPlayer, true});
+	m_tiles.emplace("cursor", TileType{29, 14, colorPlayer, false});
+	m_tiles.emplace("move to", TileType{30, 14, colorPlayer, false});
 
 
 	if (!m_texture.loadFromFile("../data/tiles.png")) {

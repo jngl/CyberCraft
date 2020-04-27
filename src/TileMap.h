@@ -24,6 +24,8 @@ public:
 	const Tile *get(int x, int y) const;
 	const Tile *get(const sf::Vector2i& position) const;
 
+	const TileType* getType(int x, int y) const;
+
 	void draw(sf::RenderTarget &renderTarget);
 
 	bool isColliding(sf::Vector2i position) const;
