@@ -23,6 +23,7 @@ public:
 private:
 	std::array<Tile, sizeX * sizeY> m_tiles;
 	const TileTypeRegistry &m_types;
+	sf::RectangleShape m_background;
 
 	Tile &at(int x, int y);
 

@@ -25,7 +25,7 @@ int main() {
 				window.close();
 		}
 
-		window.clear({0, 150, 0});
+		window.clear(sf::Color::Black);
 
 		map.draw(window);
 

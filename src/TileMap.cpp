@@ -11,6 +11,9 @@ TileMap::TileMap(const TileTypeRegistry &tiles) :
 			set({x, y}, defaultTileName);
 		}
 	}
+
+	m_background.setFillColor(sf::Color(0, 150, 0));
+	m_background.setSize(sf::Vector2f(sizeX*16, sizeY*16));
 }
 
 void TileMap::set(sf::Vector2i position, std::string_view typeName) {
@@ -18,6 +21,7 @@ void TileMap::set(sf::Vector2i position, std::string_view typeName) {
 }
 
 void TileMap::draw(sf::RenderTarget &renderTarget) {
+	renderTarget.draw(m_background);
 	for (Tile &tile : m_tiles) {
 		tile.draw(renderTarget);
 	}
