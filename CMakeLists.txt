@@ -7,8 +7,9 @@ set(CMAKE_MODULE_PATH "/usr/share/SFML/cmake/Modules" ${CMAKE_MODULE_PATH})
 find_package(SFML 2 COMPONENTS system window graphics network audio)
 
 add_executable(CyberCraft
-        src/main.cpp
         src/Error.cpp
+        src/main.cpp
+        src/Player.cpp
         src/Tile.cpp
         src/TileMap.cpp
         src/TileType.cpp

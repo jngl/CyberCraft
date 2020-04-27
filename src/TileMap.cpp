@@ -4,6 +4,8 @@
 
 #include "TileMap.h"
 
+#include "Error.h"
+
 TileMap::TileMap(const TileTypeRegistry &tiles) :
 		m_types(tiles) {
 	for (int x(0); x < sizeX; ++x) {
@@ -17,7 +19,11 @@ TileMap::TileMap(const TileTypeRegistry &tiles) :
 }
 
 void TileMap::set(sf::Vector2i position, std::string_view typeName) {
-	at(position).set(m_types, typeName, position);
+	Tile* tile = get(position);
+	if(!tile){
+		throw Error("Out of bound");
+	}
+	tile->set(m_types, typeName, position);
 }
 
 void TileMap::draw(sf::RenderTarget &renderTarget) {
@@ -27,10 +33,39 @@ void TileMap::draw(sf::RenderTarget &renderTarget) {
 	}
 }
 
-Tile &TileMap::at(int x, int y) {
-	return m_tiles[y * sizeX + x];
+Tile* TileMap::get(int x, int y) {
+	if(x<0 || x>=sizeX || y<0 || x>=sizeY){
+		return nullptr;
+	}
+
+	return &m_tiles[y * sizeX + x];
 }
 
-Tile &TileMap::at(sf::Vector2i position) {
-	return at(position.x, position.y);
+Tile* TileMap::get(const sf::Vector2i& position) {
+	return get(position.x, position.y);
+}
+
+const Tile* TileMap::get(int x, int y) const {
+	if(x<0 || x>=sizeX || y<0 || y>=sizeY){
+		return nullptr;
+	}
+	return &m_tiles[y * sizeX + x];
+}
+
+const Tile* TileMap::get(const sf::Vector2i &position) const {
+	return get(position.x, position.y);
+}
+
+bool TileMap::isColliding(sf::Vector2i position) const {
+	const Tile* tile = get(position);
+	if(!tile) {
+		return true;
+	}
+
+	const TileType *type = tile->getType();
+	if (!type){
+		return true;
+	}
+
+	return type->getCollision();
 }

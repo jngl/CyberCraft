@@ -10,20 +10,23 @@ TileTypeRegistry::TileTypeRegistry() {
 	const sf::Color colorRock(100, 100, 100);
 	const sf::Color colorWater(71, 179, 255);
 	const sf::Color colorWood(99, 64, 23);
+	const sf::Color colorPlayer(255,255,255);
 
-	m_tiles.emplace("grass", TileType{0, 0, colorPlant});
-	m_tiles.emplace("long grass", TileType{5, 0, colorPlant});
-	m_tiles.emplace("rock", TileType{5, 2, colorRock});
-	m_tiles.emplace("tree", TileType{5, 1, colorPlant});
-	m_tiles.emplace("water", TileType{8, 5, colorWater});
-	m_tiles.emplace("dead bush", TileType{6, 2, colorWood});
+	m_tiles.emplace("grass", TileType{0, 0, colorPlant, false});
+	m_tiles.emplace("long grass", TileType{5, 0, colorPlant, false});
+	m_tiles.emplace("rock", TileType{5, 2, colorRock, true});
+	m_tiles.emplace("tree", TileType{0, 1, colorPlant, true});
+	m_tiles.emplace("water", TileType{8, 5, colorWater, true});
+	m_tiles.emplace("dead bush", TileType{6, 2, colorWood, false});
+	m_tiles.emplace("player", TileType{25, 0, colorPlayer, true});
+
 
 	if (!m_texture.loadFromFile("../data/tiles.png")) {
 		throw Error("tiles texture not found");
 	}
 }
 
-TileType TileTypeRegistry::getType(std::string_view name) const {
+const TileType& TileTypeRegistry::getType(std::string_view name) const {
 	auto tileType = m_tiles.find(std::string(name));
 
 	if (tileType == m_tiles.end()) {

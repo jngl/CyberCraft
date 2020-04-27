@@ -2,6 +2,7 @@
 
 #include "TileTypeRegistery.h"
 #include "TileMap.h"
+#include "Player.h"
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
@@ -18,6 +19,8 @@ int main() {
 	sf::View view(sf::FloatRect(-16.f, -16.f, 400.f, 300.f));
 	window.setView(view);
 
+	Player player(types);
+
 	while (window.isOpen()) {
 		sf::Event event{};
 		while (window.pollEvent(event)) {
@@ -28,6 +31,9 @@ int main() {
 		window.clear(sf::Color::Black);
 
 		map.draw(window);
+
+		player.update(map);
+		player.draw(window);
 
 		window.display();
 	}

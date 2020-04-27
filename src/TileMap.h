@@ -18,16 +18,22 @@ public:
 
 	void set(sf::Vector2i position, std::string_view typeName);
 
+	Tile *get(int x, int y);
+	Tile *get(const sf::Vector2i& position);
+
+	const Tile *get(int x, int y) const;
+	const Tile *get(const sf::Vector2i& position) const;
+
 	void draw(sf::RenderTarget &renderTarget);
+
+	bool isColliding(sf::Vector2i position) const;
 
 private:
 	std::array<Tile, sizeX * sizeY> m_tiles;
 	const TileTypeRegistry &m_types;
 	sf::RectangleShape m_background;
 
-	Tile &at(int x, int y);
 
-	Tile &at(sf::Vector2i position);
 };
 
 #endif //CYBERCRAFT_TILEMAP_H

@@ -15,7 +15,7 @@ class TileTypeRegistry {
 public:
 	TileTypeRegistry();
 
-	TileType getType(std::string_view name) const;
+	const TileType& getType(std::string_view name) const;
 
 	const sf::Texture &getTexture() const;
 

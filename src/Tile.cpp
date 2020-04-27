@@ -4,15 +4,21 @@
 
 #include "Tile.h"
 
-void Tile::set(const TileTypeRegistry &tiles, std::string_view typeName, sf::Vector2i position) {
-	const TileType &type = tiles.getType(typeName);
+void Tile::set(const TileTypeRegistry &tiles, std::string_view typeName, sf::Vector2i position){
+	m_type = &tiles.getType(typeName);
 
 	m_sprite.setTexture(tiles.getTexture());
-	m_sprite.setTextureRect(type.getTextureRect());
+	m_sprite.setTextureRect(m_type->getTextureRect());
 	m_sprite.setPosition(position.x * 16, position.y * 16);
-	m_sprite.setColor(type.getColor());
+	m_sprite.setColor(m_type->getColor());
 }
 
 void Tile::draw(sf::RenderTarget &renderTarget) {
-	renderTarget.draw(m_sprite);
+	if(m_type){
+		renderTarget.draw(m_sprite);
+	}
+}
+
+const TileType *Tile::getType() const {
+	return m_type;
 }

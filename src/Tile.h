@@ -11,9 +11,12 @@ class Tile {
 public:
 	void set(const TileTypeRegistry &tiles, std::string_view typeName, sf::Vector2i position);
 
+	const TileType* getType()const;
+
 	void draw(sf::RenderTarget &renderTarget);
 
 private:
+	const TileType* m_type = nullptr;
 	sf::Sprite m_sprite;
 };
 
