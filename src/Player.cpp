@@ -27,43 +27,33 @@ Player::Player(const TileTypeRegistry &types) {
 	m_view.setCenter(sf::Vector2f());
 }
 
-void Player::update(const TileMap& map, sf::RenderWindow& window) {
+void Player::update(const TileMap& map) {
 	m_playerSprite.setPosition(static_cast<int>(m_position.x * 16), static_cast<int>(m_position.y * 16));
-
-	sf::Vector2i newCursorPos = getCursorPosition(window);
-	if(map.getType(newCursorPos.x, newCursorPos.y)){
-		enableCursor(window, newCursorPos);
-
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-			enableMoveTo(newCursorPos);
-		}
-	}else{
-		disableCursor(window);
-	}
 
 	movePlayer(map);
 
-	moveView(window);
+	moveView();
 }
 
-void Player::draw(sf::RenderTarget &renderTarget) {
-	renderTarget.draw(m_playerSprite);
+void Player::draw(sf::RenderWindow &window) {
+	window.setView(m_view);
+
+	window.draw(m_playerSprite);
 	if(m_cursorVisible){
-		renderTarget.draw(m_cursorSprite);
+		window.draw(m_cursorSprite);
 	}
 	if(m_moveToVisible){
-		renderTarget.draw(m_moveToSprite);
+		window.draw(m_moveToSprite);
 	}
+	window.setMouseCursorVisible(!m_cursorVisible);
 }
 
-void Player::disableCursor(sf::Window& window) {
+void Player::disableCursor() {
 	m_cursorVisible = false;
-	window.setMouseCursorVisible(true);
 }
 
-void Player::enableCursor(sf::Window &window, sf::Vector2i pos) {
+void Player::enableCursor(sf::Vector2i pos) {
 	m_cursorSprite.setPosition(pos.x * 16, pos.y * 16);
-	window.setMouseCursorVisible(false);
 	m_cursorVisible = true;
 }
 
@@ -89,7 +79,9 @@ void Player::disableMoveTo() {
 }
 
 void Player::movePlayer(const TileMap& map) {
-	if(m_timer.getElapsedTime().asMilliseconds()<250){
+	m_numberOfTicksForMovement ++;
+
+	if(m_numberOfTicksForMovement<5){
 		return;
 	}
 
@@ -114,12 +106,12 @@ void Player::movePlayer(const TileMap& map) {
 	if(newPos == m_position || map.isColliding(newPos)){
 		disableMoveTo();
 	}else{
-		m_timer.restart();
+		m_numberOfTicksForMovement = 0;
 		m_position = newPos;
 	}
 }
 
-void Player::moveView(sf::RenderWindow &window) {
+void Player::moveView() {
 	const sf::Vector2f& center = m_view.getCenter();
 
 	sf::Vector2f diff = m_playerSprite.getPosition() - center;
@@ -128,10 +120,21 @@ void Player::moveView(sf::RenderWindow &window) {
 	sf::Vector2f move;
 
 	if(length>3.f){
-		move = diff / length * 1.5f;
+		move = diff / length * 3.f;
 	}
 
 	m_view.setCenter(center + move);
+}
 
-	window.setView(m_view);
+void Player::input(const TileMap& map, sf::RenderWindow &window) {
+	sf::Vector2i newCursorPos = getCursorPosition(window);
+	if(map.getType(newCursorPos.x, newCursorPos.y)){
+		enableCursor(newCursorPos);
+
+		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+			enableMoveTo(newCursorPos);
+		}
+	}else{
+		disableCursor();
+	}
 }

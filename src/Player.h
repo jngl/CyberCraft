@@ -13,13 +13,13 @@ class Player {
 public:
 	explicit Player(const TileTypeRegistry& tilesTypes);
 
-	void update(const TileMap& map, sf::RenderWindow& window);
-
-	void draw(sf::RenderTarget& renderTarget);
+	void input(const TileMap& map, sf::RenderWindow& renderTarge);
+	void update(const TileMap& map);
+	void draw(sf::RenderWindow& renderTarget);
 
 private:
 	sf::Vector2i m_position;
-	sf::Clock m_timer;
+	int m_numberOfTicksForMovement = 0;
 	sf::Sprite m_playerSprite;
 	sf::Sprite m_cursorSprite;
 	sf::Sprite m_moveToSprite;
@@ -28,15 +28,15 @@ private:
 	sf::Vector2i m_moveTo;
 	sf::View m_view;
 
-	void disableCursor(sf::Window& window);
-	void enableCursor(sf::Window& window, sf::Vector2i pos);
+	void disableCursor();
+	void enableCursor(sf::Vector2i pos);
 
 	void disableMoveTo();
 	void enableMoveTo(sf::Vector2i pos);
 
 	void movePlayer(const TileMap& map);
 
-	void moveView(sf::RenderWindow& view);
+	void moveView();
 
 	static sf::Vector2i getCursorPosition(sf::RenderWindow& window);
 };
