@@ -26,6 +26,7 @@ private:
 	bool m_cursorVisible = false;
 	bool m_moveToVisible = false;
 	sf::Vector2i m_moveTo;
+	sf::View m_view;
 
 	void disableCursor(sf::Window& window);
 	void enableCursor(sf::Window& window, sf::Vector2i pos);
@@ -34,6 +35,8 @@ private:
 	void enableMoveTo(sf::Vector2i pos);
 
 	void movePlayer(const TileMap& map);
+
+	void moveView(sf::RenderWindow& view);
 
 	static sf::Vector2i getCursorPosition(sf::RenderWindow& window);
 };

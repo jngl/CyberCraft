@@ -5,6 +5,7 @@
 #include "Player.h"
 
 #include <cmath>
+#include "Math.h"
 
 Player::Player(const TileTypeRegistry &types) {
 	const TileType& type = types.getType("player");
@@ -21,6 +22,9 @@ Player::Player(const TileTypeRegistry &types) {
 	m_moveToSprite.setTexture(types.getTexture());
 	m_moveToSprite.setTextureRect(typeMoveTo.getTextureRect());
 	m_moveToSprite.setColor(typeMoveTo.getColor());
+
+	m_view.setSize(400,300);
+	m_view.setCenter(sf::Vector2f());
 }
 
 void Player::update(const TileMap& map, sf::RenderWindow& window) {
@@ -38,6 +42,8 @@ void Player::update(const TileMap& map, sf::RenderWindow& window) {
 	}
 
 	movePlayer(map);
+
+	moveView(window);
 }
 
 void Player::draw(sf::RenderTarget &renderTarget) {
@@ -111,4 +117,21 @@ void Player::movePlayer(const TileMap& map) {
 		m_timer.restart();
 		m_position = newPos;
 	}
+}
+
+void Player::moveView(sf::RenderWindow &window) {
+	const sf::Vector2f& center = m_view.getCenter();
+
+	sf::Vector2f diff = m_playerSprite.getPosition() - center;
+	float length = math::length(diff);
+
+	sf::Vector2f move;
+
+	if(length>3.f){
+		move = diff / length * 1.5f;
+	}
+
+	m_view.setCenter(center + move);
+
+	window.setView(m_view);
 }

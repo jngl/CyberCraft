@@ -10,8 +10,8 @@
 
 class TileMap {
 public:
-	constexpr static int sizeX = 16;
-	constexpr static int sizeY = 16;
+	constexpr static int sizeX = 32;
+	constexpr static int sizeY = 32;
 	constexpr static std::string_view defaultTileName = "grass";
 
 	explicit TileMap(const TileTypeRegistry &tiles);

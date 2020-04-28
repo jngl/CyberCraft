@@ -6,6 +6,7 @@
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+	window.setFramerateLimit(60);
 
 	TileTypeRegistry types;
 
@@ -15,9 +16,6 @@ int main() {
 	map.set({12, 9}, "tree");
 	map.set({15, 14}, "water");
 	map.set({3, 14}, "dead bush");
-
-	sf::View view(sf::FloatRect(-16.f, -16.f, 400.f, 300.f));
-	window.setView(view);
 
 	Player player(types);
 
