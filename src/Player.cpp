@@ -8,23 +8,9 @@
 #include "Math.h"
 
 Player::Player(const TileTypeRegistry &types) {
-	const TileType& type = types.getType("player");
-	m_playerSprite.setTexture(types.getTexture());
-	m_playerSprite.setTextureRect(type.getTextureRect());
-	m_playerSprite.setColor(type.getColor());
-
-	const TileType& cursorType = types.getType("cursor");
-	m_cursorSprite.setTexture(types.getTexture());
-	m_cursorSprite.setTextureRect(cursorType.getTextureRect());
-	m_cursorSprite.setColor(cursorType.getColor());
-
-	const TileType& typeMoveTo = types.getType("move to");
-	m_moveToSprite.setTexture(types.getTexture());
-	m_moveToSprite.setTextureRect(typeMoveTo.getTextureRect());
-	m_moveToSprite.setColor(typeMoveTo.getColor());
-
-	m_view.setSize(400,300);
-	m_view.setCenter(sf::Vector2f());
+	setSpriteFromTileTypeName(types, m_playerSprite, "player");
+	setSpriteFromTileTypeName(types, m_cursorSprite, "cursor");
+	setSpriteFromTileTypeName(types, m_moveToSprite, "move to");
 }
 
 void Player::update(const TileMap& map) {
@@ -32,11 +18,11 @@ void Player::update(const TileMap& map) {
 
 	movePlayer(map);
 
-	moveView();
+	m_camera.moveTo(m_playerSprite.getPosition(), 3.f);
 }
 
 void Player::draw(sf::RenderWindow &window) {
-	window.setView(m_view);
+	m_camera.set(window);
 
 	window.draw(m_playerSprite);
 	if(m_cursorVisible){
@@ -111,21 +97,6 @@ void Player::movePlayer(const TileMap& map) {
 	}
 }
 
-void Player::moveView() {
-	const sf::Vector2f& center = m_view.getCenter();
-
-	sf::Vector2f diff = m_playerSprite.getPosition() - center;
-	float length = math::length(diff);
-
-	sf::Vector2f move;
-
-	if(length>3.f){
-		move = diff / length * 3.f;
-	}
-
-	m_view.setCenter(center + move);
-}
-
 void Player::input(const TileMap& map, sf::RenderWindow &window) {
 	sf::Vector2i newCursorPos = getCursorPosition(window);
 	if(map.getType(newCursorPos.x, newCursorPos.y)){
@@ -138,3 +109,4 @@ void Player::input(const TileMap& map, sf::RenderWindow &window) {
 		disableCursor();
 	}
 }
+

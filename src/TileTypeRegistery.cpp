@@ -41,3 +41,10 @@ const TileType& TileTypeRegistry::getType(std::string_view name) const {
 const sf::Texture &TileTypeRegistry::getTexture() const {
 	return m_texture;
 }
+
+void setSpriteFromTileTypeName(const TileTypeRegistry& registery, sf::Sprite& sprite, std::string_view name){
+	const TileType& type = registery.getType(name);
+	sprite.setTexture(registery.getTexture());
+	sprite.setTextureRect(type.getTextureRect());
+	sprite.setColor(type.getColor());
+}

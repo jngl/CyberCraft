@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include "TileTypeRegistery.h"
 #include "TileMap.h"
+#include "Camera.h"
 
 class Player {
 public:
@@ -26,7 +27,7 @@ private:
 	bool m_cursorVisible = false;
 	bool m_moveToVisible = false;
 	sf::Vector2i m_moveTo;
-	sf::View m_view;
+	Camera m_camera;
 
 	void disableCursor();
 	void enableCursor(sf::Vector2i pos);
@@ -35,8 +36,6 @@ private:
 	void enableMoveTo(sf::Vector2i pos);
 
 	void movePlayer(const TileMap& map);
-
-	void moveView();
 
 	static sf::Vector2i getCursorPosition(sf::RenderWindow& window);
 };

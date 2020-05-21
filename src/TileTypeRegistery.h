@@ -24,4 +24,7 @@ private:
 	sf::Texture m_texture;
 };
 
+
+void setSpriteFromTileTypeName(const TileTypeRegistry& registery, sf::Sprite& sprite, std::string_view name);
+
 #endif //CYBERCRAFT_TILETYPEREGISTERY_H
