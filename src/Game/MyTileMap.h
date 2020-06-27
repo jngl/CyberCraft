@@ -2,27 +2,30 @@
 // Created by jngl on 27/04/2020.
 //
 
-#ifndef CYBERCRAFT_TILEMAP_H
-#define CYBERCRAFT_TILEMAP_H
+#ifndef CYBERCRAFT_MYTILEMAP_H
+#define CYBERCRAFT_MYTILEMAP_H
 
-#include "TileTypeRegistry.h"
+#include "../Core/Common.h"
+#include "../BasicWorld/Map.h"
+
 #include "Tile.h"
+#include <SFML/Graphics/RectangleShape.hpp>
 
-class TileMap {
+class MyTileMap : public TileMap {
 public:
 	constexpr static int sizeX = 32;
 	constexpr static int sizeY = 32;
 	constexpr static std::string_view defaultTileName = "grass";
 
-	explicit TileMap(const TileTypeRegistry &tiles);
+	explicit MyTileMap(const TileTypeRegistry &tiles);
 
 	void set(sf::Vector2i position, std::string_view typeName);
 
-	const TileType* getType(int x, int y) const;
+	[[nodiscard]] const TileType* getType(int x, int y) const override;
 
-	void draw(sf::RenderTarget &renderTarget);
+	void draw(sf::RenderTarget &renderTarget) override;
 
-	bool isColliding(sf::Vector2i position) const;
+	[[nodiscard]] bool isColliding(sf::Vector2i position) const override;
 
 private:
 	std::array<Tile, sizeX * sizeY> m_tiles;
@@ -37,4 +40,4 @@ private:
 
 };
 
-#endif //CYBERCRAFT_TILEMAP_H
+#endif //CYBERCRAFT_MYTILEMAP_H

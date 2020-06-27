@@ -2,14 +2,11 @@
 // Created by jngl on 27/04/2020.
 //
 
-#include "Error.h"
-#include "TileTypeRegistry.h"
+#include "../Core/Error.h"
+#include "MyTileTypeRegistry.h"
 
-sf::IntRect TileType::getTextureRect() const {
-    return sf::IntRect(textureTileIndex.x * 17, textureTileIndex.y * 17, 16, 16);
-}
 
-TileTypeRegistry::TileTypeRegistry() {
+MyTileTypeRegistry::MyTileTypeRegistry() {
 	const sf::Color colorPlant(154, 235, 73);
 	const sf::Color colorRock(100, 100, 100);
 	const sf::Color colorWater(71, 179, 255);
@@ -32,7 +29,7 @@ TileTypeRegistry::TileTypeRegistry() {
 	}
 }
 
-const TileType& TileTypeRegistry::getType(std::string_view name) const {
+const TileType& MyTileTypeRegistry::getType(std::string_view name) const {
 	auto tileType = m_tiles.find(std::string(name));
 
 	if (tileType == m_tiles.end()) {
@@ -42,13 +39,6 @@ const TileType& TileTypeRegistry::getType(std::string_view name) const {
 	return tileType->second;
 }
 
-const sf::Texture &TileTypeRegistry::getTexture() const {
+const sf::Texture &MyTileTypeRegistry::getTexture() const {
 	return m_texture;
-}
-
-void TileTypeRegistry::setSpriteFromTileTypeName(sf::Sprite& sprite, std::string_view name) const{
-	const TileType& type = getType(name);
-	sprite.setTexture(getTexture());
-	sprite.setTextureRect(type.getTextureRect());
-	sprite.setColor(type.color);
 }

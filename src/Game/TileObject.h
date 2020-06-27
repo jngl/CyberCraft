@@ -5,9 +5,10 @@
 #ifndef CYBERCRAFT_TILEOBJECT_H
 #define CYBERCRAFT_TILEOBJECT_H
 
-#include <SFML/Graphics.hpp>
+#include "../Core/Common.h"
 
-class TileTypeRegistry;
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 class TileObject{
 public:
@@ -15,14 +16,13 @@ public:
 
 	void setTileType(const TileTypeRegistry& registry, std::string_view name);
 
-	bool isVisible() const;
+	[[nodiscard]] bool isVisible() const;
 	void setVisible(bool v);
 
-	const sf::Vector2i& getPosition() const;
-	const sf::Vector2f& getWorldPosition() const;
+	[[nodiscard]] const sf::Vector2i& getPosition() const;
+	[[nodiscard]] const sf::Vector2f& getWorldPosition() const;
 
 	void setTilePosition(const sf::Vector2i& pos);
-	void setWorldPosition(const sf::Vector2f& pos);
 
 private:
 	bool visible = true;

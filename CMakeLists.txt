@@ -6,12 +6,13 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(SFML 2 COMPONENTS system window graphics network audio)
 
 add_executable(CyberCraft
-        src/Camera.cpp
-        src/Error.cpp
+        src/BasicWorld/Camera.cpp
+        src/Core/Error.cpp
         src/main.cpp
-        src/Player.cpp
-        src/Tile.cpp
-        src/TileMap.cpp
-        src/TileObject.cpp
-        src/TileTypeRegistry.cpp)
+        src/Game/MyPlayer.cpp
+        src/Game/Tile.cpp
+        src/Game/MyTileMap.cpp
+        src/Game/TileObject.cpp
+        src/Game/MyTileTypeRegistry.cpp
+        src/BasicWorld/Player.h src/BasicWorld/Map.h src/BasicWorld/Map.cpp src/Core/Common.h)
 target_link_libraries(CyberCraft sfml-graphics)

@@ -1,23 +1,22 @@
 #include <SFML/Graphics.hpp>
 
-#include "TileTypeRegistry.h"
-#include "TileMap.h"
-#include "Player.h"
+#include "Game/MyPlayer.h"
+#include "Game/MyTileTypeRegistry.h"
+#include "Game/MyTileMap.h"
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
 	window.setFramerateLimit(60);
 
-	TileTypeRegistry types;
+    MyTileTypeRegistry types;
+    MyPlayer player(types);
 
-	TileMap map(types);
-	map.set({1, 2}, "long grass");
-	map.set({5, 7}, "rock");
-	map.set({12, 9}, "tree");
-	map.set({15, 14}, "water");
-	map.set({3, 14}, "dead bush");
-
-	Player player(types);
+    MyTileMap map(types);
+    map.set({5,5}, "long grass");
+    map.set({15,5}, "rock");
+    map.set({5,15}, "tree");
+    map.set({15,15}, "water");
+    map.set({7,12}, "dead bush");
 
 	//frame clock
 	sf::Clock frameClock;

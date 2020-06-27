@@ -2,11 +2,12 @@
 // Created by jngl on 27/04/2020.
 //
 
-#include "TileMap.h"
+#include "MyTileMap.h"
 
-#include "Error.h"
+#include "../Core/Error.h"
+#include "SFML/Graphics/RenderTarget.hpp"
 
-TileMap::TileMap(const TileTypeRegistry &tiles) :
+MyTileMap::MyTileMap(const TileTypeRegistry &tiles) :
 		m_types(tiles) {
 	for (int x(0); x < sizeX; ++x) {
 		for (int y(0); y < sizeY; ++y) {
@@ -18,7 +19,7 @@ TileMap::TileMap(const TileTypeRegistry &tiles) :
 	m_background.setSize(sf::Vector2f(sizeX*16, sizeY*16));
 }
 
-void TileMap::set(sf::Vector2i position, std::string_view typeName) {
+void MyTileMap::set(sf::Vector2i position, std::string_view typeName) {
 	Tile* tile = get(position);
 	if(!tile){
 		throw Error("Out of bound");
@@ -26,14 +27,14 @@ void TileMap::set(sf::Vector2i position, std::string_view typeName) {
 	tile->set(m_types, typeName, position);
 }
 
-void TileMap::draw(sf::RenderTarget &renderTarget) {
+void MyTileMap::draw(sf::RenderTarget &renderTarget) {
 	renderTarget.draw(m_background);
 	for (Tile &tile : m_tiles) {
 		tile.draw(renderTarget);
 	}
 }
 
-Tile* TileMap::get(int x, int y) {
+Tile* MyTileMap::get(int x, int y) {
 	if(x<0 || x>=sizeX || y<0 || x>=sizeY){
 		return nullptr;
 	}
@@ -41,22 +42,22 @@ Tile* TileMap::get(int x, int y) {
 	return &m_tiles[y * sizeX + x];
 }
 
-Tile* TileMap::get(const sf::Vector2i& position) {
+Tile* MyTileMap::get(const sf::Vector2i& position) {
 	return get(position.x, position.y);
 }
 
-const Tile* TileMap::get(int x, int y) const {
+const Tile* MyTileMap::get(int x, int y) const {
 	if(x<0 || x>=sizeX || y<0 || y>=sizeY){
 		return nullptr;
 	}
 	return &m_tiles[y * sizeX + x];
 }
 
-const Tile* TileMap::get(const sf::Vector2i &position) const {
+const Tile* MyTileMap::get(const sf::Vector2i &position) const {
 	return get(position.x, position.y);
 }
 
-bool TileMap::isColliding(sf::Vector2i position) const {
+bool MyTileMap::isColliding(sf::Vector2i position) const {
 	const TileType *type = getType(position.x , position.y);
 	if (!type){
 		return true;
@@ -65,7 +66,7 @@ bool TileMap::isColliding(sf::Vector2i position) const {
 	return type->collision;
 }
 
-const TileType *TileMap::getType(int x, int y) const {
+const TileType *MyTileMap::getType(int x, int y) const {
 	const Tile* tile = get(x, y);
 	if(!tile){
 		return nullptr;

@@ -4,6 +4,10 @@
 
 #include "Tile.h"
 
+#include "../BasicWorld/Map.h"
+
+#include <SFML/Graphics/RenderTarget.hpp>
+
 void Tile::set(const TileTypeRegistry &tiles, std::string_view typeName, sf::Vector2i position){
 	m_type = &tiles.getType(typeName);
 

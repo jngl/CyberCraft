@@ -5,7 +5,9 @@
 #ifndef CYBERCRAFT_TILE_H
 #define CYBERCRAFT_TILE_H
 
-#include "TileTypeRegistry.h"
+#include "../Core/Common.h"
+
+#include <SFML/Graphics/Sprite.hpp>
 
 class Tile {
 public:

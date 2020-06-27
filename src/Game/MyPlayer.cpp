@@ -2,12 +2,12 @@
 // Created by jngl on 27/04/2020.
 //
 
-#include "Player.h"
+#include "MyPlayer.h"
 
 #include <cmath>
-#include "Math.h"
+#include "../Core/Math.h"
 
-Player::Player(const TileTypeRegistry &types) {
+MyPlayer::MyPlayer(const TileTypeRegistry &types) {
 	m_playerComponent.setTileType(types, "player");
 
 	m_cursorComponent.setTileType(types, "cursor");
@@ -19,12 +19,12 @@ Player::Player(const TileTypeRegistry &types) {
 	m_view = createDefaultView();
 }
 
-void Player::update(const TileMap& map) {
+void MyPlayer::update(const TileMap& map) {
 	movePlayer(map);
 	moveViewTo(m_view, m_playerComponent.getWorldPosition(), 1.5f, 10);
 }
 
-void Player::draw(sf::RenderWindow &window) {
+void MyPlayer::draw(sf::RenderWindow &window) {
 	window.setView(m_view);
 
 	m_playerComponent.draw(window);
@@ -34,7 +34,7 @@ void Player::draw(sf::RenderWindow &window) {
 	window.setMouseCursorVisible(!m_cursorComponent.isVisible());
 }
 
-sf::Vector2i Player::getCursorPosition(sf::RenderWindow& window) {
+sf::Vector2i MyPlayer::getCursorPosition(sf::RenderWindow& window) {
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 	sf::Vector2f pos = window.mapPixelToCoords(mousePos);
 
@@ -45,7 +45,7 @@ sf::Vector2i Player::getCursorPosition(sf::RenderWindow& window) {
 	return tilePos;
 }
 
-void Player::movePlayer(const TileMap& map) {
+void MyPlayer::movePlayer(const TileMap& map) {
 	m_numberOfTicksForMovement ++;
 
 	if(m_numberOfTicksForMovement<5){
@@ -79,7 +79,7 @@ void Player::movePlayer(const TileMap& map) {
 	}
 }
 
-void Player::input(const TileMap& map, sf::RenderWindow &window) {
+void MyPlayer::input(const TileMap& map, sf::RenderWindow &window) {
 	sf::Vector2i newCursorPos = getCursorPosition(window);
 
 	if(!map.getType(newCursorPos.x, newCursorPos.y)){

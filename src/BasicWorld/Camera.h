@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_CAMERA_H
 #define CYBERCRAFT_CAMERA_H
 
-#include <SFML/Graphics.hpp>
+#include "../Core/Common.h"
 
 sf::View createDefaultView();
 

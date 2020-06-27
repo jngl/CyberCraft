@@ -4,7 +4,9 @@
 
 #include "Camera.h"
 
-#include "Math.h"
+#include "../Core/Math.h"
+
+#include <SFML/Graphics.hpp>
 
 sf::View createDefaultView(){
 	return sf::View(sf::Vector2f(0, 0), sf::Vector2f (400, 300));
