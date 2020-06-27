@@ -10,7 +10,7 @@ void Tile::set(const TileTypeRegistry &tiles, std::string_view typeName, sf::Vec
 	m_sprite.setTexture(tiles.getTexture());
 	m_sprite.setTextureRect(m_type->getTextureRect());
 	m_sprite.setPosition(position.x * 16, position.y * 16);
-	m_sprite.setColor(m_type->getColor());
+	m_sprite.setColor(m_type->color);
 }
 
 void Tile::draw(sf::RenderTarget &renderTarget) {

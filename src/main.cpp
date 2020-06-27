@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 
-#include "TileTypeRegistery.h"
+#include "TileTypeRegistry.h"
 #include "TileMap.h"
 #include "Player.h"
 

@@ -6,26 +6,24 @@
 
 #include "Math.h"
 
-Camera::Camera() {
-	m_view.setSize(400,300);
-	m_view.setCenter(sf::Vector2f());
+sf::View createDefaultView(){
+	return sf::View(sf::Vector2f(0, 0), sf::Vector2f (400, 300));
 }
 
-void Camera::set(sf::RenderTarget& renderTarget){
-	renderTarget.setView(m_view);
-}
-
-void Camera::moveTo(sf::Vector2f target, float speed){
-	const sf::Vector2f& center = m_view.getCenter();
+void moveViewTo(sf::View& view, sf::Vector2f target, float minSpeed, float lengthSpeedFactor){
+	const sf::Vector2f& center = view.getCenter();
 
 	sf::Vector2f diff = target - center;
 	float length = math::length(diff);
 
 	sf::Vector2f move;
 
-	if(length>3.f){
-		move = diff / length * 3.f;
-	}
+	float speed2 = length / lengthSpeedFactor + minSpeed;
 
-	m_view.setCenter(center + move);
+	if(length > speed2){
+		move = diff / length * speed2;
+        view.setCenter(center + move);
+	}else{
+        view.setCenter(target);
+	}
 }

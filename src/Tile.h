@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_TILE_H
 #define CYBERCRAFT_TILE_H
 
-#include "TileTypeRegistery.h"
+#include "TileTypeRegistry.h"
 
 class Tile {
 public:

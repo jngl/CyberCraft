@@ -62,7 +62,7 @@ bool TileMap::isColliding(sf::Vector2i position) const {
 		return true;
 	}
 
-	return type->getCollision();
+	return type->collision;
 }
 
 const TileType *TileMap::getType(int x, int y) const {

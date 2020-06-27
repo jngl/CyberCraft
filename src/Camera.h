@@ -7,16 +7,8 @@
 
 #include <SFML/Graphics.hpp>
 
-class Camera{
-public:
-	Camera();
+sf::View createDefaultView();
 
-	void set(sf::RenderTarget& renderTarget);
-
-	void moveTo(sf::Vector2f target, float speed);
-
-private:
-	sf::View m_view;
-};
+void moveViewTo(sf::View& view, sf::Vector2f target, float minSpeed, float lengthSpeedFactor);
 
 #endif //CYBERCRAFT_CAMERA_H

@@ -8,45 +8,30 @@
 #include "Math.h"
 
 Player::Player(const TileTypeRegistry &types) {
-	setSpriteFromTileTypeName(types, m_playerSprite, "player");
-	setSpriteFromTileTypeName(types, m_cursorSprite, "cursor");
-	setSpriteFromTileTypeName(types, m_moveToSprite, "move to");
+	m_playerComponent.setTileType(types, "player");
+
+	m_cursorComponent.setTileType(types, "cursor");
+	m_cursorComponent.setVisible(false);
+
+	m_moveToComponent.setTileType(types, "move to");
+	m_moveToComponent.setVisible(false);
+
+	m_view = createDefaultView();
 }
 
 void Player::update(const TileMap& map) {
-	m_playerSprite.setPosition(static_cast<int>(m_position.x * 16), static_cast<int>(m_position.y * 16));
-
 	movePlayer(map);
-
-	m_camera.moveTo(m_playerSprite.getPosition(), 3.f);
+	moveViewTo(m_view, m_playerComponent.getWorldPosition(), 1.5f, 10);
 }
 
 void Player::draw(sf::RenderWindow &window) {
-	m_camera.set(window);
+	window.setView(m_view);
 
-	window.draw(m_playerSprite);
-	if(m_cursorVisible){
-		window.draw(m_cursorSprite);
-	}
-	if(m_moveToVisible){
-		window.draw(m_moveToSprite);
-	}
-	window.setMouseCursorVisible(!m_cursorVisible);
-}
+	m_playerComponent.draw(window);
+	m_cursorComponent.draw(window);
+	m_moveToComponent.draw(window);
 
-void Player::disableCursor() {
-	m_cursorVisible = false;
-}
-
-void Player::enableCursor(sf::Vector2i pos) {
-	m_cursorSprite.setPosition(pos.x * 16, pos.y * 16);
-	m_cursorVisible = true;
-}
-
-void Player::enableMoveTo(sf::Vector2i pos) {
-	m_moveToVisible = true;
-	m_moveToSprite.setPosition(pos.x * 16, pos.y * 16);
-	m_moveTo = pos;
+	window.setMouseCursorVisible(!m_cursorComponent.isVisible());
 }
 
 sf::Vector2i Player::getCursorPosition(sf::RenderWindow& window) {
@@ -60,10 +45,6 @@ sf::Vector2i Player::getCursorPosition(sf::RenderWindow& window) {
 	return tilePos;
 }
 
-void Player::disableMoveTo() {
-	m_moveToVisible = false;
-}
-
 void Player::movePlayer(const TileMap& map) {
 	m_numberOfTicksForMovement ++;
 
@@ -71,42 +52,46 @@ void Player::movePlayer(const TileMap& map) {
 		return;
 	}
 
-	if(!m_moveToVisible){
+	if(!m_moveToComponent.isVisible()){
 		return;
 	}
 
-	sf::Vector2i newPos = m_position;
+	sf::Vector2i oldPos = m_playerComponent.getPosition();
+	sf::Vector2i newPos = oldPos;
 
-	if(m_position.x < m_moveTo.x){
+	if(oldPos.x < m_moveToComponent.getPosition().x){
 		newPos.x++;
-	}else if(m_position.x > m_moveTo.x){
+	}else if(oldPos.x > m_moveToComponent.getPosition().x){
 		newPos.x--;
 	}
 
-	if(m_position.y < m_moveTo.y){
+	if(oldPos.y < m_moveToComponent.getPosition().y){
 		newPos.y++;
-	}else if(m_position.y > m_moveTo.y){
+	}else if(oldPos.y > m_moveToComponent.getPosition().y){
 		newPos.y--;
 	}
 
-	if(newPos == m_position || map.isColliding(newPos)){
-		disableMoveTo();
+	if(newPos == oldPos || map.isColliding(newPos)){
+		m_moveToComponent.setVisible(false);
 	}else{
 		m_numberOfTicksForMovement = 0;
-		m_position = newPos;
+        m_playerComponent.setTilePosition(newPos);
 	}
 }
 
 void Player::input(const TileMap& map, sf::RenderWindow &window) {
 	sf::Vector2i newCursorPos = getCursorPosition(window);
-	if(map.getType(newCursorPos.x, newCursorPos.y)){
-		enableCursor(newCursorPos);
 
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-			enableMoveTo(newCursorPos);
-		}
-	}else{
-		disableCursor();
+	if(!map.getType(newCursorPos.x, newCursorPos.y)){
+		m_cursorComponent.setVisible(false);
+		return;
+	}
+
+	m_cursorComponent.setVisible(true);
+    m_cursorComponent.setTilePosition(newCursorPos);
+
+	if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+		m_moveToComponent.setVisible(true);
+        m_moveToComponent.setTilePosition(newCursorPos);
 	}
 }
-
