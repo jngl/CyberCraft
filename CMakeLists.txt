@@ -14,5 +14,5 @@ add_executable(CyberCraft
         src/Game/MyTileMap.cpp
         src/Game/TileObject.cpp
         src/Game/MyTileTypeRegistry.cpp
-        src/BasicWorld/Player.h src/BasicWorld/Map.h src/BasicWorld/Map.cpp src/Core/Common.h)
+        src/BasicWorld/Player.h src/BasicWorld/Map.h src/BasicWorld/Map.cpp src/Core/Common.h src/Window.cpp src/Window.h)
 target_link_libraries(CyberCraft sfml-graphics)

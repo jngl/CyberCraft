@@ -1,12 +1,11 @@
-#include <SFML/Graphics.hpp>
-
 #include "Game/MyPlayer.h"
 #include "Game/MyTileTypeRegistry.h"
 #include "Game/MyTileMap.h"
 
+#include "Window.h"
+
 int main() {
-	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
-	window.setFramerateLimit(60);
+    Window win;
 
     MyTileTypeRegistry types;
     MyPlayer player(types);
@@ -18,42 +17,21 @@ int main() {
     map.set({15,15}, "water");
     map.set({7,12}, "dead bush");
 
-	//frame clock
-	sf::Clock frameClock;
-	sf::Time previous  = frameClock.getElapsedTime();
-	sf::Time lag;
+	while (win.isOpen()) {
+	    win.beginFrame();
 
-	const sf::Time timePerUpdate = sf::milliseconds(33);
-
-	while (window.isOpen()) {
-		//frame clock update
-		sf::Time current = frameClock.getElapsedTime();
-		sf::Time elapsed = current - previous;
-		previous = current;
-		lag += elapsed;
-
-		//input event
-		sf::Event event{};
-		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-
-		player.input(map, window);
+		player.input(map, win.getSFMLWindowsRef());
 
 		//update
-		while(lag >= timePerUpdate){
-			player.update(map);
-			lag -= timePerUpdate;
-		}
+		win.update([&player, &map](){
+            player.update(map);
+		});
 
 		//render
-		window.clear(sf::Color::Black);
+		map.draw(win.getSFMLWindowsRef());
+		player.draw(win.getSFMLWindowsRef());
 
-		map.draw(window);
-		player.draw(window);
-
-		window.display();
+		win.endFrame();
 	}
 
 	return 0;
