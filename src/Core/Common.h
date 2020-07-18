@@ -28,8 +28,4 @@ namespace sf{
     class RenderWindow;
 }
 
-class TileMap;
-class TileTypeRegistry;
-class TileType;
-
 #endif //CYBERCRAFT_COMMON_H
