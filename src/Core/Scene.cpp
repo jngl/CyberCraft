@@ -4,6 +4,6 @@
 
 #include "Scene.h"
 
-void Scene::update() {
-
+Entity Scene::create() {
+    return m_registry.create();
 }
