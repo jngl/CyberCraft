@@ -8,9 +8,6 @@ Window::Window():
     m_window(sf::VideoMode(800, 600), "Cyber Craft")
 {
     m_window.setFramerateLimit(60);
-
-    //frame clock
-    m_previous  = m_frameClock.getElapsedTime();
 }
 
 bool Window::isOpen() const {
@@ -18,12 +15,6 @@ bool Window::isOpen() const {
 }
 
 void Window::beginFrame() {
-    //frame clock update
-    sf::Time current = m_frameClock.getElapsedTime();
-    sf::Time elapsed = current - m_previous;
-    m_previous = current;
-    m_lag += elapsed;
-
     //input event
     sf::Event event{};
     while (m_window.pollEvent(event)) {

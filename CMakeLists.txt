@@ -12,5 +12,5 @@ add_executable(CyberCraft
         src/Core/Math.h
         src/Core/Window.cpp
         src/Core/Window.h
-        src/main.cpp)
+        src/main.cpp src/Core/Scene.cpp src/Core/Scene.h src/Core/Update.h src/Core/Update.cpp)
 target_link_libraries(CyberCraft sfml-graphics)
