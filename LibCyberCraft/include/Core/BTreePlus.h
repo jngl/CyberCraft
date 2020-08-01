@@ -24,6 +24,7 @@ public:
     virtual std::unique_ptr<ThisType> insert(Key newKey, Data newData) = 0;
     [[nodiscard]] virtual size_t size() const = 0;
     virtual Key firstKey() const = 0;
+    virtual const Data& get(Key key) const = 0;
 };
 
 /**************************************************************
@@ -66,6 +67,16 @@ public:
         assert(m_size>0);
         return m_keys[0];
     }
+
+    const Data& get(Key key) const override{
+        auto it = std::lower_bound(m_keys.begin(), m_keys.begin()+m_size, key);
+        if(it == m_keys.end() || *it != key){
+            throw std::out_of_range("key not found in a BTreePlus");
+        }
+        int index = it - m_keys.begin();
+        return m_datas[index];
+    }
+
 private:
     std::array<Key, MaxSize> m_keys;
     std::array<Data, MaxSize> m_datas;
@@ -166,6 +177,10 @@ public:
         return m_keys[0];
     }
 
+    const Data& get(Key key) const override{
+        throw std::out_of_range("todo");
+    }
+
 private:
     std::array<Key, MaxSize-1> m_keys;
     std::array<std::unique_ptr<ParentType>, MaxSize> m_children;
@@ -196,6 +211,7 @@ public:
     using Leaf      = BTreePlusLeaf<Key, Data, MaxSize>;
     using Branch    = BTreePlusBranch<Key, Data, MaxSize>;
 
+    /// \brief insert data at position key
     void insert(Key newKey, const Data& data) {
         if (!m_root) {
             m_root = std::make_unique<Leaf>();
@@ -209,16 +225,32 @@ public:
             newRoot->add(std::move(newNode));
             m_root = std::move(newRoot);
         }
+
+        ++m_size;
     }
+
+    /// \brief Print the data structure in the console.
     void debugPrint() const{
-            std::cout<<"BTreePlus\n";
-            if(m_root){
-                m_root->debugPrint(1);
-            }
+        std::cout<<"BTreePlus\n";
+        if(m_root){
+            m_root->debugPrint(1);
         }
+    }
+
+    int size() const {
+        return m_size;
+    }
+
+    const Data& get(Key key){
+        if(!m_root){
+            throw std::out_of_range("key not found in a BTreePlus");
+        }
+        return m_root->get(key);
+    }
 
 private:
     std::unique_ptr<Node> m_root;
+    int m_size = 0;
 };
 
 
