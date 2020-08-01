@@ -2,7 +2,7 @@
 // Created by jngl on 27/04/2020.
 //
 
-#include "Error.h"
+#include "Core/Error.h"
 
 Error::Error(std::string_view msg) :
 		m_message(msg) {}

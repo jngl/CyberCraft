@@ -2,7 +2,7 @@
 // Created by jngl on 27/06/2020.
 //
 
-#include "Window.h"
+#include "Core/Window.h"
 
 Window::Window():
     m_window(sf::VideoMode(800, 600), "Cyber Craft")

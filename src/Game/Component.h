@@ -5,10 +5,19 @@
 #ifndef CYBERCRAFT_COMPONENT_H
 #define CYBERCRAFT_COMPONENT_H
 
-#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics.hpp>
+
+struct PositionComponent{
+    sf::Vector2f position;
+};
 
 struct SpriteComponent{
-    sf::Sprite sprite;
+    const sf::Texture* texture = nullptr;
+    sf::Vector2i textureIndex;
+    sf::Color color;
+};
+
+struct PlayerComponent{
 };
 
 #endif //CYBERCRAFT_COMPONENT_H

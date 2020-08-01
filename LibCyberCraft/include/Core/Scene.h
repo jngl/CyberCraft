@@ -7,7 +7,7 @@
 
 #include "Update.h"
 
-#include "entt/entt.h"
+/*#include "entt/entt.h"
 
 using Entity = entt::entity;
 
@@ -17,7 +17,7 @@ public:
 
     template<typename Component, typename... Args>
     decltype(auto) emplace(Entity entity, Args &&... args) {
-        return m_registry.emplace<Component>(entity);
+        return m_registry.emplace<Component>(entity, args...);
     }
 
     template<typename... Component>
@@ -28,6 +28,6 @@ public:
 private:
     entt::registry m_registry;
 };
-
+*/
 
 #endif //CYBERCRAFT_SCENE_H

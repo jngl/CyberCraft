@@ -28,4 +28,6 @@ namespace sf{
     class RenderWindow;
 }
 
+void printTabs(int nb);
+
 #endif //CYBERCRAFT_COMMON_H
