@@ -10,6 +10,7 @@
 #include <cassert>
 #include <iostream>
 #include <array>
+#include <memory>
 
 /**************************************************************
  *                  BTreePlusNode
