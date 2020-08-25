@@ -5,51 +5,49 @@
 #include "System.h"
 
 #include "Component.h"
-/*
-void drawSprite(Scene &scene, Window& win) {
-    sf::RenderWindow& sfWin = win.getSFMLWindowsRef();
+#include "World.h"
 
-    auto view = scene.view<PositionComponent, SpriteComponent>();
+#include <Core/Window.h>
+
+void drawSprite(Window& win, const sf::Texture& texture, const sf::Vector2f& pos, const component::Sprite& sprite) {
+    sf::RectangleShape background;
+    background.setPosition(pos*32.f);
+    background.setSize(sf::Vector2f(32,32));
+    background.setFillColor(sprite.backgroundColor);
+    win.getSFMLWindowsRef().draw(background);
+
 
     sf::Sprite sfSprite;
-    sfSprite.setScale(4,4);
+    sfSprite.setScale(2,2);
 
-    for(auto entity: view){
-        auto& pos = view.get<PositionComponent>(entity);
-        auto& sprite = view.get<SpriteComponent>(entity);
-        if(sprite.texture){
-            sfSprite.setPosition(pos.position);
-            sfSprite.setTextureRect(sf::IntRect(17*sprite.textureIndex.x, 17*sprite.textureIndex.y, 16, 16));
-            sfSprite.setTexture(*sprite.texture);
-            sfSprite.setColor(sprite.color);
-            sfWin.draw(sfSprite);
-        }
-    }
+    sfSprite.setPosition(pos*32.f);
+    sfSprite.setTextureRect(sf::IntRect(17*sprite.textureIndex.x, 17*sprite.textureIndex.y, 16, 16));
+    sfSprite.setTexture(texture);
+    sfSprite.setColor(sprite.color);
+    win.getSFMLWindowsRef().draw(sfSprite);
 }
 
-void movePlayer(Scene &scene) {
-    auto view = scene.view<PositionComponent, PlayerComponent>();
 
-    constexpr int speed = 5;
-
-    for(auto entity: view) {
-        auto &pos = view.get<PositionComponent>(entity);
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-            pos.position.x+=speed;
-        }
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-            pos.position.x-=speed;
-        }
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-            pos.position.y-=speed;
-        }
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-            pos.position.y+=speed;
-        }
+void movePlayer(sf::Vector2f& pos, component::Player& player, const World& world) {
+    if(player.timerMove>0){
+        --player.timerMove;
+        return;
     }
+
+    constexpr int nbTickMove = 5;
+
+    player.timerMove = nbTickMove;
+
+    auto funcMove = [&pos, &world](sf::Keyboard::Key key, int moveX, int moveY){
+        int newPosX = static_cast<int>(pos.x) + moveX;
+        int newPosY = static_cast<int>(pos.y) + moveY;
+        if(sf::Keyboard::isKeyPressed(key) && !getBlocInfo(world.getBloc(newPosX, newPosY)).collision){
+            pos.x += static_cast<float>(moveX);
+            pos.y += static_cast<float>(moveY);
+        }
+    };
+    funcMove(sf::Keyboard::Right, 1, 0);
+    funcMove(sf::Keyboard::Left, -1, 0);
+    funcMove(sf::Keyboard::Up, 0, -1);
+    funcMove(sf::Keyboard::Down, 0, 1);
 }
-*/
