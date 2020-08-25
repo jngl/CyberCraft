@@ -39,12 +39,27 @@ void movePlayer(sf::Vector2f& pos, component::Player& player, const World& world
     player.timerMove = nbTickMove;
 
     auto funcMove = [&pos, &world](sf::Keyboard::Key key, int moveX, int moveY){
+        if(!sf::Keyboard::isKeyPressed(key)){
+            return;
+        }
+
         int newPosX = static_cast<int>(pos.x) + moveX;
         int newPosY = static_cast<int>(pos.y) + moveY;
-        if(sf::Keyboard::isKeyPressed(key) && !getBlocInfo(world.getBloc(newPosX, newPosY)).collision){
-            pos.x += static_cast<float>(moveX);
-            pos.y += static_cast<float>(moveY);
+
+        if(newPosX<0 || newPosX>=World::sizeX){
+            return;
         }
+
+        if(newPosY<0 || newPosY>=World::sizeY){
+            return;
+        }
+
+        if(getBlocInfo(world.getBloc(newPosX, newPosY)).collision) {
+            return;
+        }
+
+        pos.x += static_cast<float>(moveX);
+        pos.y += static_cast<float>(moveY);
     };
     funcMove(sf::Keyboard::Right, 1, 0);
     funcMove(sf::Keyboard::Left, -1, 0);
