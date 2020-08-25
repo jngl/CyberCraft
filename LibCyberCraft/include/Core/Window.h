@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_WINDOW_H
 #define CYBERCRAFT_WINDOW_H
 
-#include "Scene.h"
+#include "ECS/Scene.h"
 
 #include <SFML/Graphics.hpp>
 

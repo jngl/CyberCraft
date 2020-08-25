@@ -2,9 +2,18 @@
 // Created by jngl on 18/07/2020.
 //
 
-#include <Core/Scene.h>
+#include <ECS/Scene.h>
 /*
-Entity Scene::create() {
-    return m_registry.create();
+int Scene::numberOfEntity() const {
+    return m_numberOfEntity;
+}
+
+Entity Scene::createEntity() {
+    ++m_numberOfEntity;
+    return Entity{m_numberOfEntity};
+}
+
+int Scene::numberOfComponentType() const {
+    return m_manager.size();
 }
 */
