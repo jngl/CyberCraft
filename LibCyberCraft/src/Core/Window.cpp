@@ -8,6 +8,7 @@ Window::Window():
     m_window(sf::VideoMode(800, 600), "Cyber Craft")
 {
     m_window.setFramerateLimit(60);
+    m_window.setView(m_view);
 }
 
 bool Window::isOpen() const {
@@ -18,8 +19,18 @@ void Window::beginFrame() {
     //input event
     sf::Event event{};
     while (m_window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed)
-            m_window.close();
+        switch (event.type) {
+            case sf::Event::Closed:
+                m_window.close();
+                break;
+            case sf::Event::Resized:
+                m_view.setSize(event.size.width, event.size.height);
+                m_view.setCenter(static_cast<float>(event.size.width)/2,static_cast<float>(event.size.height)/2);
+                m_window.setView(m_view);
+                break;
+            default:
+                break;
+        }
     }
 
     //clear
