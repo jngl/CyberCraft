@@ -9,7 +9,7 @@
 
 struct BlocInfo {
     component::Sprite sprite;
-    bool collision;
+    bool collision = false;
 };
 
 enum class Bloc {

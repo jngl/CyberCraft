@@ -4,7 +4,7 @@
 #include "Bloc.h"
 
 const BlocInfo &getBlocInfo(Bloc bloc) {
-    static BlocInfo GrassInfo = {
+    static constexpr BlocInfo GrassInfo = {
             component::Sprite {
                     math::Vector2i {5,0},
                     Color{50,125,25},
@@ -13,7 +13,7 @@ const BlocInfo &getBlocInfo(Bloc bloc) {
             false
     };
 
-    static BlocInfo StoneInfo = {
+    static constexpr BlocInfo StoneInfo = {
             component::Sprite {
                     math::Vector2i {6,13},
                     Color{100,110,105},
@@ -22,7 +22,7 @@ const BlocInfo &getBlocInfo(Bloc bloc) {
             true
     };
 
-    static BlocInfo WaterInfo = {
+    static constexpr BlocInfo WaterInfo = {
             component::Sprite {
                     math::Vector2i {7,0},
                     Color{58,163,255},
@@ -31,7 +31,7 @@ const BlocInfo &getBlocInfo(Bloc bloc) {
             true
     };
 
-    static BlocInfo AirInfo = {
+    static constexpr BlocInfo AirInfo = {
             component::Sprite {
                 math::Vector2i {0,0},
                 Color{0,0,0,0},
