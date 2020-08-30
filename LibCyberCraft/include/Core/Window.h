@@ -5,25 +5,30 @@
 #ifndef CYBERCRAFT_WINDOW_H
 #define CYBERCRAFT_WINDOW_H
 
-#include "ECS/Scene.h"
+#include <Core/Common.h>
+#include <Core/Math.h>
 
-#include <SFML/Graphics.hpp>
+class GraphicsContext
+{
+public:
+    virtual TextureHandle loadTexture(std::string_view filename) = 0;
+    virtual void unloadTexture(TextureHandle texture) = 0;
+
+    virtual void drawSprite(TextureHandle texture,
+                            const math::Vector2f& pos,
+                            const math::Vector2i& textureIndex,
+                            Color color,
+                            Color backgroundColor) = 0;
+};
 
 class Window {
 public:
-    Window();
+    virtual ~Window() = default;
+    virtual GraphicsContext& getGraphicsContext() = 0;
 
-    [[nodiscard]] bool isOpen() const;
-
-    void beginFrame();
-    void endFrame();
-
-    sf::RenderWindow& getSFMLWindowsRef();
-
-private:
-    sf::RenderWindow m_window;
-    sf::View m_view;
+    [[nodiscard]] virtual bool isOpen() const = 0;
+    virtual void beginFrame() = 0;
+    virtual void endFrame() = 0;
 };
-
 
 #endif //CYBERCRAFT_WINDOW_H

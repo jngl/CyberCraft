@@ -6,27 +6,27 @@
 const BlocInfo &getBlocInfo(Bloc bloc) {
     static BlocInfo GrassInfo = {
             component::Sprite {
-                    sf::Vector2i {5,0},
-                    sf::Color(50,125,25),
-                    sf::Color(50,150,25)
+                    math::Vector2i {5,0},
+                    Color{50,125,25},
+                    Color{50,150,25}
             },
             false
     };
 
     static BlocInfo StoneInfo = {
             component::Sprite {
-                    sf::Vector2i {6,13},
-                    sf::Color(100,110,105),
-                    sf::Color(50,55,52)
+                    math::Vector2i {6,13},
+                    Color{100,110,105},
+                    Color{50,55,52}
             },
             true
     };
 
     static BlocInfo WaterInfo = {
             component::Sprite {
-                    sf::Vector2i {7,0},
-                    sf::Color(58,163,255),
-                    sf::Color(0,134,255)
+                    math::Vector2i {7,0},
+                    Color{58,163,255},
+                    Color{0,134,255}
             },
             true
     };

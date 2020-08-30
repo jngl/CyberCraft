@@ -6,18 +6,21 @@
 #define CYBERCRAFT_UPDATE_H
 
 #include <memory>
-#include <SFML/System/Clock.hpp>
-#include <SFML/System/Time.hpp>
+#include <chrono>
 
 class FixStepUpdater
 {
 public:
-    explicit FixStepUpdater(sf::Time timePerUpdate);
+    using clock = std::chrono::high_resolution_clock;
+    using TimePoint = clock::time_point ;
+    using Duration = clock::duration;
+
+    explicit FixStepUpdater(const Duration& timePerUpdate);
 
     template<class Callable>
     void update(Callable func){
-        sf::Time current = m_frameClock.getElapsedTime();
-        sf::Time elapsed = current - m_previous;
+        TimePoint current = clock::now();
+        Duration elapsed = current - m_previous;
         m_previous = current;
         m_lag += elapsed;
 
@@ -28,11 +31,10 @@ public:
     }
 
 private:
-    sf::Clock m_frameClock;
-    sf::Time m_previous;
-    sf::Time m_lag;
+    TimePoint m_previous;
+    Duration m_lag;
 
-    sf::Time m_timePerUpdate;
+    Duration m_timePerUpdate;
 };
 
 

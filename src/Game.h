@@ -5,38 +5,40 @@
 #ifndef CYBERCRAFT_GAME_H
 #define CYBERCRAFT_GAME_H
 
+#include <Core/Window.h>
+
 #include "Game/Component.h"
-#include "Core/Window.h"
 #include "Game/Bloc.h"
 #include "Game/World.h"
 
 struct Player {
     component::Sprite sprite;
     component::Player player;
-    sf::Vector2f pos;
+    math::Vector2f pos;
 };
 
 class Game {
 public:
-    Game();
+    explicit Game(GraphicsContext& graphicsContext);
 
     void update();
-    void draw(Window& win);
+    void draw();
 
 private:
 
     Player player{
             component::Sprite {
-                    sf::Vector2i {24,0},
-                    sf::Color(255,192,0),
-                    sf::Color(0,0,0,0)
+                    math::Vector2i {24,0},
+                    Color{255,192,0},
+                    Color{0,0,0,0}
             },
             component::Player{0},
-            sf::Vector2f {3,2}
+            math::Vector2f {3,2}
     };
 
     World world;
-    sf::Texture texture;
+    TextureHandle texture;
+    GraphicsContext& m_graphicsContext;
 };
 
 

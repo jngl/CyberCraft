@@ -4,8 +4,9 @@
 
 #include "Core/Update.h"
 
-FixStepUpdater::FixStepUpdater(sf::Time timePerUpdate):
-m_timePerUpdate(timePerUpdate){
-    m_previous  = m_frameClock.getElapsedTime();
+FixStepUpdater::FixStepUpdater(const Duration& timePerUpdate):
+        m_previous(clock::now()),
+        m_lag(Duration::zero()),
+        m_timePerUpdate(timePerUpdate){
 }
 

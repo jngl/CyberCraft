@@ -7,32 +7,24 @@
 
 #include <string_view>
 
-namespace sf{
-    //Vector
-    template<class T>
-    class Vector2;
+class Color;
 
-    using Vector2f = Vector2<float>;
-
-    //Rect
-    template<class T>
-    class Rect;
-
-    using IntRect = Rect<int>;
-
-    //Graphics
-    class View;
-    class Texture;
-    class Sprite;
-    class RenderTarget;
-    class RenderWindow;
-}
-
+class GraphicsContext;
 class Window;
 
 void printTabs(int nb);
 
+using Uint8 = unsigned char;
 using Uint32 = unsigned int;
 static_assert(sizeof(Uint32) == 4, "size of Uint32 must be 32 bite");
+
+
+struct TextureHandle{
+    int id = 0;
+
+    bool operator<(TextureHandle right) const{
+        return id<right.id;
+    }
+};
 
 #endif //LIB_CYBERCRAFT_COMMON_H

@@ -21,4 +21,3 @@ add_library(LibCyberCraft
         include/ECS/Iterator.h)
 
 target_include_directories(LibCyberCraft PUBLIC include)
-target_link_libraries(LibCyberCraft sfml-graphics)

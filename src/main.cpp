@@ -1,18 +1,20 @@
-#include "Core/Window.h"
 #include "Core/Update.h"
 
 #include "Game.h"
 
-int main() {
-    Window win;
-    FixStepUpdater updater(sf::milliseconds(33));
+#include <CyberCraftSFML/WindowSFML.h>
 
-    Game game;
+int main() {
+
+    WindowSFML win;
+    FixStepUpdater updater(std::chrono::milliseconds{33});
+
+    Game game(win.getGraphicsContext());
 
 	while (win.isOpen()) {
 	    win.beginFrame();
 
-	    game.draw(win);
+	    game.draw();
 
 	    updater.update([&game](){
 	        game.update();

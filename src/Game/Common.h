@@ -6,6 +6,7 @@
 #define CYBERCRAFT_COMMON_H
 
 #include <Core/Common.h>
+#include <Core/Math.h>
 
 namespace component {
     class Sprite;
@@ -13,5 +14,6 @@ namespace component {
 }
 
 class World;
+class WindowSFML;
 
 #endif //CYBERCRAFT_COMMON_H

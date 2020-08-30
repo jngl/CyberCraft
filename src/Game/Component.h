@@ -5,14 +5,14 @@
 #ifndef CYBERCRAFT_COMPONENT_H
 #define CYBERCRAFT_COMPONENT_H
 
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/Color.hpp>
+#include <Core/Math.h>
+#include <Core/Color.h>
 
 namespace component{
     struct Sprite{
-        sf::Vector2i textureIndex;
-        sf::Color color;
-        sf::Color backgroundColor;
+        math::Vector2i textureIndex;
+        Color color;
+        Color backgroundColor;
     };
     struct Player{
         int timerMove;
