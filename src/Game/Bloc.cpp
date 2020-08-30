@@ -4,11 +4,20 @@
 #include "Bloc.h"
 
 const BlocInfo &getBlocInfo(Bloc bloc) {
+    constexpr Color grassColorMain{50,150,25};
+    constexpr Color grassColorDetail{50,125,25};
+    constexpr Color stoneColorMain{50,55,52};
+    constexpr Color stoneColorDetail{100,110,105};
+    constexpr Color treeColor{25,85,12};
+    constexpr Color transparent{0,0,0,0};
+    constexpr Color waterColorMain{0, 134, 255};
+    constexpr Color waterColorDetail{58, 163, 255};
+
     static constexpr BlocInfo GrassInfo = {
             component::Sprite {
                     math::Vector2i {5,0},
-                    Color{50,125,25},
-                    Color{50,150,25}
+                    grassColorDetail,
+                    grassColorMain
             },
             false
     };
@@ -16,8 +25,8 @@ const BlocInfo &getBlocInfo(Bloc bloc) {
     static constexpr BlocInfo StoneInfo = {
             component::Sprite {
                     math::Vector2i {6,13},
-                    Color{100,110,105},
-                    Color{50,55,52}
+                    stoneColorDetail,
+                    stoneColorMain
             },
             true
     };
@@ -25,8 +34,8 @@ const BlocInfo &getBlocInfo(Bloc bloc) {
     static constexpr BlocInfo WaterInfo = {
             component::Sprite {
                     math::Vector2i {7,0},
-                    Color{58,163,255},
-                    Color{0,134,255}
+                    waterColorDetail,
+                    waterColorMain
             },
             true
     };
@@ -34,10 +43,19 @@ const BlocInfo &getBlocInfo(Bloc bloc) {
     static constexpr BlocInfo AirInfo = {
             component::Sprite {
                 math::Vector2i {0,0},
-                Color{0,0,0,0},
-                Color{0,0,0,0}
+                transparent,
+                transparent
             },
             false
+    };
+
+    static constexpr BlocInfo TreeBloc = {
+            component::Sprite {
+                math::Vector2i  {0, 1},
+                treeColor,
+                grassColorMain
+            },
+            true
     };
 
     switch (bloc) {
@@ -49,7 +67,9 @@ const BlocInfo &getBlocInfo(Bloc bloc) {
             return WaterInfo;
         case Bloc::Air:
             return AirInfo;
+        case Bloc::Tree:
+            return TreeBloc;
         default:
-            return GrassInfo;
+            return AirInfo;
     }
 }

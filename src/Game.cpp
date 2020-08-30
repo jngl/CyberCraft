@@ -12,7 +12,9 @@ Game::Game(GraphicsContext& graphicsContext):
     texture = graphicsContext.loadTexture("../data/tiles.png");
 
     world.forEach([this](int x, int y, Bloc& bloc){
-        if(y<=1){
+        if(x==4 && y == 4){
+            bloc = Bloc::Tree;
+        }else if(y<=1){
             bloc = Bloc::Water;
         }else if(y>11 && x>10) {
             bloc = Bloc::Stone;

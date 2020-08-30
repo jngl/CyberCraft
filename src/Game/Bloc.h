@@ -17,6 +17,7 @@ enum class Bloc {
     Stone,
     Water,
     Air,
+    Tree,
 };
 
 const BlocInfo& getBlocInfo(Bloc bloc);
