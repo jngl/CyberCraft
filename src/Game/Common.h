@@ -14,6 +14,5 @@ namespace component {
 }
 
 class World;
-class WindowSFML;
 
 #endif //CYBERCRAFT_COMMON_H

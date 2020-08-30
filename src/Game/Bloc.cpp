@@ -31,6 +31,15 @@ const BlocInfo &getBlocInfo(Bloc bloc) {
             true
     };
 
+    static BlocInfo AirInfo = {
+            component::Sprite {
+                math::Vector2i {0,0},
+                Color{0,0,0,0},
+                Color{0,0,0,0}
+            },
+            false
+    };
+
     switch (bloc) {
         case Bloc::Grass:
             return GrassInfo;
@@ -38,6 +47,8 @@ const BlocInfo &getBlocInfo(Bloc bloc) {
             return StoneInfo;
         case Bloc::Water:
             return WaterInfo;
+        case Bloc::Air:
+            return AirInfo;
         default:
             return GrassInfo;
     }

@@ -15,7 +15,8 @@ struct BlocInfo {
 enum class Bloc {
     Grass,
     Stone,
-    Water
+    Water,
+    Air,
 };
 
 const BlocInfo& getBlocInfo(Bloc bloc);

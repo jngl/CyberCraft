@@ -11,8 +11,8 @@ namespace math{
     template<class T>
     struct Vector2
     {
-        T x;
-        T y;
+        T x = 0;
+        T y = 0;
 
         Vector2<T> operator*(T value) const {
             return {x*value, y*value};
