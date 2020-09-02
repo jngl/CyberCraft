@@ -19,6 +19,11 @@ public:
                             const math::Vector2i& textureIndex,
                             Color color,
                             Color backgroundColor) = 0;
+
+    virtual void drawSprite(TextureHandle texture,
+                            const math::Vector2f& pos,
+                            float scale,
+                            Color color) = 0;
 };
 
 class Window {

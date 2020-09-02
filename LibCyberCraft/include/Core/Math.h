@@ -17,6 +17,10 @@ namespace math{
         Vector2<T> operator*(T value) const {
             return {x*value, y*value};
         }
+
+        Vector2<T> operator+(const Vector2<T>& right) const {
+            return {x+right.x, y+right.y};
+        }
     };
 
     using Vector2i = Vector2<int>;

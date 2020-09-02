@@ -59,6 +59,19 @@ public:
         m_window.draw(sfSprite);
     }
 
+    virtual void drawSprite(TextureHandle textureHandle,
+                            const math::Vector2f& pos,
+                            float scale,
+                            Color color) override {
+        sf::Texture& texture = *m_texture[textureHandle];
+        sf::Sprite sfSprite;
+        sfSprite.setTexture(texture);
+        sfSprite.setPosition(toSfVector2(pos));
+        sfSprite.setScale(scale, scale);
+        sfSprite.setColor(toSfColor(color));
+        m_window.draw(sfSprite);
+    }
+
     bool isOpen() const {
         return m_window.isOpen();
     }
