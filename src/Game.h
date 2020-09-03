@@ -33,7 +33,7 @@ private:
                     Color{0,0,0,0}
             },
             component::Player{0},
-            math::Vector2f {3,2}
+            math::Vector2f {3,5}
     };
 
     World world;

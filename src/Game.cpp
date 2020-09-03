@@ -6,19 +6,43 @@
 
 #include "Game/System.h"
 
+const char* gameMap =
+        "~~~~~~~~~~~~~~~~"
+        "~~~~~~~~~~~~~~~~"
+        "  ~~~~     ~~~~~"
+        "               ~"
+        "                "
+        "    T      R    "
+        "                "
+        "       P        "
+        "          T     "
+        "                "
+        "     R          "
+        "                "
+        "                "
+        "       T        "
+        "                "
+        "             R  ";
+
 Game::Game(GraphicsContext& graphicsContext):
         m_graphicsContext(graphicsContext)
 {
     texture = graphicsContext.loadTexture("../data/tiles.png");
 
     world.forEach([this](int x, int y, Bloc& bloc){
-        if(x==4 && y == 4){
+        char tile = gameMap[y*16+x];
+        if(tile == 'T'){
             bloc = Bloc::Tree;
-        }else if(y<=1){
+        }else if(tile == '~'){
             bloc = Bloc::Water;
-        }else if(static_cast<int>(y*16+x)%55==0) {
+        }else if(tile == 'R') {
             bloc = Bloc::Stone;
         }else{
+            if(tile == 'P'){
+                player.pos.x = x;
+                player.pos.y = y;
+            }
+
             bloc = Bloc::Grass;
         }
     });
