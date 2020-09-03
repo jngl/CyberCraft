@@ -16,7 +16,7 @@ Game::Game(GraphicsContext& graphicsContext):
             bloc = Bloc::Tree;
         }else if(y<=1){
             bloc = Bloc::Water;
-        }else if(y>11 && x>10) {
+        }else if(static_cast<int>(y*16+x)%55==0) {
             bloc = Bloc::Stone;
         }else{
             bloc = Bloc::Grass;
