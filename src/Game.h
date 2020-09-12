@@ -28,7 +28,7 @@ private:
 
     Player player{
             component::Sprite {
-                    math::Vector2i {24,0},
+                    math::Vector2i {0,0},
                     Color{255,192,0},
                     Color{0,0,0,0}
             },
