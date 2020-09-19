@@ -24,7 +24,8 @@ namespace ccSf {
                         const ccCore::Vector2f &pos,
                         const ccCore::Vector2i &textureIndex,
                         ccCore::Color color,
-                        ccCore::Color backgroundColor) override;
+                        ccCore::Color backgroundColor,
+                        float rotation) override;
 
         void drawSprite(ccCore::TextureHandle texture,
                         const ccCore::Vector2f &pos,

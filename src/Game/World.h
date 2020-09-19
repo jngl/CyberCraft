@@ -22,10 +22,16 @@ public:
     }
 
     constexpr const BlocInfo*& getBloc(int x, int y){
+        if(x<0 || x>=sizeX || y<0 || y>=sizeY){
+            throw ccCore::Error("out of bound");
+        }
         return m_blocs[y*sizeX+x];
     }
 
     [[nodiscard]] constexpr const BlocInfo* getBloc(int x, int y) const {
+        if(x<0 || x>=sizeX || y<0 || y>=sizeY){
+            throw ccCore::Error("out of bound");
+        }
         return m_blocs[y*sizeX+x];
     }
 
@@ -36,6 +42,38 @@ public:
                 f(x, y, getBloc(x, y));
             }
         }
+    }
+
+    [[nodiscard]] constexpr bool isInGroup(int x, int y, const BlocGroup& group) const{
+        if(x<0 || x>=World::sizeX || y<0 || y>=World::sizeY){
+            return false;
+        }
+
+        auto bloc = getBloc(x, y);
+
+        if(!bloc){
+            return false;
+        }
+
+        return &bloc->group == &group;
+    }
+
+    [[nodiscard]] constexpr bool isNeighbourInGroup(int x, int y, const BlocGroup& group) const {
+        return isInGroup(x-1, y, group) ||
+               isInGroup(x+1, y, group) ||
+               isInGroup(x, y-1, group) ||
+               isInGroup(x, y+1, group);
+    }
+
+    int numberOfNeighbourInGroup(int x, int y, const BlocGroup& group) const {
+        int count = 0;
+
+        if(isInGroup(x-1, y, group)) ++count;
+        if(isInGroup(x+1, y, group)) ++count;
+        if(isInGroup(x, y-1, group)) ++count;
+        if(isInGroup(x, y+1, group)) ++count;
+
+        return count;
     }
 
 private:

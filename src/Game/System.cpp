@@ -12,7 +12,7 @@
 #include <SFML/Window.hpp>
 
 void drawSprite(ccCore::RenderContext& ctx, ccCore::TextureHandle texture, const ccCore::Vector2f& pos, const component::Sprite& sprite) {
-    ctx.drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor);
+    ctx.drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
 }
 
 void movePlayer(ccCore::Vector2f& pos, component::Player& player, const World& world) {

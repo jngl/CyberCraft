@@ -25,7 +25,8 @@ namespace ccCore {
                                 const Vector2f &pos,
                                 const Vector2i &textureIndex,
                                 Color color,
-                                Color backgroundColor) = 0;
+                                Color backgroundColor,
+                                float rotation) = 0;
 
         virtual void drawSprite(TextureHandle texture,
                                 const Vector2f &pos,

@@ -58,7 +58,7 @@ constexpr const BlocGroup& getBlocGroup(std::string_view name){
     return *result;
 }
 
-constexpr std::array<BlocInfo, 5> g_blocInfoArray{
+constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         BlocInfo{
                 "Grass",
                 component::Sprite {
@@ -92,6 +92,82 @@ constexpr std::array<BlocInfo, 5> g_blocInfoArray{
                         ccCore::Vector2i {7,0},
                         transparent,
                         waterColorMain
+                },
+                getBlocGroup("Water")
+        },
+        BlocInfo{
+                "WaterGrassSouth",
+                component::Sprite {
+                    ccCore::Vector2i  {1, 0},
+                    grassColorMain,
+                    waterColorMain,
+                    180
+                },
+                getBlocGroup("Water")
+        },
+        BlocInfo{
+                "WaterGrassNorth",
+                component::Sprite {
+                        ccCore::Vector2i  {1, 0},
+                        grassColorMain,
+                        waterColorMain,
+                        0
+                },
+                getBlocGroup("Water")
+        },
+        BlocInfo{
+                "WaterGrassLeft",
+                component::Sprite {
+                        ccCore::Vector2i  {1, 0},
+                        grassColorMain,
+                        waterColorMain,
+                        -90
+                },
+                getBlocGroup("Water")
+        },
+        BlocInfo{
+                "WaterGrassRight",
+                component::Sprite {
+                        ccCore::Vector2i  {1, 0},
+                        grassColorMain,
+                        waterColorMain,
+                        90
+                },
+                getBlocGroup("Water")
+        },BlocInfo{
+                "WaterGrassNorthRight",
+                component::Sprite {
+                        ccCore::Vector2i  {2, 0},
+                        grassColorMain,
+                        waterColorMain,
+                        0
+                },
+                getBlocGroup("Water")
+        },BlocInfo{
+                "WaterGrassNorthLeft",
+                component::Sprite {
+                        ccCore::Vector2i  {2, 0},
+                        grassColorMain,
+                        waterColorMain,
+                        -90
+                },
+                getBlocGroup("Water")
+        },BlocInfo{
+                "WaterGrassSouthLeft",
+                component::Sprite {
+                        ccCore::Vector2i  {2, 0},
+                        grassColorMain,
+                        waterColorMain,
+                        180
+                },
+                getBlocGroup("Water")
+        },BlocInfo{
+                "WaterGrassSouthRight",
+                component::Sprite {
+                        ccCore::Vector2i  {2, 0},
+                        grassColorMain,
+                        waterColorMain,
+                        90
                 },
                 getBlocGroup("Water")
         },

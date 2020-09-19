@@ -37,7 +37,7 @@ private:
             ccCore::Vector2f {3,5}
     };
 
-    World world;
+    World m_world;
     ccCore::TextureHandle texture;
     ccCore::RenderContext& m_renderContext;
 };

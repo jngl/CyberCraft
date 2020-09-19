@@ -31,24 +31,29 @@ namespace ccSf {
                                        const ccCore::Vector2f &pos,
                                        const ccCore::Vector2i &textureIndex,
                                        ccCore::Color color,
-                                       ccCore::Color backgroundColor) {
+                                       ccCore::Color backgroundColor,
+                                       float rotation) {
         sf::Texture &texture = *m_texture[textureHandle];
 
         ccCore::Vector2f a;
 
         sf::RectangleShape background;
-        background.setPosition(toSfVector2(pos * 32.f));
+        background.setPosition(pos.x*32+16, pos.y*32+16);
         background.setSize(sf::Vector2f(32, 32));
         background.setFillColor(toSfColor(backgroundColor));
+        background.setOrigin(16,16);
+        background.setRotation(rotation);
         m_target.draw(background);
 
         sf::Sprite sfSprite;
         sfSprite.setScale(2, 2);
 
-        sfSprite.setPosition(toSfVector2(pos * 32.f));
+        sfSprite.setPosition(pos.x*32.f+16, pos.y*32.f+16);
         sfSprite.setTextureRect(sf::IntRect(16 * textureIndex.x, 16 * textureIndex.y, 16, 16));
         sfSprite.setTexture(texture);
         sfSprite.setColor(toSfColor(color));
+        sfSprite.setOrigin(8,8);
+        sfSprite.setRotation(rotation);
         m_target.draw(sfSprite);
     }
 

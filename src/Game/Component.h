@@ -13,6 +13,7 @@ namespace component{
         ccCore::Vector2i textureIndex;
         ccCore::Color color;
         ccCore::Color backgroundColor;
+        float rotation = 0; // in degree
     };
     struct Player{
         int timerMove;
