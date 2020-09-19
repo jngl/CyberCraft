@@ -1,8 +1,9 @@
 #include "Core/Update.h"
 
-#include "Game.h"
+#include "CyberCraft.h"
 
 #include <CyberCraftSFML/WindowSFML.h>
+#include <CyberCraftSFML/RenderContextSFML.h>
 #include <GameEngine.h>
 
 #include <string>
@@ -93,23 +94,10 @@ namespace bloc {
 }
 
 int main() {
-    GameEngineImpl<WindowSFML> gameEngine;
+    WindowSFML window;
+    RenderContextSFML renderContext(window.getRenderWindow());
+    CyberCraft game(renderContext);
+    GameEngine gameEngine(window, renderContext, game);
 
-    FixStepUpdater updater(std::chrono::milliseconds{33});
-
-    Game game(gameEngine.getWindow());
-
-	while (gameEngine.getWindow().isOpen()) {
-        gameEngine.getWindow().beginFrame();
-
-	    game.draw();
-
-	    updater.update([&game](){
-	        game.update();
-	    });
-
-        gameEngine.getWindow().endFrame();
-	}
-
-	return 0;
+	return gameEngine.exec();
 }

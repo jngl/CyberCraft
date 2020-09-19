@@ -8,8 +8,9 @@
 #include <string_view>
 
 class Color;
-
 class Window;
+class RenderContext;
+class Game;
 
 void printTabs(int nb);
 

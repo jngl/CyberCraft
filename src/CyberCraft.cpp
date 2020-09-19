@@ -2,7 +2,7 @@
 // Created by jngl on 18/08/2020.
 //
 
-#include "Game.h"
+#include "CyberCraft.h"
 
 #include "Game/System.h"
 
@@ -26,10 +26,10 @@ const char* gameMap =
         "           g    "
         "x    g       R  ";
 
-Game::Game(Window& graphicsContext):
-        m_graphicsContext(graphicsContext)
+CyberCraft::CyberCraft(RenderContext& renderContext):
+        m_renderContext(renderContext)
 {
-    texture = graphicsContext.loadTexture("../data/tileset.png");
+    texture = renderContext.loadTexture("../data/tileset.png");
 
     world.forEach([this](int x, int y, const BlocInfo*& bloc){
         char tile = gameMap[y*16+x];
@@ -51,20 +51,20 @@ Game::Game(Window& graphicsContext):
     });
 }
 
-void Game::update() {
+void CyberCraft::update() {
     movePlayer(player.pos, player.player, world);
 }
 
-void Game::draw() {
+void CyberCraft::draw() {
 
     world.forEach([this](int x, int y, const BlocInfo* bloc){
         if(!bloc){
             return;
         }
         math::Vector2f pos{static_cast<float>(x), static_cast<float>(y)};
-        drawSprite(m_graphicsContext, texture, pos, bloc->sprite);
+        drawSprite(m_renderContext, texture, pos, bloc->sprite);
     });
 
-    drawSprite(m_graphicsContext, texture, player.pos, player.sprite);
+    drawSprite(m_renderContext, texture, player.pos, player.sprite);
 }
 

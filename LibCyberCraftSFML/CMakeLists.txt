@@ -1,8 +1,9 @@
+file(GLOB_RECURSE LibCyberCraftSfml_source_files src/*)
+file(GLOB_RECURSE LibCyberCraftSfml_include_files include/*)
+
 add_library(LibCyberCraftSFML
-        src/conversion.h
-        src/conversion.cpp
-        include/CyberCraftSFML/WindowSFML.h
-        src/WindowSFML.cpp
+        ${LibCyberCraftSfml_source_files}
+        ${LibCyberCraftSfml_include_files}
         )
 
 target_include_directories(LibCyberCraftSFML PUBLIC include)

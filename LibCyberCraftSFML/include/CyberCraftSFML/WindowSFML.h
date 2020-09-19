@@ -6,10 +6,7 @@
 #define CYBERCRAFT_WINDOWSFML_H
 
 #include <Core/Window.h>
-
-#include <memory>
-#include <SFML/Graphics.hpp>
-#include <map>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 class WindowSfmlImpl;
 
@@ -23,23 +20,9 @@ public:
     void beginFrame() override;
     void endFrame() override;
 
-    TextureHandle loadTexture(std::string_view filename) override;
-    void unloadTexture(TextureHandle texture) override;
-
-    void drawSprite(TextureHandle texture,
-                            const math::Vector2f& pos,
-                            const math::Vector2i& textureIndex,
-                            Color color,
-                            Color backgroundColor) override;
-
-    void drawSprite(TextureHandle texture,
-                            const math::Vector2f& pos,
-                            float scale,
-                            Color color) override;
+    sf::RenderWindow& getRenderWindow();
 
 private:
-    std::map<TextureHandle, std::unique_ptr<sf::Texture>> m_texture;
-    int m_nextId = 1;
     sf::RenderWindow m_window;
     sf::View m_view;
 };

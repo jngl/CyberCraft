@@ -7,38 +7,27 @@
 
 #include <memory>
 
+#include <Core/Common.h>
 #include <Core/Error.h>
-#include <Core/Window.h>
-
-class NoGameEngineError : Error{
-public:
-    NoGameEngineError();
-};
-
+#include <Core/Update.h>
 
 class GameEngine {
 public:
-    static GameEngine& getInstance();
 
-    GameEngine();
+    GameEngine(Window& window, RenderContext& renderContext, Game& game);
 
-    virtual Window& getWindow() = 0;
-
-private:
-    static GameEngine* m_instance;
-};
-
-template<class WindowImpl>
-class GameEngineImpl final : public GameEngine
-{
-public:
-    Window& getWindow() override{
-        return m_window;
-    }
+    int exec();
 
 private:
-    WindowImpl m_window;
+    Window& m_window;
+    RenderContext& m_renderContext;
+    Game& m_game;
+    FixStepUpdater m_updater;
+
+    constexpr static std::chrono::milliseconds updateTime{33};
 };
+
+
 
 
 #endif //CYBERCRAFT_GAMEENIGNE_H

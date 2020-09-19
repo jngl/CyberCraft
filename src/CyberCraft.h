@@ -2,14 +2,17 @@
 // Created by jngl on 18/08/2020.
 //
 
-#ifndef CYBERCRAFT_GAME_H
-#define CYBERCRAFT_GAME_H
+#ifndef CYBERCRAFT_CYBERCRAFT_H
+#define CYBERCRAFT_CYBERCRAFT_H
 
-#include <Core/Window.h>
+#include <Core/RenderContext.h>
+#include <Core/Game.h>
 
 #include "Game/Component.h"
 #include "Game/Bloc.h"
 #include "Game/World.h"
+
+class RenderContext;
 
 struct Player {
     component::Sprite sprite;
@@ -17,12 +20,12 @@ struct Player {
     math::Vector2f pos;
 };
 
-class Game {
+class CyberCraft : public Game {
 public:
-    explicit Game(Window& graphicsContext);
+    explicit CyberCraft(RenderContext& renderContext);
 
-    void update();
-    void draw();
+    void update() override;
+    void draw() override;
 
 private:
 
@@ -38,8 +41,8 @@ private:
 
     World world;
     TextureHandle texture;
-    Window& m_graphicsContext;
+    RenderContext& m_renderContext;
 };
 
 
-#endif //CYBERCRAFT_GAME_H
+#endif //CYBERCRAFT_CYBERCRAFT_H

@@ -4,61 +4,11 @@
 
 #include "CyberCraftSFML/WindowSFML.h"
 
+#include <SFML/Window/Event.hpp>
+
 #include "conversion.h"
 
 #include <Core/Color.h>
-
-
-
-TextureHandle WindowSFML::loadTexture(std::string_view filename){
-    TextureHandle textureHandle{m_nextId++};
-    std::unique_ptr<sf::Texture>& texturePtr =  m_texture[textureHandle];
-    texturePtr = std::make_unique<sf::Texture>();
-    texturePtr->loadFromFile(std::string(filename));
-    return textureHandle;
-}
-
-void WindowSFML::unloadTexture(TextureHandle texture){
-    m_texture.erase(texture);
-}
-
-void WindowSFML::drawSprite(TextureHandle textureHandle,
-                const math::Vector2f& pos,
-                const math::Vector2i& textureIndex,
-                Color color,
-                Color backgroundColor) {
-    sf::Texture& texture = *m_texture[textureHandle];
-
-    math::Vector2f a;
-
-    sf::RectangleShape background;
-    background.setPosition(toSfVector2(pos * 32.f));
-    background.setSize(sf::Vector2f(32,32));
-    background.setFillColor(toSfColor(backgroundColor));
-    m_window.draw(background);
-
-    sf::Sprite sfSprite;
-    sfSprite.setScale(2,2);
-
-    sfSprite.setPosition(toSfVector2(pos*32.f));
-    sfSprite.setTextureRect(sf::IntRect(16*textureIndex.x, 16*textureIndex.y, 16, 16));
-    sfSprite.setTexture(texture);
-    sfSprite.setColor(toSfColor(color));
-    m_window.draw(sfSprite);
-}
-
-void WindowSFML::drawSprite(TextureHandle textureHandle,
-                        const math::Vector2f& pos,
-                        float scale,
-                        Color color) {
-    sf::Texture& texture = *m_texture[textureHandle];
-    sf::Sprite sfSprite;
-    sfSprite.setTexture(texture);
-    sfSprite.setPosition(toSfVector2(pos));
-    sfSprite.setScale(scale, scale);
-    sfSprite.setColor(toSfColor(color));
-    m_window.draw(sfSprite);
-}
 
 bool WindowSFML::isOpen() const {
     return m_window.isOpen();
@@ -94,6 +44,10 @@ WindowSFML::WindowSFML():
 {
     m_window.setFramerateLimit(60);
     m_window.setView(m_view);
+}
+
+sf::RenderWindow &WindowSFML::getRenderWindow() {
+    return m_window;
 }
 
 WindowSFML::~WindowSFML() = default;

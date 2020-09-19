@@ -4,20 +4,31 @@
 
 #include "GameEngine.h"
 
-NoGameEngineError::NoGameEngineError(): Error("Game engine not found") {}
+#include <Core/Game.h>
+#include <Core/Window.h>
+#include <Core/RenderContext.h>
 
-GameEngine* GameEngine::m_instance = nullptr;
-
-GameEngine &GameEngine::getInstance() {
-    if(m_instance == nullptr){
-        throw NoGameEngineError();
-    }
-
-    return *m_instance;
+GameEngine::GameEngine(Window& window, RenderContext& renderContext, Game& game):
+m_window(window),
+m_renderContext(renderContext),
+m_game(game),
+m_updater(updateTime)
+{
 }
 
-GameEngine::GameEngine() {
-    m_instance = this;
+int GameEngine::exec() {
+    while (m_window.isOpen()) {
+        m_window.beginFrame();
+
+        m_game.draw();
+
+        m_updater.update([this](){
+            m_game.update();
+        });
+
+        m_window.endFrame();
+    }
+    return 0;
 }
 
 
