@@ -11,8 +11,8 @@
 
 class World {
 public:
-    static constexpr int sizeX = 16;
-    static constexpr int sizeY = 16;
+    static constexpr int sizeX = 32;
+    static constexpr int sizeY = 32;
 
     constexpr World():
     m_blocs(){

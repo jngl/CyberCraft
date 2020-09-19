@@ -9,22 +9,38 @@
 #include <Core/Error.h>
 
 const char* gameMap =
-        "~~~~~~~~~~~~~~~~"
-        "~~~~~~~~~~~~~~~~"
-        "~~~~~~     ~~~~~"
-        "~~           g~~"
-        "~       g      ~"
-        "~   T      R   ~"
-        "~    g         ~"
-        "~      P    g  ~"
-        "~  g      T    ~"
-        "~              ~"
-        "~    R      g  ~"
-        "~ g            ~"
-        "~       g      ~"
-        "~     T     g  ~"
-        "~~         g  ~~"
-        "~~~~~~~~~~~~~~~~";
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        "~~~~~~     ~~~~~~~~~~~     ~~~~~"
+        "~~           g~~~~           g~~"
+        "~       g               g      ~"
+        "~   T      R   g    T      R   ~"
+        "~    g              g          ~"
+        "~           g          P    g  ~"
+        "~  g      T        g      T    ~"
+        "~            g                 ~"
+        "~    R      g        R      g  ~"
+        "~ g               g            ~"
+        "~       g       R       g      ~"
+        "~     T     g        T     g   ~"
+        "~~         g       g       g   ~"
+        "~~            T                ~"
+        "~~~~   g       g      g   g    ~"
+        "~~~       T                    ~"
+        "~~           g     g     T    ~~"
+        "~       g               g     ~~"
+        "~   T      R        T      R  ~~"
+        "~    g         R     g        ~~"
+        "~          g                g ~~"
+        "~  g      T        g      T   ~~"
+        "~                             ~~"
+        "~    R      g    T   R      g ~~"
+        "~ g               g           ~~"
+        "~       g               g     ~~"
+        "~     T     g         T     g ~~"
+        "~~         g             g   ~~~"
+        "~~~~~~~~~~              ~~~~~~~~"
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
 
 CyberCraft::CyberCraft(ccCore::RenderContext& renderContext):
         m_renderContext(renderContext)
@@ -32,7 +48,7 @@ CyberCraft::CyberCraft(ccCore::RenderContext& renderContext):
     texture = renderContext.loadTexture("../data/tileset.png");
 
     m_world.forEach([this](int x, int y, const BlocInfo*& bloc){
-        char tile = gameMap[y*16+x];
+        char tile = gameMap[y*World::sizeX+x];
         if(tile == 'T'){
             bloc = &getBlocInfo("Tree");
         }else if(tile == '~'){
