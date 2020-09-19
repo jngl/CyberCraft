@@ -6,6 +6,7 @@
 #define CYBERCRAFT_MATH_H
 
 #include <cmath>
+#include <array>
 
 namespace math{
     template<class T>
@@ -30,6 +31,13 @@ namespace math{
 	T length(const math::Vector2<T>& vec){
 		return sqrt(vec.x*vec.x+vec.y*vec.y);
 	}
+
+    template<class T>
+    struct Matrix4{
+		    std::array<T, 16> data;
+	};
+
+	using Matrix4f = Matrix4<float>;
 }
 
 #endif //CYBERCRAFT_CONVERSION_H
