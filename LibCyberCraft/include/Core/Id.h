@@ -26,4 +26,17 @@ private:
     int m_maxId = 0;
 };
 
+struct TypeId : public Id {};
+
+namespace Impl{
+    extern IdGenerator<TypeId> typeIdGenerator;
+}
+
+template<class T>
+TypeId getTypeId() {
+    static TypeId id = Impl::typeIdGenerator.generate();
+    return id;
+}
+
+
 #endif //CYBERCRAFT_ID_H
