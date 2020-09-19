@@ -26,7 +26,7 @@ const char* gameMap =
         "           g    "
         "x    g       R  ";
 
-Game::Game(GraphicsContext& graphicsContext):
+Game::Game(Window& graphicsContext):
         m_graphicsContext(graphicsContext)
 {
     texture = graphicsContext.loadTexture("../data/tileset.png");

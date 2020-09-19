@@ -7,10 +7,19 @@
 
 #include <Core/Common.h>
 #include <Core/Math.h>
+#include <Core/Id.h>
 
-class GraphicsContext
-{
+struct TextureHandle : public Id{
+};
+
+class Window {
 public:
+    virtual ~Window() = default;
+
+    [[nodiscard]] virtual bool isOpen() const = 0;
+    virtual void beginFrame() = 0;
+    virtual void endFrame() = 0;
+
     virtual TextureHandle loadTexture(std::string_view filename) = 0;
     virtual void unloadTexture(TextureHandle texture) = 0;
 
@@ -24,16 +33,6 @@ public:
                             const math::Vector2f& pos,
                             float scale,
                             Color color) = 0;
-};
-
-class Window {
-public:
-    virtual ~Window() = default;
-    virtual GraphicsContext& getGraphicsContext() = 0;
-
-    [[nodiscard]] virtual bool isOpen() const = 0;
-    virtual void beginFrame() = 0;
-    virtual void endFrame() = 0;
 };
 
 #endif //CYBERCRAFT_WINDOW_H

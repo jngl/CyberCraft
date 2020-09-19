@@ -9,7 +9,6 @@
 
 class Color;
 
-class GraphicsContext;
 class Window;
 
 void printTabs(int nb);
@@ -18,13 +17,7 @@ using Uint8 = unsigned char;
 using Uint32 = unsigned int;
 static_assert(sizeof(Uint32) == 4, "size of Uint32 must be 32 bite");
 
+class TextureHandle;
 
-struct TextureHandle{
-    int id = 0;
-
-    bool operator<(TextureHandle right) const{
-        return id<right.id;
-    }
-};
 
 #endif //LIB_CYBERCRAFT_COMMON_H

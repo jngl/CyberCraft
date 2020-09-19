@@ -10,7 +10,7 @@
 #include <Core/Window.h>
 #include <SFML/Window.hpp>
 
-void drawSprite(GraphicsContext& ctx, TextureHandle texture, const math::Vector2f& pos, const component::Sprite& sprite) {
+void drawSprite(Window& ctx, TextureHandle texture, const math::Vector2f& pos, const component::Sprite& sprite) {
     ctx.drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor);
 }
 
@@ -40,7 +40,8 @@ void movePlayer(math::Vector2f& pos, component::Player& player, const World& wor
             return;
         }
 
-        if(getBlocInfo(world.getBloc(newPosX, newPosY)).collision) {
+        const BlocInfo* blocInfo = world.getBloc(newPosX, newPosY);
+        if(!blocInfo || blocInfo->group.collision) {
             return;
         }
 

@@ -19,7 +19,7 @@ struct Player {
 
 class Game {
 public:
-    explicit Game(GraphicsContext& graphicsContext);
+    explicit Game(Window& graphicsContext);
 
     void update();
     void draw();
@@ -38,7 +38,7 @@ private:
 
     World world;
     TextureHandle texture;
-    GraphicsContext& m_graphicsContext;
+    Window& m_graphicsContext;
 };
 
 

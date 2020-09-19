@@ -16,16 +16,16 @@ public:
 
     constexpr World():
     m_blocs(){
-        forEach([](int x, int y, Bloc& bloc){
-            bloc = Bloc::Air;
+        forEach([](int x, int y, const BlocInfo*& bloc){
+            bloc = nullptr;
         });
     }
 
-    constexpr Bloc& getBloc(int x, int y){
+    constexpr const BlocInfo*& getBloc(int x, int y){
         return m_blocs[y*sizeX+x];
     }
 
-    [[nodiscard]] constexpr const Bloc& getBloc(int x, int y) const {
+    [[nodiscard]] constexpr const BlocInfo* getBloc(int x, int y) const {
         return m_blocs[y*sizeX+x];
     }
 
@@ -39,7 +39,7 @@ public:
     }
 
 private:
-    std::array<Bloc, sizeX*sizeY> m_blocs;
+    std::array<const BlocInfo*, sizeX*sizeY> m_blocs;
 };
 
 #endif //CYBERCRAFT_WORLD_H
