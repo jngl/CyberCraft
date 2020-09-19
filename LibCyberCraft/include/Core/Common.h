@@ -20,5 +20,4 @@ static_assert(sizeof(Uint32) == 4, "size of Uint32 must be 32 bite");
 
 class TextureHandle;
 
-
 #endif //LIB_CYBERCRAFT_COMMON_H
