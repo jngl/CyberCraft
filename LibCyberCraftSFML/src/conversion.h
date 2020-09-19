@@ -11,11 +11,13 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
 
-template <class T>
-sf::Vector2<T> toSfVector2(const math::Vector2<T>& v){
-    return sf::Vector2<T>(v.x, v.y);
-}
+namespace ccSf {
+    template<class T>
+    sf::Vector2<T> toSfVector2(const ccCore::Vector2 <T> &v) {
+        return sf::Vector2<T>(v.x, v.y);
+    }
 
-sf::Color toSfColor(const Color& c);
+    sf::Color toSfColor(const ccCore::Color &c);
+}
 
 #endif //CYBERCRAFT_CONVERSION_H

@@ -5,8 +5,10 @@
 
 #include <iostream>
 
-void printTabs(int nb){
-    for(int i=0; i<nb; ++i){
-        std::cout<<"\t";
+namespace ccCore {
+    void printTabs(int nb) {
+        for (int i = 0; i < nb; ++i) {
+            std::cout << "\t";
+        }
     }
 }

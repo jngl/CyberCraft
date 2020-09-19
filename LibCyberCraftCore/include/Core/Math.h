@@ -8,7 +8,7 @@
 #include <cmath>
 #include <array>
 
-namespace math{
+namespace ccCore{
     template<class T>
     struct Vector2
     {
@@ -28,7 +28,7 @@ namespace math{
     using Vector2f = Vector2<float>;
 
 	template<class T>
-	T length(const math::Vector2<T>& vec){
+	T length(const Vector2<T>& vec){
 		return sqrt(vec.x*vec.x+vec.y*vec.y);
 	}
 

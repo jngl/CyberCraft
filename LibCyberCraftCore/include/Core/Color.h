@@ -7,12 +7,13 @@
 
 #include "Common.h"
 
-struct Color
-{
-    Uint8 red = 255;
-    Uint8 green = 255;
-    Uint8 blue = 255;
-    Uint8 alpha = 255;
-};
+namespace ccCore {
+    struct Color {
+        Uint8 red = 255;
+        Uint8 green = 255;
+        Uint8 blue = 255;
+        Uint8 alpha = 255;
+    };
+}
 
 #endif //CYBERCRAFT_COLOR_H

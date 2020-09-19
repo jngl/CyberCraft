@@ -11,11 +11,11 @@
 
 #include <SFML/Window.hpp>
 
-void drawSprite(RenderContext& ctx, TextureHandle texture, const math::Vector2f& pos, const component::Sprite& sprite) {
+void drawSprite(ccCore::RenderContext& ctx, ccCore::TextureHandle texture, const ccCore::Vector2f& pos, const component::Sprite& sprite) {
     ctx.drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor);
 }
 
-void movePlayer(math::Vector2f& pos, component::Player& player, const World& world) {
+void movePlayer(ccCore::Vector2f& pos, component::Player& player, const World& world) {
     if(player.timerMove>0){
         --player.timerMove;
         return;

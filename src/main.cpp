@@ -5,9 +5,9 @@
 #include <Core/MainLoop.h>
 
 int main() {
-    WindowSFML window;
-    RenderContextSFML renderContext(window.getRenderWindow());
+    ccSf::WindowSFML window;
+    ccSf::RenderContextSFML renderContext(window.getRenderWindow());
     CyberCraft game(renderContext);
 
-	return mainLoop(window, renderContext, game, std::chrono::milliseconds{33});
+	return ccCore::mainLoop(window, renderContext, game, std::chrono::milliseconds{33});
 }

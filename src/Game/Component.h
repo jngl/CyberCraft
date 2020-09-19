@@ -10,9 +10,9 @@
 
 namespace component{
     struct Sprite{
-        math::Vector2i textureIndex;
-        Color color;
-        Color backgroundColor;
+        ccCore::Vector2i textureIndex;
+        ccCore::Color color;
+        ccCore::Color backgroundColor;
     };
     struct Player{
         int timerMove;

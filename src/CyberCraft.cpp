@@ -26,7 +26,7 @@ const char* gameMap =
         "           g    "
         "x    g       R  ";
 
-CyberCraft::CyberCraft(RenderContext& renderContext):
+CyberCraft::CyberCraft(ccCore::RenderContext& renderContext):
         m_renderContext(renderContext)
 {
     texture = renderContext.loadTexture("../data/tileset.png");
@@ -61,7 +61,7 @@ void CyberCraft::draw() {
         if(!bloc){
             return;
         }
-        math::Vector2f pos{static_cast<float>(x), static_cast<float>(y)};
+        ccCore::Vector2f pos{static_cast<float>(x), static_cast<float>(y)};
         drawSprite(m_renderContext, texture, pos, bloc->sprite);
     });
 

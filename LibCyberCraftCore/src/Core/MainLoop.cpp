@@ -9,20 +9,22 @@
 #include <Core/RenderContext.h>
 #include <Core/Update.h>
 
-int mainLoop(Window& window, RenderContext& renderContext, Game& game, std::chrono::milliseconds updateTime){
-    FixStepUpdater updater(updateTime);
+namespace ccCore {
+    int mainLoop(Window &window, RenderContext &renderContext, Game &game, std::chrono::milliseconds updateTime) {
+        FixStepUpdater updater(updateTime);
 
-    while (window.isOpen()) {
-        window.beginFrame();
+        while (window.isOpen()) {
+            window.beginFrame();
 
-        game.draw();
+            game.draw();
 
-        updater.update([&game](){
-            game.update();
-        });
+            updater.update([&game]() {
+                game.update();
+            });
 
-        window.endFrame();
+            window.endFrame();
+        }
+
+        return 0;
     }
-
-    return 0;
 }

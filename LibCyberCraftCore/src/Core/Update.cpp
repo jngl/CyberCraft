@@ -4,9 +4,11 @@
 
 #include "Core/Update.h"
 
-FixStepUpdater::FixStepUpdater(const Duration& timePerUpdate):
-        m_previous(clock::now()),
-        m_lag(Duration::zero()),
-        m_timePerUpdate(timePerUpdate){
+namespace ccCore {
+    FixStepUpdater::FixStepUpdater(const Duration &timePerUpdate) :
+            m_previous(clock::now()),
+            m_lag(Duration::zero()),
+            m_timePerUpdate(timePerUpdate) {
+    }
 }
 

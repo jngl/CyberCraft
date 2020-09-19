@@ -4,9 +4,11 @@
 
 #include "Core/Error.h"
 
-Error::Error(std::string_view msg) :
-		m_message(msg) {}
+namespace ccCore {
+    Error::Error(std::string_view msg) :
+            m_message(msg) {}
 
-const char *Error::what() const noexcept {
-	return m_message.c_str();
+    const char *Error::what() const noexcept {
+        return m_message.c_str();
+    }
 }

@@ -20,11 +20,11 @@ struct BlocInfo {
     const BlocGroup& group;
 };
 
-constexpr Color grassColorMain{45,155,13};
-constexpr Color grassColorDetail{3,249,41};
-constexpr Color stoneColorMain{176, 176, 176};
-constexpr Color transparent{0,0,0,0};
-constexpr Color waterColorMain{33, 105, 197};
+constexpr ccCore::Color grassColorMain{45,155,13};
+constexpr ccCore::Color grassColorDetail{3,249,41};
+constexpr ccCore::Color stoneColorMain{176, 176, 176};
+constexpr ccCore::Color transparent{0,0,0,0};
+constexpr ccCore::Color waterColorMain{33, 105, 197};
 
 constexpr std::array<BlocGroup, 4> g_blocGroupArray{
         BlocGroup{
@@ -53,7 +53,7 @@ constexpr const BlocGroup& getBlocGroup(std::string_view name){
         }
     }
     if(!result){
-        throw Error("Bloc group not found");
+        throw ccCore::Error("Bloc group not found");
     }
     return *result;
 }
@@ -62,7 +62,7 @@ constexpr std::array<BlocInfo, 5> g_blocInfoArray{
         BlocInfo{
                 "Grass",
                 component::Sprite {
-                        math::Vector2i {3,0},
+                        ccCore::Vector2i {3,0},
                         transparent,
                         grassColorMain
                 },
@@ -71,7 +71,7 @@ constexpr std::array<BlocInfo, 5> g_blocInfoArray{
         BlocInfo{
                 "LongGrass",
                 component::Sprite {
-                        math::Vector2i {3,0},
+                        ccCore::Vector2i {3,0},
                         grassColorMain,
                         grassColorDetail
                 },
@@ -80,7 +80,7 @@ constexpr std::array<BlocInfo, 5> g_blocInfoArray{
         BlocInfo{
                 "Stone",
                 component::Sprite {
-                        math::Vector2i {5,0},
+                        ccCore::Vector2i {5,0},
                         grassColorMain,
                         stoneColorMain
                 },
@@ -89,7 +89,7 @@ constexpr std::array<BlocInfo, 5> g_blocInfoArray{
         BlocInfo{
                 "Water",
                 component::Sprite {
-                        math::Vector2i {7,0},
+                        ccCore::Vector2i {7,0},
                         transparent,
                         waterColorMain
                 },
@@ -98,7 +98,7 @@ constexpr std::array<BlocInfo, 5> g_blocInfoArray{
         BlocInfo{
                 "Tree",
                 component::Sprite {
-                        math::Vector2i  {4, 0},
+                        ccCore::Vector2i  {4, 0},
                         grassColorMain,
                         grassColorDetail
                 },
@@ -114,7 +114,7 @@ constexpr const BlocInfo& getBlocInfo(std::string_view name){
         }
     }
     if(!result){
-        throw Error("Bloc info not found");
+        throw ccCore::Error("Bloc info not found");
     }
     return *result;
 }

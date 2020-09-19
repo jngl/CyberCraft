@@ -5,10 +5,13 @@
 #ifndef CYBERCRAFT_GAME_H
 #define CYBERCRAFT_GAME_H
 
-class Game{
-public:
-    virtual void update() = 0;
-    virtual void draw() = 0;
-};
+namespace ccCore {
+    class Game {
+    public:
+        virtual void update() = 0;
+
+        virtual void draw() = 0;
+    };
+}
 
 #endif //CYBERCRAFT_GAME_H

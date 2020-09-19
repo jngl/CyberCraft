@@ -7,17 +7,19 @@
 
 #include <string_view>
 
-class Color;
-class Window;
-class RenderContext;
-class Game;
+namespace ccCore {
+    class Color;
+    class Window;
+    class RenderContext;
+    class Game;
 
-void printTabs(int nb);
+    void printTabs(int nb);
 
-using Uint8 = unsigned char;
-using Uint32 = unsigned int;
-static_assert(sizeof(Uint32) == 4, "size of Uint32 must be 32 bite");
+    using Uint8 = unsigned char;
+    using Uint32 = unsigned int;
+    static_assert(sizeof(Uint32) == 4, "size of Uint32 must be 32 bite");
 
-class TextureHandle;
+    class TextureHandle;
+}
 
 #endif //LIB_CYBERCRAFT_COMMON_H

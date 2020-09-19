@@ -9,6 +9,8 @@
 
 #include <chrono>
 
-int mainLoop(Window& window, RenderContext& renderContext, Game& game, std::chrono::milliseconds updateTime);
+namespace ccCore {
+    int mainLoop(Window &window, RenderContext &renderContext, Game &game, std::chrono::milliseconds updateTime);
+}
 
 #endif //CYBERCRAFT_MAINLOOP_H

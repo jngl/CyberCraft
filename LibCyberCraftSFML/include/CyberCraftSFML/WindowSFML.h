@@ -8,25 +8,25 @@
 #include <Core/Window.h>
 #include <SFML/Graphics/RenderWindow.hpp>
 
-class WindowSfmlImpl;
+namespace ccSf {
+    class WindowSFML : public ccCore::Window {
+    public:
+        WindowSFML();
 
-class WindowSFML : public Window {
-public:
-    WindowSFML();
-    ~WindowSFML() override;
+        ~WindowSFML() override;
 
-    [[nodiscard]] bool isOpen() const override;
+        [[nodiscard]] bool isOpen() const override;
 
-    void beginFrame() override;
-    void endFrame() override;
+        void beginFrame() override;
 
-    sf::RenderWindow& getRenderWindow();
+        void endFrame() override;
 
-private:
-    sf::RenderWindow m_window;
-    sf::View m_view;
-};
+        sf::RenderWindow &getRenderWindow();
 
-
+    private:
+        sf::RenderWindow m_window;
+        sf::View m_view;
+    };
+}
 
 #endif //CYBERCRAFT_WINDOWSFML_H
