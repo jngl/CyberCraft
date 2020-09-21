@@ -69,4 +69,10 @@ namespace ccSf {
         sfSprite.setColor(toSfColor(color));
         m_target.draw(sfSprite);
     }
+
+    void RenderContextSFML::setViewCenter(ccCore::Vector2f pos) {
+        sf::View view(m_target.getView());
+        view.setCenter(toSfVector2(pos*32.f));
+        m_target.setView(view);
+    }
 }

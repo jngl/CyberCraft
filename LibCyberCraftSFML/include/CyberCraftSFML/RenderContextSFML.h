@@ -32,6 +32,8 @@ namespace ccSf {
                         float scale,
                         ccCore::Color color) override;
 
+        void setViewCenter(ccCore::Vector2f pos) override;
+
     private:
         std::map<ccCore::TextureHandle, std::unique_ptr<sf::Texture>> m_texture;
         sf::RenderTarget &m_target;

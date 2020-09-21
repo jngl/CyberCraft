@@ -127,5 +127,6 @@ void CyberCraft::draw() {
     });
 
     drawSprite(m_renderContext, texture, player.pos, player.sprite);
+    m_renderContext.setViewCenter(player.pos);
 }
 

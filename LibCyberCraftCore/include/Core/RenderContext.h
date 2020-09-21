@@ -32,6 +32,8 @@ namespace ccCore {
                                 const Vector2f &pos,
                                 float scale,
                                 Color color) = 0;
+
+        virtual void setViewCenter(Vector2f pos) = 0;
     };
 }
 
