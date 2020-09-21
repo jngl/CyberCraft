@@ -25,7 +25,7 @@ const char* gameMap =
         "~     T     g        T     g   ~"
         "~~         g       g       g   ~"
         "~~            T                ~"
-        "~~~~   g       g      g   g    ~"
+        "~~~    g       g      g   g    ~"
         "~~~       T                    ~"
         "~~           g     g     T    ~~"
         "~       g               g     ~~"
@@ -113,7 +113,7 @@ CyberCraft::CyberCraft(ccCore::RenderContext& renderContext):
 }
 
 void CyberCraft::update() {
-    movePlayer(player.pos, player.player, m_world);
+    movePlayer(player.pos, m_world);
 }
 
 void CyberCraft::draw() {

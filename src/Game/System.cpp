@@ -15,42 +15,31 @@ void drawSprite(ccCore::RenderContext& ctx, ccCore::TextureHandle texture, const
     ctx.drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
 }
 
-void movePlayer(ccCore::Vector2f& pos, component::Player& player, const World& world) {
-    if(player.timerMove>0){
-        --player.timerMove;
-        return;
-    }
-
-    constexpr int nbTickMove = 5;
-
-    player.timerMove = nbTickMove;
-
-    auto funcMove = [&pos, &world](sf::Keyboard::Key key, int moveX, int moveY){
+void movePlayer(ccCore::Vector2f& pos, const World& world) {
+    auto funcMove = [&pos, &world](sf::Keyboard::Key key, ccCore::Vector2f move){
         if(!sf::Keyboard::isKeyPressed(key)){
             return;
         }
 
-        int newPosX = static_cast<int>(pos.x) + moveX;
-        int newPosY = static_cast<int>(pos.y) + moveY;
+        ccCore::Vector2f newPos = pos + move;
 
-        if(newPosX<0 || newPosX>=World::sizeX){
+        if(!newPos.isInRect(0, World::sizeX-1, 0, World::sizeY-1)){
             return;
         }
 
-        if(newPosY<0 || newPosY>=World::sizeY){
-            return;
-        }
-
-        const BlocInfo* blocInfo = world.getBloc(newPosX, newPosY);
+        ccCore::Vector2i newPosInt = (newPos + ccCore::Vector2f(0.5f, 0.8f)).toVector<int>();
+        const BlocInfo* blocInfo = world.getBloc(newPosInt);
         if(!blocInfo || blocInfo->group.collision) {
             return;
         }
 
-        pos.x += static_cast<float>(moveX);
-        pos.y += static_cast<float>(moveY);
+        pos = newPos;
     };
-    funcMove(sf::Keyboard::Right, 1, 0);
-    funcMove(sf::Keyboard::Left, -1, 0);
-    funcMove(sf::Keyboard::Up, 0, -1);
-    funcMove(sf::Keyboard::Down, 0, 1);
+
+    constexpr float speed = 0.1f;
+
+    funcMove(sf::Keyboard::Right, {speed, 0});
+    funcMove(sf::Keyboard::Left, {-speed, 0});
+    funcMove(sf::Keyboard::Up, {0, -speed});
+    funcMove(sf::Keyboard::Down, {0, speed});
 }

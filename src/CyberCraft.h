@@ -14,7 +14,6 @@
 
 struct Player {
     component::Sprite sprite;
-    component::Player player;
     ccCore::Vector2f pos;
 };
 
@@ -33,7 +32,6 @@ private:
                     ccCore::Color{255,192,0},
                     ccCore::Color{0,0,0,0}
             },
-            component::Player{0},
             ccCore::Vector2f {3,5}
     };
 

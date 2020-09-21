@@ -6,6 +6,7 @@
 #define CYBERCRAFT_WORLD_H
 
 #include "Bloc.h"
+#include <Core/Math.h>
 
 #include <array>
 
@@ -21,7 +22,15 @@ public:
         });
     }
 
-    constexpr const BlocInfo*& getBloc(int x, int y){
+    [[nodiscard]] constexpr const BlocInfo* getBloc(const ccCore::Vector2i& pos) const{
+        return getBloc(pos.x, pos.y);
+    }
+
+    [[nodiscard]] constexpr const BlocInfo*& getBloc(const ccCore::Vector2i& pos){
+        return getBloc(pos.x, pos.y);
+    }
+
+    [[nodiscard]] constexpr const BlocInfo*& getBloc(int x, int y){
         if(x<0 || x>=sizeX || y<0 || y>=sizeY){
             throw ccCore::Error("out of bound");
         }

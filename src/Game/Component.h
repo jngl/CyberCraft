@@ -15,9 +15,6 @@ namespace component{
         ccCore::Color backgroundColor;
         float rotation = 0; // in degree
     };
-    struct Player{
-        int timerMove;
-    };
 }
 
 

@@ -7,7 +7,7 @@
 
 namespace ccCore {
     struct Id {
-        int value;
+        int value = -1;
 
         bool operator<(Id right) const {
             return value < right.value;

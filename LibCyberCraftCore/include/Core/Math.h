@@ -15,12 +15,33 @@ namespace ccCore{
         T x = 0;
         T y = 0;
 
+        constexpr Vector2() = default;
+        constexpr Vector2(const Vector2<T>&) = default;
+        constexpr explicit Vector2(T value):
+            x(value),
+            y(value)
+        {}
+        constexpr Vector2(T p_x, T p_y):
+            x(p_x),
+            y(p_y)
+        {}
+
         Vector2<T> operator*(T value) const {
             return {x*value, y*value};
         }
 
         Vector2<T> operator+(const Vector2<T>& right) const {
             return {x+right.x, y+right.y};
+        }
+
+        bool isInRect(T minX, T maxX, T minY, T maxY){
+            return x>=minX || x<=maxX ||
+                   y>=minY || y<=maxY;
+        }
+
+        template<class T2>
+        Vector2<T2> toVector() {
+            return Vector2<T2>{static_cast<T2>(x), static_cast<T2>(y)};
         }
     };
 

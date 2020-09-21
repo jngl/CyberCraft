@@ -8,6 +8,6 @@
 #include "Common.h"
 
 void drawSprite(ccCore::RenderContext& renderContext, ccCore::TextureHandle texture, const ccCore::Vector2f& pos, const component::Sprite& sprite);
-void movePlayer(ccCore::Vector2f & pos, component::Player& player, const World& world);
+void movePlayer(ccCore::Vector2f & pos, const World& world);
 
 #endif //CYBERCRAFT_SYSTEM_H
