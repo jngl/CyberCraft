@@ -1,17 +1,21 @@
 #pragma once
 
+#include <Core/Window.h>
+
 #include <SDL.h>
 #include <map>
 #include <functional>
 
-class Window{
+class Window : public ccCore::Window{
 public:
 	Window(int width, int height);
-	~Window();
+	~Window() override;
 	
-	bool isRunning();
-	void doEvent();
-	void endFrame();
+	[[nodiscard]] bool isOpen() const override;
+
+    void beginFrame() override;
+    void endFrame() override;
+
 	void close();
 	
 	bool getSize(int* w, int* h);

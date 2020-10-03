@@ -8,8 +8,6 @@
 #include "BasicScene.hpp"
 #include "BoxelScene/BoxelScene.hpp"
 
-#include "filesystem.hpp"
-
 #include <imgui.h>
 
 #include <memory>
@@ -32,7 +30,7 @@ public:
     }
 
     void run() {
-        while (mWindow->isRunning()) {
+        while (mWindow->isOpen()) {
             frame();
         }
     }
@@ -61,7 +59,7 @@ private:
         mFrameTime = mGlobalTimer.timeInSecond();
         mGlobalTimer.restart();
 
-        mWindow->doEvent();
+        mWindow->beginFrame();
 
         int width, height;
         if (mWindow->getSize(&width, &height)) {

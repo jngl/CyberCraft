@@ -70,11 +70,11 @@ Window::~Window(){
 	SDL_Quit();
 }
 
-bool Window::isRunning(){
+bool Window::isOpen() const{
 	return mOpen;
 }
 
-void Window::doEvent(){
+void Window::beginFrame(){
 	//Event Polling
 	SDL_Event e;
 	while (SDL_PollEvent(&e)){
@@ -142,5 +142,6 @@ void Window::clear()
 	ImGui_ImplSdlGL3_NewFrame(mWindow);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
+
 
 
