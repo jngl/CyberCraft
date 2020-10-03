@@ -27,7 +27,7 @@ void movePlayer(ccCore::Vector2f& pos, const World& world) {
             return;
         }
 
-        ccCore::Vector2i newPosInt = (newPos + ccCore::Vector2f(0.5f, 0.8f)).toVector<int>();
+        ccCore::Vector2i newPosInt = (newPos + ccCore::Vector2f{0.5f, 0.8f}).toVector<int>();
         const BlocInfo* blocInfo = world.getBloc(newPosInt);
         if(!blocInfo || blocInfo->group.collision) {
             return;

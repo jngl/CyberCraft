@@ -127,10 +127,10 @@ namespace Renderer {
   };
 
   struct Camera {
-    math::Matrix4f mViewMatrix;
+      ccCore::Matrix4f mViewMatrix;
     bool perspective;
-    math::Matrix4f getProjectionMatrix(){
-      math::Matrix4f proj;
+      ccCore::Matrix4f getProjectionMatrix(){
+          ccCore::Matrix4f proj;
       
       if (perspective) {
 	proj.projectPerspective(45, ratio, 0.1f, 1000);
@@ -155,7 +155,7 @@ namespace Renderer {
 
   struct Sprite {
     Texture_handle mTexture;
-    math::Matrix4f mMatrix;
+      ccCore::Matrix4f mMatrix;
   };
 
 /********************************************************
@@ -289,9 +289,9 @@ namespace Renderer {
 
   void renderAllObject2(bool alpha){
     for (Object *object : objectArray) {
-      math::Matrix4f VP = activeCamera->getProjectionMatrix() * activeCamera->mViewMatrix;
+        ccCore::Matrix4f VP = activeCamera->getProjectionMatrix() * activeCamera->mViewMatrix;
       if(object->model){
-	math::Matrix4f MVP = VP  * object->matrix;
+          ccCore::Matrix4f MVP = VP  * object->matrix;
 
 	Model_handle model = object->model;
 	for(std::size_t i(0); i<model->subMeshs.size(); ++i){
@@ -368,7 +368,7 @@ namespace Renderer {
 
   void destroyCamera(Camera_handle handle) { cameraArray.erase(handle); }
 
-  math::Matrix4f &getCameraViewMatrixRef(Camera_handle handle) {
+    ccCore::Matrix4f &getCameraViewMatrixRef(Camera_handle handle) {
     return handle->mViewMatrix;
   }
 
@@ -397,12 +397,12 @@ namespace Renderer {
 
   void destroySprite(Sprite_handle sprite) { SpritePool.destory(sprite); }
 
-  math::Matrix4f &getSpriteMatrixRef(Sprite_handle handle) {
+    ccCore::Matrix4f &getSpriteMatrixRef(Sprite_handle handle) {
     return handle->mMatrix;
   }
 
   void renderSprite(Sprite_handle handle) {
-    math::Matrix4f MVP = activeCamera->getProjectionMatrix() *
+      ccCore::Matrix4f MVP = activeCamera->getProjectionMatrix() *
                        activeCamera->mViewMatrix * handle->mMatrix;
 
     noLightShader.set();

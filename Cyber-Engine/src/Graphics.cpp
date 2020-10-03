@@ -285,7 +285,7 @@ void Shader::load(const char *vertCode, const char *fragCode) {
     return loc;
   }
 
-  void Shader::setMatrixInput(Location loc, math::Matrix4f mat) {
+  void Shader::setMatrixInput(Location loc, ccCore::Matrix4f mat) {
     glCheck(glUseProgram(shaderProgram));
     glCheck(glUniformMatrix4fv(loc, 1, false, &mat.m[0][0]));
   }

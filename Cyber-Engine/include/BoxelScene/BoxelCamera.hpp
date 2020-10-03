@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Math.hpp"
+#include <Core/Math.h>
 
 #include "../Renderer.hpp"
 
@@ -19,8 +19,8 @@ private:
   Renderer::Camera_handle mRendererCamera;
 
   float mDist;
-  math::Vector3f mPosition;
-  math::Vector2f mAngle;
+    ccCore::Vector3f mPosition;
+    ccCore::Vector2f mAngle;
   
   bool mActionRotateUp, mActionRotateDown, mActionRotateLeft, mActionRotateRight, mActionMoveForward, mActionMoveBackward;
 };

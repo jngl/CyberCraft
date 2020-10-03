@@ -264,7 +264,7 @@ struct BoxelMesh{
 };
 
 BoxelScene::BoxelScene():
-  mWorld(math::Vector3i(1,1,1), math::Vector3i(200, 30, 200)),
+  mWorld(ccCore::Vector3i{1,1,1}, ccCore::Vector3i{200, 30, 200}),
   mBlockObject("BoxelObject")
 {
   mBoxelMap.generate();

@@ -40,7 +40,7 @@ namespace Renderer {
     ~Object();
     
     Model_handle model;
-    math::Matrix4f matrix;
+      ccCore::Matrix4f matrix;
     std::string name; 
   };
   
@@ -51,13 +51,13 @@ namespace Renderer {
   // camera
   Camera_handle createCamera();
   void destroyCamera(Camera_handle handle);
-  math::Matrix4f &getCameraViewMatrixRef(Camera_handle handle);
+    ccCore::Matrix4f &getCameraViewMatrixRef(Camera_handle handle);
   void setPerspective(Camera_handle handle, bool persp);
   void setActiveCamera(Camera_handle handle);
 
   // sprite
   Sprite_handle createSprite(Texture_handle handle);
   void destroySprite(Sprite_handle sprite);
-  math::Matrix4f &getSpriteMatrixRef(Sprite_handle handle);
+    ccCore::Matrix4f &getSpriteMatrixRef(Sprite_handle handle);
   void renderSprite(Sprite_handle handle);
 }
