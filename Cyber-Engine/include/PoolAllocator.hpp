@@ -23,7 +23,7 @@ namespace core
         
         void destroy(Data* d){
 			d->~Data();
-            MemBlock* a = (MemBlock*)(d);
+            auto a = reinterpret_cast<MemBlock*>(d);
             a->mNext = mFirstFree;
         }
         
@@ -31,9 +31,11 @@ namespace core
         union MemBlock{
             Data mData;
             MemBlock* mNext;
-        
-            MemBlock(){}
-            ~MemBlock(){}
+
+            MemBlock(){
+                mNext = nullptr;
+            }
+            ~MemBlock() {};
         };        
         
         MemBlock* mFirstFree;
