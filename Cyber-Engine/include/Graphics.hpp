@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <Core/Math.h>
 
@@ -7,78 +7,78 @@
 #include <string>
 
 namespace Graphics {
-	void createGraphics();
-	void destroyGraphics();
-	
-	class Texture {
-	public:
-		Texture();
-		~Texture();
+    void createGraphics();
+    void destroyGraphics();
 
-		void load(std::string filename);
+    class Texture {
+    public:
+        Texture();
+        ~Texture();
 
-		unsigned int getId();
+        void load(std::string_view filename);
 
-		void set();
+        [[nodiscard]] unsigned int getId() const;
 
-		std::string getName();
+        void set();
 
-	private:
-		std::string mName;
-		GLuint mId;
-	};
-	
-		
-	class Shader {
-	public:
-		typedef unsigned int Location;
+        std::string getName();
 
-		void load(const char *vertCode, const char *fragCode);
+    private:
+        std::string mName;
+        GLuint mId = 0;
+    };
 
-		Location addMatrixInput(std::string name);
-		void setMatrixInput(Location loc, ccCore::Matrix4f mat);
 
-		Location addTextureInput(std::string name);
+    class Shader {
+    public:
+        typedef unsigned int Location;
 
-		void addBufferInput(std::string name, unsigned int index);
+        void load(const char *vertCode, const char *fragCode);
 
-		void set();
+        Location addMatrixInput(std::string name);
 
-		void unload();
+        void setMatrixInput(Location loc, ccCore::Matrix4f mat);
 
-	private:
-		GLuint shaderProgram;
+        Location addTextureInput(std::string name);
 
-		void printShaderInfoLog(GLuint obj);
-		void printProgramInfoLog(GLuint obj);
-		const char *getTypeName(GLenum type);
-	};
-	
-	class SubMesh
-	{
-	public:
-		enum Primitives
-		{
-			TRIANGLES = GL_TRIANGLES,
-			LINES = GL_LINES
-		};
-		
-		void beginLoad();
-		
-		void addBuffer(Graphics::Shader::Location loc, const float* data, unsigned int dataSize, unsigned int size);
-		
-		void endLoad(Primitives primitives, unsigned int count);
-		
-		void endLoadWithIndex(Primitives primitives, unsigned int count, const unsigned int* data);
-		
-		void draw();
+        void addBufferInput(std::string name, unsigned int index);
 
-		void unload();
-		
-	private:
-		GLuint mId;
-		Primitives mPrimitives;
-		unsigned int mCount;
-		bool mWithIndex;
-	};
+        void set();
+
+        void unload();
+
+    private:
+        GLuint shaderProgram;
+
+        void printShaderInfoLog(GLuint obj);
+        void printProgramInfoLog(GLuint obj);
+
+        const char *getTypeName(GLenum type) const;
+    };
+
+    class SubMesh {
+    public:
+        enum Primitives {
+            TRIANGLES = GL_TRIANGLES,
+            LINES = GL_LINES
+        };
+
+        void beginLoad();
+
+        void addBuffer(Graphics::Shader::Location loc, const float *data, unsigned int dataSize, unsigned int size);
+
+        void endLoad(Primitives primitives, unsigned int count);
+
+        void endLoadWithIndex(Primitives primitives, unsigned int count, const unsigned int *data);
+
+        void draw();
+
+        void unload();
+
+    private:
+        GLuint mId;
+        Primitives mPrimitives;
+        unsigned int mCount;
+        bool mWithIndex;
+    };
 }
