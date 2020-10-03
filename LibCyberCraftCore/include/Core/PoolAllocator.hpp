@@ -1,6 +1,6 @@
 #pragma once
 
-namespace core
+namespace ccCore
 {
     template<class Data, std::size_t MAX_DATA>
     class PoolAllocator

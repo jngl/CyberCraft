@@ -4,7 +4,7 @@
 
 #include "Renderer.hpp"
 
-#include "PoolAllocator.hpp"
+#include "Core/PoolAllocator.hpp"
 
 #include <Core/Debug.h>
 
@@ -211,7 +211,7 @@ namespace Renderer {
 /********************************************************
  * Material
 ********************************************************/
-    core::PoolAllocator<Material, 100> MaterialPool;
+    ccCore::PoolAllocator<Material, 100> MaterialPool;
 
     Material_handle createMaterial(Texture_handle tex, std::string name) {
         ccCore::log("Renderer", "create materia \"", name, "\"");
@@ -231,7 +231,7 @@ namespace Renderer {
 /********************************************************
  * Models
 ********************************************************/
-    core::PoolAllocator<Model, 100> ModelPool;
+    ccCore::PoolAllocator<Model, 100> ModelPool;
 
     Model_handle createModel(std::string nom) {
         ccCore::log("Renderer", "create model \"", nom, "\"");
@@ -386,7 +386,7 @@ namespace Renderer {
 /********************************************************
  * Sprites
 ********************************************************/
-    core::PoolAllocator<Sprite, 1000> SpritePool;
+    ccCore::PoolAllocator<Sprite, 1000> SpritePool;
 
     Sprite_handle createSprite(Texture_handle handle) {
         ccCore::log("Renderer", "create sprite");
