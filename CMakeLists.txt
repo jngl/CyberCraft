@@ -8,6 +8,7 @@ find_package(SFML 2 COMPONENTS system window graphics network audio)
 add_subdirectory(third_party)
 add_subdirectory(LibCyberCraftCore)
 add_subdirectory(LibCyberCraftSFML)
+add_subdirectory(Cyber-Engine)
 
 file(GLOB_RECURSE CyberCraft_source_files src/*)
 add_executable(CyberCraft ${CyberCraft_source_files})
