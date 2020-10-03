@@ -4,11 +4,9 @@
 #include <string>
 
 namespace filesystem {
-  std::string getBaseDirectory();
-  std::string getGameDirectory();
-  std::string getPathSeparator();
+    std::string getBaseDirectory();
 
-  // main
-  void createFileSystem();
-  void destroyFileSystem();
+    std::string getGameDirectory();
+
+    std::string getPathSeparator();
 }

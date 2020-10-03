@@ -17,8 +17,6 @@
 class Application {
 public:
     Application(){
-        filesystem::createFileSystem();
-
         mWindow = std::make_unique<Window>(1024, 768);
         mWindow->addAction(SDL_SCANCODE_F3, &mShowInfoWindow, false);
 
@@ -31,7 +29,6 @@ public:
     ~Application() {
         mScene = nullptr;
         Renderer::destroyRenderer();
-        filesystem::destroyFileSystem();
     }
 
     void run() {
