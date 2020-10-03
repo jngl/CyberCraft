@@ -2,7 +2,7 @@
 // Created by jngl on 27/04/2020.
 //
 
-#include "Core/Error.h"
+#include "Core/Debug.h"
 
 namespace ccCore {
     Error::Error(std::string_view msg) :

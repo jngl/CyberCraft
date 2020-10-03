@@ -158,7 +158,7 @@ void ImDrawList::ClearFreeMemory()
     _Channels.clear();
 }
 
-// Use macros because C++ is a terrible language, we want guaranteed inline, no code in header, and no overhead in Debug mode
+// Use macros because C++ is a terrible language, we want guaranteed inline, no code in header, and no overhead in Error mode
 #define GetCurrentClipRect()    (_ClipRectStack.Size ? _ClipRectStack.Data[_ClipRectStack.Size-1]  : GNullClipRect)
 #define GetCurrentTextureId()   (_TextureIdStack.Size ? _TextureIdStack.Data[_TextureIdStack.Size-1] : NULL)
 
@@ -421,7 +421,7 @@ void ImDrawList::AddPolyline(const ImVec2* points, const int points_count, ImU32
 
     const ImVec2 uv = GImGui->FontTexUvWhitePixel;
     anti_aliased &= GImGui->Style.AntiAliasedLines;
-    //if (ImGui::GetIO().KeyCtrl) anti_aliased = false; // Debug
+    //if (ImGui::GetIO().KeyCtrl) anti_aliased = false; // Error
 
     int count = points_count;
     if (!closed)
@@ -599,7 +599,7 @@ void ImDrawList::AddConvexPolyFilled(const ImVec2* points, const int points_coun
 {
     const ImVec2 uv = GImGui->FontTexUvWhitePixel;
     anti_aliased &= GImGui->Style.AntiAliasedShapes;
-    //if (ImGui::GetIO().KeyCtrl) anti_aliased = false; // Debug
+    //if (ImGui::GetIO().KeyCtrl) anti_aliased = false; // Error
 
     if (anti_aliased)
     {

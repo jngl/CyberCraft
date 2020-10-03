@@ -6,7 +6,7 @@
 #define CYBERCRAFT_BLOC_H
 
 #include "Component.h"
-#include <Core/Error.h>
+#include <Core/Debug.h>
 
 struct BlocGroup
 {

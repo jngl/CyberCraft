@@ -6,7 +6,7 @@
 
 #include "Game/System.h"
 
-#include <Core/Error.h>
+#include <Core/Debug.h>
 
 const char* gameMap =
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"

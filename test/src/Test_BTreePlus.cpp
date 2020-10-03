@@ -3,7 +3,7 @@
 #include <string>
 
 TEST_CASE( "BTreePlus", "[BTreePlus]" ) {
-    BTreePlus<int, std::string, 4> bt;
+    ccCore::BTreePlus<int, std::string, 4> bt;
 
     // After construct
     REQUIRE( bt.size() == 0 );

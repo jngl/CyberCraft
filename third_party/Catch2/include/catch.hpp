@@ -7516,7 +7516,7 @@ namespace TestCaseTracking {
         virtual ITrackerPtr findChild( NameAndLocation const& nameAndLocation ) = 0;
         virtual void openChild() = 0;
 
-        // Debug/ checking
+        // Error/ checking
         virtual bool isSectionTracker() const = 0;
         virtual bool isGeneratorTracker() const = 0;
     };

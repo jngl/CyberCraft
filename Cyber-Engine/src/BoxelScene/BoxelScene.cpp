@@ -2,7 +2,7 @@
 
 #include "stb_perlin.h"
 
-#include "debugAssert.hpp"
+#include <Core/Debug.h>
 
 #include <vector>
 
@@ -306,11 +306,11 @@ BoxelScene::BoxelScene():
   //chunk.loadTexture();
   //chunk.mGrid.generateGrid();
   //chunk.generateMesh();
-  debug::log("BoxelScene", "construct end");
+    ccCore::log("BoxelScene", "construct end");
 }
 
 BoxelScene::~BoxelScene(){
-  debug::log("BoxelScene", "destruct");
+    ccCore::log("BoxelScene", "destruct");
 }
 
 void BoxelScene::addAction(Window& win){

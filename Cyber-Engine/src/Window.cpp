@@ -1,6 +1,6 @@
 #include "Window.hpp"
 
-#include "debugAssert.hpp"
+#include <Core/Debug.h>
 #include <iostream>
 #include <glad/glad.h>
 #include <imgui.h>
@@ -16,10 +16,10 @@ Window::Window(int width, int height):
 mOpen(true),
 mWindow(nullptr)
 {
-	debug::log("Window", "construct");
+	ccCore::log("Window", "construct");
 	//init sdl
 	int error = SDL_Init(SDL_INIT_VIDEO);
-	debug::assert("Window", error==0, "SDL_Init Error: ", SDL_GetError());
+	ccCore::check("Window", error==0, "SDL_Init Error: ", SDL_GetError());
 	
 	// OpenGL 3.2
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -31,16 +31,16 @@ mWindow(nullptr)
 
 	//sdl window
 	mWindow = SDL_CreateWindow("Cyber engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL  | SDL_WINDOW_RESIZABLE);
-	debug::assert("Window", mWindow!=nullptr, "SDL_CreateWindow Error: ", SDL_GetError());
+	ccCore::check("Window", mWindow!=nullptr, "SDL_CreateWindow Error: ", SDL_GetError());
         
 	// opengl contex
 	mGLContext = SDL_GL_CreateContext(mWindow);
-	debug::assert("Window", mGLContext!=nullptr, "SDL_GL_CreateContext Error: ",  SDL_GetError());
+	ccCore::check("Window", mGLContext!=nullptr, "SDL_GL_CreateContext Error: ",  SDL_GetError());
 	
 	SDL_GL_MakeCurrent(mWindow, mGLContext);
 	
 	//glad
-	debug::assert("Window",gladLoadGL(),  "Something went wrong with glad");
+	ccCore::check("Window",gladLoadGL(),  "Something went wrong with glad");
 
 #ifdef GLAD_DEBUG
 	// before every opengl call call pre_gl_call
@@ -52,14 +52,14 @@ mWindow(nullptr)
 	
 	ImGui_ImplSdlGL3_Init(mWindow);
 
-	debug::log("Window", "OpenGL ",GLVersion.major,".",GLVersion.minor,", GLSL ",glGetString(GL_SHADING_LANGUAGE_VERSION));
+	ccCore::log("Window", "OpenGL ",GLVersion.major,".",GLVersion.minor,", GLSL ",glGetString(GL_SHADING_LANGUAGE_VERSION));
 	
 	glViewport(0,0,width, height);
 	mResize = true;
 }
 
 Window::~Window(){
-	debug::log("Window", "destruct");
+	ccCore::log("Window", "destruct");
 	ImGui_ImplSdlGL3_Shutdown();
 	if(mGLContext!=nullptr){
 		SDL_GL_DeleteContext(mGLContext);

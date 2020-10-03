@@ -1,6 +1,6 @@
 #include "filesystem.hpp"
 
-#include "debugAssert.hpp"
+#include <Core/Debug.h>
 
 #include <SDL.h>
 
@@ -25,12 +25,12 @@ namespace filesystem
 
   // main
   void createFileSystem(){
-    debug::log("FileSystem", "construct");
-    debug::log("Filesystem", "Data Directory : \"", getBaseDirectory(), getGameDirectory(), "\"");
+    ccCore::log("FileSystem", "construct");
+    ccCore::log("Filesystem", "Data Directory : \"", getBaseDirectory(), getGameDirectory(), "\"");
   }
   
   void destroyFileSystem(){
-    debug::log("FileSystem", "destruct");
+    ccCore::log("FileSystem", "destruct");
   }
 
 }

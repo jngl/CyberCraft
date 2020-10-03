@@ -2,7 +2,7 @@
 
 #include "Timer.hpp"
 #include "cmdline.h"
-#include "debugAssert.hpp"
+#include <Core/Debug.h>
 
 #include "Renderer.hpp"
 
@@ -142,7 +142,7 @@ private:
   }
 
   void runCommand(){
-    debug::log("Main", "run command : ", mCommandText);
+      ccCore::log("Main", "run command : ", mCommandText);
 
     std::string command = mCommandText;
     memset(mCommandText, 0, mMaxInputSize);
@@ -163,9 +163,9 @@ int main(int argc, char *argv[]) {
 	try
 	{
 		Application app(argc, argv);
-		debug::log("Main", "begin main loop");
+        ccCore::log("Main", "begin main loop");
 		app.run();
-		debug::log("Main", "end main loop");
+        ccCore::log("Main", "end main loop");
 	}
 	catch (std::exception e) {
 		std::cerr << e.what() << std::endl;
