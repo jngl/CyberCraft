@@ -3,13 +3,12 @@
 #include "Renderer.hpp"
 #include "Window.hpp"
 
-class BoxelPlayer
-{
+class BoxelPlayer {
 public:
-  BoxelPlayer();
+    BoxelPlayer();
 
-  void addAction(Window& window);
+    void addAction(Window &window);
 
 private:
-  Renderer::Object mObject;
+    Renderer::Object mObject;
 };

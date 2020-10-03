@@ -6,61 +6,63 @@
 #include "../Scene.hpp"
 #include "../World.hpp"
 
-class BoxelMap
-{
+class BoxelMap {
 public:
-  typedef std::size_t BlockId;
-  
-  static constexpr std::size_t mNbBlock = 7;
-  static constexpr std::size_t mSizeX = 200;
-  static constexpr std::size_t mSizeY = 30;
-  static constexpr std::size_t mSizeZ = 200;
-  
-  static constexpr BlockId mGrassId = 0;
-  static constexpr BlockId mStoneId = 1;
-  static constexpr BlockId mDirtId = 2;
-  static constexpr BlockId mNothingId = 3;
-  static constexpr BlockId mWaterId = 4;
-  static constexpr BlockId mSandId = 5;
-  static constexpr BlockId mWoodId = 6;
-  
-  struct BlockType{
-    std::string name;
-    bool visible;
-    bool withAlpha;
-  };
-  
-  BoxelMap();
-  ~BoxelMap();
+    typedef std::size_t BlockId;
 
-  void generate();
+    static constexpr std::size_t mNbBlock = 7;
+    static constexpr std::size_t mSizeX = 200;
+    static constexpr std::size_t mSizeY = 30;
+    static constexpr std::size_t mSizeZ = 200;
 
-  BlockId getBlock(std::size_t x, std::size_t y, std::size_t z) const;
-  const BlockType& getBlockType(BlockId id) const;
+    static constexpr BlockId mGrassId = 0;
+    static constexpr BlockId mStoneId = 1;
+    static constexpr BlockId mDirtId = 2;
+    static constexpr BlockId mNothingId = 3;
+    static constexpr BlockId mWaterId = 4;
+    static constexpr BlockId mSandId = 5;
+    static constexpr BlockId mWoodId = 6;
+
+    struct BlockType {
+        std::string_view name;
+        bool visible;
+        bool withAlpha;
+    };
+
+    BoxelMap() = default;
+    ~BoxelMap() = default;
+
+    void generate();
+
+    [[nodiscard]] BlockId getBlock(std::size_t x, std::size_t y, std::size_t z) const;
+
+    [[nodiscard]] static const BlockType &getBlockType(BlockId id) ;
 
 private:
-  static const BlockType mBlockType[mNbBlock];
+    static const BlockType mBlockType[mNbBlock];
 
-  unsigned int mBlock[mSizeZ][mSizeY][mSizeX];
-  
+    unsigned int mBlock[mSizeZ][mSizeY][mSizeX];
+
 };
 
 class BoxelScene : public Scene {
 public:
-  
-  BoxelScene();
-  ~BoxelScene();
 
-  void addAction(Window &win) override;
-  void update(float frameTime) override;
+    BoxelScene();
+
+    ~BoxelScene() override;
+
+    void addAction(Window &win) override;
+
+    void update(float frameTime) override;
 
 private:
-  World mWorld;
-  BoxelMap mBoxelMap;
-  Renderer::Material_handle mBlockMaterial[BoxelMap::mNbBlock];
-  Renderer::Object mBlockObject;
-  
-  BoxelCamera mCamera;
-  BoxelPlayer mPlayer;
-  //BoxelChunk<50, 50, 50> chunk;
+    World mWorld;
+    BoxelMap mBoxelMap;
+    Renderer::Material_handle mBlockMaterial[BoxelMap::mNbBlock];
+    Renderer::Object mBlockObject;
+
+    BoxelCamera mCamera;
+    BoxelPlayer mPlayer;
+    //BoxelChunk<50, 50, 50> chunk;
 };
