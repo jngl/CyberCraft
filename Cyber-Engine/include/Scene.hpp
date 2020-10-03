@@ -2,10 +2,11 @@
 
 #include "Window.hpp"
 
-class Scene
-{
+class Scene {
 public:
-  virtual ~Scene(){}
-	virtual void addAction(Window& window){};
-	virtual void update(float frameTime) = 0;
+    virtual ~Scene() = default;
+
+    virtual void addAction(Window &window) {};
+
+    virtual void update(float frameTime) = 0;
 };

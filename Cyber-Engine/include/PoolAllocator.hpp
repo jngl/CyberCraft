@@ -21,7 +21,7 @@ namespace core
             return &(a->mData);
         }
         
-        void destory(Data* d){
+        void destroy(Data* d){
 			d->~Data();
             MemBlock* a = (MemBlock*)(d);
             a->mNext = mFirstFree;
