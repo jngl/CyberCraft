@@ -1,6 +1,6 @@
 #include "Window.hpp"
 
-#include "Timer.hpp"
+#include <Core/Timer.hpp>
 #include <Core/Debug.h>
 
 #include "Renderer.hpp"
@@ -42,7 +42,7 @@ private:
 
     std::unique_ptr<Window> mWindow;
     std::unique_ptr<Scene> mScene;
-    Timer mGlobalTimer;
+    ccCore::Timer mGlobalTimer;
     float mFrameTime = 0;
     bool mShowTestWindow = false;
     bool mShowInfoWindow = false;
