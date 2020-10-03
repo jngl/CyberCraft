@@ -1,8 +1,5 @@
 #include "BasicScene.hpp"
 
-BasicScene::BasicScene(){
-}
-
 void BasicScene::addAction(Window& window){
 }
 
