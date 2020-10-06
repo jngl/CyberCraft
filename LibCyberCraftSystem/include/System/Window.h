@@ -11,39 +11,43 @@
 #include <map>
 #include <functional>
 
-class Window{
-public:
-    Window(int width, int height);
-    ~Window();
+namespace cc::System {
+    class Window {
+    public:
+        Window(int width, int height);
 
-    [[nodiscard]] bool isOpen() const;
+        ~Window();
 
-    void beginFrame();
-    void endFrame();
+        [[nodiscard]] bool isOpen() const;
 
-    void close();
+        void beginFrame();
 
-    bool getSize(int* w, int* h);
+        void endFrame();
 
-    void addAction(SDL_Scancode key, bool* state, bool onPress);
+        void close();
 
-    void clear();
+        bool getSize(int *w, int *h);
 
-private:
-    struct Action{
-        bool* state;
-        bool onPress;
+        void addAction(SDL_Scancode key, bool *state, bool onPress);
+
+        void clear();
+
+    private:
+        struct Action {
+            bool *state;
+            bool onPress;
+        };
+        typedef std::map<SDL_Scancode, Action> ActionMap;
+
+
+        bool mOpen;
+        SDL_Window *mWindow;
+        SDL_GLContext mGLContext;
+        ActionMap mActions;
+        bool mResize;
+
+        void updateAction(SDL_Scancode key, bool press);
     };
-    typedef std::map<SDL_Scancode, Action> ActionMap;
-
-
-    bool mOpen;
-    SDL_Window *mWindow;
-    SDL_GLContext mGLContext;
-    ActionMap mActions;
-    bool mResize;
-
-    void updateAction(SDL_Scancode key, bool press);
-};
+}
 
 #endif //CYBERCRAFT_WINDOW_H

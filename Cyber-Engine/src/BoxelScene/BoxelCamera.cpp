@@ -15,7 +15,7 @@ BoxelCamera::BoxelCamera() :
     mDist = 60.f;
 }
 
-void BoxelCamera::addAction(Window &window) {
+void BoxelCamera::addAction(cc::System::Window &window) {
     window.addAction(SDL_SCANCODE_W, &mActionMoveForward, true);
     window.addAction(SDL_SCANCODE_S, &mActionMoveBackward, true);
     window.addAction(SDL_SCANCODE_UP, &mActionRotateUp, true);

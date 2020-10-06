@@ -7,7 +7,7 @@ class BoxelPlayer {
 public:
     BoxelPlayer();
 
-    void addAction(Window &window);
+    void addAction(cc::System::Window &window);
 
 private:
     Renderer::Object mObject;

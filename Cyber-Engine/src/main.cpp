@@ -15,7 +15,7 @@
 class Application {
 public:
     Application(){
-        mWindow = std::make_unique<Window>(1024, 768);
+        mWindow = std::make_unique<cc::System::Window>(1024, 768);
         mWindow->addAction(SDL_SCANCODE_F3, &mShowInfoWindow, false);
 
         Renderer::createRenderer();
@@ -38,7 +38,7 @@ public:
 private:
     static constexpr unsigned int mMaxInputSize = 32;
 
-    std::unique_ptr<Window> mWindow;
+    std::unique_ptr<cc::System::Window> mWindow;
     std::unique_ptr<Scene> mScene;
     ccCore::Timer mGlobalTimer;
     float mFrameTime = 0;

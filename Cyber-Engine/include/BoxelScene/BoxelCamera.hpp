@@ -10,7 +10,7 @@ class BoxelCamera {
 public:
     BoxelCamera();
 
-    void addAction(Window &window);
+    void addAction(cc::System::Window &window);
 
     void update(float frameTime);
 
