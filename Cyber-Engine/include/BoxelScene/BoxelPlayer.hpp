@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Renderer.hpp"
-#include "Window.hpp"
+#include <System/Window.h>
 
 class BoxelPlayer {
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Window.hpp"
+#include <System/Window.h>
 
 class Scene {
 public:

@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include <Core/Window.h>
 
 #include <SDL.h>
@@ -40,3 +40,4 @@ private:
 	
 	void updateAction(SDL_Scancode key, bool press);
 };
+*/

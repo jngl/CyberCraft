@@ -1,5 +1,5 @@
 #include "Window.hpp"
-
+/*
 #include <Core/Debug.h>
 #include <iostream>
 #include <glad/glad.h>
@@ -145,3 +145,4 @@ void Window::clear()
 
 
 
+*/

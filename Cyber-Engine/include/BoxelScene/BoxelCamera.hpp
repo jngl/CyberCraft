@@ -4,7 +4,7 @@
 
 #include "../Renderer.hpp"
 
-#include "../Window.hpp"
+#include <System/Window.h>
 
 class BoxelCamera {
 public:
