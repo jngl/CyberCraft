@@ -7,5 +7,10 @@ add_library(LibCyberCraftSystem
         )
 
 target_include_directories(LibCyberCraftSystem PUBLIC include)
-target_link_libraries(LibCyberCraftSystem LibCyberCraftCore ${SDL2_LIBRARY} Glad Imgui)
+target_link_libraries(LibCyberCraftSystem
+        LibCyberCraftCore
+        ${SDL2_LIBRARY}
+        Glad
+        Imgui
+        ${CMAKE_DL_LIBS})
 

@@ -1,12 +1,12 @@
-#include "Graphics.hpp"
+#include "System/Graphics.hpp"
 
 #include <Core/Debug.h>
-#include "filesystem.hpp"
+#include "System/filesystem.hpp"
 
 #include <cstring>
 #include <cstdint>
 
-namespace Graphics {
+namespace cc::System {
 /********************************************************
  * glCheck
 ********************************************************/
@@ -157,9 +157,9 @@ namespace Graphics {
 
         DDS_header header = {0};
 
-        std::string filename2 = filesystem::getBaseDirectory() +
-                                filesystem::getGameDirectory() +
-                                filesystem::getPathSeparator() +
+        std::string filename2 = getBaseDirectory() +
+                                getGameDirectory() +
+                                getPathSeparator() +
                                 std::string(filename);
 
         //open file
@@ -376,7 +376,7 @@ namespace Graphics {
     }
 
     void
-    SubMesh::addBuffer(Graphics::Shader::Location loc, const float *data, unsigned int dataSize, unsigned int size) {
+    SubMesh::addBuffer(Shader::Location loc, const float *data, unsigned int dataSize, unsigned int size) {
         GLuint buffer;
         glCheck(glGenBuffers(1, &buffer));
         glCheck(glBindBuffer(GL_ARRAY_BUFFER, buffer));

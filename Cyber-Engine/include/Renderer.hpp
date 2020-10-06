@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics.hpp"
+#include <System/Graphics.hpp>
 
 namespace Renderer {
     struct Material;
@@ -9,7 +9,7 @@ namespace Renderer {
     struct Sprite;
 
     typedef Material *Material_handle;
-    typedef Graphics::Texture *Texture_handle;
+    typedef cc::System::Texture *Texture_handle;
     typedef Model *Model_handle;
     typedef Camera *Camera_handle;
     typedef Sprite *Sprite_handle;

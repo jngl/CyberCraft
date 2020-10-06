@@ -104,19 +104,19 @@ namespace Renderer {
 
     void resizeAllCamera(int width, int height);
 
-    Graphics::Shader defaultShader;
-    Graphics::Shader noLightShader;
-    Graphics::Shader defaultNoTextureShader;
+    cc::System::Shader defaultShader;
+    cc::System::Shader noLightShader;
+    cc::System::Shader defaultNoTextureShader;
 
     const unsigned int VertexBufferIndex = 0;
     const unsigned int TexCoordBufferIndex = 1;
     const unsigned int NormalBufferIndex = 2;
 
-    Graphics::Shader::Location defaultShaderMVP;
-    Graphics::Shader::Location noLightShaderMVP;
-    Graphics::Shader::Location defaultNoTextureShaderMVP;
+    cc::System::Shader::Location defaultShaderMVP;
+    cc::System::Shader::Location noLightShaderMVP;
+    cc::System::Shader::Location defaultNoTextureShaderMVP;
 
-    Graphics::SubMesh spriteMesh;
+    cc::System::SubMesh spriteMesh;
 
     float ratio;
 
@@ -149,7 +149,7 @@ namespace Renderer {
 
     struct Model {
         std::string nom;
-        std::vector<Graphics::SubMesh> subMeshs;
+        std::vector<cc::System::SubMesh> subMeshs;
         std::vector<Material_handle> materials;
     };
 
@@ -167,7 +167,7 @@ namespace Renderer {
     void createRenderer() {
         ccCore::log("Renderer", "construct");
 
-        Graphics::createGraphics();
+        cc::System::createGraphics();
 
         // noTexture
         defaultNoTextureShader.load(defaultNoTextureShaderVert,
@@ -195,13 +195,13 @@ namespace Renderer {
                              sizeof(spriteVertices), 3);
         spriteMesh.addBuffer(1, spriteTexCoord,
                              sizeof(spriteTexCoord), 2);
-        spriteMesh.endLoadWithIndex(Graphics::SubMesh::TRIANGLES, spriteNbFaces * 3,
+        spriteMesh.endLoadWithIndex(cc::System::SubMesh::TRIANGLES, spriteNbFaces * 3,
                                     spriteFaces);
     }
 
     void destroyRenderer() {
         ccCore::log("Renderer", "destruct");
-        Graphics::destroyGraphics();
+        cc::System::destroyGraphics();
     }
 
     void resize(int width, int height) {
@@ -250,9 +250,9 @@ namespace Renderer {
                     Material_handle material) {
         model->materials.push_back(material);
 
-        model->subMeshs.push_back(Graphics::SubMesh());
+        model->subMeshs.push_back(cc::System::SubMesh());
 
-        Graphics::SubMesh &subMesh = model->subMeshs.back();
+        cc::System::SubMesh &subMesh = model->subMeshs.back();
 
         if (material->texture == nullptr) {
             subMesh.beginLoad();
@@ -260,7 +260,7 @@ namespace Renderer {
                               nbVertices * sizeof(float) * 3, 3);
             subMesh.addBuffer(2, normals,
                               nbVertices * sizeof(float) * 3, 3);
-            subMesh.endLoadWithIndex(Graphics::SubMesh::TRIANGLES, nbFaces * 3,
+            subMesh.endLoadWithIndex(cc::System::SubMesh::TRIANGLES, nbFaces * 3,
                                      faces);
         } else {
             subMesh.beginLoad();
@@ -270,7 +270,7 @@ namespace Renderer {
                               nbVertices * sizeof(float) * 2, 2);
             subMesh.addBuffer(2, normals,
                               nbVertices * sizeof(float) * 3, 3);
-            subMesh.endLoadWithIndex(Graphics::SubMesh::TRIANGLES, nbFaces * 3,
+            subMesh.endLoadWithIndex(cc::System::SubMesh::TRIANGLES, nbFaces * 3,
                                      faces);
         }
     }
@@ -346,7 +346,7 @@ namespace Renderer {
             }
         }
 
-        Texture_handle result = new Graphics::Texture;
+        Texture_handle result = new cc::System::Texture;
         textures.insert(result);
         result->load(filename);
         return result;

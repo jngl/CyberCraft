@@ -6,3 +6,4 @@ add_library(Glad
         ${Glad_include_files})
 
 target_include_directories(Glad PUBLIC include)
+target_link_libraries(Glad ${CMAKE_DL_LIBS})

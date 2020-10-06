@@ -6,7 +6,7 @@
 
 #include <string>
 
-namespace Graphics {
+namespace cc::System {
     void createGraphics();
     void destroyGraphics();
 
@@ -65,7 +65,7 @@ namespace Graphics {
 
         void beginLoad();
 
-        void addBuffer(Graphics::Shader::Location loc, const float *data, unsigned int dataSize, unsigned int size);
+        void addBuffer(Shader::Location loc, const float *data, unsigned int dataSize, unsigned int size);
 
         void endLoad(Primitives primitives, unsigned int count);
 

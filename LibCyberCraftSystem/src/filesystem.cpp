@@ -1,10 +1,10 @@
-#include "filesystem.hpp"
+#include "System/filesystem.hpp"
 
 #include <Core/Debug.h>
 
 #include <SDL.h>
 
-namespace filesystem {
+namespace cc::System {
     std::string getBaseDirectory() {
         return SDL_GetBasePath();
     }

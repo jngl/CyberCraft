@@ -11,7 +11,6 @@ TARGET_LINK_LIBRARIES(GameEngine
             ${CMAKE_DL_LIBS}
             LibCyberCraftCore
             Glad
-            ${CMAKE_DL_LIBS}
             stb
             Imgui
             LibCyberCraftSystem
