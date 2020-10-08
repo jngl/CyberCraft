@@ -4,7 +4,6 @@
 #include "BoxelPlayer.hpp"
 
 #include "../Scene.hpp"
-#include "../World.hpp"
 
 class BoxelMap {
 public:
@@ -57,12 +56,10 @@ public:
     void update(float frameTime) override;
 
 private:
-    World mWorld;
     BoxelMap mBoxelMap;
     Renderer::Material_handle mBlockMaterial[BoxelMap::mNbBlock];
     Renderer::Object mBlockObject;
 
     BoxelCamera mCamera;
     BoxelPlayer mPlayer;
-    //BoxelChunk<50, 50, 50> chunk;
 };
