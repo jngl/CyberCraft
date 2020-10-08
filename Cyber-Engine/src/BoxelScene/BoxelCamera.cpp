@@ -1,7 +1,5 @@
 #include "BoxelScene/BoxelCamera.hpp"
 
-#include "Window.hpp"
-
 BoxelCamera::BoxelCamera() :
         mActionRotateUp(false),
         mActionRotateDown(false),

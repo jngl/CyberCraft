@@ -1,5 +1,3 @@
-#include "Window.hpp"
-
 #include <Core/Timer.hpp>
 #include <Core/Debug.h>
 
