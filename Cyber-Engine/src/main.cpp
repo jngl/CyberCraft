@@ -3,7 +3,6 @@
 
 #include "Renderer.hpp"
 
-#include "BasicScene.hpp"
 #include "BoxelScene/BoxelScene.hpp"
 
 #include <imgui.h>
