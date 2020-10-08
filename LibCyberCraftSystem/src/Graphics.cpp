@@ -46,20 +46,6 @@ namespace cc::System {
                     break;
                 }
 
-                    /*case GL_STACK_OVERFLOW :
-                    {
-                        error = "GL_STACK_OVERFLOW";
-                        description = "this command would cause a stack overflow";
-                        break;
-                    }
-
-                    case GL_STACK_UNDERFLOW :
-                    {
-                        error = "GL_STACK_UNDERFLOW";
-                        description = "this command would cause a stack underflow";
-                        break;
-                    }*/
-
                 case GL_OUT_OF_MEMORY : {
                     error = "GL_OUT_OF_MEMORY";
                     description = "there is not enough memory left to execute the command";
@@ -79,8 +65,6 @@ namespace cc::System {
                 }
 
             }
-
-            //std::cout<<"Warning OpenGL in \""<<file<<"\" (l"<<line<<") : "<<error<<" ; "<<description<<std::endl;
 
             ccCore::check("glCheck", false, "An internal OpenGL call failed in ", file, " ( ", line, " ) : ", error,
                           ", ", description);
