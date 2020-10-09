@@ -74,7 +74,7 @@ namespace cc::System {
 /********************************************************
  * Graphics main
 ********************************************************/
-    void createGraphics() {
+    GraphicsContext::GraphicsContext() {
         glCheck(glEnable(GL_DEPTH_TEST));
 
         // Enable blending
@@ -82,8 +82,22 @@ namespace cc::System {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    void destroyGraphics() {
+    std::shared_ptr<Texture> GraphicsContext::loadTexture(std::string_view filename) {
+        std::string filenameStr(filename);
 
+        auto it = m_textures.find(filenameStr);
+
+        std::shared_ptr<Texture> texture;
+
+        if(it == m_textures.end()){
+            texture = std::make_shared<Texture>();
+            texture->load(filename);
+            m_textures[filenameStr] = texture;
+        }else{
+            texture = it->second.lock();
+        }
+
+        return texture;
     }
 
 /********************************************************
@@ -150,10 +164,10 @@ namespace cc::System {
         std::fstream file(filename2, std::fstream::in | std::fstream::binary);
         ccCore::check("Texture", file.is_open(), "error with dds file : \"", filename2, "\"");
 
-        /* vérifie le type du fichier */
-        char filecode[4];
-        file.read(filecode, 4);
-        if (strncmp(filecode, "DDS ", 4) != 0) {
+        // check file type
+        char fileCode[4];
+        file.read(fileCode, 4);
+        if (strncmp(fileCode, "DDS ", 4) != 0) {
             file.close();
             ccCore::check("Texture", false, "error in dds file");
         }
@@ -168,16 +182,16 @@ namespace cc::System {
         unsigned int fourCC = header.sPixelFormat.dwFourCC;
 
         char *buffer;
-        unsigned int bufsize;
+        unsigned int bufferSize;
         /* quelle va être la taille des données incluant les MIP maps ? */
-        bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
-        buffer = (char *) malloc(bufsize * sizeof(unsigned char));
-        file.read(buffer, bufsize);
+        bufferSize = mipMapCount > 1 ? linearSize * 2 : linearSize;
+        buffer = (char *) malloc(bufferSize * sizeof(unsigned char));
+        file.read(buffer, bufferSize);
         /* fermer le pointeur de fichier */
         file.close();
 
         unsigned int components = (fourCC == FOURCC_DXT1) ? 3 : 4;
-        unsigned int format;
+        unsigned int format = 0;
         switch (fourCC) {
             case FOURCC_DXT1:
                 format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
@@ -190,8 +204,10 @@ namespace cc::System {
                 break;
             default:
                 free(buffer);
-                ccCore::check("Texture", false, "unsupported dds format");
+                break;
         }
+
+        ccCore::check("Texture", format != 0, "unsupported dds format");
 
         // Crée une texture OpenGL
 
@@ -323,8 +339,8 @@ namespace cc::System {
         }
     }
 
-    const char *Shader::getTypeName(GLenum type) const {
-        std::string result;
+    std::string_view Shader::getTypeName(GLenum type) {
+        std::string_view result;
         switch (type) {
             case GL_FLOAT:
                 result = "float";
@@ -348,7 +364,7 @@ namespace cc::System {
                 result = "unkown";
                 break;
         }
-        return result.c_str();
+        return result;
     }
 
 /********************************************************
@@ -408,5 +424,4 @@ namespace cc::System {
     void SubMesh::unload() {
         glCheck(glDeleteVertexArrays(1, &mId));
     }
-
 }

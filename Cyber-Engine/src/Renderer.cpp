@@ -164,10 +164,12 @@ namespace Renderer {
  * Renderer function
 ********************************************************/
 
+    static std::unique_ptr<cc::System::GraphicsContext> g_graphicsContext;
+
     void createRenderer() {
         ccCore::log("Renderer", "construct");
 
-        cc::System::createGraphics();
+        g_graphicsContext = std::make_unique<cc::System::GraphicsContext>();
 
         // noTexture
         defaultNoTextureShader.load(defaultNoTextureShaderVert,
@@ -201,7 +203,7 @@ namespace Renderer {
 
     void destroyRenderer() {
         ccCore::log("Renderer", "destruct");
-        cc::System::destroyGraphics();
+        g_graphicsContext.reset();
     }
 
     void resize(int width, int height) {
@@ -337,23 +339,10 @@ namespace Renderer {
     std::set<Texture_handle> textures;
     //core::PoolAllocator<Graphics::Texture, 100> TexturePool;
 
-    Texture_handle createTexture(const char *filename) {
+    Texture_handle createTexture(std::string_view filename) {
         ccCore::log("Renderer", "create texture \"", filename, "\"");
 
-        for (Texture_handle texture : textures) {
-            if (texture->getName() == filename) {
-                return texture;
-            }
-        }
-
-        Texture_handle result = new cc::System::Texture;
-        textures.insert(result);
-        result->load(filename);
-        return result;
-    }
-
-    void destroyTexture(Texture_handle handle) {
-        //TODO
+        return g_graphicsContext->loadTexture(filename);
     }
 
 /********************************************************

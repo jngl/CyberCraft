@@ -9,7 +9,7 @@ namespace Renderer {
     struct Sprite;
 
     typedef Material *Material_handle;
-    typedef cc::System::Texture *Texture_handle;
+    typedef std::shared_ptr<cc::System::Texture> Texture_handle;
     typedef Model *Model_handle;
     typedef Camera *Camera_handle;
     typedef Sprite *Sprite_handle;
@@ -50,9 +50,7 @@ namespace Renderer {
     };
 
     // Texture
-    Texture_handle createTexture(const char *filename);
-
-    void destroyTexture(Texture_handle handle);
+    Texture_handle createTexture(std::string_view filename);
 
     // camera
     Camera_handle createCamera();

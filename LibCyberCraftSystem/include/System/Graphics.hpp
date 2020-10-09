@@ -1,14 +1,26 @@
 #pragma once
 
 #include <Core/Math.h>
+#include "System/Common.h"
 
 #include "glad/glad.h"
 
 #include <string>
+#include <vector>
+#include <memory>
+#include <unordered_map>
 
 namespace cc::System {
-    void createGraphics();
-    void destroyGraphics();
+    class GraphicsContext
+    {
+    public:
+        GraphicsContext();
+
+        std::shared_ptr<Texture> loadTexture(std::string_view filename);
+
+    private:
+        std::unordered_map<std::string, std::weak_ptr<Texture>> m_textures;
+    };
 
     class Texture {
     public:
@@ -53,7 +65,7 @@ namespace cc::System {
         void printShaderInfoLog(GLuint obj);
         void printProgramInfoLog(GLuint obj);
 
-        const char *getTypeName(GLenum type) const;
+        [[nodiscard]] static std::string_view getTypeName(GLenum type);
     };
 
     class SubMesh {
