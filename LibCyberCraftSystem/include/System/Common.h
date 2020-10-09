@@ -6,7 +6,7 @@
 #define CYBERCRAFT_COMMON_H
 
 namespace cc::System {
-    class Texture;
+
 }
 
 #endif //CYBERCRAFT_COMMON_H

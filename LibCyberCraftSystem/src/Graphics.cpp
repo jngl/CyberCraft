@@ -7,6 +7,7 @@
 #include <cstdint>
 
 namespace cc::System {
+
 /********************************************************
  * glCheck
 ********************************************************/
@@ -71,43 +72,27 @@ namespace cc::System {
         }
     }
 
-/********************************************************
- * Graphics main
-********************************************************/
-    GraphicsContext::GraphicsContext() {
-        glCheck(glEnable(GL_DEPTH_TEST));
+    /********************************************************
+     * Texture
+    ********************************************************/
+    class Texture {
+    public:
+        explicit Texture(std::string_view filename);
+        ~Texture() { glDeleteTextures(1, &mId); }
 
-        // Enable blending
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    }
+        void load();
 
-    std::shared_ptr<Texture> GraphicsContext::loadTexture(std::string_view filename) {
-        std::string filenameStr(filename);
+        [[nodiscard]] unsigned int getId() const { return mId; }
 
-        auto it = m_textures.find(filenameStr);
+    private:
+        GLuint mId = 0;
 
-        std::shared_ptr<Texture> texture;
+        static constexpr unsigned int FOURCC_DXT1 = 0x31545844;
+        static constexpr unsigned int FOURCC_DXT3 = 0x33545844;
+        static constexpr unsigned int FOURCC_DXT5 = 0x35545844;
+    };
 
-        if(it == m_textures.end()){
-            texture = std::make_shared<Texture>();
-            texture->load(filename);
-            m_textures[filenameStr] = texture;
-        }else{
-            texture = it->second.lock();
-        }
-
-        return texture;
-    }
-
-/********************************************************
- * Texture
-********************************************************/
-// dds file format
-#define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
-#define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
-#define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
-
+    // dds file format
     union DDS_header {
         struct {
             //uint32_t dwMagic;
@@ -145,13 +130,8 @@ namespace cc::System {
         char data[124];
     };
 
-
-    Texture::Texture() { glGenTextures(1, &mId); }
-
-    Texture::~Texture() { glDeleteTextures(1, &mId); }
-
-    void Texture::load(std::string_view filename) {
-        mName = filename;
+    Texture::Texture(std::string_view filename) {
+        glGenTextures(1, &mId);
 
         DDS_header header = {0};
 
@@ -239,15 +219,38 @@ namespace cc::System {
         ccCore::check("Texture", mId != 0, "error with a texture");
     }
 
-    unsigned int Texture::getId() const { return mId; }
+/********************************************************
+ * Graphics main
+********************************************************/
+    GraphicsContext::GraphicsContext() {
+        glCheck(glEnable(GL_DEPTH_TEST));
 
-    void Texture::set() {
-        glCheck(glActiveTexture(GL_TEXTURE0));
-        glCheck(glBindTexture(GL_TEXTURE_2D, mId));
+        // Enable blending
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    std::string Texture::getName() {
-        return mName;
+    std::shared_ptr<Texture> GraphicsContext::loadTexture(std::string_view filename) {
+        std::string filenameStr(filename);
+
+        auto it = m_textures.find(filenameStr);
+
+        std::shared_ptr<Texture> texture;
+
+        if(it == m_textures.end()){
+            texture = std::make_shared<Texture>(filename);
+            m_textures[filenameStr] = texture;
+        }else{
+            texture = it->second.lock();
+        }
+
+        return texture;
+    }
+
+    void GraphicsContext::set(const std::shared_ptr<Texture> &texture) {
+        glCheck(glActiveTexture(GL_TEXTURE0));
+        glCheck(glBindTexture(GL_TEXTURE_2D, texture->getId()));
+        m_current_texture = texture;
     }
 
 /********************************************************

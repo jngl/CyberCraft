@@ -11,6 +11,8 @@
 #include <unordered_map>
 
 namespace cc::System {
+    class Texture;
+
     class GraphicsContext
     {
     public:
@@ -18,26 +20,11 @@ namespace cc::System {
 
         std::shared_ptr<Texture> loadTexture(std::string_view filename);
 
+        void set(const std::shared_ptr<Texture> &texture);
+
     private:
         std::unordered_map<std::string, std::weak_ptr<Texture>> m_textures;
-    };
-
-    class Texture {
-    public:
-        Texture();
-        ~Texture();
-
-        void load(std::string_view filename);
-
-        [[nodiscard]] unsigned int getId() const;
-
-        void set();
-
-        std::string getName();
-
-    private:
-        std::string mName;
-        GLuint mId = 0;
+        std::weak_ptr<Texture> m_current_texture;
     };
 
 
