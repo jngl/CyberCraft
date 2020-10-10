@@ -53,8 +53,6 @@ namespace cc::System {
     static constexpr unsigned int FOURCC_DXT5 = 0x35545844;
 
     DdsFile::DdsFile(std::string_view filename) {
-        DDS_header header = {0};
-
         std::string filename2 = getBaseDirectory() +
                                 getGameDirectory() +
                                 getPathSeparator() +
@@ -64,35 +62,20 @@ namespace cc::System {
         std::fstream file(filename2, std::fstream::in | std::fstream::binary);
         ccCore::check("Texture", file.is_open(), "error with dds file : \"", filename2, "\"");
 
-        // check file type
-        char fileCode[4];
-        file.read(fileCode, 4);
-        if (strncmp(fileCode, "DDS ", 4) != 0) {
-            file.close();
-            ccCore::check("Texture", false, "error in dds file");
+        readFileType(file);
+        readHeader(file);
+
+        unsigned int width = m_width;
+        unsigned int height = m_height;
+        unsigned int blockSize = (getFormat() == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
+        for(MipMap& mipMap: m_mipMaps){
+            mipMap.width = width;
+            mipMap.height = height;
+            mipMap.data.resize(((width + 3) / 4) * ((height + 3) / 4) * blockSize);
+            file.read(mipMap.data.data(), mipMap.data.size());
+            width /= 2;
+            height /= 2;
         }
-
-        /* récupère la description de la surface */
-        file.read(header.data, sizeof(DDS_header));
-
-        m_height = header.dwHeight;
-        m_width = header.dwWidth;
-        unsigned int linearSize = header.dwPitchOrLinearSize;
-        m_mipMapCount = header.dwMipMapCount;
-        m_fourCC = header.sPixelFormat.dwFourCC;
-
-
-        unsigned int bufferSize;
-        /* quelle va être la taille des données incluant les MIP maps ? */
-        bufferSize = m_mipMapCount > 1 ? linearSize * 2 : linearSize;
-        m_buffer = new char[bufferSize];
-        file.read(m_buffer, bufferSize);
-        /* fermer le pointeur de fichier */
-        file.close();
-    }
-
-    DdsFile::~DdsFile() {
-        delete m_buffer;
     }
 
     unsigned int DdsFile::getFormat() const {
@@ -113,7 +96,27 @@ namespace cc::System {
 
     unsigned int DdsFile::getHeight() const { return m_height; }
 
-    unsigned int DdsFile::getMipMapCount() const { return m_mipMapCount; }
+    unsigned int DdsFile::getMipMapCount() const { return m_mipMaps.size(); }
 
-    const char *DdsFile::getBuffer() const { return m_buffer; }
+    void DdsFile::readFileType(std::fstream &file) {
+        char fileCode[4];
+        file.read(fileCode, 4);
+        ccCore::check("Texture", strncmp(fileCode, "DDS ", 4) == 0, "error in dds file");
+    }
+
+    void DdsFile::readHeader(std::fstream &file) {
+        DDS_header header = {0};
+
+        file.read(header.data, sizeof(DDS_header));
+
+        m_height = header.dwHeight;
+        m_width = header.dwWidth;
+        m_fourCC = header.sPixelFormat.dwFourCC;
+
+        m_mipMaps.resize(header.dwMipMapCount);
+    }
+
+    const DdsFile::MipMap &DdsFile::getMipMap(unsigned int index) {
+        return m_mipMaps.at(index);
+    }
 }

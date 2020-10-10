@@ -62,37 +62,20 @@ namespace cc::System {
 
         glGenTextures(1, &mId);
 
-        unsigned int format = ddsFile.getFormat();
-
-        ccCore::check("Texture", format != 0, "unsupported dds format");
-
-        // Crée une texture OpenGL
-
-        // "Lie" la nouvelle texture : tous les futurs appels aux fonctions de texture
-        // vont modifier cette texture
         glCheck(glBindTexture(GL_TEXTURE_2D, mId));
 
         glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
         glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
                                 GL_LINEAR_MIPMAP_LINEAR));
 
-        unsigned int blockSize =
-                (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
-        unsigned int offset = 0;
+        unsigned int format = ddsFile.getFormat();
+        ccCore::check("Texture", format != 0, "unsupported dds format");
+        
+        for (unsigned int level = 0; level < ddsFile.getMipMapCount(); ++level) {
+            auto mipMap = ddsFile.getMipMap(level);
+            glCheck(glCompressedTexImage2D(GL_TEXTURE_2D, level, format, mipMap.width, mipMap.height,
+                                           0, mipMap.data.size(), mipMap.data.data()));
 
-        unsigned int width = ddsFile.getWidth();
-        unsigned int height = ddsFile.getHeight();
-
-        /* charge les MIP maps */
-        for (unsigned int level = 0; level < ddsFile.getMipMapCount() && (width || height);
-             ++level) {
-            unsigned int size = ((width + 3) / 4) * ((height + 3) / 4) * blockSize;
-            glCheck(glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height,
-                                           0, size, ddsFile.getBuffer() + offset));
-
-            offset += size;
-            width /= 2;
-            height /= 2;
         }
 
         ccCore::check("Texture", mId != 0, "error with a texture");

@@ -7,18 +7,29 @@
 
 #include "System/Common.h"
 
+#include <vector>
+
 namespace cc::System {
     class DdsFile {
+    public:
+        struct MipMap
+        {
+            unsigned int width = 0;
+            unsigned int height = 0;
+            std::vector<char> data;
+        };
+
     private:
         unsigned int m_height = 0;
         unsigned int m_width = 0;
-        unsigned int m_mipMapCount = 0;
         unsigned int m_fourCC = 0;
-        char *m_buffer = nullptr;
+
+        std::vector<MipMap> m_mipMaps;
+
+        static void readFileType(std::fstream& file);
+        void readHeader(std::fstream& file);
     public:
         explicit DdsFile(std::string_view filename);
-
-        ~DdsFile();
 
         [[nodiscard]] unsigned int getFormat() const;
 
@@ -28,7 +39,7 @@ namespace cc::System {
 
         [[nodiscard]] unsigned int getMipMapCount() const;
 
-        [[nodiscard]] const char *getBuffer() const;
+        [[nodiscard]] const MipMap& getMipMap(unsigned int index);
     };
 }
 
