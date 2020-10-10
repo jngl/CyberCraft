@@ -52,7 +52,7 @@ namespace ccCore {
     {
         if(cond)return;
 
-        std::cout << module << "assert error in "<< module << " : " ;
+        std::cout<< "[" << module << "] assert error in "<< module << " : " ;
 
         log2(args...) ;
 

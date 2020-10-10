@@ -5,6 +5,8 @@
 #ifndef CYBERCRAFT_COMMON_H
 #define CYBERCRAFT_COMMON_H
 
+#include "Core/Common.h"
+
 namespace cc::System {
 
 }

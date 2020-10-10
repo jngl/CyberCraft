@@ -3,6 +3,8 @@
 #include <Core/Debug.h>
 #include "System/filesystem.hpp"
 
+#include "DdsFile.h"
+
 #include <cstring>
 #include <cstdint>
 
@@ -19,57 +21,26 @@ namespace cc::System {
 #define glCheck(call) (call)
 #endif
 
-    void glCheckError(const std::string &file, unsigned int line) {
-        // Get the last error
-        GLenum errorCode = glGetError();
-
-        if (errorCode != GL_NO_ERROR) {
-            std::string error = "unknown error";
-            std::string description = "no description";
-
-            // Decode the error code
-            switch (errorCode) {
-                case GL_INVALID_ENUM : {
-                    error = "GL_INVALID_ENUM";
-                    description = "an unacceptable value has been specified for an enumerated argument";
-                    break;
-                }
-
-                case GL_INVALID_VALUE : {
-                    error = "GL_INVALID_VALUE";
-                    description = "a numeric argument is out of range";
-                    break;
-                }
-
-                case GL_INVALID_OPERATION : {
-                    error = "GL_INVALID_OPERATION";
-                    description = "the specified operation is not allowed in the current state";
-                    break;
-                }
-
-                case GL_OUT_OF_MEMORY : {
-                    error = "GL_OUT_OF_MEMORY";
-                    description = "there is not enough memory left to execute the command";
-                    break;
-                }
-
-                case GL_INVALID_FRAMEBUFFER_OPERATION : {
-                    error = "GL_INVALID_FRAMEBUFFER_OPERATION_EXT";
-                    description = "the object bound to FRAMEBUFFER_BINDING_EXT is not \"framebuffer complete\"";
-                    break;
-                }
-
-                default: {
-                    error = "unknown";
-                    description= "unknown";
-                    break;
-                }
-
-            }
-
-            ccCore::check("glCheck", false, "An internal OpenGL call failed in ", file, " ( ", line, " ) : ", error,
-                          ", ", description);
+    std::string_view getGlErrorMessage(GLenum errorCode){
+        switch (errorCode) {
+            case GL_INVALID_ENUM :
+                return "GL_INVALID_ENUM : an unacceptable value has been specified for an enumerated argument";
+            case GL_INVALID_VALUE :
+                return "GL_INVALID_VALUE : a numeric argument is out of range";
+            case GL_INVALID_OPERATION :
+                return "GL_INVALID_OPERATION : the specified operation is not allowed in the current state";
+            case GL_OUT_OF_MEMORY :
+                return "GL_OUT_OF_MEMORY : there is not enough memory left to execute the command";
+            case GL_INVALID_FRAMEBUFFER_OPERATION :
+                return "GL_INVALID_FRAMEBUFFER_OPERATION_EXT : the object bound to FRAMEBUFFER_BINDING_EXT is not \"framebuffer complete\"";
+            default:
+                return "unknown";
         }
+    }
+
+    void glCheckError(const std::string &file, unsigned int line) {
+        GLenum errorCode = glGetError();
+        ccCore::check("glCheck", errorCode == GL_NO_ERROR, "An internal OpenGL call failed in ", file, " ( ", line, " ) : ", getGlErrorMessage(errorCode) );
     }
 
     /********************************************************
@@ -80,112 +51,18 @@ namespace cc::System {
         explicit Texture(std::string_view filename);
         ~Texture() { glDeleteTextures(1, &mId); }
 
-        void load();
-
         [[nodiscard]] unsigned int getId() const { return mId; }
 
     private:
         GLuint mId = 0;
-
-        static constexpr unsigned int FOURCC_DXT1 = 0x31545844;
-        static constexpr unsigned int FOURCC_DXT3 = 0x33545844;
-        static constexpr unsigned int FOURCC_DXT5 = 0x35545844;
-    };
-
-    // dds file format
-    union DDS_header {
-        struct {
-            //uint32_t dwMagic;
-            uint32_t dwSize;
-            uint32_t dwFlags;
-            uint32_t dwHeight;
-            uint32_t dwWidth;
-            uint32_t dwPitchOrLinearSize;
-            uint32_t dwDepth;
-            uint32_t dwMipMapCount;
-            uint32_t dwReserved1[11];
-
-            //  DDPIXELFORMAT
-            struct {
-                uint32_t dwSize;
-                uint32_t dwFlags;
-                uint32_t dwFourCC;
-                uint32_t dwRGBBitCount;
-                uint32_t dwRBitMask;
-                uint32_t dwGBitMask;
-                uint32_t dwBBitMask;
-                uint32_t dwAlphaBitMask;
-            } sPixelFormat;
-
-            //  DDCAPS2
-            struct {
-                uint32_t dwCaps1;
-                uint32_t dwCaps2;
-                uint32_t dwDDSX;
-                uint32_t dwReserved;
-            } sCaps;
-
-            uint32_t dwReserved2;
-        };
-        char data[124];
     };
 
     Texture::Texture(std::string_view filename) {
+        DdsFile ddsFile(filename);
+
         glGenTextures(1, &mId);
 
-        DDS_header header = {0};
-
-        std::string filename2 = getBaseDirectory() +
-                                getGameDirectory() +
-                                getPathSeparator() +
-                                std::string(filename);
-
-        //open file
-        std::fstream file(filename2, std::fstream::in | std::fstream::binary);
-        ccCore::check("Texture", file.is_open(), "error with dds file : \"", filename2, "\"");
-
-        // check file type
-        char fileCode[4];
-        file.read(fileCode, 4);
-        if (strncmp(fileCode, "DDS ", 4) != 0) {
-            file.close();
-            ccCore::check("Texture", false, "error in dds file");
-        }
-
-        /* récupère la description de la surface */
-        file.read(header.data, sizeof(DDS_header));
-
-        unsigned int height = header.dwHeight;
-        unsigned int width = header.dwWidth;
-        unsigned int linearSize = header.dwPitchOrLinearSize;
-        unsigned int mipMapCount = header.dwMipMapCount;
-        unsigned int fourCC = header.sPixelFormat.dwFourCC;
-
-        char *buffer;
-        unsigned int bufferSize;
-        /* quelle va être la taille des données incluant les MIP maps ? */
-        bufferSize = mipMapCount > 1 ? linearSize * 2 : linearSize;
-        buffer = (char *) malloc(bufferSize * sizeof(unsigned char));
-        file.read(buffer, bufferSize);
-        /* fermer le pointeur de fichier */
-        file.close();
-
-        unsigned int components = (fourCC == FOURCC_DXT1) ? 3 : 4;
-        unsigned int format = 0;
-        switch (fourCC) {
-            case FOURCC_DXT1:
-                format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-                break;
-            case FOURCC_DXT3:
-                format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-                break;
-            case FOURCC_DXT5:
-                format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-                break;
-            default:
-                free(buffer);
-                break;
-        }
+        unsigned int format = ddsFile.getFormat();
 
         ccCore::check("Texture", format != 0, "unsupported dds format");
 
@@ -203,18 +80,20 @@ namespace cc::System {
                 (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
         unsigned int offset = 0;
 
+        unsigned int width = ddsFile.getWidth();
+        unsigned int height = ddsFile.getHeight();
+
         /* charge les MIP maps */
-        for (unsigned int level = 0; level < mipMapCount && (width || height);
+        for (unsigned int level = 0; level < ddsFile.getMipMapCount() && (width || height);
              ++level) {
             unsigned int size = ((width + 3) / 4) * ((height + 3) / 4) * blockSize;
             glCheck(glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height,
-                                           0, size, buffer + offset));
+                                           0, size, ddsFile.getBuffer() + offset));
 
             offset += size;
             width /= 2;
             height /= 2;
         }
-        free(buffer);
 
         ccCore::check("Texture", mId != 0, "error with a texture");
     }
