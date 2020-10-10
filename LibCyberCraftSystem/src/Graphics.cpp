@@ -233,15 +233,15 @@ namespace cc::System {
     }
 
 /********************************************************
- * SubMesh
+ * Mesh
 ********************************************************/
-    void SubMesh::beginLoad() {
+    void Mesh::beginLoad() {
         glCheck(glGenVertexArrays(1, &mId));
         glCheck(glBindVertexArray(mId));
     }
 
     void
-    SubMesh::addBuffer(Shader::Location loc, const float *data, unsigned int dataSize, unsigned int size) {
+    Mesh::addBuffer(Shader::Location loc, const float *data, unsigned int dataSize, unsigned int size) {
         GLuint buffer;
         glCheck(glGenBuffers(1, &buffer));
         glCheck(glBindBuffer(GL_ARRAY_BUFFER, buffer));
@@ -251,14 +251,14 @@ namespace cc::System {
         glCheck(glEnableVertexAttribArray(loc));
     }
 
-    void SubMesh::endLoad(Primitives primitives, unsigned int count) {
+    void Mesh::endLoad(Primitives primitives, unsigned int count) {
         mWithIndex = false;
         mPrimitives = primitives;
         mCount = count;
-        ccCore::log("SubMesh", "\tend");
+        ccCore::log("Mesh", "\tend");
     }
 
-    void SubMesh::endLoadWithIndex(Primitives primitives, unsigned int count, const unsigned int *data) {
+    void Mesh::endLoadWithIndex(Primitives primitives, unsigned int count, const unsigned int *data) {
         mWithIndex = true;
         mPrimitives = primitives;
         mCount = count;
@@ -273,7 +273,7 @@ namespace cc::System {
                              GL_STATIC_DRAW));
     }
 
-    void SubMesh::draw() {
+    void Mesh::draw() {
         glCheck(glBindVertexArray(mId));
         if (mWithIndex) {
             glCheck(glDrawElements(/*mPrimitives*/GL_TRIANGLES,
@@ -286,7 +286,7 @@ namespace cc::System {
 
     }
 
-    void SubMesh::unload() {
+    void Mesh::unload() {
         glCheck(glDeleteVertexArrays(1, &mId));
     }
 }

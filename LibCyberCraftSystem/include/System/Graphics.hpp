@@ -55,7 +55,7 @@ namespace cc::System {
         [[nodiscard]] static std::string_view getTypeName(GLenum type);
     };
 
-    class SubMesh {
+    class Mesh {
     public:
         enum Primitives {
             TRIANGLES = GL_TRIANGLES,

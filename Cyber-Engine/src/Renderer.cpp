@@ -116,7 +116,7 @@ namespace Renderer {
     cc::System::Shader::Location noLightShaderMVP;
     cc::System::Shader::Location defaultNoTextureShaderMVP;
 
-    cc::System::SubMesh spriteMesh;
+    cc::System::Mesh spriteMesh;
 
     float ratio;
 
@@ -149,7 +149,7 @@ namespace Renderer {
 
     struct Model {
         std::string nom;
-        std::vector<cc::System::SubMesh> subMeshs;
+        std::vector<cc::System::Mesh> subMeshs;
         std::vector<Material_handle> materials;
     };
 
@@ -197,7 +197,7 @@ namespace Renderer {
                              sizeof(spriteVertices), 3);
         spriteMesh.addBuffer(1, spriteTexCoord,
                              sizeof(spriteTexCoord), 2);
-        spriteMesh.endLoadWithIndex(cc::System::SubMesh::TRIANGLES, spriteNbFaces * 3,
+        spriteMesh.endLoadWithIndex(cc::System::Mesh::TRIANGLES, spriteNbFaces * 3,
                                     spriteFaces);
     }
 
@@ -252,9 +252,9 @@ namespace Renderer {
                     Material_handle material) {
         model->materials.push_back(material);
 
-        model->subMeshs.push_back(cc::System::SubMesh());
+        model->subMeshs.push_back(cc::System::Mesh());
 
-        cc::System::SubMesh &subMesh = model->subMeshs.back();
+        cc::System::Mesh &subMesh = model->subMeshs.back();
 
         if (material->texture == nullptr) {
             subMesh.beginLoad();
@@ -262,7 +262,7 @@ namespace Renderer {
                               nbVertices * sizeof(float) * 3, 3);
             subMesh.addBuffer(2, normals,
                               nbVertices * sizeof(float) * 3, 3);
-            subMesh.endLoadWithIndex(cc::System::SubMesh::TRIANGLES, nbFaces * 3,
+            subMesh.endLoadWithIndex(cc::System::Mesh::TRIANGLES, nbFaces * 3,
                                      faces);
         } else {
             subMesh.beginLoad();
@@ -272,7 +272,7 @@ namespace Renderer {
                               nbVertices * sizeof(float) * 2, 2);
             subMesh.addBuffer(2, normals,
                               nbVertices * sizeof(float) * 3, 3);
-            subMesh.endLoadWithIndex(cc::System::SubMesh::TRIANGLES, nbFaces * 3,
+            subMesh.endLoadWithIndex(cc::System::Mesh::TRIANGLES, nbFaces * 3,
                                      faces);
         }
     }
