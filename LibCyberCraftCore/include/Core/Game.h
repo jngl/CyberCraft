@@ -8,8 +8,8 @@
 namespace ccCore {
     class Game {
     public:
+        virtual ~Game() = default;
         virtual void update() = 0;
-
         virtual void draw() = 0;
     };
 }

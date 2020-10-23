@@ -60,8 +60,8 @@ CyberCraft::CyberCraft(ccCore::RenderContext& renderContext):
         }else if(tile == ' ') {
             bloc = &getBlocInfo("Grass");
         }else if(tile == 'P'){
-            player.pos.x = x;
-            player.pos.y = y;
+            player.pos.x = static_cast<float>(x);
+            player.pos.y = static_cast<float>(y);
             bloc = &getBlocInfo("Grass");
         }
     });

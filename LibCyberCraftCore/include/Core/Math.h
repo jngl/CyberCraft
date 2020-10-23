@@ -272,13 +272,13 @@ namespace ccCore{
             return *this;
         }
 
-        constexpr void projectOrthographic(float left, float right, float bottom, float top,
-                                 float pNear, float pFar) {
+        constexpr void projectOrthographic(T left, T right, T bottom, T top,
+                                 T pNear, T pFar) {
             setIdentity();
 
-            float XD = right - left;
-            float YD = top - bottom;
-            float ZD = pFar - pNear;
+            T XD = right - left;
+            T YD = top - bottom;
+            T ZD = pFar - pNear;
 
             m[0][0] = 2.0f / XD;
             m[1][1] = 2.0f / YD;
@@ -289,8 +289,8 @@ namespace ccCore{
             m[3][2] = -(pFar + pNear) / ZD;
         }
 
-        constexpr void projectPerspective(float pFOV, float pAspectRatio, float pNear, float pFar) {
-            T tanThetaOver2 = static_cast<float>(tan(pFOV * (M_PI / 360.0)));
+        constexpr void projectPerspective(T pFOV, T pAspectRatio, T pNear, T pFar) {
+            T tanThetaOver2 = static_cast<T>(tan(pFOV * (M_PI / 360.0)));
             setIdentity();
 
             // X and Y scaling
@@ -342,15 +342,15 @@ namespace ccCore{
             addScale(Vector3<T>{x, y, z});
         }
 
-        constexpr void setRotation(float flAngle, const Vector3<T> &v) {
+        constexpr void setRotation(T flAngle, const Vector3<T> &v) {
             setIdentity();
-            float x = v.x;
-            float y = v.y;
-            float z = v.z;
+            T x = v.x;
+            T y = v.y;
+            T z = v.z;
 
-            float c = cos(flAngle);
-            float s = sin(flAngle);
-            float t = 1 - c;
+            T c = cos(flAngle);
+            T s = sin(flAngle);
+            T t = 1 - c;
 
             m[0][0] = x * x * t + c;
             m[1][0] = x * y * t - z * s;

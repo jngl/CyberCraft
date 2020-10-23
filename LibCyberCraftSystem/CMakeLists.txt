@@ -9,8 +9,9 @@ add_library(LibCyberCraftSystem
 target_include_directories(LibCyberCraftSystem PUBLIC include)
 target_link_libraries(LibCyberCraftSystem
         LibCyberCraftCore
-        ${SDL2_LIBRARY}
+        CONAN_PKG::sdl2
         Glad
         Imgui
-        ${CMAKE_DL_LIBS})
+        ${CMAKE_DL_LIBS}
+        sndio)
 

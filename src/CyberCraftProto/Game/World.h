@@ -17,7 +17,7 @@ public:
 
     constexpr World():
     m_blocs(){
-        forEach([](int x, int y, const BlocInfo*& bloc){
+        forEach([](int /*x*/, int /*y*/, const BlocInfo*& bloc){
             bloc = nullptr;
         });
     }
@@ -34,14 +34,14 @@ public:
         if(x<0 || x>=sizeX || y<0 || y>=sizeY){
             throw ccCore::Error("out of bound");
         }
-        return m_blocs[y*sizeX+x];
+        return m_blocs[static_cast<size_t>(y*sizeX+x)];
     }
 
     [[nodiscard]] constexpr const BlocInfo* getBloc(int x, int y) const {
         if(x<0 || x>=sizeX || y<0 || y>=sizeY){
             throw ccCore::Error("out of bound");
         }
-        return m_blocs[y*sizeX+x];
+        return m_blocs[static_cast<size_t>(y*sizeX+x)];
     }
 
     template<class Func>
