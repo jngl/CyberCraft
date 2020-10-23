@@ -1,7 +1,10 @@
 #pragma once
 
+#include <System/GraphicsData.h>
+
 #include <Core/Math.h>
 #include "System/Common.h"
+#include <Core/Id.h>
 
 #include "glad/glad.h"
 
@@ -12,6 +15,25 @@
 
 namespace cc::System {
     class Texture;
+    class Shader;
+
+    class MeshBuilder;
+    class ShaderBuilder;
+
+    struct TextureId : public ccCore::Id {};
+    struct MeshId : public ccCore::Id {};
+    struct ShaderId : public ccCore::Id {};
+
+    struct DrawCommand {
+        ShaderId shader;
+        MeshId mesh;
+        ccCore::Matrix4f transform;
+    };
+
+    class DrawCommandList {
+    public:
+        void add(DrawCommand cmd);
+    };
 
     class GraphicsContext
     {
@@ -20,7 +42,19 @@ namespace cc::System {
 
         std::shared_ptr<Texture> loadTexture(std::string_view filename);
 
-        void set(const std::shared_ptr<Texture> &texture);
+        void setCurrentTexture(const std::shared_ptr<Texture> &texture);
+        [[nodiscard]]std::weak_ptr<Texture> getCurrentTexture();
+
+        TextureId loadTexture(const TextureData& builder);
+        void unloadTexture(TextureId id);
+
+        MeshId loadMesh(const MeshBuilder& builder);
+        void unloadMesh(MeshId mesh);
+
+        ShaderId loadShader(const ShaderBuilder& builder);
+        void unloadShader(std::unique_ptr<Shader> shader);
+
+        void draw(DrawCommandList& cmdList);
 
     private:
         std::unordered_map<std::string, std::weak_ptr<Texture>> m_textures;
@@ -55,7 +89,7 @@ namespace cc::System {
         [[nodiscard]] static std::string_view getTypeName(GLenum type);
     };
 
-    class Mesh {
+    class  Mesh {
     public:
         enum Primitives {
             TRIANGLES = GL_TRIANGLES,

@@ -103,6 +103,11 @@ namespace ccCore{
         constexpr Vector2<T2> toVector(){
             return Vector2<T2>{static_cast<T2>(x), static_cast<T2>(y)};
         }
+
+        constexpr void set(T p_x, T p_y){
+            x = p_x;
+            y = p_y;
+        }
     };
 
     typedef Vector2<float> Vector2f;

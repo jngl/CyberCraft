@@ -306,7 +306,7 @@ namespace Renderer {
                             defaultShader.set();
                             defaultShader.setMatrixInput(defaultShaderMVP, MVP);
 
-                            g_graphicsContext->set(model->materials[i]->texture);
+                            g_graphicsContext->setCurrentTexture(model->materials[i]->texture);
                         }
                         model->subMeshs[i].draw();
                     }
@@ -398,7 +398,7 @@ namespace Renderer {
         noLightShader.set();
         noLightShader.setMatrixInput(noLightShaderMVP, MVP);
 
-        g_graphicsContext->set(handle->mTexture);
+        g_graphicsContext->setCurrentTexture(handle->mTexture);
 
         spriteMesh.draw();
     }

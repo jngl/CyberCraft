@@ -1,12 +1,8 @@
 #include "System/Graphics.hpp"
 
 #include <Core/Debug.h>
-#include "System/filesystem.hpp"
 
 #include "DdsFile.h"
-
-#include <cstring>
-#include <cstdint>
 
 namespace cc::System {
 
@@ -41,6 +37,7 @@ namespace cc::System {
     void glCheckError(const std::string &file, unsigned int line) {
         GLenum errorCode = glGetError();
         ccCore::check("glCheck", errorCode == GL_NO_ERROR, "An internal OpenGL call failed in ", file, " ( ", line, " ) : ", getGlErrorMessage(errorCode) );
+        //std::cout<<"An internal OpenGL call failed in "<<file<<" ( "<<line<<" ) : "<<getGlErrorMessage(errorCode);
     }
 
     /********************************************************
@@ -58,7 +55,7 @@ namespace cc::System {
     };
 
     Texture::Texture(std::string_view filename) {
-        DdsFile ddsFile(filename);
+        TextureData data = readDdsFile(filename);
 
         glGenTextures(1, &mId);
 
@@ -68,14 +65,22 @@ namespace cc::System {
         glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
                                 GL_LINEAR_MIPMAP_LINEAR));
 
-        unsigned int format = ddsFile.getFormat();
-        ccCore::check("Texture", format != 0, "unsupported dds format");
-        
-        for (unsigned int level = 0; level < ddsFile.getMipMapCount(); ++level) {
-            auto mipMap = ddsFile.getMipMap(level);
-            glCheck(glCompressedTexImage2D(GL_TEXTURE_2D, level, format, mipMap.width, mipMap.height,
-                                           0, mipMap.data.size(), mipMap.data.data()));
+        unsigned int format = 0;
+        switch (data.format) {
+            case TextureFormat::DXT1:
+                format =  GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+            case TextureFormat::DXT3:
+                format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+            case TextureFormat::DXT5:
+                format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+        }
+        ccCore::check("Texture", format != 0, "invalid format");
 
+        int level = 0;
+        for(const auto& mipMap : data.mipmaps){
+            glCheck(glCompressedTexImage2D(GL_TEXTURE_2D, level, format, mipMap.size.x, mipMap.size.y,
+                                           0, mipMap.data.size(), mipMap.data.data()));
+            level++;
         }
 
         ccCore::check("Texture", mId != 0, "error with a texture");
@@ -109,10 +114,14 @@ namespace cc::System {
         return texture;
     }
 
-    void GraphicsContext::set(const std::shared_ptr<Texture> &texture) {
+    void GraphicsContext::setCurrentTexture(const std::shared_ptr<Texture> &texture) {
         glCheck(glActiveTexture(GL_TEXTURE0));
         glCheck(glBindTexture(GL_TEXTURE_2D, texture->getId()));
         m_current_texture = texture;
+    }
+
+    std::weak_ptr<Texture> GraphicsContext::getCurrentTexture() {
+        return m_current_texture;
     }
 
 /********************************************************
