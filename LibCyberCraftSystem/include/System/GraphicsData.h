@@ -1,0 +1,8 @@
+//
+// Created by jngl on 17/10/2020.
+//
+
+#ifndef CYBERCRAFT_GRAPHICSDATA_H
+#define CYBERCRAFT_GRAPHICSDATA_H
+
+#endif //CYBERCRAFT_GRAPHICSDATA_H
