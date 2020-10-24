@@ -26,7 +26,7 @@ jobs:
       shell: bash
       run: |
         sudo apt-get update -y -qq
-        sudo apt-get install libsdl2-dev libsfml-dev
+        sudo apt-get install libsdl2-dev libsfml-dev ccache
 
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
