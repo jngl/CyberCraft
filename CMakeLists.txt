@@ -58,17 +58,7 @@ if(ENABLE_PCH)
     <utility>)
 endif()
 
-# Set up some extra Conan dependencies based on our needs before loading Conan
-set(CONAN_EXTRA_REQUIRES "")
-set(CONAN_EXTRA_OPTIONS "")
-
-# SDL2
-set(CONAN_EXTRA_REQUIRES ${CONAN_EXTRA_REQUIRES} sdl2/2.0.10@bincrafters/stable)
-# set(CONAN_EXTRA_OPTIONS ${CONAN_EXTRA_OPTIONS} sdl2:wayland=True)
-
-
-include(cmake/Conan.cmake)
-run_conan()
+include(FindPkgConfig)
 
 if(ENABLE_TESTING)
   enable_testing()
