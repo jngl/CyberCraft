@@ -21,6 +21,8 @@ namespace ccCore {
     class BTreePlusNode {
     public:
         using ThisType = BTreePlusNode<Key, Data, MaxSize>;
+        
+        virtual ~BTreePlusNode() = default;
 
         virtual void debugPrint(int nbTab) const = 0;
 
@@ -43,7 +45,7 @@ namespace ccCore {
         using ParentType = BTreePlusNode<Key, Data, MaxSize>;
 
         void debugPrint(int nbTab) const override {
-            for (int i = 0; i < m_size; ++i) {
+            for (size_t i = 0; i < m_size; ++i) {
                 printTabs(nbTab);
                 std::cout << m_keys[i] << " : " << m_datas[i] << "\n";
             }
@@ -78,7 +80,7 @@ namespace ccCore {
             if (it == m_keys.end() || *it != key) {
                 throw std::out_of_range("key not found in a BTreePlus");
             }
-            int index = it - m_keys.begin();
+            size_t index = static_cast<size_t>(it - m_keys.begin());
             return m_datas[index];
         }
 
@@ -89,9 +91,9 @@ namespace ccCore {
 
         void insertInLeaf(Key newKey, Data newData) {
             assert(m_size < MaxSize);
-            int index = 0;
+            size_t index = 0;
             for (; index < m_size && m_keys[index] < newKey; ++index);
-            for (int i = m_size - 1; i >= index; --i) {
+            for (size_t i = m_size - 1; i >= index; --i) {
                 m_keys[i + 1] = m_keys[i];
                 m_datas[i + 1] = m_datas[i];
             }
@@ -103,8 +105,8 @@ namespace ccCore {
         std::unique_ptr<ThisType> split() {
             std::unique_ptr<BTreePlusLeaf<Key, Data, MaxSize>> newNode = std::make_unique<BTreePlusLeaf<Key, Data, MaxSize>>();
 
-            int newIndex = 0;
-            int oldIndex = m_size / 2;
+            size_t newIndex = 0;
+            size_t oldIndex = m_size / 2;
             for (; oldIndex < m_size; ++oldIndex, ++newIndex) {
                 newNode->m_keys[newIndex] = m_keys[oldIndex];
                 newNode->m_datas[newIndex] = m_datas[oldIndex];
@@ -127,7 +129,7 @@ namespace ccCore {
         using ParentType = BTreePlusNode<Key, Data, MaxSize>;
 
         void debugPrint(int nbTab) const override {
-            for (int i = 0; i < m_size; ++i) {
+            for (size_t i = 0; i < m_size; ++i) {
                 if (i != 0) {
                     printTabs(nbTab);
                     std::cout << m_keys[i - 1] << "\n";
@@ -137,11 +139,11 @@ namespace ccCore {
         }
 
         std::unique_ptr<ParentType> insert(Key newKey, Data newData) override {
-            int index = findBranch(newKey);
+            size_t index = findBranch(newKey);
             std::unique_ptr<ParentType> newNode = m_children[index]->insert(newKey, newData);
             if (newNode) {
                 assert(m_size < MaxSize);
-                for (int i = m_size; i >= index; --i) {
+                for (size_t i = m_size; i >= index; --i) {
                     m_children[i + 1] = std::move(m_children[i]);
                     m_keys[i] = m_keys[i - 1];
                 }
@@ -181,7 +183,7 @@ namespace ccCore {
             return m_keys[0];
         }
 
-        const Data &get(Key key) const override {
+        const Data &get(Key /*key*/) const override {
             throw std::out_of_range("todo");
         }
 
@@ -190,9 +192,9 @@ namespace ccCore {
         std::array<std::unique_ptr<ParentType>, MaxSize> m_children;
         size_t m_size = 0;
 
-        int findBranch(Key key) const {
-            int result = 0;
-            for (int i = 0; i < m_size - 1; ++i) {
+        size_t findBranch(Key key) const {
+            size_t result = 0;
+            for (size_t i = 0; i < m_size - 1; ++i) {
                 if (m_keys[i] < key) {
                     result = i;
                 } else {
