@@ -6,9 +6,7 @@
 * codecov
 * travis
 * ci.appveyor.com 
-* readme
 * licence
-* dependency with conan
 * clang format
 * clang tidy
 * cmake format
