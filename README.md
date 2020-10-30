@@ -24,13 +24,6 @@
 
 ## Getting Started
 
-## Dependencies
-
-Note about install commands: 
-- for Windows, we use [choco](https://chocolatey.org/install).
-- for MacOS, we use [brew](https://brew.sh/). 
-- In case of an error in cmake, make sure that the dependencies are on the PATH.
-
 ### Necessary Dependencies
 1. A C++ compiler that supports C++17.
 See [cppreference.com](https://en.cppreference.com/w/cpp/compiler_support)
