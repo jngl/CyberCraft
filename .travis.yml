@@ -9,7 +9,7 @@ install:
 jobs:
   include:
     - os: linux
-      dist: bionic
+      dist: focal
       compiler: gcc
       env:
         - GCC_VER="9"
@@ -30,7 +30,7 @@ jobs:
       after_script:
         - bash <(curl -s https://codecov.io/bash) -x /usr/bin/gcov-${GCC_VER}
     - os: linux
-      dist: bionic
+      dist: focal
       compiler: clang
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
