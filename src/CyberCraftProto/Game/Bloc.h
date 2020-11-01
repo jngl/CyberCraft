@@ -182,6 +182,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         }
 };
 
+
 constexpr const BlocInfo& getBlocInfo(std::string_view name){
     const BlocInfo* result = nullptr;
     for(const BlocInfo& blocInfo : g_blocInfoArray){
