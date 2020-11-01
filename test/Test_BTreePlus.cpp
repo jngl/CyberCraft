@@ -10,15 +10,21 @@ TEST_CASE( "BTreePlus", "[BTreePlus]" ) {
     REQUIRE_THROWS_AS( bt.get(0), std::out_of_range);
 
     // first insert
-    bt.insert(1, "1");
+    constexpr const char* firstInsertValueStr = "1";
+    constexpr int firstInsertValueInt = 1;
+
+    bt.insert(firstInsertValueInt, firstInsertValueStr);
 
     REQUIRE( bt.size() == 1 );
-    REQUIRE( bt.get(1) == "1" );
+    REQUIRE( bt.get(firstInsertValueInt) == firstInsertValueStr );
 
     // second insert
-    bt.insert(5, "5");
+    constexpr const char* secondInsertValueStr = "5";
+    constexpr int secondInsertValueInt = 5;
+
+    bt.insert(secondInsertValueInt, secondInsertValueStr);
 
     REQUIRE( bt.size() == 2 );
-    REQUIRE( bt.get(5) == "5" );
+    REQUIRE( bt.get(secondInsertValueInt) == secondInsertValueStr );
 }
 

@@ -8,11 +8,11 @@ namespace Renderer {
     struct Camera;
     struct Sprite;
 
-    typedef Material *Material_handle;
-    typedef std::shared_ptr<cc::System::Texture> Texture_handle;
-    typedef Model *Model_handle;
-    typedef Camera *Camera_handle;
-    typedef Sprite *Sprite_handle;
+    using Material_handle = Material *;
+    using Texture_handle = std::shared_ptr<cc::System::Texture>;
+    using Model_handle = Model *;
+    using Camera_handle = Camera *;
+    using Sprite_handle = Sprite *;
 
     // main
     void createRenderer();
@@ -21,13 +21,13 @@ namespace Renderer {
     void resize(int width, int height);
 
     // material
-    Material_handle createMaterial(Texture_handle tex, std::string name);
+    Material_handle createMaterial(Texture_handle tex, std::string_view name);
     void destroyMaterial(Material_handle handle);
 
     void setWithAlpha(Material_handle handle, bool alpha);
 
     // Model
-    Model_handle createModel(std::string nom);
+    Model_handle createModel(std::string_view nom);
 
     void addSubMesh(Model_handle model, unsigned int nbVertices,
                     const float *vertices, const float *texCoord,
@@ -40,7 +40,7 @@ namespace Renderer {
     void renderAllObject();
 
     struct Object {
-        Object(std::string objectName);
+        Object(std::string_view objectName);
 
         ~Object();
 

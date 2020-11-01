@@ -1,6 +1,16 @@
 #pragma once
 
-constexpr float cubePos[] = {
+#include <array>
+
+constexpr int cubeDimension = 3;
+constexpr int cubeTextureDimension = 3;
+constexpr int cubeNormalDimension = 3;
+constexpr int cubeIndexByTriangle = 3;
+constexpr int cubeNumberOfTriangleByFace = 2;
+constexpr int cubeNumberOfFace = 6;
+constexpr int cubeVertexByFace = 4;
+
+constexpr std::array<float, cubeDimension * cubeVertexByFace * cubeNumberOfFace> cubePos = {
         //top +y
         0.5f, 0.5f, 0.5f,
         0.5f, 0.5f, -0.5f,
@@ -33,7 +43,7 @@ constexpr float cubePos[] = {
         -0.5f, 0.5f, 0.5f
 };
 
-constexpr float cubeTexCoord[] = {
+constexpr std::array<float, cubeTextureDimension * cubeVertexByFace * cubeNumberOfFace> cubeTexCoord = {
         //top +y
         0.f, 0.f,
         0.f, 1.f,
@@ -66,7 +76,7 @@ constexpr float cubeTexCoord[] = {
         1.f, 0.f,
 };
 
-constexpr float cubeNormal[] = {
+constexpr std::array<float, cubeNormalDimension * cubeVertexByFace * cubeNumberOfFace> cubeNormal = {
         //top +y
         0.f, 1.f, 0.f,
         0.f, 1.f, 0.f,
@@ -99,7 +109,7 @@ constexpr float cubeNormal[] = {
         0.f, 0.f, 1.f
 };
 
-constexpr unsigned int cubeIndex[] = {
+constexpr std::array<unsigned int, cubeIndexByTriangle * cubeNumberOfTriangleByFace * cubeNumberOfFace> cubeIndex = {
         //top +y
         0, 1, 2,
         0, 2, 3,
@@ -120,5 +130,3 @@ constexpr unsigned int cubeIndex[] = {
         20, 22, 23
 };
 
-constexpr unsigned int cubeVerticesSize = 24;
-constexpr unsigned int cubeIndexSize = 36;

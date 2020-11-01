@@ -10,7 +10,7 @@ BoxelCamera::BoxelCamera() :
     mRendererCamera = Renderer::createCamera();
     Renderer::setActiveCamera(mRendererCamera);
 
-    mDist = 60.f;
+    mDist = defaultDist;
 }
 
 void BoxelCamera::addAction(cc::System::Window &window) {

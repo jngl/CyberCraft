@@ -11,17 +11,32 @@
 #include <memory>
 #include <set>
 #include <vector>
+#include <algorithm>
 
 /********************************************************
  * Sprite Mesh Data
 ********************************************************/
 
-unsigned int spriteNbVertices = 4;
-const float spriteVertices[] = {0.f, 0.f, 0.f, 0.f, 1.f, 0.f,
-                                1.f, 1.f, 0.f, 1.f, 0.f, 0.f};
-const float spriteTexCoord[] = {0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f, 0.f};
-unsigned int spriteNbFaces = 2;
-const unsigned int spriteFaces[] = {0, 1, 2, 0, 2, 3};
+constexpr unsigned int spriteVerticesNumber = 4;
+constexpr unsigned int spriteVerticesDimension = 4;
+constexpr unsigned int spriteVerticesTextureDimension = 4;
+constexpr unsigned int spriteFacesNumber = 2;
+
+constexpr std::array<float, spriteVerticesNumber*spriteVerticesDimension> spriteVertices =
+        {0.f, 0.f, 0.f,
+         0.f, 1.f, 0.f,
+         1.f, 1.f, 0.f,
+         1.f, 0.f, 0.f};
+
+constexpr std::array<float, spriteVerticesNumber*spriteVerticesTextureDimension> spriteTexCoord =
+        {0.f, 0.f,
+         0.f, 1.f,
+         1.f, 1.f,
+         1.f, 0.f};
+
+
+constexpr std::array<unsigned int, spriteFacesNumber*3> spriteFaces = {0, 1, 2, 0, 2, 3};
+
 
 /********************************************************
  * Shaders sources
@@ -122,11 +137,15 @@ namespace Renderer {
 
     struct Material {
         Texture_handle texture;
-        bool withAlpha;
+        bool withAlpha = false;
         std::string name;
     };
 
     struct Camera {
+        static constexpr float fov = 45.f;
+        static constexpr float near = 0.1f;
+        static constexpr float far = 1000.f;
+
         ccCore::Matrix4f mViewMatrix;
         bool perspective = true;
 
@@ -134,17 +153,17 @@ namespace Renderer {
             ccCore::Matrix4f proj;
 
             if (perspective) {
-                proj.projectPerspective(45, ratio, 0.1f, 1000);
+                proj.projectPerspective(fov, ratio, near, far);
             } else {
                 const float zoom = 10.f;
-                proj.projectOrthographic(-zoom, zoom, -zoom, zoom, -1000, 1000);
+                proj.projectOrthographic(-zoom, zoom, -zoom, zoom, -far, far);
             }
 
             return proj;
         }
     };
 
-    std::set<Camera *> cameraArray;
+    std::vector<std::unique_ptr<Camera>> cameraArray;
     Camera_handle activeCamera;
 
     struct Model {
@@ -193,12 +212,12 @@ namespace Renderer {
 
         // sprite mesh
         spriteMesh.beginLoad();
-        spriteMesh.addBuffer(0, spriteVertices,
+        spriteMesh.addBuffer(0, spriteVertices.data(),
                              sizeof(spriteVertices), 3);
-        spriteMesh.addBuffer(1, spriteTexCoord,
+        spriteMesh.addBuffer(1, spriteTexCoord.data(),
                              sizeof(spriteTexCoord), 2);
-        spriteMesh.endLoadWithIndex(cc::System::Mesh::TRIANGLES, spriteNbFaces * 3,
-                                    spriteFaces);
+        spriteMesh.endLoadWithIndex(cc::System::Mesh::TRIANGLES, spriteFacesNumber * 3,
+                                    spriteFaces.data());
     }
 
     void destroyRenderer() {
@@ -213,12 +232,13 @@ namespace Renderer {
 /********************************************************
  * Material
 ********************************************************/
-    ccCore::PoolAllocator<Material, 100> MaterialPool;
+    constexpr int maxNumberOfMaterial = 100;
+    ccCore::PoolAllocator<Material, maxNumberOfMaterial> MaterialPool;
 
-    Material_handle createMaterial(Texture_handle tex, std::string name) {
+    Material_handle createMaterial(Texture_handle tex, std::string_view name) {
         ccCore::log("Renderer", "create materia \"", name, "\"");
         Material_handle result = MaterialPool.create();
-        result->texture = tex;
+        result->texture = std::move(tex);
         result->withAlpha = false;
         result->name = name;
         return result;
@@ -233,9 +253,10 @@ namespace Renderer {
 /********************************************************
  * Models
 ********************************************************/
-    ccCore::PoolAllocator<Model, 100> ModelPool;
+    constexpr int MaxNumberOfModel = 100;
+    ccCore::PoolAllocator<Model, MaxNumberOfModel> ModelPool;
 
-    Model_handle createModel(std::string nom) {
+    Model_handle createModel(std::string_view nom) {
         ccCore::log("Renderer", "create model \"", nom, "\"");
         Model_handle result = ModelPool.create();
         result->nom = nom;
@@ -252,7 +273,7 @@ namespace Renderer {
                     Material_handle material) {
         model->materials.push_back(material);
 
-        model->subMeshs.push_back(cc::System::Mesh());
+        model->subMeshs.emplace_back();
 
         cc::System::Mesh &subMesh = model->subMeshs.back();
 
@@ -279,8 +300,8 @@ namespace Renderer {
 
     void destroyModel(Model_handle handle) {
         ccCore::log("Renderer", "destroy model \"", handle->nom, "\"");
-        for (std::size_t i(0); i < handle->subMeshs.size(); ++i) {
-            handle->subMeshs[i].unload();
+        for(auto& mesh: handle->subMeshs){
+            mesh.unload();
         }
         ModelPool.destroy(handle);
     }
@@ -293,7 +314,7 @@ namespace Renderer {
     void renderAllObject2(bool alpha) {
         for (Object *object : objectArray) {
             ccCore::Matrix4f VP = activeCamera->getProjectionMatrix() * activeCamera->mViewMatrix;
-            if (object->model) {
+            if (object->model != nullptr) {
                 ccCore::Matrix4f MVP = VP * object->matrix;
 
                 Model_handle model = object->model;
@@ -320,7 +341,7 @@ namespace Renderer {
         renderAllObject2(true);
     }
 
-    Object::Object(std::string objectName) :
+    Object::Object(std::string_view objectName) :
             model(nullptr),
             name(objectName) {
         ccCore::log("Renderer", "create object \"", name, "\"");
@@ -350,13 +371,19 @@ namespace Renderer {
 ********************************************************/
     Camera_handle createCamera() {
         ccCore::log("Renderer", "create camera");
-        Camera_handle result = new Camera;
+        auto newCamera = std::make_unique<Camera>();
+        Camera_handle result = newCamera.get();
         result->perspective = true;
-        cameraArray.insert(result);
+        cameraArray.push_back(std::move(newCamera));
         return result;
     }
 
-    void destroyCamera(Camera_handle handle) { cameraArray.erase(handle); }
+    void destroyCamera(Camera_handle handle) {
+        auto it = std::find_if(cameraArray.begin(), cameraArray.end(), [handle](const std::unique_ptr<Camera>& cam){
+            return cam.get() == handle;
+        });
+        cameraArray.erase(it);
+    }
 
     ccCore::Matrix4f &getCameraViewMatrixRef(Camera_handle handle) {
         return handle->mViewMatrix;
@@ -375,13 +402,14 @@ namespace Renderer {
 /********************************************************
  * Sprites
 ********************************************************/
-    ccCore::PoolAllocator<Sprite, 1000> SpritePool;
+    constexpr int MaxNumberOfSprite = 1000;
+    ccCore::PoolAllocator<Sprite, MaxNumberOfSprite> SpritePool;
 
     Sprite_handle createSprite(Texture_handle handle) {
         ccCore::log("Renderer", "create sprite");
         Sprite_handle result = SpritePool.create();
         result->mMatrix.setIdentity();
-        result->mTexture = handle;
+        result->mTexture = std::move(handle);
         return result;
     }
 

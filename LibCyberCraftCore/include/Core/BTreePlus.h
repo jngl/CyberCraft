@@ -95,7 +95,7 @@ namespace ccCore {
         std::array<Data, MaxSize> m_datas;
         size_t m_size = 0;
 
-        void insertInLeaf(Key newKey, Data newData) {
+        void insertInLeaf(Key newKey, const Data& newData) {
             assert(m_size < MaxSize);
             size_t index = 0;
             for (; index < m_size && m_keys[index] < newKey; ++index) {}

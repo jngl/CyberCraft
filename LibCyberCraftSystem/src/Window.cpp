@@ -17,6 +17,11 @@ void pre_gl_call(const char *name, void *funcptr, int len_args, ...) {
 }
 #endif
 
+constexpr int glMajorVersion = 3;
+constexpr int glMinorVersion = 2;
+constexpr int doubleBuffer = 1;
+constexpr int depthSize = 24;
+
 namespace cc::System {
     Window::Window(int width, int height) :
             mOpen(true),
@@ -27,16 +32,16 @@ namespace cc::System {
         ccCore::check("Window", error == 0, "SDL_Init Error: ", SDL_GetError());
 
         // OpenGL 3.2
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, glMajorVersion);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, glMinorVersion);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
         // Double Buffer
-        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, doubleBuffer);
+        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, depthSize);
 
         //sdl window
-        mWindow = SDL_CreateWindow("Cyber engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
+        mWindow = SDL_CreateWindow("Cyber engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,  // NOLINT
                                    SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
         ccCore::check("Window", mWindow != nullptr, "SDL_CreateWindow Error: ", SDL_GetError());
 
@@ -47,7 +52,7 @@ namespace cc::System {
         SDL_GL_MakeCurrent(mWindow, mGLContext);
 
         //glad
-        ccCore::check("Window", gladLoadGL(), "Something went wrong with glad");
+        ccCore::check("Window", gladLoadGL() != 0, "Something went wrong with glad");
 
 #ifdef GLAD_DEBUG
         // before every opengl call call pre_gl_call
@@ -85,7 +90,7 @@ namespace cc::System {
     void Window::beginFrame() {
         //Event Polling
         SDL_Event e;
-        while (SDL_PollEvent(&e)) {
+        while (SDL_PollEvent(&e) != 0) {
             if (!ImGui_ImplSdlGL3_ProcessEvent(&e)) {
                 switch (e.type) {
                     case SDL_KEYDOWN:
@@ -130,7 +135,7 @@ namespace cc::System {
     }
 
     void Window::updateAction(SDL_Scancode key, bool press) {
-        ActionMap::iterator it = mActions.find(key);
+        auto it = mActions.find(key);
         if (it != mActions.end()) {
             Action &a = it->second;
             if (a.onPress) {
@@ -144,6 +149,6 @@ namespace cc::System {
 
     void Window::clear() {
         ImGui_ImplSdlGL3_NewFrame(mWindow);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // NOLINT
     }
 }

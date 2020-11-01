@@ -11,8 +11,11 @@
 
 class Application {
 public:
+    static constexpr int DefaultWindowSizeX = 1024;
+    static constexpr int DefaultWindowSizeY = 768;
+
     Application(){
-        mWindow = std::make_unique<cc::System::Window>(1024, 768);
+        mWindow = std::make_unique<cc::System::Window>(DefaultWindowSizeX, DefaultWindowSizeY);
         mWindow->addAction(SDL_SCANCODE_F3, &mShowInfoWindow, false);
 
         Renderer::createRenderer();
@@ -20,6 +23,11 @@ public:
         changeScene("Boxel");
         mScene->addAction(*mWindow);
     }
+
+    Application(const Application&) = delete;
+    Application(Application&&) = delete;
+    Application& operator=(const Application&) = delete;
+    Application& operator=(Application&&) = delete;
 
     ~Application() {
         mScene = nullptr;
@@ -41,15 +49,11 @@ private:
     float mFrameTime = 0;
     bool mShowTestWindow = false;
     bool mShowInfoWindow = false;
-    char mCommandText[mMaxInputSize] = "";
+    std::array<char, mMaxInputSize> mCommandText = {0};
     std::string mConsoleText;
 
-    void changeScene(std::string_view name) {
-        if (name == "Boxel") {
-            mScene = std::make_unique<BoxelScene>();
-        } else {
-            mScene = std::make_unique<BoxelScene>();
-        }
+    void changeScene(std::string_view /*name*/) {
+        mScene = std::make_unique<BoxelScene>();
     }
 
     void frame() {
@@ -58,7 +62,8 @@ private:
 
         mWindow->beginFrame();
 
-        int width, height;
+        int width = 0;
+        int height = 0;
         if (mWindow->getSize(&width, &height)) {
             Renderer::resize(width, height);
         }
@@ -66,16 +71,20 @@ private:
         mWindow->clear();
 
         if (mShowInfoWindow) {
-            ImGui::SetNextWindowSize(ImVec2(400, 100), ImGuiSetCond_FirstUseEver);
+            constexpr int showInfoSizeX = 400;
+            constexpr int showInfoSizeY = 100;
+            ImGui::SetNextWindowSize(ImVec2(showInfoSizeX, showInfoSizeY), ImGuiSetCond_FirstUseEver);
             ImGui::Begin("Info", &mShowInfoWindow);
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
-                        1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-            if (ImGui::Button("Test Window"))
+            constexpr float OneSecondInMillisecond = 1000.f;
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", // NOLINT
+                        OneSecondInMillisecond / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            if (ImGui::Button("Test Window")) {
                 mShowTestWindow = !mShowTestWindow;
+            }
 
-            ImGui::Text("%s", mConsoleText.c_str());
+            ImGui::Text("%s", mConsoleText.c_str()); // NOLINT
 
-            ImGui::InputText("command", mCommandText, mMaxInputSize);
+            ImGui::InputText("command", mCommandText.data(), mMaxInputSize);
             if (ImGui::Button("exec")) {
                 runCommand();
             }
@@ -84,7 +93,9 @@ private:
         }
 
         if (mShowTestWindow) {
-            ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
+            constexpr int testWindowSizeX = 650;
+            constexpr int testWindowSizeY = 200;
+            ImGui::SetNextWindowPos(ImVec2(testWindowSizeX, testWindowSizeY), ImGuiSetCond_FirstUseEver);
             ImGui::ShowTestWindow(&mShowTestWindow);
         }
 
@@ -97,10 +108,10 @@ private:
     }
 
     void runCommand() {
-        ccCore::log("Main", "run command : ", mCommandText);
+        ccCore::log("Main", "run command : ", mCommandText.data());
 
-        std::string command = mCommandText;
-        memset(mCommandText, 0, mMaxInputSize);
+        std::string command = mCommandText.data();
+        memset(mCommandText.data(), 0, mMaxInputSize);
 
         if (command == "exit") {
             mWindow->close();

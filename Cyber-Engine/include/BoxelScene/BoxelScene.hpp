@@ -7,7 +7,7 @@
 
 class BoxelMap {
 public:
-    typedef std::size_t BlockId;
+    using BlockId = std::size_t;
 
     static constexpr std::size_t mNbBlock = 7;
     static constexpr std::size_t mSizeX = 200;
@@ -29,6 +29,12 @@ public:
     };
 
     BoxelMap() = default;
+
+    BoxelMap(const BoxelMap&) = delete;
+    BoxelMap(BoxelMap&&) = delete;
+    BoxelMap& operator=(const BoxelMap&) = delete;
+    BoxelMap& operator=(BoxelMap&&) = delete;
+
     ~BoxelMap() = default;
 
     void generate();
@@ -38,16 +44,28 @@ public:
     [[nodiscard]] static const BlockType &getBlockType(BlockId id) ;
 
 private:
-    static const BlockType mBlockType[mNbBlock];
+    static constexpr std::array<BlockType, mNbBlock> mBlockType = {
+            BlockType{"grass",   true,  false},
+            BlockType{"stone",   true,  false},
+            BlockType{"dirt",    true,  false},
+            BlockType{"nothing", false, false},
+            BlockType{"water",   true,  true},
+            BlockType{"sand",    true,  false},
+            BlockType{"wood",    true,  false}
+    };
 
-    unsigned int mBlock[mSizeZ][mSizeY][mSizeX];
-
+    std::array<std::array<std::array<unsigned int, mSizeX>,mSizeY>,mSizeZ> mBlock = {0};
 };
 
 class BoxelScene : public Scene {
 public:
 
     BoxelScene();
+
+    BoxelScene(const BoxelScene&) = delete;
+    BoxelScene(BoxelScene&&) = delete;
+    BoxelScene& operator=(const BoxelScene&) = delete;
+    BoxelScene& operator=(BoxelScene&&) = delete;
 
     ~BoxelScene() override;
 
@@ -57,7 +75,7 @@ public:
 
 private:
     BoxelMap mBoxelMap;
-    Renderer::Material_handle mBlockMaterial[BoxelMap::mNbBlock];
+    std::array<Renderer::Material_handle, BoxelMap::mNbBlock> mBlockMaterial =  {0};
     Renderer::Object mBlockObject;
 
     BoxelCamera mCamera;

@@ -15,6 +15,8 @@ public:
     void update(float frameTime);
 
 private:
+    static constexpr float defaultDist = 60.f;
+
     Renderer::Camera_handle mRendererCamera;
 
     float mDist;

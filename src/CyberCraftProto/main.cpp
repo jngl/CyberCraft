@@ -9,5 +9,6 @@ int main() {
     ccSf::RenderContextSFML renderContext(window.getRenderWindow());
     CyberCraft game(renderContext);
 
-	return ccCore::mainLoop(window, renderContext, game, std::chrono::milliseconds{16});
+    constexpr auto updateTime = std::chrono::milliseconds{16};
+	return ccCore::mainLoop(window, renderContext, game, updateTime);
 }

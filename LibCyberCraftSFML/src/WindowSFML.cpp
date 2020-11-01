@@ -10,6 +10,10 @@
 
 #include <Core/Color.h>
 
+constexpr int defaultWindowSizeX = 800;
+constexpr int defaultWindowSizeY = 600;
+constexpr int defaultFrameRate = 60;
+
 namespace ccSf {
     bool WindowSFML::isOpen() const {
         return m_window.isOpen();
@@ -25,7 +29,7 @@ namespace ccSf {
                     break;
                 case sf::Event::Resized: {
                     sf::View view(m_window.getView());
-                    view.setSize(event.size.width, event.size.height);
+                    view.setSize(static_cast<float>(event.size.width), static_cast<float>(event.size.height));  // NOLINT
                     m_window.setView(view);
                     break;
                 }
@@ -43,8 +47,8 @@ namespace ccSf {
     }
 
     WindowSFML::WindowSFML() :
-            m_window(sf::VideoMode(800, 600), "Cyber Craft") {
-        m_window.setFramerateLimit(60);
+            m_window(sf::VideoMode(defaultWindowSizeX, defaultWindowSizeY), "Cyber Craft") {
+        m_window.setFramerateLimit(defaultFrameRate);
     }
 
     sf::RenderWindow &WindowSFML::getRenderWindow() {

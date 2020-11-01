@@ -10,7 +10,7 @@
 #include <Core/Update.h>
 
 namespace ccCore {
-    int mainLoop(Window &window, RenderContext &renderContext, Game &game, std::chrono::milliseconds updateTime) {
+    [[maybe_unused]] int mainLoop(Window &window, RenderContext &/*renderContext*/, Game &game, std::chrono::milliseconds updateTime) {
         FixStepUpdater updater(updateTime);
 
         while (window.isOpen()) {

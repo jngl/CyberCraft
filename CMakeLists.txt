@@ -4,7 +4,6 @@ set(CMAKE_CXX_STANDARD 17) # TODO remove this line
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-# Set the project name to your project name, my project isn't very descriptive
 project(CyberCraft CXX)
 include(cmake/StandardProjectSettings.cmake)
 include(cmake/PreventInSourceBuilds.cmake)
