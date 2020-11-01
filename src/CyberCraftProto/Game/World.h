@@ -17,9 +17,9 @@ public:
 
     constexpr World():
     m_blocs(){
-        forEach([](int /*x*/, int /*y*/, const BlocInfo*& bloc){
+        for(auto& bloc: m_blocs){
             bloc = nullptr;
-        });
+        }
     }
 
     [[nodiscard]] constexpr const BlocInfo* getBloc(const ccCore::Vector2i& pos) const{

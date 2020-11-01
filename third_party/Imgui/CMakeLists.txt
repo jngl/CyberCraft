@@ -6,4 +6,5 @@ add_library(Imgui
         ${Imgui_include_files})
 
 target_include_directories(Imgui PUBLIC include)
+target_include_directories(Imgui PRIVATE ${SDL2_INCLUDE_DIRS})
 target_link_libraries(Imgui stb Glad ${SDL2_LIBRARY} )

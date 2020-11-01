@@ -9,8 +9,8 @@
 #include <Core/Math.h>
 
 namespace component {
-    class Sprite;
-    class Player;
+    struct Sprite;
+    struct Player;
 }
 
 class World;

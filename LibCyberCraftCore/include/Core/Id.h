@@ -19,7 +19,7 @@ namespace ccCore {
     class IdGenerator {
     public:
         constexpr T generate() {
-            return T{++m_maxId};
+            return T{{++m_maxId}};
         }
 
     private:
