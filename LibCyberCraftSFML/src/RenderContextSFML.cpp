@@ -9,6 +9,11 @@
 
 #include "conversion.h"
 
+constexpr auto tileTextureSize = 16;
+constexpr auto tileTextureCenter = tileTextureSize / 2;
+constexpr auto tileSize = static_cast<float>(tileTextureSize)*2.f;
+constexpr auto tileOffset = tileSize / 2;
+
 namespace ccSf {
     RenderContextSFML::RenderContextSFML(sf::RenderTarget &target) :
             m_target(target) {
@@ -32,27 +37,32 @@ namespace ccSf {
                                        const ccCore::Vector2i &textureIndex,
                                        ccCore::Color color,
                                        ccCore::Color backgroundColor,
-                                       float rotation) {
+                                       float rotation){
+
         sf::Texture &texture = *m_texture[textureHandle];
 
         ccCore::Vector2f a;
 
         sf::RectangleShape background;
-        background.setPosition(pos.x*32+16, pos.y*32+16);
-        background.setSize(sf::Vector2f(32, 32));
+
+        background.setPosition(pos.x * tileSize + tileOffset, pos.y * tileSize + tileOffset);
+        background.setSize(sf::Vector2f(tileSize, tileSize));
         background.setFillColor(toSfColor(backgroundColor));
-        background.setOrigin(16,16);
+        background.setOrigin(tileOffset,tileOffset);
         background.setRotation(rotation);
         m_target.draw(background);
 
         sf::Sprite sfSprite;
         sfSprite.setScale(2, 2);
 
-        sfSprite.setPosition(pos.x*32.f+16, pos.y*32.f+16);
-        sfSprite.setTextureRect(sf::IntRect(16 * textureIndex.x, 16 * textureIndex.y, 16, 16));
+        sfSprite.setPosition(pos.x * tileSize + tileOffset, pos.y * tileSize + tileOffset);
+        sfSprite.setTextureRect(sf::IntRect(tileTextureSize * textureIndex.x,
+                                            tileTextureSize * textureIndex.y,
+                                            tileTextureSize,
+                                            tileTextureSize));
         sfSprite.setTexture(texture);
         sfSprite.setColor(toSfColor(color));
-        sfSprite.setOrigin(8,8);
+        sfSprite.setOrigin(tileTextureCenter,tileTextureCenter);
         sfSprite.setRotation(rotation);
         m_target.draw(sfSprite);
     }
@@ -72,7 +82,7 @@ namespace ccSf {
 
     void RenderContextSFML::setViewCenter(ccCore::Vector2f pos) {
         sf::View view(m_target.getView());
-        view.setCenter(toSfVector2(pos*32.f));
+        view.setCenter(toSfVector2(pos*tileSize));
         m_target.setView(view);
     }
 }

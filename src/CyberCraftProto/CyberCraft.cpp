@@ -48,7 +48,7 @@ CyberCraft::CyberCraft(ccCore::RenderContext& renderContext):
     texture = renderContext.loadTexture("./data/tileset.png");
 
     m_world.forEach([this](int x, int y, const BlocInfo*& bloc){
-        char tile = gameMap[y*World::sizeX+x];
+        char tile = gameMap[y*World::sizeX+x]; // NOLINT
         if(tile == 'T'){
             bloc = &getBlocInfo("Tree");
         }else if(tile == '~'){
@@ -119,7 +119,7 @@ void CyberCraft::update() {
 void CyberCraft::draw() {
 
     m_world.forEach([this](int x, int y, const BlocInfo* bloc){
-        if(!bloc){
+        if(bloc == nullptr){
             return;
         }
         ccCore::Vector2f pos{static_cast<float>(x), static_cast<float>(y)};

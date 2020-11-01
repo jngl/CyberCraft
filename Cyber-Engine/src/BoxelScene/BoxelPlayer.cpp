@@ -8,18 +8,21 @@ BoxelPlayer::BoxelPlayer() :
     Renderer::Texture_handle tex = Renderer::createTexture("test.dds");
 
     Renderer::Material_handle mat = Renderer::createMaterial(tex, "playerMaterial");
-
+    //24
     Renderer::addSubMesh(mObject.model,
-                         cubeVerticesSize,
-                         cubePos,
-                         cubeTexCoord,
-                         cubeNormal,
-                         cubeIndexSize / 3,
-                         cubeIndex,
+                         cubeNumberOfFace * cubeVertexByFace,
+                         cubePos.data(),
+                         cubeTexCoord.data(),
+                         cubeNormal.data(),
+                         cubeIndex.size() / 3,
+                         cubeIndex.data(),
                          mat);
 
-    mObject.matrix.addTranslation(0.5f, -3.1f, 0.5f);
-    mObject.matrix.addScale(0.4f, 1.8f, 0.2f);
+    constexpr ccCore::Vector3f defaultPos{0.5f, -3.1f, 0.5f};
+    constexpr ccCore::Vector3f defaultScale{0.4f, 1.8f, 0.2f};
+
+    mObject.matrix.addTranslation(defaultPos);
+    mObject.matrix.addScale(defaultScale);
 }
 
 void BoxelPlayer::addAction(cc::System::Window &window) {

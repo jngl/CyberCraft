@@ -68,23 +68,23 @@ namespace cc::System {
 
         void load(const char *vertCode, const char *fragCode);
 
-        Location addMatrixInput(std::string name);
+        Location addMatrixInput(const std::string& name);
 
         void setMatrixInput(Location loc, ccCore::Matrix4f mat);
 
-        Location addTextureInput(std::string name);
+        Location addTextureInput(const std::string& name);
 
-        void addBufferInput(std::string name, unsigned int index);
+        void addBufferInput(const std::string& name, unsigned int index);
 
         void set();
 
         void unload();
 
     private:
-        GLuint shaderProgram;
+        GLuint shaderProgram = 0;
 
-        void printShaderInfoLog(GLuint obj);
-        void printProgramInfoLog(GLuint obj);
+        static void printShaderInfoLog(GLuint obj);
+        static void printProgramInfoLog(GLuint obj);
 
         [[nodiscard]] static std::string_view getTypeName(GLenum type);
     };

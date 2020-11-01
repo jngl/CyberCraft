@@ -6,9 +6,9 @@ namespace ccCore
     class PoolAllocator
     {
     public:
-        PoolAllocator()
+        PoolAllocator() noexcept
         {
-            mFirstFree = mData;
+            mFirstFree = mData.data();
             for(std::size_t i(0); i<MAX_DATA-1; ++i){
                 mData[i].mNext = &mData[i+1];
             }
@@ -23,7 +23,7 @@ namespace ccCore
         
         void destroy(Data* d){
 			d->~Data();
-            auto a = reinterpret_cast<MemBlock*>(d);
+            auto a = reinterpret_cast<MemBlock*>(d);  // NOLINT
             a->mNext = mFirstFree;
         }
         
@@ -35,10 +35,14 @@ namespace ccCore
             MemBlock(){
                 mNext = nullptr;
             }
-            ~MemBlock() {};
+            MemBlock(const MemBlock&) = default;
+            MemBlock(MemBlock&&) noexcept = default;
+            MemBlock& operator=(const MemBlock&) = default;
+            MemBlock& operator=(MemBlock&&) noexcept = default;
+            ~MemBlock(){}
         };        
         
         MemBlock* mFirstFree;
-        MemBlock mData[MAX_DATA];
+        std::array<MemBlock, MAX_DATA> mData;
     };
 }

@@ -6,34 +6,25 @@
 
 #include <vector>
 
-constexpr BoxelMap::BlockType BoxelMap::mBlockType[BoxelMap::mNbBlock] =
-        {{"grass",   true,  false},
-         {"stone",   true,  false},
-         {"dirt",    true,  false},
-         {"nothing", false, false},
-         {"water",   true,  true},
-         {"sand",    true,  false},
-         {"wood",    true,  false}
-        };
-
 void BoxelMap::generate() {
     //gen height
-    float height[mSizeX][mSizeZ];
+    std::array<std::array<float, mSizeZ>, mSizeX> height = {0};
 
     for (int x(0); x < mSizeX; ++x) {
         for (int z(0); z < mSizeZ; ++z) {
-            float lacunarity = 2.f;
-            int octaves = 6;
-            float gain = 0.5;
-            int wrap_x = 256;
-            int wrap_y = 256;
-            int wrap_z = 256;
-            float freq = 1.f / 128.f;
-            height[x][z] = stb_perlin_fbm_noise3(x * freq, z * freq, 0,
+            constexpr float lacunarity = 2.f;
+            constexpr int octaves = 6;
+            constexpr float gain = 0.5;
+            constexpr int wrap_x = 256;
+            constexpr int wrap_y = 256;
+            constexpr int wrap_z = 256;
+            constexpr float freq = 1.f / 128.f;
+            constexpr float size = 15.f;
+            height.at(x).at(z) = stb_perlin_fbm_noise3(static_cast<float>(x) * freq, static_cast<float>(z) * freq, 0,
                                                  lacunarity,
                                                  gain,
                                                  octaves,
-                                                 wrap_x, wrap_y, wrap_z) * 15.f + 15.f;
+                                                 wrap_x, wrap_y, wrap_z) * size + size;
         }
     }
 
@@ -42,29 +33,29 @@ void BoxelMap::generate() {
         for (unsigned int y(0); y < mSizeY; ++y) {
             for (unsigned int x(0); x < mSizeX; ++x) {
                 auto y2 = static_cast<float>(y);
-                float h = height[x][z];
+                float h = height.at(x).at(z);
+                auto& block = mBlock.at(z).at(y).at(x);
 
-                mBlock[z][y][x] = mNothingId;
+                block = mNothingId;
 
                 if (y2 < h - 4) {
-                    mBlock[z][y][x] = mStoneId;
+                    block = mStoneId;
                 } else if (y2 < h - 1) {
-                    mBlock[z][y][x] = mDirtId;
+                    block = mDirtId;
                 } else {
                     if (h < static_cast<float>(mSizeY) / 3) {
                         if (y2 < h) {
-                            mBlock[z][y][x] = mSandId;
+                            block = mSandId;
                         } else if (y2 < static_cast<float>(mSizeY) / 3) {
-                            mBlock[z][y][x] = mWaterId;
+                            block = mWaterId;
                         }
                     } else {
                         if (y2 < h) {
-                            mBlock[z][y][x] = mGrassId;
+                            block = mGrassId;
                         } else if (y2 < static_cast<float>(mSizeY) / 3) {
-                            mBlock[z][y][x] = mWaterId;
+                            block = mWaterId;
                         }
                     }
-
                 }
             }
         }
@@ -72,11 +63,11 @@ void BoxelMap::generate() {
 }
 
 BoxelMap::BlockId BoxelMap::getBlock(std::size_t x, std::size_t y, std::size_t z) const {
-    return mBlock[z][y][x];
+    return mBlock.at(z).at(y).at(x);
 }
 
 const BoxelMap::BlockType &BoxelMap::getBlockType(BlockId id) {
-    return mBlockType[id];
+    return mBlockType.at(id);
 }
 
 struct BoxelMesh {
@@ -158,10 +149,11 @@ struct BoxelMesh {
             //up
             if (y + 1 == BoxelMap::mSizeY ||
                 boxelMap.getBlock(x, y + 1, z) == BoxelMap::mNothingId) {
-                addQuad(fx, fy + 0.9f, fz, 0, 0,
-                        fx + 1.f, fy + 0.9f, fz, 1, 0,
-                        fx + 1.f, fy + 0.9f, fz + 1.f, 1, 1,
-                        fx, fy + 0.9f, fz + 1.f, 0, 1,
+                constexpr float a = 0.9f;
+                addQuad(fx, fy + a, fz, 0, 0,
+                        fx + 1.f, fy + a, fz, 1, 0,
+                        fx + 1.f, fy + a, fz + 1.f, 1, 1,
+                        fx, fy + a, fz + 1.f, 0, 1,
                         0, 1, 0);
             }
             return;
@@ -261,25 +253,27 @@ BoxelScene::BoxelScene() :
     //Meshing
     mBlockObject.model = Renderer::createModel("BoxelModel");
 
-    mBlockObject.matrix.addTranslation(-static_cast<float>(BoxelMap::mSizeX) / 2.f,
-                                       -static_cast<float>(BoxelMap::mSizeY) / 2.f,
-                                       -static_cast<float>(BoxelMap::mSizeZ) / 2.f);
+    constexpr float mapOrigin = 0.5f;
+
+    mBlockObject.matrix.addTranslation(-static_cast<float>(BoxelMap::mSizeX) * mapOrigin,
+                                       -static_cast<float>(BoxelMap::mSizeY) * mapOrigin,
+                                       -static_cast<float>(BoxelMap::mSizeZ) * mapOrigin);
 
     for (std::size_t i(0); i < BoxelMap::mNbBlock; ++i) {
         const BoxelMap::BlockType &type = mBoxelMap.getBlockType(i);
         if (type.visible) {
             std::string filename = std::string(type.name) + ".dds";
             Renderer::Texture_handle tex = Renderer::createTexture(filename.c_str());
-            mBlockMaterial[i] = Renderer::createMaterial(tex, std::string(type.name) + "Material");
+            mBlockMaterial.at(i) = Renderer::createMaterial(tex, std::string(type.name) + "Material");
 
             if (type.withAlpha) {
-                Renderer::setWithAlpha(mBlockMaterial[i], true);
+                Renderer::setWithAlpha(mBlockMaterial.at(i), true);
             }
 
             BoxelMesh mesh(mBoxelMap);
             mesh.generate(i);
 
-            if (mesh.vertices.size() != 0) {
+            if (!mesh.vertices.empty()) {
                 Renderer::addSubMesh(mBlockObject.model,
                                      mesh.vertices.size() / 3,
                                      &mesh.vertices[0],
@@ -287,7 +281,7 @@ BoxelScene::BoxelScene() :
                                      &mesh.normals[0],
                                      mesh.faces.size() / 3,
                                      &mesh.faces[0],
-                                     mBlockMaterial[i]);
+                                     mBlockMaterial.at(i));
             }
         }
     }

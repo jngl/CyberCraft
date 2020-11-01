@@ -12,7 +12,7 @@ namespace cc::System {
 #define GL_DEBUG
 
 #ifdef GL_DEBUG
-#define glCheck(call) ((call), glCheckError(__FILE__, __LINE__))
+#define glCheck(call) ((call), glCheckError(__FILE__, __LINE__))  // NOLINT
 #else
 #define glCheck(call) (call)
 #endif
@@ -46,6 +46,11 @@ namespace cc::System {
     class Texture {
     public:
         explicit Texture(std::string_view filename);
+        Texture(const Texture&) = delete;
+        Texture(Texture&&) = delete;
+        Texture& operator=(const Texture&) = delete;
+        Texture& operator=(Texture&&) = delete;
+
         ~Texture() { glDeleteTextures(1, &mId); }
 
         [[nodiscard]] unsigned int getId() const { return mId; }
@@ -69,10 +74,13 @@ namespace cc::System {
         switch (data.format) {
             case TextureFormat::DXT1:
                 format =  GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+                break;
             case TextureFormat::DXT3:
                 format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+                break;
             case TextureFormat::DXT5:
                 format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+                break;
         }
         ccCore::check("Texture", format != 0, "invalid format");
 
@@ -129,7 +137,8 @@ namespace cc::System {
 ********************************************************/
 
     void Shader::load(const char *vertCode, const char *fragCode) {
-        GLuint v, f;
+        GLuint v = 0;
+        GLuint f = 0;
 
         glCheck(v = glCreateShader(GL_VERTEX_SHADER));
         glCheck(f = glCreateShader(GL_FRAGMENT_SHADER));
@@ -155,44 +164,43 @@ namespace cc::System {
         glCheck(glDeleteShader(f));
     }
 
-    Shader::Location Shader::addMatrixInput(std::string name) {
-        Shader::Location loc;
+    Shader::Location Shader::addMatrixInput(const std::string& name) {  // NOLINT
+        Shader::Location loc = 0;
         glCheck(loc = glGetUniformLocation(shaderProgram, name.c_str()));
         return loc;
     }
 
-    void Shader::setMatrixInput(Location loc, ccCore::Matrix4f mat) {
+    void Shader::setMatrixInput(Location loc, ccCore::Matrix4f mat) {  // NOLINT
         glCheck(glUseProgram(shaderProgram));
         glCheck(glUniformMatrix4fv(loc, 1, false, &mat.m[0][0]));
     }
 
-    Shader::Location Shader::addTextureInput(std::string name) {
-        Shader::Location loc;
+    Shader::Location Shader::addTextureInput(const std::string& name) {  // NOLINT
+        Shader::Location loc = 0;
         glCheck(loc = glGetUniformLocation(shaderProgram, name.c_str()));
         ccCore::check("Shader", loc > 0, "no texture input");
         return loc;
     }
 
-    void Shader::addBufferInput(std::string name, unsigned int i) {
+    void Shader::addBufferInput(const std::string& name, unsigned int i) {  // NOLINT
         glCheck(glBindAttribLocation(shaderProgram, i, name.c_str()));
     }
 
-    void Shader::set() { glCheck(glUseProgram(shaderProgram)); }
+    void Shader::set() { glCheck(glUseProgram(shaderProgram)); }  // NOLINT
 
-    void Shader::unload() { glCheck(glDeleteProgram(shaderProgram)); }
+    void Shader::unload() { glCheck(glDeleteProgram(shaderProgram)); }  // NOLINT
 
     void Shader::printShaderInfoLog(GLuint obj) {
         int infologLength = 0;
         int charsWritten = 0;
-        char *infoLog;
 
         glGetShaderiv(obj, GL_INFO_LOG_LENGTH, &infologLength);
 
         if (infologLength > 1) {
-            infoLog = (char *) malloc(infologLength);
-            glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog);
-            printf("%s\n", infoLog);
-            free(infoLog);
+            std::string infoLog;
+            infoLog.resize(infologLength, '?');
+            glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog.data());
+            std::cout<<infoLog<<"\n";
         }
     }
 
@@ -201,15 +209,14 @@ namespace cc::System {
         // log
         int infoLogLength = 0;
         int charsWritten = 0;
-        char *infoLog;
 
         glGetProgramiv(obj, GL_INFO_LOG_LENGTH, &infoLogLength);
 
         if (infoLogLength > 1) {
-            infoLog = (char *) malloc(infoLogLength);
-            glGetProgramInfoLog(obj, infoLogLength, &charsWritten, infoLog);
-            printf("shader info : \"%s\"\n", infoLog);
-            free(infoLog);
+            std::string infoLog;
+            infoLog.resize(infoLogLength, '?');
+            glGetProgramInfoLog(obj, infoLogLength, &charsWritten, infoLog.data());
+            std::cout<<"shader info : \""<<infoLog<<"\"\n";
         }
     }
 
@@ -250,13 +257,13 @@ namespace cc::System {
     }
 
     void
-    Mesh::addBuffer(Shader::Location loc, const float *data, unsigned int dataSize, unsigned int size) {
-        GLuint buffer;
+    Mesh::addBuffer(Shader::Location loc, const float *data, unsigned int dataSize, unsigned int size) {  // NOLINT
+        GLuint buffer = 0;
         glCheck(glGenBuffers(1, &buffer));
         glCheck(glBindBuffer(GL_ARRAY_BUFFER, buffer));
         glCheck(glBufferData(GL_ARRAY_BUFFER, dataSize, data, GL_STATIC_DRAW));
 
-        glCheck(glVertexAttribPointer(loc, size, GL_FLOAT, GL_FALSE, 0, 0));
+        glCheck(glVertexAttribPointer(loc, size, GL_FLOAT, GL_FALSE, 0, nullptr));
         glCheck(glEnableVertexAttribArray(loc));
     }
 
@@ -272,7 +279,7 @@ namespace cc::System {
         mPrimitives = primitives;
         mCount = count;
 
-        GLuint buffer;
+        GLuint buffer = 0;
 
         glCheck(glGenBuffers(1, &buffer));
         glCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer));
@@ -288,7 +295,7 @@ namespace cc::System {
             glCheck(glDrawElements(/*mPrimitives*/GL_TRIANGLES,
                                                   mCount,
                                                   GL_UNSIGNED_INT,
-                                                  (void *) 0));
+                                                  nullptr));
         } else {
             glCheck(glDrawArrays(mPrimitives, 0, mCount));
         }

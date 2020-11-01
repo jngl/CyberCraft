@@ -11,8 +11,8 @@
 
 #include <SFML/Window.hpp>
 
-void drawSprite(ccCore::RenderContext& ctx, ccCore::TextureHandle texture, const ccCore::Vector2f& pos, const component::Sprite& sprite) {
-    ctx.drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
+void drawSprite(ccCore::RenderContext& renderContext, ccCore::TextureHandle texture, const ccCore::Vector2f& pos, const component::Sprite& sprite) {
+    renderContext.drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
 }
 
 void movePlayer(ccCore::Vector2f& pos, const World& world) {
@@ -27,9 +27,10 @@ void movePlayer(ccCore::Vector2f& pos, const World& world) {
             return;
         }
 
-        ccCore::Vector2i newPosInt = (newPos + ccCore::Vector2f{0.5f, 0.8f}).toVector<int>();
+        constexpr ccCore::Vector2f collisionPoint{0.5f, 0.8f};
+        ccCore::Vector2i newPosInt = (newPos + collisionPoint).toVector<int>();
         const BlocInfo* blocInfo = world.getBloc(newPosInt);
-        if(!blocInfo || blocInfo->group.collision) {
+        if(blocInfo == nullptr || blocInfo->group.collision) {
             return;
         }
 

@@ -11,41 +11,41 @@
 #include <glad/glad.h>
 
 namespace cc::System {
-    union DDS_header {
+    constexpr size_t dwReserved1Size = 11;
+    constexpr size_t DdsHeaderSize = 124;
+
+    struct DDS_header {
+        //uint32_t dwMagic;
+        uint32_t dwSize = 0;
+        uint32_t dwFlags = 0;
+        uint32_t dwHeight = 0;
+        uint32_t dwWidth = 0;
+        uint32_t dwPitchOrLinearSize = 0;
+        uint32_t dwDepth = 0;
+        uint32_t dwMipMapCount = 0;
+        std::array<uint32_t, dwReserved1Size> dwReserved1 = {0};
+
+        //  DDPIXELFORMAT
         struct {
-            //uint32_t dwMagic;
-            uint32_t dwSize;
-            uint32_t dwFlags;
-            uint32_t dwHeight;
-            uint32_t dwWidth;
-            uint32_t dwPitchOrLinearSize;
-            uint32_t dwDepth;
-            uint32_t dwMipMapCount;
-            uint32_t dwReserved1[11];
+            uint32_t dwSize = 0;
+            uint32_t dwFlags = 0;
+            uint32_t dwFourCC = 0;
+            uint32_t dwRGBBitCount = 0;
+            uint32_t dwRBitMask = 0;
+            uint32_t dwGBitMask = 0;
+            uint32_t dwBBitMask = 0;
+            uint32_t dwAlphaBitMask = 0;
+        } sPixelFormat;
 
-            //  DDPIXELFORMAT
-            struct {
-                uint32_t dwSize;
-                uint32_t dwFlags;
-                uint32_t dwFourCC;
-                uint32_t dwRGBBitCount;
-                uint32_t dwRBitMask;
-                uint32_t dwGBitMask;
-                uint32_t dwBBitMask;
-                uint32_t dwAlphaBitMask;
-            } sPixelFormat;
+        //  DDCAPS2
+        struct {
+            uint32_t dwCaps1 = 0;
+            uint32_t dwCaps2 = 0;
+            uint32_t dwDDSX = 0;
+            uint32_t dwReserved = 0;
+        } sCaps;
 
-            //  DDCAPS2
-            struct {
-                uint32_t dwCaps1;
-                uint32_t dwCaps2;
-                uint32_t dwDDSX;
-                uint32_t dwReserved;
-            } sCaps;
-
-            uint32_t dwReserved2;
-        };
-        char data[124];
+        uint32_t dwReserved2 = 0;
     };
 
     static constexpr unsigned int FOURCC_DXT1 = 0x31545844;
@@ -73,15 +73,15 @@ namespace cc::System {
     unsigned int DdsFile::getMipMapCount() const { return m_data.mipmaps.size(); }
 
     void readDdsFileType(std::fstream &file) {
-        char fileCode[4];
-        file.read(fileCode, 4);
-        ccCore::check("Texture", strncmp(fileCode, "DDS ", 4) == 0, "error in dds file");
+        std::array<char, 4> fileCode{0,0,0,0};
+        file.read(fileCode.data(), fileCode.size());
+        ccCore::check("Texture", std::strncmp(fileCode.data(), "DDS ", fileCode.size()) == 0, "error in dds file");
     }
 
     void readDdsHeader(std::fstream &file, unsigned int& height, unsigned int& width, unsigned int& fourCC, unsigned int& mipMapCount) {
-        DDS_header header = {0};
+        DDS_header header;
 
-        file.read(header.data, sizeof(DDS_header));
+        file.read(reinterpret_cast<char*>(&header), sizeof(DDS_header));   // NOLINT
 
         height = header.dwHeight;
         width = header.dwWidth;
@@ -107,9 +107,9 @@ namespace cc::System {
 
         readDdsFileType(file);
 
-        unsigned int width;
-        unsigned int height;
-        unsigned int fourCC;
+        unsigned int width = 0;
+        unsigned int height = 0;
+        unsigned int fourCC = 0;
         unsigned int mipMapCount = 0;
 
         readDdsHeader(file, height, width, fourCC, mipMapCount);
@@ -130,7 +130,10 @@ namespace cc::System {
         }
         data.mipmaps.resize(mipMapCount);
 
-        unsigned int blockSize = (data.format == TextureFormat::DXT1) ? 8 : 16;
+        constexpr int blockSizeDxt1 = 8;
+        constexpr int blockSizeDxt35 = 16;
+
+        unsigned int blockSize = (data.format == TextureFormat::DXT1) ? blockSizeDxt1 : blockSizeDxt35;
         for(TextureMipMap& mipMap: data.mipmaps){
             mipMap.size.set(width, height);
             mipMap.data.resize(((width + 3) / 4) * ((height + 3) / 4) * blockSize);
