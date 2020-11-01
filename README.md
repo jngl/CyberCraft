@@ -5,8 +5,6 @@
 ## TODO
 * unit test
 * fuzz test
-* codecov
-* travis
 * ci.appveyor.com 
 * licence
 * clang format
