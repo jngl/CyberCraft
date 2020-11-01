@@ -8,7 +8,6 @@
 * ci.appveyor.com 
 * licence
 * clang format
-* clang tidy
 * cmake format
 * remove unuse code from cpp_starter_project
 
