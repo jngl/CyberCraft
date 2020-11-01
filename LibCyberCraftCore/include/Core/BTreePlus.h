@@ -21,8 +21,14 @@ namespace ccCore {
     class BTreePlusNode {
     public:
         using ThisType = BTreePlusNode<Key, Data, MaxSize>;
-        
+
+        BTreePlusNode() = default;
+        BTreePlusNode(const BTreePlusNode&) = default;
+        BTreePlusNode(BTreePlusNode&&) noexcept = default;
         virtual ~BTreePlusNode() = default;
+
+        BTreePlusNode& operator=(const BTreePlusNode&) = default;
+        BTreePlusNode& operator=(BTreePlusNode&&) noexcept = default;
 
         virtual void debugPrint(int nbTab) const = 0;
 
@@ -55,15 +61,15 @@ namespace ccCore {
             if (m_size < MaxSize) {
                 insertInLeaf(newKey, newData);
                 return std::unique_ptr<ParentType>();
-            } else {
-                std::unique_ptr<ThisType> newLeaf = split();
-                if (newKey < newLeaf->m_keys[0]) {
-                    insertInLeaf(newKey, newData);
-                } else {
-                    newLeaf->insertInLeaf(newKey, newData);
-                }
-                return newLeaf;
             }
+
+            std::unique_ptr<ThisType> newLeaf = split();
+            if (newKey < newLeaf->m_keys[0]) {
+                insertInLeaf(newKey, newData);
+            } else {
+                newLeaf->insertInLeaf(newKey, newData);
+            }
+            return newLeaf;
         }
 
         [[nodiscard]] size_t size() const override {
@@ -80,7 +86,7 @@ namespace ccCore {
             if (it == m_keys.end() || *it != key) {
                 throw std::out_of_range("key not found in a BTreePlus");
             }
-            size_t index = static_cast<size_t>(it - m_keys.begin());
+            auto index = static_cast<size_t>(it - m_keys.begin());
             return m_datas[index];
         }
 
@@ -92,10 +98,11 @@ namespace ccCore {
         void insertInLeaf(Key newKey, Data newData) {
             assert(m_size < MaxSize);
             size_t index = 0;
-            for (; index < m_size && m_keys[index] < newKey; ++index);
-            for (size_t i = m_size - 1; i >= index; --i) {
-                m_keys[i + 1] = m_keys[i];
-                m_datas[i + 1] = m_datas[i];
+            for (; index < m_size && m_keys[index] < newKey; ++index) {}
+            for (int i = static_cast<int>(m_size - 1); i >= static_cast<int>(index); --i) {
+                const auto i_size_t = static_cast<size_t>(i);
+                m_keys[i_size_t + 1] = m_keys[i_size_t];
+                m_datas[i_size_t + 1] = m_datas[i_size_t];
             }
             m_keys[index] = newKey;
             m_datas[index] = newData;
@@ -242,7 +249,7 @@ namespace ccCore {
             }
         }
 
-        int size() const {
+        [[nodiscard]] int size() const {
             return m_size;
         }
 

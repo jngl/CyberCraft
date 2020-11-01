@@ -8,7 +8,7 @@
 #include <string_view>
 
 namespace ccCore {
-    class Color;
+    struct Color;
     class Window;
     class RenderContext;
     class Game;
@@ -19,7 +19,7 @@ namespace ccCore {
     using Uint32 = unsigned int;
     static_assert(sizeof(Uint32) == 4, "size of Uint32 must be 32 bite");
 
-    class TextureHandle;
+    struct TextureHandle;
 }
 
 #endif //LIB_CYBERCRAFT_COMMON_H
