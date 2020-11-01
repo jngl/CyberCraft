@@ -34,7 +34,13 @@ jobs:
       compiler: clang
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
-      addons: { apt: { packages: ['doxygen', 'python3-pip'] } }
+      addons:
+        apt:
+          packages:
+            - doxygen
+            - python3-pip
+            - libsdl2-dev
+            - libsfml-dev
 
 
 before_script:
