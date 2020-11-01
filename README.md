@@ -1,5 +1,7 @@
 # CyberCraft
 
+[![codecov](https://codecov.io/gh/jngl/CyberCraft/branch/main/graph/badge.svg?token=0TDXBVPLFY)](https://codecov.io/gh/jngl/CyberCraft)
+
 ## TODO
 * unit test
 * fuzz test
