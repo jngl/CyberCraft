@@ -4,7 +4,7 @@
 constexpr int testValue1 = 42;
 constexpr int testValue2 = -1;
 
-TEST_CASE( "cc::Ref constructor ptr", "NotNull constructor from ptr" ) {
+TEST_CASE( "cc::Ref constructor ptr" ) {
     REQUIRE_THROWS_AS( cc::Ref<int>(nullptr), cc::NullPointerException);
 
     int i = testValue1;
@@ -16,7 +16,7 @@ TEST_CASE( "cc::Ref constructor ptr", "NotNull constructor from ptr" ) {
     REQUIRE(i == testValue2);
 }
 
-TEST_CASE( "cc::Ref constructor copy", "NotNull constructor from copy" ) {
+TEST_CASE( "cc::Ref constructor copy" ) {
     int i = testValue1;
 
     cc::Ref<int> a(&i);
@@ -28,7 +28,7 @@ TEST_CASE( "cc::Ref constructor copy", "NotNull constructor from copy" ) {
     REQUIRE(i == testValue2);
 }
 
-TEST_CASE( "cc::Ref constructor move", "NotNull constructor from copy" ) {
+TEST_CASE( "cc::Ref constructor move" ) {
     int i = testValue1;
 
     cc::Ref<int> a(&i);
@@ -40,7 +40,7 @@ TEST_CASE( "cc::Ref constructor move", "NotNull constructor from copy" ) {
     REQUIRE(i == testValue2);
 }
 
-TEST_CASE( "cc::Ref assign copy", "NotNull constructor from copy" ) {
+TEST_CASE( "cc::Ref assign copy" ) {
     int i = testValue1;
     int j = testValue2;
 
@@ -52,7 +52,7 @@ TEST_CASE( "cc::Ref assign copy", "NotNull constructor from copy" ) {
     REQUIRE(*a == testValue2);
 }
 
-TEST_CASE( "cc::Ref assign move", "NotNull constructor from copy" ) {
+TEST_CASE( "cc::Ref assign move" ) {
     int i = testValue1;
     int j = testValue2;
 
@@ -64,7 +64,7 @@ TEST_CASE( "cc::Ref assign move", "NotNull constructor from copy" ) {
     REQUIRE(*a == testValue2);
 }
 
-TEST_CASE( "cc::Ref get", "NotNull constructor from copy" ) {
+TEST_CASE( "cc::Ref get" ) {
     int i = testValue1;
 
     cc::Ref<int> a(&i);
@@ -72,3 +72,66 @@ TEST_CASE( "cc::Ref get", "NotNull constructor from copy" ) {
 
     REQUIRE(*b == testValue1);
 }
+
+TEST_CASE( "cc::OptionalRef default constructor" ) {
+    cc::OptionalRef<int> a;
+
+    REQUIRE(a == nullptr);
+}
+
+TEST_CASE( "cc::OptionalRef construct from ptr" ) {
+    int i = testValue1;
+
+    cc::OptionalRef<int> a(&i);
+
+    REQUIRE(a == &i);
+}
+
+TEST_CASE( "cc::OptionalRef construct from ref" ) {
+    int i = testValue1;
+
+    cc::OptionalRef<int> a(i);
+
+    REQUIRE(a == &i);
+}
+
+TEST_CASE( "cc::OptionalRef construct from copy" ) {
+    int i = testValue1;
+
+    cc::OptionalRef<int> a(i);
+    cc::OptionalRef<int> b(a);
+
+    REQUIRE(b == &i);
+}
+
+TEST_CASE( "cc::OptionalRef construct from move" ) {
+    int i = testValue1;
+
+    cc::OptionalRef<int> a(i);
+    cc::OptionalRef<int> b(std::move(a));
+
+    REQUIRE(b == &i);
+}
+
+TEST_CASE( "cc::OptionalRef assign copy" ) {
+    int i = testValue1;
+
+    cc::OptionalRef<int> a(i);
+    cc::OptionalRef<int> b;
+
+    b = a;
+
+    REQUIRE(b == &i);
+}
+
+TEST_CASE( "cc::OptionalRef assign move" ) {
+    int i = testValue1;
+
+    cc::OptionalRef<int> a(i);
+    cc::OptionalRef<int> b;
+
+    b = a;
+
+    REQUIRE(b == &i);
+}
+
