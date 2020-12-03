@@ -15,7 +15,7 @@ namespace cc {
     public:
         Ref() = delete;
 
-        explicit constexpr Ref(T& pointer):
+        constexpr Ref(T& pointer): // NOLINT(hicpp-explicit-conversions)
             m_pointer(&pointer)
         {
         }
@@ -73,7 +73,7 @@ namespace cc {
     public:
         constexpr OptionalRef() = default;
 
-        constexpr OptionalRef(T* pointer): /* NOLINT(hicpp-explicit-conversions) */
+        constexpr OptionalRef(T* pointer): // NOLINT(hicpp-explicit-conversions)
             m_pointer(pointer)
         {}
 
