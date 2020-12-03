@@ -46,16 +46,13 @@ constexpr std::array<BlocGroup, 4> g_blocGroupArray{
 };
 
 constexpr const BlocGroup& getBlocGroup(std::string_view name){
-    const BlocGroup* result = nullptr;
     for(const BlocGroup& group: g_blocGroupArray) {
         if (group.name == name) {
-            result = &group;
+            return group;
         }
     }
-    if(!result){
-        throw cc::Error("Bloc group not found");
-    }
-    return *result;
+
+    throw cc::Error("Bloc group not found");
 }
 
 constexpr std::array<BlocInfo, 13> g_blocInfoArray{
@@ -184,16 +181,13 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
 
 
 constexpr const BlocInfo& getBlocInfo(std::string_view name){
-    const BlocInfo* result = nullptr;
     for(const BlocInfo& blocInfo : g_blocInfoArray){
         if(name == blocInfo.name){
-            result  = &blocInfo;
+            return blocInfo;
         }
     }
-    if(!result){
-        throw cc::Error("Bloc info not found");
-    }
-    return *result;
+
+    throw cc::Error("Bloc info not found");
 }
 
 #endif //CYBERCRAFT_BLOC_H
