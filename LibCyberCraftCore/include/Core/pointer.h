@@ -7,14 +7,16 @@
 
 #include <exception>
 
+#include "Core/Common.h"
+
 namespace cc {
-    class NullPointerException : std::exception {
+    class NullPointerException final : std::exception {
     public:
         [[nodiscard]] const char* what() const noexcept override;
     };
 
     template<class T>
-    class Ref{
+    class Ref final{
     public:
         Ref() = delete;
 
@@ -63,7 +65,45 @@ namespace cc {
     };
 
     template<class T>
-    class OptionalRef{};
+    class OptionalRef final{
+    public:
+        constexpr OptionalRef() = default;
+
+        constexpr OptionalRef(T* pointer): /* NOLINT(hicpp-explicit-conversions) */
+            m_pointer(pointer)
+        {}
+
+        constexpr explicit OptionalRef(T& pointer):
+                m_pointer(&pointer)
+        {}
+
+        constexpr OptionalRef(const OptionalRef&) = default;
+
+        constexpr OptionalRef(OptionalRef&& from) noexcept:
+            m_pointer(from.m_pointer)
+        {
+            from.m_pointer = nullptr;
+        };
+
+        ~OptionalRef() = default;
+
+        constexpr OptionalRef<T>& operator=(const OptionalRef<T>&) = default;
+
+        constexpr OptionalRef<T>& operator=(OptionalRef&& from) noexcept {
+            if(this != &from){
+                m_pointer = from.m_pointer;
+                m_pointer = nullptr;
+            }
+            return *this;
+        }
+
+        constexpr bool operator==(const T* other) const{
+            return m_pointer == other;
+        };
+
+    private:
+        T* m_pointer = nullptr;
+    };
 }
 
 #endif //CYBERCRAFT_POINTER_H
