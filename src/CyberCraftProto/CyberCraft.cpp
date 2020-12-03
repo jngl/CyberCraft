@@ -113,7 +113,7 @@ CyberCraft::CyberCraft(cc::Ref<cc::RenderContext> renderContext):
 }
 
 void CyberCraft::update() {
-    movePlayer(player.pos, m_world);
+    movePlayer(cc::make_ref(player.pos), m_world);
 }
 
 void CyberCraft::draw() {

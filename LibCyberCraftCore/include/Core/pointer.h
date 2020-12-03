@@ -15,7 +15,7 @@ namespace cc {
     public:
         Ref() = delete;
 
-        constexpr Ref(T& pointer): // NOLINT(hicpp-explicit-conversions)
+        constexpr explicit Ref(T& pointer):
             m_pointer(&pointer)
         {
         }
