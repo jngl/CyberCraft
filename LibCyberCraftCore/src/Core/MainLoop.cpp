@@ -9,7 +9,7 @@
 #include <Core/RenderContext.h>
 #include <Core/Update.h>
 
-namespace ccCore {
+namespace cc {
     [[maybe_unused]] int mainLoop(Window &window, RenderContext &/*renderContext*/, Game &game, std::chrono::milliseconds updateTime) {
         FixStepUpdater updater(updateTime);
 

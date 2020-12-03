@@ -36,7 +36,7 @@ namespace cc::System {
 
     void glCheckError(const std::string &file, unsigned int line) {
         GLenum errorCode = glGetError();
-        ccCore::check("glCheck", errorCode == GL_NO_ERROR, "An internal OpenGL call failed in ", file, " ( ", line, " ) : ", getGlErrorMessage(errorCode) );
+        cc::check("glCheck", errorCode == GL_NO_ERROR, "An internal OpenGL call failed in ", file, " ( ", line, " ) : ", getGlErrorMessage(errorCode) );
         //std::cout<<"An internal OpenGL call failed in "<<file<<" ( "<<line<<" ) : "<<getGlErrorMessage(errorCode);
     }
 
@@ -80,7 +80,7 @@ namespace cc::System {
                 format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
                 break;
         }
-        ccCore::check("Texture", format != 0, "invalid format");
+        cc::check("Texture", format != 0, "invalid format");
 
         int level = 0;
         for(const auto& mipMap : data.mipmaps){
@@ -89,7 +89,7 @@ namespace cc::System {
             level++;
         }
 
-        ccCore::check("Texture", mId != 0, "error with a texture");
+        cc::check("Texture", mId != 0, "error with a texture");
     }
 
 /********************************************************
@@ -155,7 +155,7 @@ namespace cc::System {
         return loc;
     }
 
-    void Shader::setMatrixInput(Location loc, ccCore::Matrix4f mat) {  // NOLINT
+    void Shader::setMatrixInput(Location loc, cc::Matrix4f mat) {  // NOLINT
         glCheck(glUseProgram(shaderProgram));
         glCheck(glUniformMatrix4fv(loc, 1, false, &mat.m[0][0]));
     }
@@ -163,7 +163,7 @@ namespace cc::System {
     Shader::Location Shader::addTextureInput(const std::string& name) {  // NOLINT
         Shader::Location loc = 0;
         glCheck(loc = glGetUniformLocation(shaderProgram, name.c_str()));
-        ccCore::check("Shader", loc > 0, "no texture input");
+        cc::check("Shader", loc > 0, "no texture input");
         return loc;
     }
 
@@ -256,7 +256,7 @@ namespace cc::System {
         mWithIndex = false;
         mPrimitives = primitives;
         mCount = count;
-        ccCore::log("Mesh", "\tend");
+        cc::log("Mesh", "\tend");
     }
 
     void Mesh::endLoadWithIndex(Primitives primitives, unsigned int count, const unsigned int *data) {

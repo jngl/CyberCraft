@@ -45,7 +45,7 @@ private:
 
     std::unique_ptr<cc::System::Window> mWindow;
     std::unique_ptr<Scene> mScene;
-    ccCore::Timer mGlobalTimer;
+    cc::Timer mGlobalTimer;
     float mFrameTime = 0;
     bool mShowTestWindow = false;
     bool mShowInfoWindow = false;
@@ -108,7 +108,7 @@ private:
     }
 
     void runCommand() {
-        ccCore::log("Main", "run command : ", mCommandText.data());
+        cc::log("Main", "run command : ", mCommandText.data());
 
         std::string command = mCommandText.data();
         memset(mCommandText.data(), 0, mMaxInputSize);
@@ -128,9 +128,9 @@ private:
 int main() {
     try {
         Application app;
-        ccCore::log("Main", "begin main loop");
+        cc::log("Main", "begin main loop");
         app.run();
-        ccCore::log("Main", "end main loop");
+        cc::log("Main", "end main loop");
     }
     catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;

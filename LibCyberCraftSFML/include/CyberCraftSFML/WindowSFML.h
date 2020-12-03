@@ -9,7 +9,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 namespace ccSf {
-    class WindowSFML : public ccCore::Window {
+    class WindowSFML : public cc::Window {
     public:
         WindowSFML();
 

@@ -22,24 +22,24 @@ public:
         }
     }
 
-    [[nodiscard]] constexpr const BlocInfo* getBloc(const ccCore::Vector2i& pos) const{
+    [[nodiscard]] constexpr const BlocInfo* getBloc(const cc::Vector2i& pos) const{
         return getBloc(pos.x, pos.y);
     }
 
-    [[nodiscard]] constexpr const BlocInfo*& getBloc(const ccCore::Vector2i& pos){
+    [[nodiscard]] constexpr const BlocInfo*& getBloc(const cc::Vector2i& pos){
         return getBloc(pos.x, pos.y);
     }
 
     [[nodiscard]] constexpr const BlocInfo*& getBloc(int x, int y){
         if(x<0 || x>=sizeX || y<0 || y>=sizeY){
-            throw ccCore::Error("out of bound");
+            throw cc::Error("out of bound");
         }
         return m_blocs[static_cast<size_t>(y*sizeX+x)];
     }
 
     [[nodiscard]] constexpr const BlocInfo* getBloc(int x, int y) const {
         if(x<0 || x>=sizeX || y<0 || y>=sizeY){
-            throw ccCore::Error("out of bound");
+            throw cc::Error("out of bound");
         }
         return m_blocs[static_cast<size_t>(y*sizeX+x)];
     }

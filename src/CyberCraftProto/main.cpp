@@ -10,5 +10,5 @@ int main() {
     CyberCraft game(renderContext);
 
     constexpr auto updateTime = std::chrono::milliseconds{16};
-	return ccCore::mainLoop(window, renderContext, game, updateTime);
+	return cc::mainLoop(window, renderContext, game, updateTime);
 }

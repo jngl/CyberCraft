@@ -14,12 +14,12 @@
 
 struct Player {
     component::Sprite sprite;
-    ccCore::Vector2f pos;
+    cc::Vector2f pos;
 };
 
-class CyberCraft : public ccCore::Game {
+class CyberCraft : public cc::Game {
 public:
-    explicit CyberCraft(ccCore::RenderContext& renderContext);
+    explicit CyberCraft(cc::RenderContext& renderContext);
 
     void update() override;
     void draw() override;
@@ -28,16 +28,16 @@ private:
 
     Player player{
             component::Sprite {
-                    ccCore::Vector2i {0,0},
-                    ccCore::Color{255,192,0},
-                    ccCore::Color{0,0,0,0}
+                    cc::Vector2i {0,0},
+                    cc::Color{255,192,0},
+                    cc::Color{0,0,0,0}
             },
-            ccCore::Vector2f {3,5}
+            cc::Vector2f {3,5}
     };
 
     World m_world;
-    ccCore::TextureHandle texture;
-    ccCore::RenderContext& m_renderContext;
+    cc::TextureHandle texture;
+    cc::RenderContext& m_renderContext;
 };
 
 

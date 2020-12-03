@@ -45,7 +45,7 @@ namespace Renderer {
         ~Object();
 
         Model_handle model;
-        ccCore::Matrix4f matrix;
+        cc::Matrix4f matrix;
         std::string name;
     };
 
@@ -56,7 +56,7 @@ namespace Renderer {
     Camera_handle createCamera();
     void destroyCamera(Camera_handle handle);
 
-    ccCore::Matrix4f &getCameraViewMatrixRef(Camera_handle handle);
+    cc::Matrix4f &getCameraViewMatrixRef(Camera_handle handle);
 
     void setPerspective(Camera_handle handle, bool persp);
 
@@ -66,7 +66,7 @@ namespace Renderer {
     Sprite_handle createSprite(Texture_handle handle);
     void destroySprite(Sprite_handle sprite);
 
-    ccCore::Matrix4f &getSpriteMatrixRef(Sprite_handle handle);
+    cc::Matrix4f &getSpriteMatrixRef(Sprite_handle handle);
 
     void renderSprite(Sprite_handle handle);
 }

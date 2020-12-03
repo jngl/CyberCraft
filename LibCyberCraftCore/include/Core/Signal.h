@@ -9,7 +9,7 @@
 #include <functional>
 #include <iostream>
 
-namespace ccCore {
+namespace cc {
 
     template<class ...Args>
     class Signal {

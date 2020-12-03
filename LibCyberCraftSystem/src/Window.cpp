@@ -26,10 +26,10 @@ namespace cc::System {
     Window::Window(int width, int height) :
             mOpen(true),
             mWindow(nullptr) {
-        ccCore::log("Window", "construct");
+        cc::log("Window", "construct");
         //init sdl
         int error = SDL_Init(SDL_INIT_VIDEO);
-        ccCore::check("Window", error == 0, "SDL_Init Error: ", SDL_GetError());
+        cc::check("Window", error == 0, "SDL_Init Error: ", SDL_GetError());
 
         // OpenGL 3.2
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, glMajorVersion);
@@ -43,16 +43,16 @@ namespace cc::System {
         //sdl window
         mWindow = SDL_CreateWindow("Cyber engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,  // NOLINT
                                    SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-        ccCore::check("Window", mWindow != nullptr, "SDL_CreateWindow Error: ", SDL_GetError());
+        cc::check("Window", mWindow != nullptr, "SDL_CreateWindow Error: ", SDL_GetError());
 
         // opengl contex
         mGLContext = SDL_GL_CreateContext(mWindow);
-        ccCore::check("Window", mGLContext != nullptr, "SDL_GL_CreateContext Error: ", SDL_GetError());
+        cc::check("Window", mGLContext != nullptr, "SDL_GL_CreateContext Error: ", SDL_GetError());
 
         SDL_GL_MakeCurrent(mWindow, mGLContext);
 
         //glad
-        ccCore::check("Window", gladLoadGL() != 0, "Something went wrong with glad");
+        cc::check("Window", gladLoadGL() != 0, "Something went wrong with glad");
 
 #ifdef GLAD_DEBUG
         // before every opengl call call pre_gl_call
@@ -64,7 +64,7 @@ namespace cc::System {
 
         ImGui_ImplSdlGL3_Init(mWindow);
 
-        ccCore::log("Window", "OpenGL ", GLVersion.major, ".", GLVersion.minor, ", GLSL ",
+        cc::log("Window", "OpenGL ", GLVersion.major, ".", GLVersion.minor, ", GLSL ",
                     glGetString(GL_SHADING_LANGUAGE_VERSION));
 
         glViewport(0, 0, width, height);
@@ -72,7 +72,7 @@ namespace cc::System {
     }
 
     Window::~Window() {
-        ccCore::log("Window", "destruct");
+        cc::log("Window", "destruct");
         ImGui_ImplSdlGL3_Shutdown();
         if (mGLContext != nullptr) {
             SDL_GL_DeleteContext(mGLContext);

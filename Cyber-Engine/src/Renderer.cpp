@@ -148,11 +148,11 @@ namespace Renderer {
         static constexpr float near = 0.1f;
         static constexpr float far = 1000.f;
 
-        ccCore::Matrix4f mViewMatrix;
+        cc::Matrix4f mViewMatrix;
         bool perspective = true;
 
-        [[nodiscard]] ccCore::Matrix4f getProjectionMatrix() const {
-            ccCore::Matrix4f proj;
+        [[nodiscard]] cc::Matrix4f getProjectionMatrix() const {
+            cc::Matrix4f proj;
 
             if (perspective) {
                 proj.projectPerspective(fov, ratio, near, far);
@@ -178,7 +178,7 @@ namespace Renderer {
 
     struct Sprite {
         Texture_handle mTexture;
-        ccCore::Matrix4f mMatrix;
+        cc::Matrix4f mMatrix;
     };
 
 /********************************************************
@@ -188,7 +188,7 @@ namespace Renderer {
     static std::unique_ptr<cc::System::GraphicsContext> g_graphicsContext;
 
     void createRenderer() {
-        ccCore::log("Renderer", "construct");
+        cc::log("Renderer", "construct");
 
         g_graphicsContext = std::make_unique<cc::System::GraphicsContext>();
 
@@ -223,7 +223,7 @@ namespace Renderer {
     }
 
     void destroyRenderer() {
-        ccCore::log("Renderer", "destruct");
+        cc::log("Renderer", "destruct");
         g_graphicsContext.reset();
     }
 
@@ -235,10 +235,10 @@ namespace Renderer {
  * Material
 ********************************************************/
     constexpr int maxNumberOfMaterial = 100;
-    ccCore::PoolAllocator<Material, maxNumberOfMaterial> MaterialPool;
+    cc::PoolAllocator<Material, maxNumberOfMaterial> MaterialPool;
 
     Material_handle createMaterial(Texture_handle tex, std::string_view name) {
-        ccCore::log("Renderer", "create materia \"", name, "\"");
+        cc::log("Renderer", "create materia \"", name, "\"");
         Material_handle result = MaterialPool.create();
         result->texture = std::move(tex);
         result->withAlpha = false;
@@ -256,10 +256,10 @@ namespace Renderer {
  * Models
 ********************************************************/
     constexpr int MaxNumberOfModel = 100;
-    ccCore::PoolAllocator<Model, MaxNumberOfModel> ModelPool;
+    cc::PoolAllocator<Model, MaxNumberOfModel> ModelPool;
 
     Model_handle createModel(std::string_view nom) {
-        ccCore::log("Renderer", "create model \"", nom, "\"");
+        cc::log("Renderer", "create model \"", nom, "\"");
         Model_handle result = ModelPool.create();
         result->nom = nom;
         return result;
@@ -301,7 +301,7 @@ namespace Renderer {
     }
 
     void destroyModel(Model_handle handle) {
-        ccCore::log("Renderer", "destroy model \"", handle->nom, "\"");
+        cc::log("Renderer", "destroy model \"", handle->nom, "\"");
         for(auto& mesh: handle->subMeshs){
             mesh.unload();
         }
@@ -315,9 +315,9 @@ namespace Renderer {
 
     void renderAllObject2(bool alpha) {
         for (Object *object : objectArray) {
-            ccCore::Matrix4f VP = activeCamera->getProjectionMatrix() * activeCamera->mViewMatrix;
+            cc::Matrix4f VP = activeCamera->getProjectionMatrix() * activeCamera->mViewMatrix;
             if (object->model != nullptr) {
-                ccCore::Matrix4f MVP = VP * object->matrix;
+                cc::Matrix4f MVP = VP * object->matrix;
 
                 Model_handle model = object->model;
                 for (std::size_t i(0); i < model->subMeshs.size(); ++i) {
@@ -346,12 +346,12 @@ namespace Renderer {
     Object::Object(std::string_view objectName) :
             model(nullptr),
             name(objectName) {
-        ccCore::log("Renderer", "create object \"", name, "\"");
+        cc::log("Renderer", "create object \"", name, "\"");
         objectArray.insert(this);
     }
 
     Object::~Object() {
-        ccCore::log("Renderer", "destory object");
+        cc::log("Renderer", "destory object");
         objectArray.erase(this);
     }
 
@@ -362,7 +362,7 @@ namespace Renderer {
     std::unordered_map<std::string, std::weak_ptr<cc::System::Texture>> g_textures;
 
     Texture_handle createTexture(std::string_view filename) {
-        ccCore::log("Renderer", "create texture \"", filename, "\"");
+        cc::log("Renderer", "create texture \"", filename, "\"");
 
         std::string filenameStr(filename);
 
@@ -384,7 +384,7 @@ namespace Renderer {
  * Camera
 ********************************************************/
     Camera_handle createCamera() {
-        ccCore::log("Renderer", "create camera");
+        cc::log("Renderer", "create camera");
         auto newCamera = std::make_unique<Camera>();
         Camera_handle result = newCamera.get();
         result->perspective = true;
@@ -399,7 +399,7 @@ namespace Renderer {
         cameraArray.erase(it);
     }
 
-    ccCore::Matrix4f &getCameraViewMatrixRef(Camera_handle handle) {
+    cc::Matrix4f &getCameraViewMatrixRef(Camera_handle handle) {
         return handle->mViewMatrix;
     }
 
@@ -417,10 +417,10 @@ namespace Renderer {
  * Sprites
 ********************************************************/
     constexpr int MaxNumberOfSprite = 1000;
-    ccCore::PoolAllocator<Sprite, MaxNumberOfSprite> SpritePool;
+    cc::PoolAllocator<Sprite, MaxNumberOfSprite> SpritePool;
 
     Sprite_handle createSprite(Texture_handle handle) {
-        ccCore::log("Renderer", "create sprite");
+        cc::log("Renderer", "create sprite");
         Sprite_handle result = SpritePool.create();
         result->mMatrix.setIdentity();
         result->mTexture = std::move(handle);
@@ -429,12 +429,12 @@ namespace Renderer {
 
     void destroySprite(Sprite_handle sprite) { SpritePool.destroy(sprite); }
 
-    ccCore::Matrix4f &getSpriteMatrixRef(Sprite_handle handle) {
+    cc::Matrix4f &getSpriteMatrixRef(Sprite_handle handle) {
         return handle->mMatrix;
     }
 
     void renderSprite(Sprite_handle handle) {
-        ccCore::Matrix4f MVP = activeCamera->getProjectionMatrix() *
+        cc::Matrix4f MVP = activeCamera->getProjectionMatrix() *
                                activeCamera->mViewMatrix * handle->mMatrix;
 
         noLightShader.set();

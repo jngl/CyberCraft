@@ -20,14 +20,14 @@ namespace cc::System {
     class MeshBuilder;
     class ShaderBuilder;
 
-    struct TextureId : public ccCore::Id {};
-    struct MeshId : public ccCore::Id {};
-    struct ShaderId : public ccCore::Id {};
+    struct TextureId : public cc::Id {};
+    struct MeshId : public cc::Id {};
+    struct ShaderId : public cc::Id {};
 
     struct DrawCommand {
         ShaderId shader;
         MeshId mesh;
-        ccCore::Matrix4f transform;
+        cc::Matrix4f transform;
     };
 
     class DrawCommandList {
@@ -65,7 +65,7 @@ namespace cc::System {
 
         Location addMatrixInput(const std::string& name);
 
-        void setMatrixInput(Location loc, ccCore::Matrix4f mat);
+        void setMatrixInput(Location loc, cc::Matrix4f mat);
 
         Location addTextureInput(const std::string& name);
 

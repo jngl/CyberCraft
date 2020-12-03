@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_ID_H
 #define CYBERCRAFT_ID_H
 
-namespace ccCore {
+namespace cc {
     struct Id {
         int value = -1;
 

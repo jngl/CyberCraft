@@ -20,28 +20,28 @@ namespace ccSf {
 
     }
 
-    ccCore::TextureHandle RenderContextSFML::loadTexture(std::string_view filename) {
-        ccCore::TextureHandle textureHandle{m_nextId++};
+    cc::TextureHandle RenderContextSFML::loadTexture(std::string_view filename) {
+        cc::TextureHandle textureHandle{m_nextId++};
         std::unique_ptr<sf::Texture> &texturePtr = m_texture[textureHandle];
         texturePtr = std::make_unique<sf::Texture>();
         texturePtr->loadFromFile(std::string(filename));
         return textureHandle;
     }
 
-    void RenderContextSFML::unloadTexture(ccCore::TextureHandle texture) {
+    void RenderContextSFML::unloadTexture(cc::TextureHandle texture) {
         m_texture.erase(texture);
     }
 
-    void RenderContextSFML::drawSprite(ccCore::TextureHandle textureHandle,
-                                       const ccCore::Vector2f &pos,
-                                       const ccCore::Vector2i &textureIndex,
-                                       ccCore::Color color,
-                                       ccCore::Color backgroundColor,
+    void RenderContextSFML::drawSprite(cc::TextureHandle textureHandle,
+                                       const cc::Vector2f &pos,
+                                       const cc::Vector2i &textureIndex,
+                                       cc::Color color,
+                                       cc::Color backgroundColor,
                                        float rotation){
 
         sf::Texture &texture = *m_texture[textureHandle];
 
-        ccCore::Vector2f a;
+        cc::Vector2f a;
 
         sf::RectangleShape background;
 
@@ -67,10 +67,10 @@ namespace ccSf {
         m_target.draw(sfSprite);
     }
 
-    void RenderContextSFML::drawSprite(ccCore::TextureHandle textureHandle,
-                                       const ccCore::Vector2f &pos,
+    void RenderContextSFML::drawSprite(cc::TextureHandle textureHandle,
+                                       const cc::Vector2f &pos,
                                        float scale,
-                                       ccCore::Color color) {
+                                       cc::Color color) {
         sf::Texture &texture = *m_texture[textureHandle];
         sf::Sprite sfSprite;
         sfSprite.setTexture(texture);
@@ -80,7 +80,7 @@ namespace ccSf {
         m_target.draw(sfSprite);
     }
 
-    void RenderContextSFML::setViewCenter(ccCore::Vector2f pos) {
+    void RenderContextSFML::setViewCenter(cc::Vector2f pos) {
         sf::View view(m_target.getView());
         view.setCenter(toSfVector2(pos*tileSize));
         m_target.setView(view);

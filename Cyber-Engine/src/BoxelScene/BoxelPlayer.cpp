@@ -18,8 +18,8 @@ BoxelPlayer::BoxelPlayer() :
                          cubeIndex.data(),
                          mat);
 
-    constexpr ccCore::Vector3f defaultPos{0.5f, -3.1f, 0.5f};
-    constexpr ccCore::Vector3f defaultScale{0.4f, 1.8f, 0.2f};
+    constexpr cc::Vector3f defaultPos{0.5f, -3.1f, 0.5f};
+    constexpr cc::Vector3f defaultScale{0.4f, 1.8f, 0.2f};
 
     mObject.matrix.addTranslation(defaultPos);
     mObject.matrix.addScale(defaultScale);

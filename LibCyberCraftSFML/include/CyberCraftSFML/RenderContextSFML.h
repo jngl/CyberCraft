@@ -12,30 +12,30 @@
 #include <map>
 
 namespace ccSf {
-    class RenderContextSFML : public ccCore::RenderContext {
+    class RenderContextSFML : public cc::RenderContext {
     public:
         explicit RenderContextSFML(sf::RenderTarget &target);
 
-        ccCore::TextureHandle loadTexture(std::string_view filename) override;
+        cc::TextureHandle loadTexture(std::string_view filename) override;
 
-        void unloadTexture(ccCore::TextureHandle texture) override;
+        void unloadTexture(cc::TextureHandle texture) override;
 
-        void drawSprite(ccCore::TextureHandle texture,
-                        const ccCore::Vector2f &pos,
-                        const ccCore::Vector2i &textureIndex,
-                        ccCore::Color color,
-                        ccCore::Color backgroundColor,
+        void drawSprite(cc::TextureHandle texture,
+                        const cc::Vector2f &pos,
+                        const cc::Vector2i &textureIndex,
+                        cc::Color color,
+                        cc::Color backgroundColor,
                         float rotation) override;
 
-        void drawSprite(ccCore::TextureHandle texture,
-                        const ccCore::Vector2f &pos,
+        void drawSprite(cc::TextureHandle texture,
+                        const cc::Vector2f &pos,
                         float scale,
-                        ccCore::Color color) override;
+                        cc::Color color) override;
 
-        void setViewCenter(ccCore::Vector2f pos) override;
+        void setViewCenter(cc::Vector2f pos) override;
 
     private:
-        std::map<ccCore::TextureHandle, std::unique_ptr<sf::Texture>> m_texture;
+        std::map<cc::TextureHandle, std::unique_ptr<sf::Texture>> m_texture;
         sf::RenderTarget &m_target;
         int m_nextId = 1;
     };

@@ -20,8 +20,8 @@ private:
     Renderer::Camera_handle mRendererCamera;
 
     float mDist;
-    ccCore::Vector3f mPosition;
-    ccCore::Vector2f mAngle;
+    cc::Vector3f mPosition;
+    cc::Vector2f mAngle;
 
     bool mActionRotateUp, mActionRotateDown, mActionRotateLeft, mActionRotateRight, mActionMoveForward, mActionMoveBackward;
 };

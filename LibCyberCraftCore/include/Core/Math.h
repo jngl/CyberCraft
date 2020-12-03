@@ -8,7 +8,7 @@
 #include <cmath>
 #include <array>
 
-namespace ccCore{
+namespace cc{
     template<class T>
     T mix(T x, T y, T a) { return x * (1 - a) + y * a; }
 

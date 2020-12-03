@@ -7,7 +7,7 @@
 
 #include <string_view>
 
-namespace ccCore {
+namespace cc {
     struct Color;
     class Window;
     class RenderContext;

@@ -12,7 +12,7 @@
 #include <array>
 #include <memory>
 
-namespace ccCore {
+namespace cc {
 
  /**************************************************************
  *                  BTreePlusNode

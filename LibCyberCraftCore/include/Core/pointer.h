@@ -7,7 +7,7 @@
 
 #include <exception>
 
-namespace ccCore {
+namespace cc {
     class NullPointerException : std::exception {
     public:
         [[nodiscard]] const char* what() const noexcept override;
