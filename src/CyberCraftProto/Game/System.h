@@ -7,7 +7,7 @@
 
 #include "Common.h"
 
-void drawSprite(ccCore::RenderContext& renderContext, ccCore::TextureHandle texture, const ccCore::Vector2f& pos, const component::Sprite& sprite);
-void movePlayer(ccCore::Vector2f & pos, const World& world);
+void drawSprite(cc::RenderContext& renderContext, cc::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite);
+void movePlayer(cc::Vector2f & pos, const World& world);
 
 #endif //CYBERCRAFT_SYSTEM_H

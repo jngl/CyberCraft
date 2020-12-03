@@ -10,9 +10,9 @@
 
 namespace component{
     struct Sprite{
-        ccCore::Vector2i textureIndex;
-        ccCore::Color color;
-        ccCore::Color backgroundColor;
+        cc::Vector2i textureIndex;
+        cc::Color color;
+        cc::Color backgroundColor;
         float rotation = 0; // in degree
     };
 }

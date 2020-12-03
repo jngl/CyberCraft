@@ -7,7 +7,7 @@
 
 #include "Common.h"
 
-namespace ccCore {
+namespace cc {
     struct Color {
         Uint8 red = 255;
         Uint8 green = 255;

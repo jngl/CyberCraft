@@ -289,11 +289,11 @@ BoxelScene::BoxelScene() :
     //chunk.loadTexture();
     //chunk.mGrid.generateGrid();
     //chunk.generateMesh();
-    ccCore::log("BoxelScene", "construct end");
+    cc::log("BoxelScene", "construct end");
 }
 
 BoxelScene::~BoxelScene() {
-    ccCore::log("BoxelScene", "destruct");
+    cc::log("BoxelScene", "destruct");
 }
 
 void BoxelScene::addAction(cc::System::Window &win) {

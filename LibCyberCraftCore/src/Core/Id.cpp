@@ -4,6 +4,6 @@
 
 #include <Core/Id.h>
 
-namespace ccCore::Impl {
+namespace cc::Impl {
     IdGenerator<TypeId> typeIdGenerator;
 }

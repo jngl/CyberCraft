@@ -4,7 +4,7 @@
 
 #include "Core/Update.h"
 
-namespace ccCore {
+namespace cc {
     FixStepUpdater::FixStepUpdater(const Duration &timePerUpdate) :
             m_previous(clock::now()),
             m_lag(Duration::zero()),

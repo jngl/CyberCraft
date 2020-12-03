@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_WINDOW_H
 #define CYBERCRAFT_WINDOW_H
 
-namespace ccCore {
+namespace cc {
     class Window {
     public:
         virtual ~Window() = default;

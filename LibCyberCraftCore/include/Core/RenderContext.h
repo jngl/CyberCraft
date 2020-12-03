@@ -9,7 +9,7 @@
 #include <Core/Common.h>
 #include <Core/Math.h>
 
-namespace ccCore {
+namespace cc {
     struct TextureHandle : public Id {
     };
 

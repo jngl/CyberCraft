@@ -9,7 +9,7 @@
 #include <exception>
 #include <iostream>
 
-namespace ccCore {
+namespace cc {
     class Error : public std::exception {
     public:
         explicit Error(std::string_view msg);

@@ -20,11 +20,11 @@ struct BlocInfo {
     const BlocGroup& group;
 };
 
-constexpr ccCore::Color grassColorMain{45,155,13};
-constexpr ccCore::Color grassColorDetail{3,249,41};
-constexpr ccCore::Color stoneColorMain{176, 176, 176};
-constexpr ccCore::Color transparent{0,0,0,0};
-constexpr ccCore::Color waterColorMain{33, 105, 197};
+constexpr cc::Color grassColorMain{45,155,13};
+constexpr cc::Color grassColorDetail{3,249,41};
+constexpr cc::Color stoneColorMain{176, 176, 176};
+constexpr cc::Color transparent{0,0,0,0};
+constexpr cc::Color waterColorMain{33, 105, 197};
 
 constexpr std::array<BlocGroup, 4> g_blocGroupArray{
         BlocGroup{
@@ -53,7 +53,7 @@ constexpr const BlocGroup& getBlocGroup(std::string_view name){
         }
     }
     if(!result){
-        throw ccCore::Error("Bloc group not found");
+        throw cc::Error("Bloc group not found");
     }
     return *result;
 }
@@ -62,7 +62,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         BlocInfo{
                 "Grass",
                 component::Sprite {
-                        ccCore::Vector2i {3,0},
+                        cc::Vector2i {3,0},
                         transparent,
                         grassColorMain
                 },
@@ -71,7 +71,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         BlocInfo{
                 "LongGrass",
                 component::Sprite {
-                        ccCore::Vector2i {3,0},
+                        cc::Vector2i {3,0},
                         grassColorMain,
                         grassColorDetail
                 },
@@ -80,7 +80,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         BlocInfo{
                 "Stone",
                 component::Sprite {
-                        ccCore::Vector2i {5,0},
+                        cc::Vector2i {5,0},
                         grassColorMain,
                         stoneColorMain
                 },
@@ -89,7 +89,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         BlocInfo{
                 "Water",
                 component::Sprite {
-                        ccCore::Vector2i {7,0},
+                        cc::Vector2i {7,0},
                         transparent,
                         waterColorMain
                 },
@@ -98,7 +98,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         BlocInfo{
                 "WaterGrassSouth",
                 component::Sprite {
-                    ccCore::Vector2i  {1, 0},
+                    cc::Vector2i  {1, 0},
                     grassColorMain,
                     waterColorMain,
                     180
@@ -108,7 +108,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         BlocInfo{
                 "WaterGrassNorth",
                 component::Sprite {
-                        ccCore::Vector2i  {1, 0},
+                        cc::Vector2i  {1, 0},
                         grassColorMain,
                         waterColorMain,
                         0
@@ -118,7 +118,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         BlocInfo{
                 "WaterGrassLeft",
                 component::Sprite {
-                        ccCore::Vector2i  {1, 0},
+                        cc::Vector2i  {1, 0},
                         grassColorMain,
                         waterColorMain,
                         -90
@@ -128,7 +128,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         BlocInfo{
                 "WaterGrassRight",
                 component::Sprite {
-                        ccCore::Vector2i  {1, 0},
+                        cc::Vector2i  {1, 0},
                         grassColorMain,
                         waterColorMain,
                         90
@@ -137,7 +137,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         },BlocInfo{
                 "WaterGrassNorthRight",
                 component::Sprite {
-                        ccCore::Vector2i  {2, 0},
+                        cc::Vector2i  {2, 0},
                         grassColorMain,
                         waterColorMain,
                         0
@@ -146,7 +146,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         },BlocInfo{
                 "WaterGrassNorthLeft",
                 component::Sprite {
-                        ccCore::Vector2i  {2, 0},
+                        cc::Vector2i  {2, 0},
                         grassColorMain,
                         waterColorMain,
                         -90
@@ -155,7 +155,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         },BlocInfo{
                 "WaterGrassSouthLeft",
                 component::Sprite {
-                        ccCore::Vector2i  {2, 0},
+                        cc::Vector2i  {2, 0},
                         grassColorMain,
                         waterColorMain,
                         180
@@ -164,7 +164,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         },BlocInfo{
                 "WaterGrassSouthRight",
                 component::Sprite {
-                        ccCore::Vector2i  {2, 0},
+                        cc::Vector2i  {2, 0},
                         grassColorMain,
                         waterColorMain,
                         90
@@ -174,7 +174,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
         BlocInfo{
                 "Tree",
                 component::Sprite {
-                        ccCore::Vector2i  {4, 0},
+                        cc::Vector2i  {4, 0},
                         grassColorMain,
                         grassColorDetail
                 },
@@ -191,7 +191,7 @@ constexpr const BlocInfo& getBlocInfo(std::string_view name){
         }
     }
     if(!result){
-        throw ccCore::Error("Bloc info not found");
+        throw cc::Error("Bloc info not found");
     }
     return *result;
 }

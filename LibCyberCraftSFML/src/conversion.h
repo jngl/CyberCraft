@@ -13,11 +13,11 @@
 
 namespace ccSf {
     template<class T>
-    sf::Vector2<T> toSfVector2(const ccCore::Vector2 <T> &v) {
+    sf::Vector2<T> toSfVector2(const cc::Vector2 <T> &v) {
         return sf::Vector2<T>(v.x, v.y);
     }
 
-    sf::Color toSfColor(const ccCore::Color &c);
+    sf::Color toSfColor(const cc::Color &c);
 }
 
 #endif //CYBERCRAFT_CONVERSION_H

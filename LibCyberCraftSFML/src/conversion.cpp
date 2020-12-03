@@ -8,7 +8,7 @@
 #include "conversion.h"
 
 namespace ccSf {
-    sf::Color toSfColor(const ccCore::Color &c) {
+    sf::Color toSfColor(const cc::Color &c) {
         return sf::Color(c.red, c.green, c.blue, c.alpha);
     }
 }

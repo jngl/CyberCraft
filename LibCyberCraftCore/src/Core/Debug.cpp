@@ -4,7 +4,7 @@
 
 #include "Core/Debug.h"
 
-namespace ccCore {
+namespace cc {
     Error::Error(std::string_view msg) :
             m_message(msg) {}
 

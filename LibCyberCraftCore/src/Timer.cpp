@@ -1,6 +1,6 @@
 #include "Core/Timer.hpp"
 
-namespace ccCore {
+namespace cc {
     Timer::Timer() :
             mTimeStart(now()) {
     }

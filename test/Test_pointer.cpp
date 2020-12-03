@@ -4,23 +4,23 @@
 constexpr int testValue1 = 42;
 constexpr int testValue2 = -1;
 
-TEST_CASE( "ccCore::Ref constructor ptr", "NotNull constructor from ptr" ) {
-    REQUIRE_THROWS_AS( ccCore::Ref<int>(nullptr), ccCore::NullPointerException);
+TEST_CASE( "cc::Ref constructor ptr", "NotNull constructor from ptr" ) {
+    REQUIRE_THROWS_AS( cc::Ref<int>(nullptr), cc::NullPointerException);
 
     int i = testValue1;
 
-    ccCore::Ref<int> a(&i);
+    cc::Ref<int> a(&i);
     REQUIRE(*a == testValue1);
 
     *a = testValue2;
     REQUIRE(i == testValue2);
 }
 
-TEST_CASE( "ccCore::Ref constructor copy", "NotNull constructor from copy" ) {
+TEST_CASE( "cc::Ref constructor copy", "NotNull constructor from copy" ) {
     int i = testValue1;
 
-    ccCore::Ref<int> a(&i);
-    ccCore::Ref<int> b(a);
+    cc::Ref<int> a(&i);
+    cc::Ref<int> b(a);
 
     REQUIRE(*b == testValue1);
 
@@ -28,11 +28,11 @@ TEST_CASE( "ccCore::Ref constructor copy", "NotNull constructor from copy" ) {
     REQUIRE(i == testValue2);
 }
 
-TEST_CASE( "ccCore::Ref constructor move", "NotNull constructor from copy" ) {
+TEST_CASE( "cc::Ref constructor move", "NotNull constructor from copy" ) {
     int i = testValue1;
 
-    ccCore::Ref<int> a(&i);
-    ccCore::Ref<int> b(std::move(a));
+    cc::Ref<int> a(&i);
+    cc::Ref<int> b(std::move(a));
 
     REQUIRE(*b == testValue1);
 
@@ -40,35 +40,35 @@ TEST_CASE( "ccCore::Ref constructor move", "NotNull constructor from copy" ) {
     REQUIRE(i == testValue2);
 }
 
-TEST_CASE( "ccCore::Ref assign copy", "NotNull constructor from copy" ) {
+TEST_CASE( "cc::Ref assign copy", "NotNull constructor from copy" ) {
     int i = testValue1;
     int j = testValue2;
 
-    ccCore::Ref<int> a(&i);
-    ccCore::Ref<int> b(&j);
+    cc::Ref<int> a(&i);
+    cc::Ref<int> b(&j);
 
     a = b;
 
     REQUIRE(*a == testValue2);
 }
 
-TEST_CASE( "ccCore::Ref assign move", "NotNull constructor from copy" ) {
+TEST_CASE( "cc::Ref assign move", "NotNull constructor from copy" ) {
     int i = testValue1;
     int j = testValue2;
 
-    ccCore::Ref<int> a(&i);
-    ccCore::Ref<int> b(&j);
+    cc::Ref<int> a(&i);
+    cc::Ref<int> b(&j);
 
     a = std::move(b);
 
     REQUIRE(*a == testValue2);
 }
 
-TEST_CASE( "ccCore::Ref get", "NotNull constructor from copy" ) {
+TEST_CASE( "cc::Ref get", "NotNull constructor from copy" ) {
     int i = testValue1;
 
-    ccCore::Ref<int> a(&i);
-    const ccCore::Ref<int>& b(a);
+    cc::Ref<int> a(&i);
+    const cc::Ref<int>& b(a);
 
     REQUIRE(*b == testValue1);
 }

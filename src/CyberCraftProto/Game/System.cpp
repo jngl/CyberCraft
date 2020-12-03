@@ -11,24 +11,24 @@
 
 #include <SFML/Window.hpp>
 
-void drawSprite(ccCore::RenderContext& renderContext, ccCore::TextureHandle texture, const ccCore::Vector2f& pos, const component::Sprite& sprite) {
+void drawSprite(cc::RenderContext& renderContext, cc::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite) {
     renderContext.drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
 }
 
-void movePlayer(ccCore::Vector2f& pos, const World& world) {
-    auto funcMove = [&pos, &world](sf::Keyboard::Key key, ccCore::Vector2f move){
+void movePlayer(cc::Vector2f& pos, const World& world) {
+    auto funcMove = [&pos, &world](sf::Keyboard::Key key, cc::Vector2f move){
         if(!sf::Keyboard::isKeyPressed(key)){
             return;
         }
 
-        ccCore::Vector2f newPos = pos + move;
+        cc::Vector2f newPos = pos + move;
 
         if(!newPos.isInRect(0, World::sizeX-1, 0, World::sizeY-1)){
             return;
         }
 
-        constexpr ccCore::Vector2f collisionPoint{0.5f, 0.8f};
-        ccCore::Vector2i newPosInt = (newPos + collisionPoint).toVector<int>();
+        constexpr cc::Vector2f collisionPoint{0.5f, 0.8f};
+        cc::Vector2i newPosInt = (newPos + collisionPoint).toVector<int>();
         const BlocInfo* blocInfo = world.getBloc(newPosInt);
         if(blocInfo == nullptr || blocInfo->group.collision) {
             return;

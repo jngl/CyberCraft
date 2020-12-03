@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_GAME_H
 #define CYBERCRAFT_GAME_H
 
-namespace ccCore {
+namespace cc {
     class Game {
     public:
         virtual ~Game() = default;
