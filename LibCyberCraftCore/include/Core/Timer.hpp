@@ -12,8 +12,8 @@ namespace cc {
         void restart();
 
     private:
-        typedef std::chrono::high_resolution_clock::time_point TimePoint;
-        typedef std::chrono::duration<float> Duration;
+        using TimePoint = std::chrono::high_resolution_clock::time_point;
+        using Duration = std::chrono::duration<float>;
 
         TimePoint mTimeStart;
 

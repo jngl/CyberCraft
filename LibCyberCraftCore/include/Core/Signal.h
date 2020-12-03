@@ -20,7 +20,7 @@ namespace cc {
             m_functions.push_back(func);
         }
 
-    protected:
+    private:
         std::vector<Func> m_functions;
     };
 
