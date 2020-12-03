@@ -4,12 +4,17 @@
 constexpr int testValue1 = 42;
 constexpr int testValue2 = -1;
 
-TEST_CASE( "cc::Ref constructor ptr" ) {
-    REQUIRE_THROWS_AS( cc::Ref<int>(nullptr), cc::NullPointerException);
+class Foo{
+public:
+    void a(){}
+};
 
+class Bar : public Foo{};
+
+TEST_CASE( "cc::Ref constructor ref" ) {
     int i = testValue1;
 
-    cc::Ref<int> a(&i);
+    cc::Ref<int> a(i);
     REQUIRE(*a == testValue1);
 
     *a = testValue2;
@@ -19,7 +24,7 @@ TEST_CASE( "cc::Ref constructor ptr" ) {
 TEST_CASE( "cc::Ref constructor copy" ) {
     int i = testValue1;
 
-    cc::Ref<int> a(&i);
+    cc::Ref<int> a(i);
     cc::Ref<int> b(a);
 
     REQUIRE(*b == testValue1);
@@ -31,7 +36,7 @@ TEST_CASE( "cc::Ref constructor copy" ) {
 TEST_CASE( "cc::Ref constructor move" ) {
     int i = testValue1;
 
-    cc::Ref<int> a(&i);
+    cc::Ref<int> a(i);
     cc::Ref<int> b(std::move(a));
 
     REQUIRE(*b == testValue1);
@@ -44,8 +49,8 @@ TEST_CASE( "cc::Ref assign copy" ) {
     int i = testValue1;
     int j = testValue2;
 
-    cc::Ref<int> a(&i);
-    cc::Ref<int> b(&j);
+    cc::Ref<int> a(i);
+    cc::Ref<int> b(j);
 
     a = b;
 
@@ -56,8 +61,8 @@ TEST_CASE( "cc::Ref assign move" ) {
     int i = testValue1;
     int j = testValue2;
 
-    cc::Ref<int> a(&i);
-    cc::Ref<int> b(&j);
+    cc::Ref<int> a(i);
+    cc::Ref<int> b(j);
 
     a = std::move(b);
 
@@ -67,10 +72,26 @@ TEST_CASE( "cc::Ref assign move" ) {
 TEST_CASE( "cc::Ref get" ) {
     int i = testValue1;
 
-    cc::Ref<int> a(&i);
+    cc::Ref<int> a(i);
     const cc::Ref<int>& b(a);
 
     REQUIRE(*b == testValue1);
+}
+
+TEST_CASE( "cc::Ref ->" ) {
+    Foo a;
+
+    cc::Ref<Foo> b(a);
+
+    b->a();
+}
+
+TEST_CASE( "cc::make_ref" ) {
+    Bar a;
+
+    cc::Ref<Foo> b = cc::make_ref(a);
+
+    b->a();
 }
 
 TEST_CASE( "cc::OptionalRef default constructor" ) {

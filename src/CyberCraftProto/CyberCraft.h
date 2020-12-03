@@ -7,6 +7,7 @@
 
 #include <Core/RenderContext.h>
 #include <Core/Game.h>
+#include <Core/pointer.h>
 
 #include "Game/Component.h"
 #include "Game/Bloc.h"
@@ -19,7 +20,7 @@ struct Player {
 
 class CyberCraft : public cc::Game {
 public:
-    explicit CyberCraft(cc::RenderContext& renderContext);
+    explicit CyberCraft(cc::Ref<cc::RenderContext> renderContext);
 
     void update() override;
     void draw() override;
@@ -37,7 +38,7 @@ private:
 
     World m_world;
     cc::TextureHandle texture;
-    cc::RenderContext& m_renderContext;
+    cc::Ref<cc::RenderContext> m_renderContext;
 };
 
 

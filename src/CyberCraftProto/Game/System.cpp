@@ -11,8 +11,8 @@
 
 #include <SFML/Window.hpp>
 
-void drawSprite(cc::RenderContext& renderContext, cc::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite) {
-    renderContext.drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
+void drawSprite(cc::Ref<cc::RenderContext> renderContext, cc::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite) {
+    renderContext->drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
 }
 
 void movePlayer(cc::Vector2f& pos, const World& world) {
