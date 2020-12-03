@@ -15,13 +15,13 @@ void drawSprite(cc::Ref<cc::RenderContext> renderContext, cc::TextureHandle text
     renderContext->drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
 }
 
-void movePlayer(cc::Vector2f& pos, const World& world) {
+void movePlayer(cc::Ref<cc::Vector2f> pos, const World& world) {
     auto funcMove = [&pos, &world](sf::Keyboard::Key key, cc::Vector2f move){
         if(!sf::Keyboard::isKeyPressed(key)){
             return;
         }
 
-        cc::Vector2f newPos = pos + move;
+        cc::Vector2f newPos = *pos + move;
 
         if(!newPos.isInRect(0, World::sizeX-1, 0, World::sizeY-1)){
             return;
@@ -34,7 +34,7 @@ void movePlayer(cc::Vector2f& pos, const World& world) {
             return;
         }
 
-        pos = newPos;
+        *pos = newPos;
     };
 
     constexpr float speed = 0.1f;
