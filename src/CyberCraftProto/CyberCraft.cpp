@@ -42,10 +42,10 @@ const char* gameMap =
         "~~~~~~~~~~              ~~~~~~~~"
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
 
-CyberCraft::CyberCraft(cc::RenderContext& renderContext):
+CyberCraft::CyberCraft(cc::Ref<cc::RenderContext> renderContext):
         m_renderContext(renderContext)
 {
-    texture = renderContext.loadTexture("./data/tileset.png");
+    texture = renderContext->loadTexture("./data/tileset.png");
 
     m_world.forEach([this](int x, int y, const BlocInfo*& bloc){
         char tile = gameMap[y*World::sizeX+x]; // NOLINT
@@ -127,6 +127,6 @@ void CyberCraft::draw() {
     });
 
     drawSprite(m_renderContext, texture, player.pos, player.sprite);
-    m_renderContext.setViewCenter(player.pos);
+    m_renderContext->setViewCenter(player.pos);
 }
 

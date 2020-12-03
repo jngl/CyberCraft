@@ -10,22 +10,14 @@
 #include "Core/Common.h"
 
 namespace cc {
-    class NullPointerException final : std::exception {
-    public:
-        [[nodiscard]] const char* what() const noexcept override;
-    };
-
     template<class T>
     class Ref final{
     public:
         Ref() = delete;
 
-        explicit constexpr Ref(T* pointer):
-            m_pointer(pointer)
+        explicit constexpr Ref(T& pointer):
+            m_pointer(&pointer)
         {
-            if(m_pointer == nullptr){
-                throw NullPointerException();
-            }
         }
 
         constexpr Ref(const Ref&) = default;
@@ -36,6 +28,9 @@ namespace cc {
         }
 
         ~Ref() = default;
+
+        template<class T2>
+        operator Ref<T2>() const { return Ref<T2>(*m_pointer); }
 
         constexpr Ref<T>& operator=(const Ref<T>& from){
             if(this != &from){
@@ -56,6 +51,10 @@ namespace cc {
             return *m_pointer;
         }
 
+        constexpr T* operator->(){
+            return m_pointer;
+        }
+
         constexpr const T& operator*() const{
             return *m_pointer;
         }
@@ -63,6 +62,11 @@ namespace cc {
     private:
         T* m_pointer;
     };
+
+    template<class T>
+    Ref<T> make_ref(T& a){
+        return Ref<T>(a);
+    }
 
     template<class T>
     class OptionalRef final{

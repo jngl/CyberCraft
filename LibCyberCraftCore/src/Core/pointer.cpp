@@ -5,7 +5,4 @@
 #include "Core/pointer.h"
 
 namespace cc {
-    const char* NullPointerException::what() const noexcept {
-        return "Null Pointer Exception";
-    }
 }

@@ -6,8 +6,9 @@
 #define CYBERCRAFT_SYSTEM_H
 
 #include "Common.h"
+#include "Core/pointer.h"
 
-void drawSprite(cc::RenderContext& renderContext, cc::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite);
+void drawSprite(cc::Ref<cc::RenderContext> renderContext, cc::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite);
 void movePlayer(cc::Vector2f & pos, const World& world);
 
 #endif //CYBERCRAFT_SYSTEM_H
