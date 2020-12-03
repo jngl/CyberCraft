@@ -296,7 +296,7 @@ BoxelScene::~BoxelScene() {
     cc::log("BoxelScene", "destruct");
 }
 
-void BoxelScene::addAction(cc::System::Window &win) {
+void BoxelScene::addAction(cs::Window &win) {
     mCamera.addAction(win);
     mPlayer.addAction(win);
 }

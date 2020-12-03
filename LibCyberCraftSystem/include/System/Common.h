@@ -7,7 +7,7 @@
 
 #include "Core/Common.h"
 
-namespace cc::System {
+namespace cs {
 
 }
 

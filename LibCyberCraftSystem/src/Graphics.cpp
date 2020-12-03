@@ -4,7 +4,7 @@
 
 #include "System/DdsFile.h"
 
-namespace cc::System {
+namespace cs {
 
 /********************************************************
  * glCheck

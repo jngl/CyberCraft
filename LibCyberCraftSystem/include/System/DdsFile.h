@@ -11,7 +11,7 @@
 
 #include <vector>
 
-namespace cc::System {
+namespace cs {
     TextureData readDdsFile(std::string_view filename);
 }
 
