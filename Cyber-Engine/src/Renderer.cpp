@@ -121,19 +121,19 @@ namespace Renderer {
 
     void resizeAllCamera(int width, int height);
 
-    cc::System::Shader defaultShader;
-    cc::System::Shader noLightShader;
-    cc::System::Shader defaultNoTextureShader;
+    cs::Shader defaultShader;
+    cs::Shader noLightShader;
+    cs::Shader defaultNoTextureShader;
 
     const unsigned int VertexBufferIndex = 0;
     const unsigned int TexCoordBufferIndex = 1;
     const unsigned int NormalBufferIndex = 2;
 
-    cc::System::Shader::Location defaultShaderMVP;
-    cc::System::Shader::Location noLightShaderMVP;
-    cc::System::Shader::Location defaultNoTextureShaderMVP;
+    cs::Shader::Location defaultShaderMVP;
+    cs::Shader::Location noLightShaderMVP;
+    cs::Shader::Location defaultNoTextureShaderMVP;
 
-    cc::System::Mesh spriteMesh;
+    cs::Mesh spriteMesh;
 
     float ratio;
 
@@ -170,7 +170,7 @@ namespace Renderer {
 
     struct Model {
         std::string nom;
-        std::vector<cc::System::Mesh> subMeshs;
+        std::vector<cs::Mesh> subMeshs;
         std::vector<Material_handle> materials;
     };
 
@@ -185,12 +185,12 @@ namespace Renderer {
  * Renderer function
 ********************************************************/
 
-    static std::unique_ptr<cc::System::GraphicsContext> g_graphicsContext;
+    static std::unique_ptr<cs::GraphicsContext> g_graphicsContext;
 
     void createRenderer() {
         cc::log("Renderer", "construct");
 
-        g_graphicsContext = std::make_unique<cc::System::GraphicsContext>();
+        g_graphicsContext = std::make_unique<cs::GraphicsContext>();
 
         // noTexture
         defaultNoTextureShader.load(defaultNoTextureShaderVert,
@@ -218,7 +218,7 @@ namespace Renderer {
                              sizeof(spriteVertices), 3);
         spriteMesh.addBuffer(1, spriteTexCoord.data(),
                              sizeof(spriteTexCoord), 2);
-        spriteMesh.endLoadWithIndex(cc::System::Mesh::TRIANGLES, spriteFacesNumber * 3,
+        spriteMesh.endLoadWithIndex(cs::Mesh::TRIANGLES, spriteFacesNumber * 3,
                                     spriteFaces.data());
     }
 
@@ -277,7 +277,7 @@ namespace Renderer {
 
         model->subMeshs.emplace_back();
 
-        cc::System::Mesh &subMesh = model->subMeshs.back();
+        cs::Mesh &subMesh = model->subMeshs.back();
 
         if (material->texture == nullptr) {
             subMesh.beginLoad();
@@ -285,7 +285,7 @@ namespace Renderer {
                               nbVertices * sizeof(float) * 3, 3);
             subMesh.addBuffer(2, normals,
                               nbVertices * sizeof(float) * 3, 3);
-            subMesh.endLoadWithIndex(cc::System::Mesh::TRIANGLES, nbFaces * 3,
+            subMesh.endLoadWithIndex(cs::Mesh::TRIANGLES, nbFaces * 3,
                                      faces);
         } else {
             subMesh.beginLoad();
@@ -295,7 +295,7 @@ namespace Renderer {
                               nbVertices * sizeof(float) * 2, 2);
             subMesh.addBuffer(2, normals,
                               nbVertices * sizeof(float) * 3, 3);
-            subMesh.endLoadWithIndex(cc::System::Mesh::TRIANGLES, nbFaces * 3,
+            subMesh.endLoadWithIndex(cs::Mesh::TRIANGLES, nbFaces * 3,
                                      faces);
         }
     }
@@ -359,7 +359,7 @@ namespace Renderer {
      * Textures
     ********************************************************/
 
-    std::unordered_map<std::string, std::weak_ptr<cc::System::Texture>> g_textures;
+    std::unordered_map<std::string, std::weak_ptr<cs::Texture>> g_textures;
 
     Texture_handle createTexture(std::string_view filename) {
         cc::log("Renderer", "create texture \"", filename, "\"");
@@ -368,10 +368,10 @@ namespace Renderer {
 
         auto it = g_textures.find(filenameStr);
 
-        std::shared_ptr<cc::System::Texture> texture;
+        std::shared_ptr<cs::Texture> texture;
 
         if(it == std::end(g_textures)){
-            texture = g_graphicsContext->createTexture(cc::System::readDdsFile(filename));
+            texture = g_graphicsContext->createTexture(cs::readDdsFile(filename));
             g_textures[filenameStr] = texture;
         }else{
             texture = it->second.lock();

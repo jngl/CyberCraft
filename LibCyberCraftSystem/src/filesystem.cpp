@@ -4,7 +4,7 @@
 
 #include <SDL.h>
 
-namespace cc::System {
+namespace cs {
     std::string getBaseDirectory() {
         return SDL_GetBasePath();
     }

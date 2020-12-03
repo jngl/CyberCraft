@@ -15,7 +15,7 @@ public:
     static constexpr int DefaultWindowSizeY = 768;
 
     Application(){
-        mWindow = std::make_unique<cc::System::Window>(DefaultWindowSizeX, DefaultWindowSizeY);
+        mWindow = std::make_unique<cs::Window>(DefaultWindowSizeX, DefaultWindowSizeY);
         mWindow->addAction(SDL_SCANCODE_F3, &mShowInfoWindow, false);
 
         Renderer::createRenderer();
@@ -43,7 +43,7 @@ public:
 private:
     static constexpr unsigned int mMaxInputSize = 32;
 
-    std::unique_ptr<cc::System::Window> mWindow;
+    std::unique_ptr<cs::Window> mWindow;
     std::unique_ptr<Scene> mScene;
     cc::Timer mGlobalTimer;
     float mFrameTime = 0;

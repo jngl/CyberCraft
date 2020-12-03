@@ -9,7 +9,7 @@
 
 #include <vector>
 
-namespace cc::System {
+namespace cs {
     enum class TextureFormat{
         DXT1,
         DXT3,

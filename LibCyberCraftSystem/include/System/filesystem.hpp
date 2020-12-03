@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 
-namespace cc::System {
+namespace cs {
     std::string getBaseDirectory();
 
     std::string getGameDirectory();

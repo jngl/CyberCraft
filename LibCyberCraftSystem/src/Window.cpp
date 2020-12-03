@@ -22,7 +22,7 @@ constexpr int glMinorVersion = 2;
 constexpr int doubleBuffer = 1;
 constexpr int depthSize = 24;
 
-namespace cc::System {
+namespace cs {
     Window::Window(int width, int height) :
             mOpen(true),
             mWindow(nullptr) {

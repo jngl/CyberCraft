@@ -9,7 +9,7 @@ namespace Renderer {
     struct Sprite;
 
     using Material_handle = Material *;
-    using Texture_handle = std::shared_ptr<cc::System::Texture>;
+    using Texture_handle = std::shared_ptr<cs::Texture>;
     using Model_handle = Model *;
     using Camera_handle = Camera *;
     using Sprite_handle = Sprite *;

@@ -69,7 +69,7 @@ public:
 
     ~BoxelScene() override;
 
-    void addAction(cc::System::Window &win) override;
+    void addAction(cs::Window &win) override;
 
     void update(float frameTime) override;
 

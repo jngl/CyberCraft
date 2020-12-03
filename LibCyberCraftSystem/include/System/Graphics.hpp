@@ -13,7 +13,7 @@
 #include <memory>
 #include <unordered_map>
 
-namespace cc::System {
+namespace cs {
     class Texture;
     class Shader;
 

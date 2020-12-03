@@ -11,7 +11,7 @@
 #include <map>
 #include <functional>
 
-namespace cc::System {
+namespace cs {
     class Window {
     public:
         Window(int width, int height);
