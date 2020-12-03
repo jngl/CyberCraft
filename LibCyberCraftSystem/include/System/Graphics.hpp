@@ -40,13 +40,9 @@ namespace cc::System {
     public:
         GraphicsContext();
 
-        std::shared_ptr<Texture> loadTexture(std::string_view filename);
-
+        std::shared_ptr<Texture> createTexture(const TextureData& data);
         void setCurrentTexture(const std::shared_ptr<Texture> &texture);
         [[nodiscard]]std::weak_ptr<Texture> getCurrentTexture();
-
-        TextureId loadTexture(const TextureData& builder);
-        void unloadTexture(TextureId id);
 
         MeshId loadMesh(const MeshBuilder& builder);
         void unloadMesh(MeshId mesh);
@@ -57,7 +53,6 @@ namespace cc::System {
         void draw(DrawCommandList& cmdList);
 
     private:
-        std::unordered_map<std::string, std::weak_ptr<Texture>> m_textures;
         std::weak_ptr<Texture> m_current_texture;
     };
 

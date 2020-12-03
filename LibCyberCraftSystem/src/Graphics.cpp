@@ -2,7 +2,7 @@
 
 #include <Core/Debug.h>
 
-#include "DdsFile.h"
+#include "System/DdsFile.h"
 
 namespace cc::System {
 
@@ -45,7 +45,7 @@ namespace cc::System {
     ********************************************************/
     class Texture {
     public:
-        explicit Texture(std::string_view filename);
+        explicit Texture(const TextureData& data);
         Texture(const Texture&) = delete;
         Texture(Texture&&) = delete;
         Texture& operator=(const Texture&) = delete;
@@ -59,9 +59,7 @@ namespace cc::System {
         GLuint mId = 0;
     };
 
-    Texture::Texture(std::string_view filename) {
-        TextureData data = readDdsFile(filename);
-
+    Texture::Texture(const TextureData& data) {
         glGenTextures(1, &mId);
 
         glCheck(glBindTexture(GL_TEXTURE_2D, mId));
@@ -105,21 +103,8 @@ namespace cc::System {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    std::shared_ptr<Texture> GraphicsContext::loadTexture(std::string_view filename) {
-        std::string filenameStr(filename);
-
-        auto it = m_textures.find(filenameStr);
-
-        std::shared_ptr<Texture> texture;
-
-        if(it == m_textures.end()){
-            texture = std::make_shared<Texture>(filename);
-            m_textures[filenameStr] = texture;
-        }else{
-            texture = it->second.lock();
-        }
-
-        return texture;
+    std::shared_ptr<Texture> GraphicsContext::createTexture(const TextureData &data) {
+        return std::make_shared<Texture>(data);
     }
 
     void GraphicsContext::setCurrentTexture(const std::shared_ptr<Texture> &texture) {

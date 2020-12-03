@@ -2,7 +2,7 @@
 // Created by jngl on 10/10/2020.
 //
 
-#include "DdsFile.h"
+#include "System/DdsFile.h"
 
 #include "System/filesystem.hpp"
 #include "Core/Debug.h"
@@ -11,8 +11,10 @@
 #include <glad/glad.h>
 
 namespace cc::System {
+    /**********************************************************************************
+     * Definition
+     *********************************************************************************/
     constexpr size_t dwReserved1Size = 11;
-    constexpr size_t DdsHeaderSize = 124;
 
     struct DDS_header {
         //uint32_t dwMagic;
@@ -52,25 +54,12 @@ namespace cc::System {
     static constexpr unsigned int FOURCC_DXT3 = 0x33545844;
     static constexpr unsigned int FOURCC_DXT5 = 0x35545844;
 
-    DdsFile::DdsFile(std::string_view filename) {
-        m_data = readDdsFile(filename);
-    }
+    void readDdsFileType(std::fstream& file);
+    void readDdsHeader(std::fstream& file, unsigned int& height, unsigned int& width, unsigned int& fourCC, unsigned int& mipMapCount);
 
-    unsigned int DdsFile::getFormat() const {
-        switch (m_data.format) {
-            case TextureFormat::DXT1:
-                return GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-            case TextureFormat::DXT3:
-                return GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-            case TextureFormat::DXT5:
-                return GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-            default:
-                ccCore::check("Graphics", false, "invalid dds format");
-                return 0;
-        }
-    }
-
-    unsigned int DdsFile::getMipMapCount() const { return m_data.mipmaps.size(); }
+    /**********************************************************************************
+     * Implementation
+     *********************************************************************************/
 
     void readDdsFileType(std::fstream &file) {
         std::array<char, 4> fileCode{0,0,0,0};
@@ -87,10 +76,6 @@ namespace cc::System {
         width = header.dwWidth;
         fourCC = header.sPixelFormat.dwFourCC;
         mipMapCount = header.dwMipMapCount;
-    }
-
-    const TextureMipMap &DdsFile::getMipMap(unsigned int index) {
-        return m_data.mipmaps.at(index);
     }
 
     TextureData readDdsFile(std::string_view filename) {

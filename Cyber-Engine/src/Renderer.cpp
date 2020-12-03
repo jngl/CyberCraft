@@ -6,6 +6,8 @@
 
 #include "Core/PoolAllocator.hpp"
 
+#include "System/DdsFile.h"
+
 #include <Core/Debug.h>
 
 #include <memory>
@@ -353,17 +355,29 @@ namespace Renderer {
         objectArray.erase(this);
     }
 
-/********************************************************
- * Textures
-********************************************************/
+    /********************************************************
+     * Textures
+    ********************************************************/
 
-    std::set<Texture_handle> textures;
-    //core::PoolAllocator<Graphics::Texture, 100> TexturePool;
+    std::unordered_map<std::string, std::weak_ptr<cc::System::Texture>> g_textures;
 
     Texture_handle createTexture(std::string_view filename) {
         ccCore::log("Renderer", "create texture \"", filename, "\"");
 
-        return g_graphicsContext->loadTexture(filename);
+        std::string filenameStr(filename);
+
+        auto it = g_textures.find(filenameStr);
+
+        std::shared_ptr<cc::System::Texture> texture;
+
+        if(it == std::end(g_textures)){
+            texture = g_graphicsContext->createTexture(cc::System::readDdsFile(filename));
+            g_textures[filenameStr] = texture;
+        }else{
+            texture = it->second.lock();
+        }
+
+        return texture;
     }
 
 /********************************************************
