@@ -8,7 +8,30 @@
 #include "Component.h"
 #include <Core/Debug.h>
 
-struct BlocGroup
+enum class BlocGroup{
+    Grass,
+    Stone,
+    Water,
+    Tree
+};
+
+enum class Bloc{
+    Grass,
+    LongGrass,
+    Stone,
+    Water,
+    WaterGrassSouth,
+    WaterGrassNorth,
+    WaterGrassLeft,
+    WaterGrassRight,
+    WaterGrassNorthRight,
+    WaterGrassNorthLeft,
+    WaterGrassSouthLeft,
+    WaterGrassSouthRight,
+    Tree
+};
+
+struct BlocGroupInfo
 {
     std::string_view name;
     bool collision = false;
@@ -17,7 +40,7 @@ struct BlocGroup
 struct BlocInfo {
     std::string_view name;
     component::Sprite sprite;
-    const BlocGroup& group;
+    BlocGroup group;
 };
 
 constexpr cc::Color grassColorMain{45,155,13};
@@ -26,33 +49,28 @@ constexpr cc::Color stoneColorMain{176, 176, 176};
 constexpr cc::Color transparent{0,0,0,0};
 constexpr cc::Color waterColorMain{33, 105, 197};
 
-constexpr std::array<BlocGroup, 4> g_blocGroupArray{
-        BlocGroup{
+constexpr std::array<BlocGroupInfo, 4> g_blocGroupArray{
+        BlocGroupInfo{
                 "Grass",
                 false
         },
-        BlocGroup{
+        BlocGroupInfo{
                 "Stone",
                 true
         },
-        BlocGroup{
+        BlocGroupInfo{
                 "Water",
                 true
         },
-        BlocGroup{
+        BlocGroupInfo{
                 "Tree",
                 true
         }
 };
 
-constexpr const BlocGroup& getBlocGroup(std::string_view name){
-    for(const BlocGroup& group: g_blocGroupArray) {
-        if (group.name == name) {
-            return group;
-        }
-    }
-
-    throw cc::Error("Bloc group not found");
+constexpr const BlocGroupInfo& getBlocGroupInfo(BlocGroup group){
+    auto index = static_cast<size_t>(group);
+    return g_blocGroupArray.at(index);
 }
 
 constexpr std::array<BlocInfo, 13> g_blocInfoArray{
@@ -63,7 +81,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                         transparent,
                         grassColorMain
                 },
-                getBlocGroup("Grass")
+                BlocGroup::Grass
         },
         BlocInfo{
                 "LongGrass",
@@ -72,7 +90,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                         grassColorMain,
                         grassColorDetail
                 },
-                getBlocGroup("Grass")
+                BlocGroup::Grass
         },
         BlocInfo{
                 "Stone",
@@ -81,7 +99,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                         grassColorMain,
                         stoneColorMain
                 },
-                getBlocGroup("Stone")
+                BlocGroup::Stone
         },
         BlocInfo{
                 "Water",
@@ -90,7 +108,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                         transparent,
                         waterColorMain
                 },
-                getBlocGroup("Water")
+                BlocGroup::Water
         },
         BlocInfo{
                 "WaterGrassSouth",
@@ -100,7 +118,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                     waterColorMain,
                     180
                 },
-                getBlocGroup("Water")
+                BlocGroup::Water
         },
         BlocInfo{
                 "WaterGrassNorth",
@@ -110,7 +128,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                         waterColorMain,
                         0
                 },
-                getBlocGroup("Water")
+                BlocGroup::Water
         },
         BlocInfo{
                 "WaterGrassLeft",
@@ -120,7 +138,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                         waterColorMain,
                         -90
                 },
-                getBlocGroup("Water")
+                BlocGroup::Water
         },
         BlocInfo{
                 "WaterGrassRight",
@@ -130,7 +148,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                         waterColorMain,
                         90
                 },
-                getBlocGroup("Water")
+                BlocGroup::Water
         },BlocInfo{
                 "WaterGrassNorthRight",
                 component::Sprite {
@@ -139,7 +157,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                         waterColorMain,
                         0
                 },
-                getBlocGroup("Water")
+                BlocGroup::Water
         },BlocInfo{
                 "WaterGrassNorthLeft",
                 component::Sprite {
@@ -148,7 +166,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                         waterColorMain,
                         -90
                 },
-                getBlocGroup("Water")
+                BlocGroup::Water
         },BlocInfo{
                 "WaterGrassSouthLeft",
                 component::Sprite {
@@ -157,7 +175,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                         waterColorMain,
                         180
                 },
-                getBlocGroup("Water")
+                BlocGroup::Water
         },BlocInfo{
                 "WaterGrassSouthRight",
                 component::Sprite {
@@ -166,7 +184,7 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                         waterColorMain,
                         90
                 },
-                getBlocGroup("Water")
+                BlocGroup::Water
         },
         BlocInfo{
                 "Tree",
@@ -175,19 +193,13 @@ constexpr std::array<BlocInfo, 13> g_blocInfoArray{
                         grassColorMain,
                         grassColorDetail
                 },
-                getBlocGroup("Tree")
+                BlocGroup::Water
         }
 };
 
-
-constexpr const BlocInfo& getBlocInfo(std::string_view name){
-    for(const BlocInfo& blocInfo : g_blocInfoArray){
-        if(name == blocInfo.name){
-            return blocInfo;
-        }
-    }
-
-    throw cc::Error("Bloc info not found");
+constexpr const BlocInfo& getBlocInfo(Bloc bloc){
+    auto index = static_cast<size_t>(bloc);
+    return g_blocInfoArray.at(index);
 }
 
 #endif //CYBERCRAFT_BLOC_H

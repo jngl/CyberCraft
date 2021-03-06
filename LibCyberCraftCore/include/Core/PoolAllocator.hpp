@@ -13,20 +13,20 @@ namespace cc
                 mData[i].mNext = &mData[i+1];
             }
         }
-        
+
         Data* create(){
             MemBlock* a = mFirstFree;
             mFirstFree = a->mNext;
 			new (&a->mData) Data;
             return &(a->mData);
         }
-        
+
         void destroy(Data* d){
 			d->~Data();
             auto a = reinterpret_cast<MemBlock*>(d);  // NOLINT
             a->mNext = mFirstFree;
         }
-        
+
     private:
         union MemBlock{
             Data mData;
@@ -40,8 +40,8 @@ namespace cc
             MemBlock& operator=(const MemBlock&) = default;
             MemBlock& operator=(MemBlock&&) noexcept = default;
             ~MemBlock(){}
-        };        
-        
+        };
+
         MemBlock* mFirstFree;
         std::array<MemBlock, MAX_DATA> mData;
     };

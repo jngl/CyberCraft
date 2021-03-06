@@ -21,15 +21,23 @@ namespace ccSf {
     }
 
     cc::TextureHandle RenderContextSFML::loadTexture(std::string_view filename) {
-        cc::TextureHandle textureHandle{m_nextId++};
-        std::unique_ptr<sf::Texture> &texturePtr = m_texture[textureHandle];
+        cc::TextureHandle textureHandle = m_textureIdGenerator.create();
+
+        if(textureHandle.value() > m_textures.size()){
+            m_textures.resize(textureHandle.value());
+        }
+
+        std::unique_ptr<sf::Texture> &texturePtr = m_textures[textureHandle.value()];
         texturePtr = std::make_unique<sf::Texture>();
         texturePtr->loadFromFile(std::string(filename));
         return textureHandle;
     }
 
     void RenderContextSFML::unloadTexture(cc::TextureHandle texture) {
-        m_texture.erase(texture);
+        if(!texture.isValid() && texture.value()>=m_textures.size()){
+            return;
+        }
+        m_textures[texture.value()].reset();
     }
 
     void RenderContextSFML::drawSprite(cc::TextureHandle textureHandle,
@@ -39,7 +47,7 @@ namespace ccSf {
                                        cc::Color backgroundColor,
                                        float rotation){
 
-        sf::Texture &texture = *m_texture[textureHandle];
+        sf::Texture &texture = *m_textures[textureHandle.value()];
 
         cc::Vector2f a;
 
@@ -71,7 +79,7 @@ namespace ccSf {
                                        const cc::Vector2f &pos,
                                        float scale,
                                        cc::Color color) {
-        sf::Texture &texture = *m_texture[textureHandle];
+        sf::Texture &texture = *m_textures[textureHandle.value()];
         sf::Sprite sfSprite;
         sfSprite.setTexture(texture);
         sfSprite.setPosition(toSfVector2(pos));

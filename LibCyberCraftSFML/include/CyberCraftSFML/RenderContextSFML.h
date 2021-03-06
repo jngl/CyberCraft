@@ -35,7 +35,8 @@ namespace ccSf {
         void setViewCenter(cc::Vector2f pos) override;
 
     private:
-        std::map<cc::TextureHandle, std::unique_ptr<sf::Texture>> m_texture;
+        cc::IdGenerator<cc::TextureHandle::ValueType, cc::TextureHandle::Tag> m_textureIdGenerator;
+        std::vector<std::unique_ptr<sf::Texture>> m_textures;
         sf::RenderTarget &m_target;
         int m_nextId = 1;
     };
