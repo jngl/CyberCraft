@@ -29,8 +29,8 @@ void movePlayer(cc::Ref<cc::Vector2f> pos, const World& world) {
 
         constexpr cc::Vector2f collisionPoint{0.5f, 0.8f};
         cc::Vector2i newPosInt = (newPos + collisionPoint).toVector<int>();
-        const BlocInfo* blocInfo = world.getBloc(newPosInt);
-        if(blocInfo == nullptr || blocInfo->group.collision) {
+        const Bloc bloc = world.getBloc(newPosInt);
+        if(getBlocGroupInfo(getBlocInfo(bloc).group).collision) {
             return;
         }
 

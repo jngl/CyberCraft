@@ -20,9 +20,11 @@ namespace cs {
     class MeshBuilder;
     class ShaderBuilder;
 
-    struct TextureId : public cc::Id {};
-    struct MeshId : public cc::Id {};
-    struct ShaderId : public cc::Id {};
+    using IdValue = unsigned int;
+
+    struct TextureId : public cc::Id<IdValue, struct TextureIdTag> {};
+    struct MeshId : public cc::Id<IdValue, struct MeshIdTag> {};
+    struct ShaderId : public cc::Id<IdValue, struct ShaderIdTag> {};
 
     struct DrawCommand {
         ShaderId shader;

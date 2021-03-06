@@ -10,8 +10,7 @@
 #include <Core/Math.h>
 
 namespace cc {
-    struct TextureHandle : public Id {
-    };
+    using TextureHandle = Id<unsigned int, struct TextureHandleTag>;
 
     class RenderContext {
     public:

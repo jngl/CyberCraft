@@ -18,8 +18,6 @@ namespace cc {
     using Uint8 = unsigned char;
     using Uint32 = unsigned int;
     static_assert(sizeof(Uint32) == 4, "size of Uint32 must be 32 bite");
-
-    struct TextureHandle;
 }
 
 #endif //LIB_CYBERCRAFT_COMMON_H

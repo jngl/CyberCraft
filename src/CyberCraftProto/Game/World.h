@@ -18,26 +18,26 @@ public:
     constexpr World():
     m_blocs(){
         for(auto& bloc: m_blocs){
-            bloc = nullptr;
+            bloc = Bloc::Water;
         }
     }
 
-    [[nodiscard]] constexpr const BlocInfo* getBloc(const cc::Vector2i& pos) const{
+    [[nodiscard]] constexpr Bloc getBloc(const cc::Vector2i& pos) const{
         return getBloc(pos.x, pos.y);
     }
 
-    [[nodiscard]] constexpr const BlocInfo*& getBloc(const cc::Vector2i& pos){
+    [[nodiscard]] constexpr Bloc& getBloc(const cc::Vector2i& pos){
         return getBloc(pos.x, pos.y);
     }
 
-    [[nodiscard]] constexpr const BlocInfo*& getBloc(int x, int y){
+    [[nodiscard]] constexpr Bloc& getBloc(int x, int y){
         if(x<0 || x>=sizeX || y<0 || y>=sizeY){
             throw cc::Error("out of bound");
         }
         return m_blocs[static_cast<size_t>(y*sizeX+x)];
     }
 
-    [[nodiscard]] constexpr const BlocInfo* getBloc(int x, int y) const {
+    [[nodiscard]] constexpr Bloc getBloc(int x, int y) const {
         if(x<0 || x>=sizeX || y<0 || y>=sizeY){
             throw cc::Error("out of bound");
         }
@@ -53,18 +53,14 @@ public:
         }
     }
 
-    [[nodiscard]] constexpr bool isInGroup(int x, int y, const BlocGroup& group) const{
+    [[nodiscard]] constexpr bool isInGroup(int x, int y, BlocGroup group) const{
         if(x<0 || x>=World::sizeX || y<0 || y>=World::sizeY){
             return false;
         }
 
-        auto bloc = getBloc(x, y);
+        Bloc bloc = getBloc(x, y);
 
-        if(!bloc){
-            return false;
-        }
-
-        return &bloc->group == &group;
+        return getBlocInfo(bloc).group == group;
     }
 
     [[nodiscard]] constexpr bool isNeighbourInGroup(int x, int y, const BlocGroup& group) const {
@@ -86,7 +82,7 @@ public:
     }
 
 private:
-    std::array<const BlocInfo*, sizeX*sizeY> m_blocs;
+    std::array<Bloc, sizeX*sizeY> m_blocs;
 };
 
 #endif //CYBERCRAFT_WORLD_H

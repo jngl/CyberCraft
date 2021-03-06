@@ -8,12 +8,14 @@
 #include "Range.h"
 
 #include <string>
+#include <limits>
 
 namespace cc {
-    template<class t_ValueType, class Tag>
+    template<class t_ValueType, class t_Tag>
     class Id {
     public:
         using ValueType = t_ValueType;
+        using Tag = t_Tag;
 
         constexpr Id() = default;
         constexpr explicit Id(ValueType value): m_value(value) {}
