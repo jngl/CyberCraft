@@ -5,39 +5,70 @@
 #ifndef CYBERCRAFT_ID_H
 #define CYBERCRAFT_ID_H
 
-namespace cc {
-    struct Id {
-        int value = -1;
+#include "Range.h"
 
-        bool operator<(Id right) const {
-            return value < right.value;
+#include <string>
+
+namespace cc {
+    template<class t_ValueType, class Tag>
+    class Id {
+    public:
+        using ValueType = t_ValueType;
+
+        constexpr Id() = default;
+        constexpr explicit Id(ValueType value): m_value(value) {}
+
+        [[nodiscard]] constexpr bool isValid() const {
+            return m_value != 0;
         }
 
+        [[nodiscard]] std::string toDebugString() const{
+            return "Id{"+std::to_string(m_value)+"}";
+        }
+
+        [[nodiscard]] ValueType value() const{return m_value;}
+
+    private:
+
+        ValueType m_value = 0;
     };
 
-    template<class T>
+    template<class IdValue, class Tag>
     class IdGenerator {
     public:
-        constexpr T generate() {
-            return T{{++m_maxId}};
+        using This = IdGenerator<IdValue, Tag>;
+        using ThisId = Id<IdValue, Tag>;
+
+        IdGenerator():
+            m_ids(Range<IdValue>(1, std::numeric_limits<unsigned int>::max()))
+        {
+        }
+
+        ThisId create() {
+            std::optional<IdValue> id = m_ids.tryPopFirst();
+
+            if(!id.has_value()){
+                return ThisId{0};
+            }
+
+            return ThisId{id.value()};
+        }
+
+        void destroy(ThisId id) {
+            m_ids.addNumber(id.value());
+        }
+
+        std::string toDebugString(){
+            return "IdGenerator{" + m_ids.toDebugString() + "}";
+        }
+
+        IdValue sizeOfAvailableIds() const{
+            return m_ids.size();
         }
 
     private:
-        int m_maxId = 0;
+        MultiRange<IdValue> m_ids;
     };
-
-    struct TypeId : public Id {
-    };
-
-    namespace Impl {
-        extern IdGenerator<TypeId> typeIdGenerator;
-    }
-
-    template<class T>
-    TypeId getTypeId() {
-        static TypeId id = Impl::typeIdGenerator.generate();
-        return id;
-    }
 }
 
 #endif //CYBERCRAFT_ID_H
