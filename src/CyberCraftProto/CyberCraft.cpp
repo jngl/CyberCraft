@@ -127,3 +127,7 @@ void CyberCraft::draw() {
     m_renderContext->setViewCenter(player.pos);
 }
 
+CyberCraft::~CyberCraft() {
+    m_renderContext->unloadTexture(texture);
+}
+
