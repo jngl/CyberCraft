@@ -5,14 +5,14 @@
 #ifndef CYBERCRAFT_RENDERCONTEXTSFML_H
 #define CYBERCRAFT_RENDERCONTEXTSFML_H
 
-#include <Core/RenderContext.h>
+#include <Core/RenderContext2D.h>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <memory>
 #include <map>
 
 namespace ccSf {
-    class RenderContextSFML : public cc::RenderContext {
+    class RenderContextSFML : public cc::RenderContext2D {
     public:
         explicit RenderContextSFML(sf::RenderTarget &target);
 

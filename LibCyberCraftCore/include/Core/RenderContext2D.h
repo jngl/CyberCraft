@@ -2,8 +2,8 @@
 // Created by jngl on 19/09/2020.
 //
 
-#ifndef CYBERCRAFT_RENDERCONTEXT_H
-#define CYBERCRAFT_RENDERCONTEXT_H
+#ifndef CYBERCRAFT_RENDERCONTEXT2D_H
+#define CYBERCRAFT_RENDERCONTEXT2D_H
 
 #include <Core/Id.h>
 #include <Core/Common.h>
@@ -12,9 +12,9 @@
 namespace cc {
     using TextureHandle = Id<unsigned int, struct TextureHandleTag>;
 
-    class RenderContext {
+    class RenderContext2D {
     public:
-        virtual ~RenderContext() = default;
+        virtual ~RenderContext2D() = default;
 
         virtual TextureHandle loadTexture(std::string_view filename) = 0;
 
@@ -36,4 +36,4 @@ namespace cc {
     };
 }
 
-#endif //CYBERCRAFT_RENDERCONTEXT_H
+#endif //CYBERCRAFT_RENDERCONTEXT2D_H

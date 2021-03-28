@@ -16,27 +16,27 @@
 namespace cs {
     class Texture;
     class Shader;
-
-    class MeshBuilder;
+//
+//    class MeshBuilder;
     class ShaderBuilder;
-
-    using IdValue = unsigned int;
-
-    struct TextureId : public cc::Id<IdValue, struct TextureIdTag> {};
-    struct MeshId : public cc::Id<IdValue, struct MeshIdTag> {};
-    struct ShaderId : public cc::Id<IdValue, struct ShaderIdTag> {};
-
-    struct DrawCommand {
-        ShaderId shader;
-        MeshId mesh;
-        cc::Matrix4f transform;
-    };
-
-    class DrawCommandList {
-    public:
-        void add(DrawCommand cmd);
-    };
-
+//
+//    using IdValue = unsigned int;
+//
+//    struct TextureId : public cc::Id<IdValue, struct TextureIdTag> {};
+//    struct MeshId : public cc::Id<IdValue, struct MeshIdTag> {};
+//    struct ShaderId : public cc::Id<IdValue, struct ShaderIdTag> {};
+//
+//    struct DrawCommand {
+//        ShaderId shader;
+//        MeshId mesh;
+//        cc::Matrix4f transform;
+//    };
+//
+//    class DrawCommandList {
+//    public:
+//        void add(DrawCommand cmd);
+//    };
+//
     class GraphicsContext
     {
     public:
@@ -46,13 +46,13 @@ namespace cs {
         void setCurrentTexture(const std::shared_ptr<Texture> &texture);
         [[nodiscard]]std::weak_ptr<Texture> getCurrentTexture();
 
-        MeshId loadMesh(const MeshBuilder& builder);
-        void unloadMesh(MeshId mesh);
+//        MeshId loadMesh(const MeshBuilder& builder);
+//        void unloadMesh(MeshId mesh);
 
-        ShaderId loadShader(const ShaderBuilder& builder);
-        void unloadShader(std::unique_ptr<Shader> shader);
+//        ShaderId loadShader(const ShaderBuilder& builder);
+//        void unloadShader(std::unique_ptr<Shader> shader);
 
-        void draw(DrawCommandList& cmdList);
+//        void draw(DrawCommandList& cmdList);
 
     private:
         std::weak_ptr<Texture> m_current_texture;
@@ -69,13 +69,13 @@ namespace cs {
 
         void setMatrixInput(Location loc, cc::Matrix4f mat);
 
-        Location addTextureInput(const std::string& name);
+//        Location addTextureInput(const std::string& name);
 
         void addBufferInput(const std::string& name, unsigned int index);
 
         void set();
 
-        void unload();
+//        void unload();
 
     private:
         GLuint shaderProgram = 0;

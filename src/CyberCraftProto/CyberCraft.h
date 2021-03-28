@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_CYBERCRAFT_H
 #define CYBERCRAFT_CYBERCRAFT_H
 
-#include <Core/RenderContext.h>
+#include <Core/RenderContext2D.h>
 #include <Core/Game.h>
 #include <Core/pointer.h>
 
@@ -20,7 +20,7 @@ struct Player {
 
 class CyberCraft : public cc::Game {
 public:
-    explicit CyberCraft(cc::Ref<cc::RenderContext> renderContext);
+    explicit CyberCraft(cc::Ref<cc::RenderContext2D> renderContext);
     ~CyberCraft() override;
 
     void update() override;
@@ -39,7 +39,7 @@ private:
 
     World m_world;
     cc::TextureHandle texture;
-    cc::Ref<cc::RenderContext> m_renderContext;
+    cc::Ref<cc::RenderContext2D> m_renderContext;
 };
 
 

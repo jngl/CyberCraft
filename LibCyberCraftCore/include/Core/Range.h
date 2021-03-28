@@ -20,7 +20,7 @@ namespace cc {
 
 
     template<class T>
-    class Range
+    class Range final
     {
     public:
         static_assert(std::is_integral_v<T>, "T must be a integral number");
@@ -47,7 +47,7 @@ namespace cc {
         {
         }
 
-        virtual ~Range() = default;
+        ~Range() = default;
 
         constexpr Range<T>& operator=(const Range<T>& right){
             if(this == &right){

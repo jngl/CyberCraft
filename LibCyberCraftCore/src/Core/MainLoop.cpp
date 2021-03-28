@@ -6,11 +6,11 @@
 
 #include <Core/Game.h>
 #include <Core/Window.h>
-#include <Core/RenderContext.h>
+#include <Core/RenderContext2D.h>
 #include <Core/Update.h>
 
 namespace cc {
-    [[maybe_unused]] int mainLoop(Window &window, RenderContext &/*renderContext*/, Game &game, std::chrono::milliseconds updateTime) {
+    [[maybe_unused]] int mainLoop(Window &window, RenderContext2D &/*renderContext*/, Game &game, std::chrono::milliseconds updateTime) {
         FixStepUpdater updater(updateTime);
 
         while (window.isOpen()) {
