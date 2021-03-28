@@ -21,6 +21,7 @@ struct Player {
 class CyberCraft : public cc::Game {
 public:
     explicit CyberCraft(cc::Ref<cc::RenderContext> renderContext);
+    ~CyberCraft() override;
 
     void update() override;
     void draw() override;
