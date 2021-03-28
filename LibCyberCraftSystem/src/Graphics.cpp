@@ -93,7 +93,7 @@ namespace cs {
     }
 
 /********************************************************
- * Graphics main
+ * Graphics Context
 ********************************************************/
     GraphicsContext::GraphicsContext() {
         glCheck(glEnable(GL_DEPTH_TEST));
@@ -160,12 +160,12 @@ namespace cs {
         glCheck(glUniformMatrix4fv(loc, 1, false, &mat.m[0][0]));
     }
 
-    Shader::Location Shader::addTextureInput(const std::string& name) {  // NOLINT
-        Shader::Location loc = 0;
-        glCheck(loc = glGetUniformLocation(shaderProgram, name.c_str()));
-        cc::check("Shader", loc > 0, "no texture input");
-        return loc;
-    }
+//    Shader::Location Shader::addTextureInput(const std::string& name) {  // NOLINT
+//        Shader::Location loc = 0;
+//        glCheck(loc = glGetUniformLocation(shaderProgram, name.c_str()));
+//        cc::check("Shader", loc > 0, "no texture input");
+//        return loc;
+//    }
 
     void Shader::addBufferInput(const std::string& name, unsigned int i) {  // NOLINT
         glCheck(glBindAttribLocation(shaderProgram, i, name.c_str()));
@@ -173,7 +173,7 @@ namespace cs {
 
     void Shader::set() { glCheck(glUseProgram(shaderProgram)); }  // NOLINT
 
-    void Shader::unload() { glCheck(glDeleteProgram(shaderProgram)); }  // NOLINT
+//    void Shader::unload() { glCheck(glDeleteProgram(shaderProgram)); }  // NOLINT
 
     void Shader::printShaderInfoLog(GLuint obj) {
         int infologLength = 0;

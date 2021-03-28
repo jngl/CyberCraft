@@ -10,7 +10,7 @@
 #include <chrono>
 
 namespace cc {
-    [[maybe_unused]] int mainLoop(Window &window, RenderContext &renderContext, Game &game, std::chrono::milliseconds updateTime);
+    [[maybe_unused]] int mainLoop(Window &window, RenderContext2D &renderContext, Game &game, std::chrono::milliseconds updateTime);
 }
 
 #endif //CYBERCRAFT_MAINLOOP_H

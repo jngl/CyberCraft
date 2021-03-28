@@ -10,7 +10,7 @@
 namespace cc {
     struct Color;
     class Window;
-    class RenderContext;
+    class RenderContext2D;
     class Game;
 
     void printTabs(int nb);
