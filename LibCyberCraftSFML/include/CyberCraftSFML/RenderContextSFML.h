@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_RENDERCONTEXTSFML_H
 #define CYBERCRAFT_RENDERCONTEXTSFML_H
 
-#include <Core/RenderContext2D.h>
+#include <Core/RenderContext.h>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <memory>

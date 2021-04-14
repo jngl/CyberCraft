@@ -7,7 +7,7 @@
 
 #include "Common.h"
 #include "Core/pointer.h"
-#include "Core/RenderContext2D.h"
+#include "Core/RenderContext.h"
 
 void drawSprite(cc::Ref<cc::RenderContext2D> renderContext, cc::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite);
 void movePlayer(cc::Ref<cc::Vector2f> pos, const World& world);
