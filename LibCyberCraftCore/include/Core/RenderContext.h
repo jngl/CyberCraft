@@ -2,24 +2,26 @@
 // Created by jngl on 19/09/2020.
 //
 
-#ifndef CYBERCRAFT_RENDERCONTEXT2D_H
-#define CYBERCRAFT_RENDERCONTEXT2D_H
+#ifndef CYBERCRAFT_RENDERCONTEXT_H
+#define CYBERCRAFT_RENDERCONTEXT_H
 
 #include <Core/Id.h>
 #include <Core/Common.h>
 #include <Core/Math.h>
 
+#include "NonCopyable.h"
+
 namespace cc {
     using TextureHandle = Id<unsigned int, struct TextureHandleTag>;
 
-    class RenderContext2D {
+    class TextureManager : public NonCopyable{
     public:
-        virtual ~RenderContext2D() = default;
-
         virtual TextureHandle loadTexture(std::string_view filename) = 0;
-
         virtual void unloadTexture(TextureHandle texture) = 0;
+    };
 
+    class RenderContext2D : public TextureManager {
+    public:
         virtual void drawSprite(TextureHandle texture,
                                 const Vector2f &pos,
                                 const Vector2i &textureIndex,
@@ -36,4 +38,4 @@ namespace cc {
     };
 }
 
-#endif //CYBERCRAFT_RENDERCONTEXT2D_H
+#endif //CYBERCRAFT_RENDERCONTEXT_H
