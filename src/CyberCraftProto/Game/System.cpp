@@ -7,7 +7,7 @@
 #include "Component.h"
 #include "World.h"
 
-#include <Core/RenderContext.h>
+#include <Core/Engine2D.h>
 
 #include <SFML/Window.hpp>
 

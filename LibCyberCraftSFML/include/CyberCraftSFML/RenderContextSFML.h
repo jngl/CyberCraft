@@ -5,20 +5,25 @@
 #ifndef CYBERCRAFT_RENDERCONTEXTSFML_H
 #define CYBERCRAFT_RENDERCONTEXTSFML_H
 
-#include <Core/RenderContext.h>
+#include <Core/Engine2D.h>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <memory>
 #include <map>
 
 namespace ccSf {
+    struct Texture{
+        std::string fileName;
+        std::unique_ptr<sf::Texture> sfTexture;
+    };
+
     class RenderContextSFML : public cc::RenderContext2D {
     public:
         explicit RenderContextSFML(sf::RenderTarget &target);
 
-        cc::TextureHandle loadTexture(std::string_view filename) override;
-
-        void unloadTexture(cc::TextureHandle texture) override;
+        [[nodiscard]] cc::TextureHandle getHandleFromFile(std::string_view filename) override;
+        void loadTexture(cc::TextureHandle handle) override;
+        void unloadTexture(cc::TextureHandle handle) override;
 
         void drawSprite(cc::TextureHandle texture,
                         const cc::Vector2f &pos,
@@ -36,7 +41,7 @@ namespace ccSf {
 
     private:
         cc::IdGenerator<cc::TextureHandle::ValueType, cc::TextureHandle::Tag> m_textureIdGenerator;
-        std::vector<std::unique_ptr<sf::Texture>> m_textures;
+        std::vector<Texture> m_textures;
         sf::RenderTarget &m_target;
         int m_nextId = 1;
     };

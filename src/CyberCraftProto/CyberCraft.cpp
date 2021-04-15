@@ -45,7 +45,8 @@ const char* gameMap =
 CyberCraft::CyberCraft(cc::Ref<cc::RenderContext2D> renderContext):
         m_renderContext(renderContext)
 {
-    texture = renderContext->loadTexture("./data/tileset.png");
+    texture = renderContext->getHandleFromFile("./data/tileset.png");
+    renderContext->loadTexture(texture);
 
     m_world.forEach([this](int x, int y, Bloc& bloc){
         char tile = gameMap[y*World::sizeX+x]; // NOLINT

@@ -6,7 +6,7 @@
 
 #include <Core/Game.h>
 #include <Core/Window.h>
-#include <Core/RenderContext.h>
+#include <Core/Engine2D.h>
 #include <Core/Update.h>
 
 namespace cc {

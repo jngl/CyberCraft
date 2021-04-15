@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_CYBERCRAFT_H
 #define CYBERCRAFT_CYBERCRAFT_H
 
-#include <Core/RenderContext.h>
+#include <Core/Engine2D.h>
 #include <Core/Game.h>
 #include <Core/pointer.h>
 
