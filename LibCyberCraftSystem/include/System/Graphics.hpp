@@ -16,7 +16,6 @@
 #include <unordered_map>
 
 namespace cs {
-    class TextureGL;
     class Shader;
 //
 //    class MeshBuilder;
@@ -24,7 +23,6 @@ namespace cs {
 //
 //    using IdValue = unsigned int;
 //
-//    struct TextureId : public cc::Id<IdValue, struct TextureIdTag> {};
 //    struct MeshId : public cc::Id<IdValue, struct MeshIdTag> {};
 //    struct ShaderId : public cc::Id<IdValue, struct ShaderIdTag> {};
 //
