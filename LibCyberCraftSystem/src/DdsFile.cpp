@@ -64,7 +64,7 @@ namespace cs {
     void readDdsFileType(std::fstream &file) {
         std::array<char, 4> fileCode{0,0,0,0};
         file.read(fileCode.data(), fileCode.size());
-        cc::check("Texture", std::strncmp(fileCode.data(), "DDS ", fileCode.size()) == 0, "error in dds file");
+        cc::check("TextureGL", std::strncmp(fileCode.data(), "DDS ", fileCode.size()) == 0, "error in dds file");
     }
 
     void readDdsHeader(std::fstream &file, unsigned int& height, unsigned int& width, unsigned int& fourCC, unsigned int& mipMapCount) {
@@ -88,7 +88,7 @@ namespace cs {
 
         //open file
         std::fstream file(std::string(filename2), std::fstream::in | std::fstream::binary);
-        cc::check("Texture", file.is_open(), "error with dds file : \"", filename, "\"");
+        cc::check("TextureGL", file.is_open(), "error with dds file : \"", filename, "\"");
 
         readDdsFileType(file);
 

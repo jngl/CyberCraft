@@ -223,13 +223,13 @@ bool ImGui_ImplSdlGL3_CreateDeviceObjects()
 
     const GLchar* fragment_shader =
         "#version 330\n"
-        "uniform sampler2D Texture;\n"
+        "uniform sampler2D TextureGL;\n"
         "in vec2 Frag_UV;\n"
         "in vec4 Frag_Color;\n"
         "out vec4 Out_Color;\n"
         "void main()\n"
         "{\n"
-        "	Out_Color = Frag_Color * texture( Texture, Frag_UV.st);\n"
+        "	Out_Color = Frag_Color * texture( TextureGL, Frag_UV.st);\n"
         "}\n";
 
     g_ShaderHandle = glCreateProgram();
@@ -243,7 +243,7 @@ bool ImGui_ImplSdlGL3_CreateDeviceObjects()
     glAttachShader(g_ShaderHandle, g_FragHandle);
     glLinkProgram(g_ShaderHandle);
 
-    g_AttribLocationTex = glGetUniformLocation(g_ShaderHandle, "Texture");
+    g_AttribLocationTex = glGetUniformLocation(g_ShaderHandle, "TextureGL");
     g_AttribLocationProjMtx = glGetUniformLocation(g_ShaderHandle, "ProjMtx");
     g_AttribLocationPosition = glGetAttribLocation(g_ShaderHandle, "Position");
     g_AttribLocationUV = glGetAttribLocation(g_ShaderHandle, "UV");

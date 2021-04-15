@@ -11,7 +11,7 @@
 
 #include <SFML/Window.hpp>
 
-void drawSprite(cc::Ref<cc::RenderContext2D> renderContext, cc::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite) {
+void drawSprite(cc::Ref<cc::SpriteDrawer> renderContext, cc::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite) {
     renderContext->drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
 }
 

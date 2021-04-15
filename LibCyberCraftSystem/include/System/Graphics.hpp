@@ -3,8 +3,10 @@
 #include <System/GraphicsData.h>
 
 #include <Core/Math.h>
-#include "System/Common.h"
 #include <Core/Id.h>
+#include <Core/Texture.h>
+
+#include "System/Common.h"
 
 #include "glad/glad.h"
 
@@ -14,7 +16,7 @@
 #include <unordered_map>
 
 namespace cs {
-    class Texture;
+    class TextureGL;
     class Shader;
 //
 //    class MeshBuilder;
@@ -37,14 +39,17 @@ namespace cs {
 //        void add(DrawCommand cmd);
 //    };
 //
-    class GraphicsContext
+class GraphicsContext : public cc::TextureManager
     {
     public:
         GraphicsContext();
 
-        std::shared_ptr<Texture> createTexture(const TextureData& data);
-        void setCurrentTexture(const std::shared_ptr<Texture> &texture);
-        [[nodiscard]]std::weak_ptr<Texture> getCurrentTexture();
+        [[nodiscard]] cc::TextureHandle getHandleFromFile(std::string_view filename) override;
+        void loadTexture(cc::TextureHandle handle) override;
+        void unloadTexture(cc::TextureHandle handle) override;
+
+        void setCurrentTexture(cc::TextureHandle);
+        [[nodiscard]] cc::TextureHandle getCurrentTexture() const;
 
 //        MeshId loadMesh(const MeshBuilder& builder);
 //        void unloadMesh(MeshId mesh);
@@ -55,7 +60,15 @@ namespace cs {
 //        void draw(DrawCommandList& cmdList);
 
     private:
-        std::weak_ptr<Texture> m_current_texture;
+        struct Texture{
+            unsigned int glId = 0;
+            std::string fileName;
+        };
+
+        cc::IdGenerator<cc::TextureHandle::ValueType, cc::TextureHandle::Tag> m_textureIdGenerator;
+        std::vector<Texture> m_textures;
+
+        cc::TextureHandle m_current_texture;
     };
 
 

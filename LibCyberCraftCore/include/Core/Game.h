@@ -5,10 +5,11 @@
 #ifndef CYBERCRAFT_GAME_H
 #define CYBERCRAFT_GAME_H
 
+#include <Core/NonCopyable.h>
+
 namespace cc {
-    class Game {
+    class Game: public cc::NonCopyable {
     public:
-        virtual ~Game() = default;
         virtual void update() = 0;
         virtual void draw() = 0;
     };
