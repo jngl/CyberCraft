@@ -263,7 +263,8 @@ BoxelScene::BoxelScene() :
         const BoxelMap::BlockType &type = mBoxelMap.getBlockType(i);
         if (type.visible) {
             std::string filename = std::string(type.name) + ".dds";
-            Renderer::Texture_handle tex = Renderer::createTexture(filename.c_str());
+            cc::TextureHandle tex = Renderer::getHandleFromFile(filename);
+            Renderer::loadTexture(tex);
             mBlockMaterial.at(i) = Renderer::createMaterial(tex, std::string(type.name) + "Material");
 
             if (type.withAlpha) {

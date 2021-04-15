@@ -9,7 +9,6 @@ namespace Renderer {
     struct Sprite;
 
     using Material_handle = Material *;
-    using Texture_handle = std::shared_ptr<cs::Texture>;
     using Model_handle = Model *;
     using Camera_handle = Camera *;
     using Sprite_handle = Sprite *;
@@ -21,7 +20,7 @@ namespace Renderer {
     void resize(int width, int height);
 
     // material
-    Material_handle createMaterial(Texture_handle tex, std::string_view name);
+    Material_handle createMaterial(cc::TextureHandle tex, std::string_view name);
     void destroyMaterial(Material_handle handle);
 
     void setWithAlpha(Material_handle handle, bool alpha);
@@ -49,8 +48,10 @@ namespace Renderer {
         std::string name;
     };
 
-    // Texture
-    Texture_handle createTexture(std::string_view filename);
+    // TextureGL
+    [[nodiscard]] cc::TextureHandle getHandleFromFile(std::string_view filename);
+    void loadTexture(cc::TextureHandle handle);
+    void unloadTexture(cc::TextureHandle handle);
 
     // camera
     Camera_handle createCamera();
@@ -63,7 +64,7 @@ namespace Renderer {
     void setActiveCamera(Camera_handle handle);
 
     // sprite
-    Sprite_handle createSprite(Texture_handle handle);
+    Sprite_handle createSprite(cc::TextureHandle handle);
     void destroySprite(Sprite_handle sprite);
 
     cc::Matrix4f &getSpriteMatrixRef(Sprite_handle handle);

@@ -138,7 +138,7 @@ namespace Renderer {
     float ratio;
 
     struct Material {
-        Texture_handle texture;
+        cc::TextureHandle texture;
         bool withAlpha = false;
         std::string name;
     };
@@ -177,7 +177,7 @@ namespace Renderer {
     std::set<Object *> objectArray;
 
     struct Sprite {
-        Texture_handle mTexture;
+        cc::TextureHandle mTexture;
         cc::Matrix4f mMatrix;
     };
 
@@ -237,7 +237,7 @@ namespace Renderer {
     constexpr int maxNumberOfMaterial = 100;
     cc::PoolAllocator<Material, maxNumberOfMaterial> MaterialPool;
 
-    Material_handle createMaterial(Texture_handle tex, std::string_view name) {
+    Material_handle createMaterial(cc::TextureHandle tex, std::string_view name) {
         cc::log("Renderer", "create materia \"", name, "\"");
         Material_handle result = MaterialPool.create();
         result->texture = std::move(tex);
@@ -279,7 +279,7 @@ namespace Renderer {
 
         cs::Mesh &subMesh = model->subMeshs.back();
 
-        if (material->texture == nullptr) {
+        if (!material->texture.isValid()) {
             subMesh.beginLoad();
             subMesh.addBuffer(0, vertices,
                               nbVertices * sizeof(float) * 3, 3);
@@ -322,7 +322,7 @@ namespace Renderer {
                 Model_handle model = object->model;
                 for (std::size_t i(0); i < model->subMeshs.size(); ++i) {
                     if (model->materials[i]->withAlpha == alpha) {
-                        if (model->materials[i]->texture == nullptr) {
+                        if (!model->materials[i]->texture.isValid()) {
                             defaultNoTextureShader.set();
                             defaultNoTextureShader.setMatrixInput(defaultNoTextureShaderMVP, MVP);
                         } else {
@@ -359,25 +359,16 @@ namespace Renderer {
      * Textures
     ********************************************************/
 
-    std::unordered_map<std::string, std::weak_ptr<cs::Texture>> g_textures;
+    [[nodiscard]] cc::TextureHandle getHandleFromFile(std::string_view filename){
+        return g_graphicsContext->getHandleFromFile(filename);
+    }
 
-    Texture_handle createTexture(std::string_view filename) {
-        cc::log("Renderer", "create texture \"", filename, "\"");
+    void loadTexture(cc::TextureHandle handle){
+        g_graphicsContext->loadTexture(handle);
+    }
 
-        std::string filenameStr(filename);
-
-        auto it = g_textures.find(filenameStr);
-
-        std::shared_ptr<cs::Texture> texture;
-
-        if(it == std::end(g_textures)){
-            texture = g_graphicsContext->createTexture(cs::readDdsFile(filename));
-            g_textures[filenameStr] = texture;
-        }else{
-            texture = it->second.lock();
-        }
-
-        return texture;
+    void unloadTexture(cc::TextureHandle handle){
+        g_graphicsContext->unloadTexture(handle);
     }
 
 /********************************************************
@@ -419,7 +410,7 @@ namespace Renderer {
     constexpr int MaxNumberOfSprite = 1000;
     cc::PoolAllocator<Sprite, MaxNumberOfSprite> SpritePool;
 
-    Sprite_handle createSprite(Texture_handle handle) {
+    Sprite_handle createSprite(cc::TextureHandle handle) {
         cc::log("Renderer", "create sprite");
         Sprite_handle result = SpritePool.create();
         result->mMatrix.setIdentity();

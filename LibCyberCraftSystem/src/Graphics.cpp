@@ -41,28 +41,14 @@ namespace cs {
     }
 
     /********************************************************
-     * Texture
+     * TextureGL
     ********************************************************/
-    class Texture {
-    public:
-        explicit Texture(const TextureData& data);
-        Texture(const Texture&) = delete;
-        Texture(Texture&&) = delete;
-        Texture& operator=(const Texture&) = delete;
-        Texture& operator=(Texture&&) = delete;
+    unsigned int TextureGlLoad(const TextureData& data){
+        unsigned int id;
 
-        ~Texture() { glDeleteTextures(1, &mId); }
+        glGenTextures(1, &id);
 
-        [[nodiscard]] unsigned int getId() const { return mId; }
-
-    private:
-        GLuint mId = 0;
-    };
-
-    Texture::Texture(const TextureData& data) {
-        glGenTextures(1, &mId);
-
-        glCheck(glBindTexture(GL_TEXTURE_2D, mId));
+        glCheck(glBindTexture(GL_TEXTURE_2D, id));
 
         glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
         glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
@@ -80,7 +66,7 @@ namespace cs {
                 format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
                 break;
         }
-        cc::check("Texture", format != 0, "invalid format");
+        cc::check("TextureGL", format != 0, "invalid format");
 
         int level = 0;
         for(const auto& mipMap : data.mipmaps){
@@ -89,7 +75,18 @@ namespace cs {
             level++;
         }
 
-        cc::check("Texture", mId != 0, "error with a texture");
+        cc::check("TextureGL", id != 0, "error with a texture");
+
+        return id;
+    }
+
+    unsigned int TextureGlLoad(std::string_view fileName){
+        TextureData data = readDdsFile(fileName);
+        return TextureGlLoad(data);
+    }
+
+    void TextureGlUnload(unsigned int id){
+        glDeleteTextures(1, &id);
     }
 
 /********************************************************
@@ -103,18 +100,41 @@ namespace cs {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    std::shared_ptr<Texture> GraphicsContext::createTexture(const TextureData &data) {
-        return std::make_shared<Texture>(data);
-    }
+    void GraphicsContext::setCurrentTexture(cc::TextureHandle handle) {
+        const Texture& texture = m_textures.at(handle.value());
 
-    void GraphicsContext::setCurrentTexture(const std::shared_ptr<Texture> &texture) {
         glCheck(glActiveTexture(GL_TEXTURE0));
-        glCheck(glBindTexture(GL_TEXTURE_2D, texture->getId()));
-        m_current_texture = texture;
+        glCheck(glBindTexture(GL_TEXTURE_2D, texture.glId));
+
+        m_current_texture = handle;
     }
 
-    std::weak_ptr<Texture> GraphicsContext::getCurrentTexture() {
+    cc::TextureHandle GraphicsContext::getCurrentTexture() const {
         return m_current_texture;
+    }
+
+    cc::TextureHandle GraphicsContext::getHandleFromFile(std::string_view filename) {
+        for(int i=0; i<m_textures.size(); ++i){
+            if(m_textures[i].fileName == filename){
+                return cc::TextureHandle(i);
+            }
+        }
+
+        m_textures.emplace_back();
+        m_textures.back().fileName = filename;
+
+        return cc::TextureHandle(m_textures.size()-1);
+    }
+
+    void GraphicsContext::loadTexture(cc::TextureHandle texture) {
+        Texture& textureData = m_textures.at(texture.value());
+        textureData.glId = TextureGlLoad(textureData.fileName);
+    }
+
+    void GraphicsContext::unloadTexture(cc::TextureHandle texture) {
+        Texture& textureData = m_textures.at(texture.value());
+        TextureGlUnload(textureData.glId);
+        textureData.glId = 0;
     }
 
 /********************************************************

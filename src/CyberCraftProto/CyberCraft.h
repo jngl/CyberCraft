@@ -21,6 +21,12 @@ struct Player {
 class CyberCraft : public cc::Game {
 public:
     explicit CyberCraft(cc::Ref<cc::RenderContext2D> renderContext);
+    CyberCraft(const CyberCraft&) = delete;
+    CyberCraft(const CyberCraft&&) = delete;
+
+    CyberCraft& operator=(const CyberCraft&) = delete;
+    CyberCraft& operator=(CyberCraft&&) = delete;
+
     ~CyberCraft() override;
 
     void update() override;
@@ -31,10 +37,10 @@ private:
     Player player{
             component::Sprite {
                     cc::Vector2i {0,0},
-                    cc::Color{255,192,0},
+                    cc::Color{255,192,0}, // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
                     cc::Color{0,0,0,0}
             },
-            cc::Vector2f {3,5}
+            cc::Vector2f {3,5} // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     };
 
     World m_world;
