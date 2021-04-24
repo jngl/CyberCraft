@@ -37,7 +37,7 @@ namespace cs {
 //        void add(DrawCommand cmd);
 //    };
 //
-class GraphicsContext : public cc::TextureManager
+    class GraphicsContext : public cc::TextureManager
     {
     public:
         GraphicsContext();

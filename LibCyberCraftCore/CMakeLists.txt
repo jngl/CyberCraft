@@ -3,6 +3,6 @@ file(GLOB_RECURSE LibCyberCraftCore_include_files include/*)
 
 add_library(LibCyberCraftCore
         ${LibCyberCraftCore_source_files}
-        ${LibCyberCraftCore_include_files} include/Core/Texture.h)
+        ${LibCyberCraftCore_include_files} include/Core/Texture.h include/Core/ResourceManager.h)
 
 target_include_directories(LibCyberCraftCore PUBLIC include)
