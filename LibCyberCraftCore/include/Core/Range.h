@@ -131,71 +131,6 @@ namespace cc {
         T m_max;
     };
 
-    /*template<class T>
-    class MultiRange
-    {
-    public:
-        static_assert(std::is_integral_v<T>, "T must be a integral number");
-
-        void addNumber(T value){
-            const size_t index = findPos(value);
-            const cc::Range<T> valueRange(value, value);
-
-            if(index > 0){
-                if(value <= m_ranges[index - 1].max()){
-                    return;
-                }
-
-                const std::optional<Range<int>> try1 = cc::Range<T>::tryFusion(m_ranges[index-1], valueRange);
-                if(try1.has_value()){
-                    m_ranges[index] = try1.value();
-                    return;
-                }
-            }
-
-            if(index < m_ranges.size()){
-                if(value >= m_ranges[index].min()){
-                    return;
-                }
-
-                const std::optional<Range<int>> try2 = cc::Range<T>::tryFusion(m_ranges[index], valueRange);
-                if(try2.has_value()){
-                    m_ranges[index] = try2.value();
-                    return;
-                }
-            }
-
-            m_ranges.insert(m_ranges.begin()+static_cast<ptrdiff_t>(index), valueRange);
-        }
-
-        std::optional<T> tryPopFirst(){
-            if(m_ranges.empty()){
-                return {};
-            }
-
-            if(m_ranges.front().min() == m_ranges.front().max()){
-                const T result = m_ranges.front().min();
-                m_ranges.erase(m_ranges.begin());
-                return result;
-            }
-
-            return m_ranges.front().tryPopMin();
-        }
-
-    private:
-        std::vector<Range<T>> m_ranges;
-
-        size_t findPos(T value) const{
-            size_t index = 0;
-
-            while(index < m_ranges.size() && m_ranges[index].min() < value){
-                ++index;
-            }
-
-            return index;
-        };
-    };*/
-
     template<class T>
     class MultiRange
     {
@@ -205,7 +140,7 @@ namespace cc {
             m_ranges.push_back(range);
         }
 
-        T tryPopFirst(){
+        std::optional<T> tryPopFirst(){
             if(m_ranges.size() == 0){
                 return {};
             }
