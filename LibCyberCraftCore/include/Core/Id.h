@@ -42,7 +42,7 @@ namespace cc {
         using ThisId = Id<IdValue, Tag>;
 
         IdGenerator():
-            m_ids(Range<IdValue>(1, std::numeric_limits<unsigned int>::max()))
+            m_ids(Range<IdValue>(1, std::numeric_limits<IdValue>::max()))
         {
         }
 

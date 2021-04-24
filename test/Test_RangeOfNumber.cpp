@@ -45,6 +45,16 @@ TEST_CASE( "cc:Range copy assignment Operator" ) {
     REQUIRE(a.max() == g_range_max_2);
 }
 
+TEST_CASE( "cc:Range copy assignment Operator same" ) {
+    cc::Range<int> a = g_range_1;
+    cc::Range<int>& b = a;
+
+    a= b;
+
+    REQUIRE(a.min() == g_range_min_1);
+    REQUIRE(a.max() == g_range_max_1);
+}
+
 TEST_CASE( "cc:Range move assignment Operator" ) {
     cc::Range<int> a = g_range_1;
 
@@ -53,6 +63,16 @@ TEST_CASE( "cc:Range move assignment Operator" ) {
 
     REQUIRE(a.min() == g_range_min_2);
     REQUIRE(a.max() == g_range_max_2);
+}
+
+TEST_CASE( "cc:Range move assignment Operator same" ) {
+    cc::Range<int> a = g_range_1;
+    cc::Range<int>& b = a;
+
+    a = std::move(b);
+
+    REQUIRE(a.min() == g_range_min_1);
+    REQUIRE(a.max() == g_range_max_1);
 }
 
 TEST_CASE( "cc::Range tryPopMin" ) {
@@ -85,7 +105,15 @@ TEST_CASE( "cc::Range tryFusion" ) {
     REQUIRE(b == cc::Range<int>(2, 10));
 }
 
-TEST_CASE( "cc::MultiRange tryFusion" ) {
+TEST_CASE( "cc::Range tryFusion Impossible" ) {
+    cc::Range<int> a{1, 10};
+    cc::Range<int> b{100, 1000};
+
+    auto c =  cc::Range<int>::tryFusion(a, b);
+    REQUIRE(!c.has_value());
+}
+
+TEST_CASE( "cc::MultiRange add number" ) {
     cc::MultiRange<int> mr;
 
     mr.addNumber(0);

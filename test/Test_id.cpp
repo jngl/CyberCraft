@@ -27,3 +27,18 @@ TEST_CASE( "cc::Id Generator" ) {
     REQUIRE(gen.sizeOfAvailableIds() == std::numeric_limits<unsigned int>::max()-1);
 
 }
+
+TEST_CASE( "cc::Id Generator full" ) {
+    using IdGenerator = cc::IdGenerator<unsigned char, struct TestIdFull>;
+    using Id = IdGenerator::ThisId;
+
+    IdGenerator gen;
+
+    for(int i=0; i<255; ++i){
+        Id id = gen.create();
+        REQUIRE(id.isValid());
+    }
+
+    Id id = gen.create();
+    REQUIRE(!id.isValid());
+}
