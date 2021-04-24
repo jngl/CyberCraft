@@ -1,6 +1,7 @@
 #include "System/Graphics.hpp"
 
 #include <Core/Debug.h>
+#include <algorithm>
 
 #include "System/DdsFile.h"
 
@@ -114,10 +115,12 @@ namespace cs {
     }
 
     cc::TextureHandle GraphicsContext::getHandleFromFile(std::string_view filename) {
-        for(int i=0; i<m_textures.size(); ++i){
-            if(m_textures[i].fileName == filename){
-                return cc::TextureHandle(i);
-            }
+        auto it = std::find_if(begin(m_textures), end(m_textures), [filename](const Texture& tex ){
+            return tex.fileName == filename;
+        });
+
+        if(it != std::end(m_textures)){
+            return cc::TextureHandle(std::distance(std::begin(m_textures), it));
         }
 
         m_textures.emplace_back();
