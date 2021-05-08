@@ -64,3 +64,7 @@ Game::Game() {
 void Game::render(cc::ColoredRectangleDrawer &renderer) {
     renderer.drawRectangle(m_pos, cc::Vector2f{m_playerSize, m_playerSize}, cc::Color{0,100,0});
 }
+
+extern "C" cc::GameBase* createGame(){
+    return new Game();
+}
