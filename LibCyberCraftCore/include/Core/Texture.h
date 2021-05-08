@@ -6,7 +6,7 @@
 #define CYBERCRAFT_TEXTURE_H
 
 #include <Core/Id.h>
-#include <Core/NonCopyable.h>
+#include <Core/Bases.h>
 
 namespace cc
 {

@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_GAME_H
 #define CYBERCRAFT_GAME_H
 
-#include <Core/NonCopyable.h>
+#include <Core/Bases.h>
 
 namespace cc {
     class Game: public cc::NonCopyable {

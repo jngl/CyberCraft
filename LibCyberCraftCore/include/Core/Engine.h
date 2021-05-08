@@ -1,0 +1,90 @@
+//
+// Created by jngl on 08/05/2021.
+//
+
+#ifndef CYBERCRAFT_ENGINE_H
+#define CYBERCRAFT_ENGINE_H
+
+#include "Key.h"
+#include "Math.h"
+#include "Engine2D.h"
+
+#include <memory>
+#include <unordered_map>
+#include <set>
+
+namespace cc
+{
+    class Command
+    {
+    public:
+        virtual void exec() = 0;
+    };
+
+    class Runnable
+    {
+    public:
+        void exit(){
+            m_running = false;
+        }
+
+        [[nodiscard]] bool isRunning() const {
+            return m_running;
+        }
+
+    private:
+        bool m_running = true;
+    };
+
+    class GameBase : public Runnable
+    {
+    public:
+        virtual void render(cc::ColoredRectangleDrawer& renderer) = 0;
+
+        void updateMultiFrameAction(){
+            for(Command* cmd: m_currentMulti){
+                if(cmd != nullptr){
+                    cmd->exec();
+                }
+            }
+        }
+
+        void processKeyDown(cc::Key key){
+            const auto itOne = m_oneFrameAction.find(key);
+            if(itOne != std::end(m_oneFrameAction)){
+                itOne->second->exec();
+            }
+
+            const auto itMulti = m_multiFrameAction.find(key);
+            if(itMulti != std::end(m_multiFrameAction)){
+                Command* cmd = itMulti->second.get();
+                m_currentMulti.insert(cmd);
+            }
+        }
+
+        void processKeyUp(cc::Key key){
+            const auto itMulti = m_multiFrameAction.find(key);
+            if(itMulti != std::end(m_multiFrameAction)){
+                Command* cmd = itMulti->second.get();
+                m_currentMulti.erase(cmd);
+            }
+        }
+
+    protected:
+        void createOneFrameAction(std::unique_ptr<Command> command, cc::Key defaultKey){
+            m_oneFrameAction.insert({defaultKey, std::move(command)});
+        }
+
+        void createMultiFrameAction(std::unique_ptr<Command> command, cc::Key defaultKey){
+            m_multiFrameAction.insert({defaultKey, std::move(command)});
+        }
+
+    private:
+        std::unordered_map<cc::Key, std::unique_ptr<Command>> m_oneFrameAction;
+        std::unordered_map<cc::Key, std::unique_ptr<Command>> m_multiFrameAction;
+        std::set<Command*> m_currentMulti;
+        bool m_running = true;
+    };
+}
+
+#endif //CYBERCRAFT_ENGINE_H
