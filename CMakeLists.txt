@@ -89,7 +89,9 @@ include_directories(${OpenGL_INCLUDE_DIRS})
 
 #Game dir
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Game)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Game)
 
+add_subdirectory(Demo)
 add_subdirectory(src)
 add_subdirectory(third_party)
 add_subdirectory(LibCyberCraftCore)
