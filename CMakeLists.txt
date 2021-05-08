@@ -72,8 +72,6 @@ if(ENABLE_FUZZING)
   add_subdirectory(fuzz_test)
 endif()
 
-add_subdirectory(src)
-
 option(ENABLE_UNITY "Enable Unity builds of projects" OFF)
 if(ENABLE_UNITY)
   # Add for any project you want to apply unity builds for
@@ -92,6 +90,7 @@ include_directories(${OpenGL_INCLUDE_DIRS})
 #Game dir
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Game)
 
+add_subdirectory(src)
 add_subdirectory(third_party)
 add_subdirectory(LibCyberCraftCore)
 add_subdirectory(LibCyberCraftSFML)
