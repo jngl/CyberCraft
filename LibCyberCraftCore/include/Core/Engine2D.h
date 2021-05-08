@@ -8,21 +8,19 @@
 #include <Core/Texture.h>
 #include <Core/Math.h>
 #include <Core/Color.h>
+#include <Core/Bases.h>
 
 namespace cc
 {
-    class SpriteDrawer
+    class ColoredRectangleDrawer : public Copyable
     {
     public:
-        constexpr SpriteDrawer() = default;
-        constexpr SpriteDrawer(const SpriteDrawer&) = default;
-        constexpr SpriteDrawer(SpriteDrawer&&) = default;
+        virtual void drawRectangle(const Vector2f& pos, const Vector2f& size, const Color& color) = 0;
+    };
 
-        SpriteDrawer& operator=(const SpriteDrawer&) = default;
-        SpriteDrawer& operator=(SpriteDrawer&&) = default;
-
-        virtual ~SpriteDrawer() = default;
-
+    class SpriteDrawer : public Copyable
+    {
+    public:
         virtual void drawSprite(TextureHandle texture,
                                 const Vector2f &pos,
                                 const Vector2i &textureIndex,
@@ -36,18 +34,9 @@ namespace cc
                                 Color color) = 0;
     };
 
-    class Camera2D
+    class Camera2D : public Copyable
     {
     public:
-        constexpr Camera2D() = default;
-        constexpr Camera2D(const Camera2D&) = default;
-        constexpr Camera2D(Camera2D&&) = default;
-
-        Camera2D& operator=(const Camera2D&) = default;
-        Camera2D& operator=(Camera2D&&) = default;
-
-        virtual ~Camera2D() = default;
-
         virtual void setViewCenter(Vector2f pos) = 0;
     };
 

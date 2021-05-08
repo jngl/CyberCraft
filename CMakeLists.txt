@@ -89,8 +89,12 @@ find_package(SFML 2 COMPONENTS system window graphics network audio)
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
 
+#Game dir
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Game)
+
 add_subdirectory(third_party)
 add_subdirectory(LibCyberCraftCore)
 add_subdirectory(LibCyberCraftSFML)
 add_subdirectory(LibCyberCraftSystem)
 add_subdirectory(CyberBoxel)
+add_subdirectory(CyberEngine)
