@@ -1,3 +1,5 @@
+#include "TextureManager.h"
+
 #include <Core/Engine.h>
 
 #include <SDL2/SDL.h>
@@ -136,6 +138,8 @@ int main () {
     }
 
     SDL_GLContext Context = SDL_GL_CreateContext(window);
+
+    TextureManager textures;
 
     void* handle = SDL_LoadObject("./libDemo.so");
     if(handle == nullptr){
