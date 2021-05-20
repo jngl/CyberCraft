@@ -54,12 +54,10 @@ cc::Key keyFromSdlKey(SDL_Keycode sdlKey){
 
 void processKey(cc::GameBase& game, SDL_KeyboardEvent& keyEvent, bool& reload){
     cc::Key key = keyFromSdlKey(keyEvent.keysym.sym);
-
-    if(key == cc::Key::F5){
-        reload = true;
-    }
-
     if(keyEvent.type == SDL_KEYDOWN){
+        if(key == cc::Key::F5){
+            reload = true;
+        }
         game.processKeyDown(key);
     }else if(keyEvent.type == SDL_KEYUP){
         game.processKeyUp(key);
@@ -162,6 +160,7 @@ int main () {
         game->updateMultiFrameAction();
 
         if(reload){
+            std::cout<<"Reload"<<std::endl;
             game.reset();
 
             SDL_UnloadObject(handle);
