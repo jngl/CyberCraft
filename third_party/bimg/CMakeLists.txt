@@ -6,4 +6,4 @@ add_library(bimg
         ${bimg_include_files})
 
 target_include_directories(bimg PUBLIC include)
-target_link_libraries(bimg bx astc-codec tinyexr libsquish etc1 etc2 nvtt pvrtc edtaa3 astc lodepng stb iqa)
+target_link_libraries(bimg bx tinyexr astc-codec lodepng stb)
