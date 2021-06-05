@@ -204,7 +204,7 @@ namespace cc{
         constexpr Vector3<T> &normalize() {
             T length = getLength();
 
-            if (!length) {
+            if (length == 0) {
                 set(0, 0, 0);
                 return *this;
             }

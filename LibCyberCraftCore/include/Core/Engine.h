@@ -101,7 +101,6 @@ namespace cc
         std::unordered_map<cc::Key, std::unique_ptr<Command>> m_oneFrameAction;
         std::unordered_map<cc::Key, std::unique_ptr<Command>> m_multiFrameAction;
         std::set<Command*> m_currentMulti;
-        bool m_running = true;
     };
 }
 

@@ -28,7 +28,7 @@ public:
         bool withAlpha;
     };
 
-    BoxelMap() = default;
+    BoxelMap();
 
     BoxelMap(const BoxelMap&) = delete;
     BoxelMap(BoxelMap&&) = delete;
@@ -54,7 +54,7 @@ private:
             BlockType{"wood",    true,  false}
     };
 
-    std::array<std::array<std::array<unsigned int, mSizeX>,mSizeY>,mSizeZ> mBlock = {0};
+    std::array<std::array<std::array<unsigned int, mSizeX>,mSizeY>,mSizeZ> mBlock;
 };
 
 class BoxelScene : public Scene {
