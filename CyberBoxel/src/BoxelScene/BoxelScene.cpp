@@ -8,7 +8,7 @@
 
 void BoxelMap::generate() {
     //gen height
-    std::array<std::array<float, mSizeZ>, mSizeX> height = {0};
+    std::array<std::array<float, mSizeZ>, mSizeX> height;
 
     for (size_t x(0); x < mSizeX; ++x) {
         for (size_t z(0); z < mSizeZ; ++z) {
@@ -68,6 +68,16 @@ BoxelMap::BlockId BoxelMap::getBlock(std::size_t x, std::size_t y, std::size_t z
 
 const BoxelMap::BlockType &BoxelMap::getBlockType(BlockId id) {
     return mBlockType.at(id);
+}
+
+BoxelMap::BoxelMap() {
+    for(auto& zArray: mBlock){
+        for(auto& yArray: zArray){
+            for(auto& xValue: yArray){
+                xValue = 0;
+            }
+        }
+    }
 }
 
 struct BoxelMesh {

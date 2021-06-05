@@ -43,7 +43,6 @@ namespace ccSf {
         cc::IdGenerator<cc::TextureHandle::ValueType, cc::TextureHandle::Tag> m_textureIdGenerator;
         std::vector<Texture> m_textures;
         sf::RenderTarget &m_target;
-        int m_nextId = 1;
     };
 }
 
