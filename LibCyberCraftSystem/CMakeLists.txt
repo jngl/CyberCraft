@@ -1,5 +1,3 @@
-pkg_search_module(SDL2 REQUIRED sdl2)
-
 file(GLOB_RECURSE LibCyberCraftSystem_source_files src/*)
 file(GLOB_RECURSE LibCyberCraftSystem_include_files include/*)
 

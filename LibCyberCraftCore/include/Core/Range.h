@@ -60,7 +60,7 @@ namespace cc {
             return *this;
         }
 
-        constexpr Range<T>& operator=(Range<T>&& right){
+        constexpr Range<T>& operator=(Range<T>&& right) noexcept{
             if(this == &right){
                 return *this;
             }

@@ -86,6 +86,9 @@ find_package(SFML 2 COMPONENTS system window graphics network audio)
 #OpenGL
 find_package(OpenGL REQUIRED)
 
+#Sdl
+pkg_search_module(SDL2 REQUIRED sdl2)
+
 #Game dir
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Game)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Game)

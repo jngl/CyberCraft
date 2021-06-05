@@ -20,7 +20,7 @@ namespace cc {
         std::string m_message;
     };
 
-    namespace
+    namespace impl
     {
         template <typename T>
         void log2(T t)
@@ -38,30 +38,30 @@ namespace cc {
     }
 
     template<typename... Args>
-    void log(std::string module, Args... args) // recursive variadic function
+    void log(std::string_view module, Args... args) // recursive variadic function
     {
         std::cout << module << " : " ;
 
-        log2(args...) ;
+        impl::log2(args...) ;
 
         std::cout  <<std::endl ;
     }
 
     template<typename... Args>
-    void check(std::string module, bool cond, Args... args) // recursive variadic function
+    void check(std::string_view module, bool cond, Args... args) // recursive variadic function
     {
-        if(cond)return;
+        if(cond) {
+            return;
+        }
 
         std::cout<< "[" << module << "] assert error in "<< module << " : " ;
 
-        log2(args...) ;
+        impl::log2(args...) ;
 
         std::cout  <<std::endl ;
 
         exit(1);
     }
 }
-
-#define CC_CORE_ASSERT(module, cond) debug::assert(module, cond, "")
 
 #endif //CYBERCRAFT_DEBUG_H
