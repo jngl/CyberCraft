@@ -10,6 +10,11 @@
 
 namespace cc{
     template<class T>
+    bool equal(T a, T b, T precision = static_cast<T>(0.0001)){
+        return a-precision<b && b<a+precision;
+    }
+
+    template<class T>
     T mix(T x, T y, T a) { return x * (1 - a) + y * a; }
 
     template<class T>
