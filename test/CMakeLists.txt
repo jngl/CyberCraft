@@ -1,5 +1,5 @@
 add_library(catch_main STATIC catch_main.cpp)
-target_link_libraries(catch_main PUBLIC catch project_warnings project_options )
+target_link_libraries(catch_main PUBLIC catch project_options project_warnings)
 
 add_executable(tests tests.cpp
         Test_pointer.cpp
