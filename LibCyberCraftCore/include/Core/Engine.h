@@ -18,12 +18,28 @@ namespace cc
     class Command
     {
     public:
+        Command() = default;
+        Command(const Command&) = default;
+        Command(Command&&) = default;
+        Command& operator=(const Command&) = default;
+        Command& operator=(Command&&) = default;
+
+        virtual ~Command() = default;
+
         virtual void exec() = 0;
     };
 
     class Runnable
     {
     public:
+        Runnable() = default;
+        Runnable(const Runnable&) = default;
+        Runnable(Runnable&&) = default;
+        Runnable& operator=(const Runnable&) = default;
+        Runnable& operator=(Runnable&&) = default;
+
+        virtual ~Runnable() = default;
+
         void exit(){
             m_running = false;
         }
@@ -39,6 +55,8 @@ namespace cc
     class GameBase : public Runnable
     {
     public:
+
+
         virtual void render(cc::ColoredRectangleDrawer& renderer) = 0;
 
         void updateMultiFrameAction(){

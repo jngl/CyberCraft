@@ -72,7 +72,7 @@ namespace cs {
 
     class Shader {
     public:
-        typedef unsigned int Location;
+        typedef uint Location;
 
         void load(const char *vertCode, const char *fragCode);
 

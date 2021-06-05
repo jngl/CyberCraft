@@ -6,3 +6,4 @@ add_library(LibCyberCraftCore
         ${LibCyberCraftCore_include_files} include/Core/Texture.h include/Core/ResourceManager.h)
 
 target_include_directories(LibCyberCraftCore PUBLIC include)
+target_link_libraries(LibCyberCraftCore project_options project_warnings)

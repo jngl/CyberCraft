@@ -10,8 +10,8 @@ void BoxelMap::generate() {
     //gen height
     std::array<std::array<float, mSizeZ>, mSizeX> height = {0};
 
-    for (int x(0); x < mSizeX; ++x) {
-        for (int z(0); z < mSizeZ; ++z) {
+    for (size_t x(0); x < mSizeX; ++x) {
+        for (size_t z(0); z < mSizeZ; ++z) {
             constexpr float lacunarity = 2.f;
             constexpr int octaves = 6;
             constexpr float gain = 0.5;
@@ -74,7 +74,7 @@ struct BoxelMesh {
     std::vector<float> vertices;
     std::vector<float> texCoord;
     std::vector<float> normals;
-    std::vector<unsigned int> faces;
+    std::vector<uint> faces;
     BoxelMap &boxelMap;
 
     explicit BoxelMesh(BoxelMap &m) : boxelMap(m) {}
@@ -128,13 +128,13 @@ struct BoxelMesh {
         addVertex(posX4, posY4, posZ4, texU4, texV4, normX, normY, normZ);
         std::size_t size = vertices.size() / 3;
 
-        faces.push_back(size - 4);
-        faces.push_back(size - 3);
-        faces.push_back(size - 2);
+        faces.push_back(static_cast<uint>(size - 4));
+        faces.push_back(static_cast<uint>(size - 3));
+        faces.push_back(static_cast<uint>(size - 2));
 
-        faces.push_back(size - 4);
-        faces.push_back(size - 2);
-        faces.push_back(size - 1);
+        faces.push_back(static_cast<uint>(size - 4));
+        faces.push_back(static_cast<uint>(size - 2));
+        faces.push_back(static_cast<uint>(size - 1));
     }
 
 
@@ -276,11 +276,11 @@ BoxelScene::BoxelScene() :
 
             if (!mesh.vertices.empty()) {
                 Renderer::addSubMesh(mBlockObject.model,
-                                     mesh.vertices.size() / 3,
+                                     static_cast<uint>(mesh.vertices.size() / 3),
                                      &mesh.vertices[0],
                                      &mesh.texCoord[0],
                                      &mesh.normals[0],
-                                     mesh.faces.size() / 3,
+                                     static_cast<uint>(mesh.faces.size() / 3),
                                      &mesh.faces[0],
                                      mBlockMaterial.at(i));
             }

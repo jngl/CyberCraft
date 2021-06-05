@@ -77,7 +77,8 @@ private:
             ImGui::Begin("Info", &mShowInfoWindow);
             constexpr float OneSecondInMillisecond = 1000.f;
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", // NOLINT
-                        OneSecondInMillisecond / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+                        static_cast<double>(OneSecondInMillisecond / ImGui::GetIO().Framerate),
+                        static_cast<double>(ImGui::GetIO().Framerate));
             if (ImGui::Button("Test Window")) {
                 mShowTestWindow = !mShowTestWindow;
             }
