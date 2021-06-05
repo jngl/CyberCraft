@@ -26,6 +26,5 @@ BoxelPlayer::BoxelPlayer() :
     mObject.matrix.addScale(defaultScale);
 }
 
-void BoxelPlayer::addAction(cs::Window &window) {
-
+void BoxelPlayer::addAction(cs::Window&) {
 }

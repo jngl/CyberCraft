@@ -87,7 +87,7 @@ namespace cs {
                                 std::string(filename);
 
         //open file
-        std::fstream file(std::string(filename2), std::fstream::in | std::fstream::binary);
+        std::fstream file(filename2, std::fstream::in | std::fstream::binary);
         cc::check("TextureGL", file.is_open(), "error with dds file : \"", filename, "\"");
 
         readDdsFileType(file);
@@ -122,7 +122,7 @@ namespace cs {
         for(TextureMipMap& mipMap: data.mipmaps){
             mipMap.size.set(width, height);
             mipMap.data.resize(((width + 3) / 4) * ((height + 3) / 4) * blockSize);
-            file.read(mipMap.data.data(), mipMap.data.size());
+            file.read(mipMap.data.data(), static_cast<std::streamsize>(mipMap.data.size()));
             width /= 2;
             height /= 2;
         }

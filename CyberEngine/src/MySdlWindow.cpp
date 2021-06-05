@@ -57,7 +57,7 @@ void* MySdlWindow::sdlNativeWindowHandle()
 		}
 		return (void*)(uintptr_t)win_impl;
 #		else
-        return (void*)wmi.info.x11.window;
+        return reinterpret_cast<void*>(wmi.info.x11.window);
 #		endif
 #	elif BX_PLATFORM_OSX
     return wmi.info.cocoa.window;
@@ -68,8 +68,9 @@ void* MySdlWindow::sdlNativeWindowHandle()
 #	endif // BX_PLATFORM_
 }
 
-[[nodiscard]] cc::Vector2i MySdlWindow::getSize() const {
-    cc::Vector2i result;
-    SDL_GetWindowSize(m_window, &result.x, &result.y);
-    return result;
+[[nodiscard]] cc::Vector2ui MySdlWindow::getSize() const {
+    int x = 1;
+    int y = 1;
+    SDL_GetWindowSize(m_window, &x, &y);
+    return cc::Vector2ui{static_cast<uint>(x), static_cast<uint>(y)};
 }

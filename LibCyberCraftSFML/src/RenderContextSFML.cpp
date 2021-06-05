@@ -21,7 +21,7 @@ namespace ccSf {
     }
 
     cc::TextureHandle RenderContextSFML::getHandleFromFile(std::string_view filename) {
-        for(int i=0; i<m_textures.size(); ++i){
+        for(unsigned int i=0; i<m_textures.size(); ++i){
             if(m_textures[i].fileName == filename){
                 return cc::TextureHandle(i);
             }
@@ -30,7 +30,7 @@ namespace ccSf {
         m_textures.emplace_back();
         m_textures.back().fileName = filename;
 
-        return cc::TextureHandle(m_textures.size()-1);
+        return cc::TextureHandle(static_cast<unsigned int>(m_textures.size()-1));
     }
 
     void RenderContextSFML::loadTexture(cc::TextureHandle texture) {
@@ -52,8 +52,6 @@ namespace ccSf {
                                        float rotation){
 
         sf::Texture &texture = *m_textures[textureHandle.value()].sfTexture;
-
-        cc::Vector2f a;
 
         sf::RectangleShape background;
 

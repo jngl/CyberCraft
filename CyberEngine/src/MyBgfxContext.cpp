@@ -37,11 +37,11 @@ m_window(win){
 }
 
 BgfxFrame MyBgfxContext::beginFrame(){
-    cc::Vector2i  newSize = m_window.getSize();
+    cc::Vector2ui  newSize = m_window.getSize();
 
     if(newSize.x != m_size.x || newSize.y != m_size.y){
         std::cout<<"resize "<<newSize.x<<" "<<newSize.y<<std::endl;
-        bgfx::reset((uint32_t)newSize.x, (uint32_t)newSize.y);
+        bgfx::reset(newSize.x, newSize.y);
         m_size = newSize;
     }
 

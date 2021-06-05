@@ -112,6 +112,7 @@ namespace cc{
 
     typedef Vector2<float> Vector2f;
     typedef Vector2<int> Vector2i;
+    typedef Vector2<unsigned int> Vector2ui;
 
     template<class T>
     struct Vector3 {
@@ -258,8 +259,8 @@ namespace cc{
 
         constexpr Matrix4<T> operator*(const Matrix4<T> &t) const {
             Matrix4<T> r;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
+            for (size_t i = 0; i < 4; i++) {
+                for (size_t j = 0; j < 4; j++) {
                     r.m[i][j] = m[0][j] * t.m[i][0] + m[1][j] * t.m[i][1] +
                                 m[2][j] * t.m[i][2] + m[3][j] * t.m[i][3];
                 }
@@ -290,7 +291,8 @@ namespace cc{
         }
 
         constexpr void projectPerspective(T pFOV, T pAspectRatio, T pNear, T pFar) {
-            T tanThetaOver2 = static_cast<T>(tan(pFOV * (M_PI / 360.0)));
+            constexpr T fullTurn = 360;
+            T tanThetaOver2 = static_cast<T>(tan(pFOV * (static_cast<T>(M_PI) / fullTurn)));
             setIdentity();
 
             // X and Y scaling

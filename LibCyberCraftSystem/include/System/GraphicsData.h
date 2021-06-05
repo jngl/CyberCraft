@@ -18,7 +18,7 @@ namespace cs {
 
     struct TextureMipMap{
         std::vector<char> data;
-        cc::Vector2i size;
+        cc::Vector2ui size;
     };
 
     struct TextureData{

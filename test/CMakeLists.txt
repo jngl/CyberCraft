@@ -1,5 +1,5 @@
 add_library(catch_main STATIC catch_main.cpp)
-target_link_libraries(catch_main PUBLIC catch)
+target_link_libraries(catch_main PUBLIC catch project_warnings project_options )
 
 add_executable(tests tests.cpp
         Test_pointer.cpp
@@ -7,7 +7,7 @@ add_executable(tests tests.cpp
         Test_TypeId.cpp
         Test_id.cpp
         Test_RangeOfNumber.cpp)
-target_link_libraries(tests PRIVATE project_warnings project_options catch_main LibCyberCraftCore)
+target_link_libraries(tests PRIVATE catch_main LibCyberCraftCore)
 
 
 add_test(AllTest tests)

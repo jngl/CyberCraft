@@ -28,7 +28,7 @@ void GameLoader::reload(){
         throw SystemError{SDL_GetError()};
     }
 
-    Func creator = (Func)SDL_LoadFunction(m_gameCodeHandle, "createGame"); // NOLINT
+    Func creator = reinterpret_cast<Func>(SDL_LoadFunction(m_gameCodeHandle, "createGame")); // NOLINT
     if(creator == nullptr){
         throw SystemError{SDL_GetError()};
     }

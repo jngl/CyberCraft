@@ -20,7 +20,7 @@ public:
 
     void* sdlNativeWindowHandle();
 
-    [[nodiscard]] cc::Vector2i getSize() const;
+    [[nodiscard]] cc::Vector2ui getSize() const;
 
 private:
     SDL_Window *m_window;

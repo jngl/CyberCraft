@@ -71,8 +71,14 @@ namespace cs {
 
         int level = 0;
         for(const auto& mipMap : data.mipmaps){
-            glCheck(glCompressedTexImage2D(GL_TEXTURE_2D, level, format, mipMap.size.x, mipMap.size.y,
-                                           0, mipMap.data.size(), mipMap.data.data()));
+            glCheck(glCompressedTexImage2D(GL_TEXTURE_2D,
+                                           level,
+                                           format,
+                                           static_cast<GLsizei>(mipMap.size.x),
+                                            static_cast<GLsizei>(mipMap.size.y),
+                                           0,
+                                            static_cast<GLsizei>(mipMap.data.size()),
+                                            mipMap.data.data()));
             level++;
         }
 
@@ -120,13 +126,13 @@ namespace cs {
         });
 
         if(it != std::end(m_textures)){
-            return cc::TextureHandle(std::distance(std::begin(m_textures), it));
+            return cc::TextureHandle(static_cast<uint>(std::distance(std::begin(m_textures), it)));
         }
 
         m_textures.emplace_back();
         m_textures.back().fileName = filename;
 
-        return cc::TextureHandle(m_textures.size()-1);
+        return cc::TextureHandle(static_cast<uint>(m_textures.size()-1));
     }
 
     void GraphicsContext::loadTexture(cc::TextureHandle texture) {
@@ -174,13 +180,13 @@ namespace cs {
 
     Shader::Location Shader::addMatrixInput(const std::string& name) {  // NOLINT
         Shader::Location loc = 0;
-        glCheck(loc = glGetUniformLocation(shaderProgram, name.c_str()));
+        glCheck(loc = static_cast<Shader::Location>(glGetUniformLocation(shaderProgram, name.c_str())));
         return loc;
     }
 
     void Shader::setMatrixInput(Location loc, cc::Matrix4f mat) {  // NOLINT
         glCheck(glUseProgram(shaderProgram));
-        glCheck(glUniformMatrix4fv(loc, 1, false, &mat.m[0][0]));
+        glCheck(glUniformMatrix4fv(static_cast<GLint>(loc), 1, false, &mat.m[0][0]));
     }
 
 //    Shader::Location Shader::addTextureInput(const std::string& name) {  // NOLINT
@@ -206,7 +212,7 @@ namespace cs {
 
         if (infologLength > 1) {
             std::string infoLog;
-            infoLog.resize(infologLength, '?');
+            infoLog.resize(static_cast<size_t>(infologLength), '?');
             glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog.data());
             std::cout<<infoLog<<"\n";
         }
@@ -222,7 +228,7 @@ namespace cs {
 
         if (infoLogLength > 1) {
             std::string infoLog;
-            infoLog.resize(infoLogLength, '?');
+            infoLog.resize(static_cast<size_t>(infoLogLength), '?');
             glGetProgramInfoLog(obj, infoLogLength, &charsWritten, infoLog.data());
             std::cout<<"shader info : \""<<infoLog<<"\"\n";
         }
@@ -271,7 +277,7 @@ namespace cs {
         glCheck(glBindBuffer(GL_ARRAY_BUFFER, buffer));
         glCheck(glBufferData(GL_ARRAY_BUFFER, dataSize, data, GL_STATIC_DRAW));
 
-        glCheck(glVertexAttribPointer(loc, size, GL_FLOAT, GL_FALSE, 0, nullptr));
+        glCheck(glVertexAttribPointer(loc, static_cast<GLint>(size), GL_FLOAT, GL_FALSE, 0, nullptr));
         glCheck(glEnableVertexAttribArray(loc));
     }
 
@@ -301,11 +307,11 @@ namespace cs {
         glCheck(glBindVertexArray(mId));
         if (mWithIndex) {
             glCheck(glDrawElements(/*mPrimitives*/GL_TRIANGLES,
-                                                  mCount,
+                                                  static_cast<GLsizei>(mCount),
                                                   GL_UNSIGNED_INT,
                                                   nullptr));
         } else {
-            glCheck(glDrawArrays(mPrimitives, 0, mCount));
+            glCheck(glDrawArrays(mPrimitives, 0, static_cast<GLsizei>(mCount)));
         }
 
     }

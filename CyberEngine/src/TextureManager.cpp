@@ -36,7 +36,7 @@ cc::TextureHandle TextureManager::getHandleFromFile(std::string_view filename) {
         return cc::TextureHandle();
     }
 
-    size_t index = it - std::begin(m_textures);
+    unsigned int index = static_cast<unsigned int>(it - std::begin(m_textures));
 
     return cc::TextureHandle(index);
 }

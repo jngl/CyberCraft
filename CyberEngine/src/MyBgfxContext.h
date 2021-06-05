@@ -18,7 +18,7 @@ public:
 
 private:
     MySdlWindow& m_window;
-    cc::Vector2i m_size;
+    cc::Vector2ui m_size;
 
     bool sdlSetWindow(MySdlWindow& win);
 };
