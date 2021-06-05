@@ -6,7 +6,8 @@ add_executable(tests tests.cpp
         Test_typeName.cpp
         Test_TypeId.cpp
         Test_id.cpp
-        Test_RangeOfNumber.cpp)
+        Test_RangeOfNumber.cpp
+        Test_math.cpp)
 target_link_libraries(tests PRIVATE catch_main LibCyberCraftCore)
 
 
