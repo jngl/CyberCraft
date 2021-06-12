@@ -10,6 +10,7 @@
       <w>imgui</w>
       <w>jngl</w>
       <w>sfml</w>
+      <w>shaderc</w>
     </words>
   </dictionary>
 </component>

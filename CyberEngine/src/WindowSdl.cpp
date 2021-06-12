@@ -2,14 +2,14 @@
 // Created by jngl on 04/06/2021.
 //
 
-#include "MySdlWindow.h"
+#include "WindowSdl.h"
 
 #include "Utils.h"
 
 #include <SDL2/SDL_syswm.h>
 #include <bx/platform.h>
 
-MySdlWindow::MySdlWindow(){
+WindowSdl::WindowSdl(){
     if(SDL_Init(0) != 0){
         throw SystemError{SDL_GetError()};
     }
@@ -20,20 +20,20 @@ MySdlWindow::MySdlWindow(){
     }
 }
 
-MySdlWindow::~MySdlWindow(){
+WindowSdl::~WindowSdl(){
     SDL_DestroyWindow(m_window);
     SDL_Quit();
 }
 
-SDL_Window* MySdlWindow::GetSdlWindow(){
+SDL_Window* WindowSdl::GetSdlWindow(){
     return m_window;
 }
 
-void MySdlWindow::swap(){
+void WindowSdl::swap(){
     SDL_GL_SwapWindow(m_window);
 }
 
-void* MySdlWindow::sdlNativeWindowHandle()
+void* WindowSdl::sdlNativeWindowHandle()
 {
     SDL_SysWMinfo wmi;
     SDL_VERSION(&wmi.version);
@@ -68,7 +68,7 @@ void* MySdlWindow::sdlNativeWindowHandle()
 #	endif // BX_PLATFORM_
 }
 
-[[nodiscard]] cc::Vector2ui MySdlWindow::getSize() const {
+[[nodiscard]] cc::Vector2ui WindowSdl::getSize() const {
     int x = 1;
     int y = 1;
     SDL_GetWindowSize(m_window, &x, &y);

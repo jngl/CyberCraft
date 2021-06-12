@@ -2,17 +2,17 @@
 // Created by jngl on 04/06/2021.
 //
 
-#ifndef CYBERCRAFT_MYSDLWINDOW_H
-#define CYBERCRAFT_MYSDLWINDOW_H
+#ifndef CYBERCRAFT_WINDOWSDL_H
+#define CYBERCRAFT_WINDOWSDL_H
 
 #include <Core/Math.h>
 
 #include <SDL2/SDL.h>
 
-class MySdlWindow {
+class WindowSdl {
 public:
-    MySdlWindow();
-    ~MySdlWindow();
+    WindowSdl();
+    ~WindowSdl();
 
     SDL_Window* GetSdlWindow();
 
@@ -26,4 +26,4 @@ private:
     SDL_Window *m_window;
 };
 
-#endif //CYBERCRAFT_MYSDLWINDOW_H
+#endif //CYBERCRAFT_WINDOWSDL_H

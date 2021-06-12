@@ -2,15 +2,15 @@
 // Created by jngl on 04/06/2021.
 //
 
-#include "BgfxFrame.h"
+#include "Frame.h"
 
 #include <bgfx/bgfx.h>
 
-BgfxFrame::~BgfxFrame(){
+Frame::~Frame(){
     bgfx::frame();
 }
 
-void BgfxFrame::drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cc::Color& color){
+void Frame::drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cc::Color& color){
     bgfx::dbgTextPrintf(0, 0, 0x0f,
                         "rect : %.2f %.2f %.2f %.2f %i %i %i %i",
                         static_cast<double>(pos.x),
@@ -31,4 +31,9 @@ void BgfxFrame::drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size,
 //        glVertex2f(pos.x - size2.x, pos.y - size2.y);
 //        glVertex2f(pos.x - size2.x, pos.y + size2.y);
 //        glEnd();
+}
+
+Frame::Frame(Renderer2d &renderer2d):
+        m_renderer2d(renderer2d)
+{
 }
