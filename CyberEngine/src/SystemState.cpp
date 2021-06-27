@@ -8,7 +8,7 @@ SystemState::SystemState() :
 m_context(m_window),
 m_shaders(m_context)
 {
-    m_renderer2d = std::make_unique<Renderer2d>();
+    m_renderer2d.setShader(m_shaders.get("simple2d"));
 }
 
 bool SystemState::isRunning() const {
@@ -19,12 +19,11 @@ void SystemState::frame() {
     m_gameLoader.processEvent();
     m_gameLoader.getGame().updateMultiFrameAction();
 
+    auto size = m_window.getSize();
+    m_context.beginFrame(size);
+    m_renderer2d.updateSize(size);
 
+    m_gameLoader.getGame().render(m_renderer2d);
 
-    m_context.beginFrame();
-
-    m_renderer2d->updateSize(m_window.getSize());
-
-    m_gameLoader.getGame().render(*m_renderer2d);
     m_context.endFrame();
 }

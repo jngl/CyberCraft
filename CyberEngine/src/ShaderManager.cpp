@@ -86,3 +86,15 @@ bgfx::ProgramHandle ShaderManager::loadShaderProgram(std::string_view name) {
 
     return bgfx::createProgram(vsh, fsh, true /* destroy shaders when program is destroyed */);
 }
+
+bgfx::ProgramHandle ShaderManager::get(std::string_view name) {
+    for(auto& shader: m_shaders){
+        if(shader.m_name == std::string(name)){
+            return shader.m_program;
+        }
+    }
+
+    std::cout<<"shader not found "<<name<<std::endl;
+
+    return bgfx::ProgramHandle();
+}

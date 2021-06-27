@@ -27,6 +27,7 @@ private:
     bgfx::VertexBufferHandle m_rectangleVertices{};
     bgfx::IndexBufferHandle m_rectangleIndices{};
     bgfx::ProgramHandle m_program{};
+    bgfx::UniformHandle m_color{};
 
     void setViewTransform(const cc::Matrix4f& proj, const cc::Matrix4f& view);
 };

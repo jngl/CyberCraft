@@ -17,6 +17,8 @@ class ShaderManager : public cc::NonCopyable {
 public:
     explicit ShaderManager(Context&);
 
+    bgfx::ProgramHandle get(std::string_view name);
+
 private:
     struct Shader{
         std::string m_name;

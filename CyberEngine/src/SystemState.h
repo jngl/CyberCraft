@@ -25,7 +25,7 @@ private:
     Context m_context;
     TextureManager m_textures;
     ShaderManager m_shaders;
-    std::unique_ptr<Renderer2d> m_renderer2d;
+    Renderer2d m_renderer2d;
     GameLoader m_gameLoader;
 };
 

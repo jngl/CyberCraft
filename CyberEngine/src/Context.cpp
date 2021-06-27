@@ -11,8 +11,7 @@
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
 
-Context::Context(WindowSdl& win):
-m_window(win){
+Context::Context(WindowSdl& win){
         sdlSetWindow(win);
 
         m_size = win.getSize();
@@ -20,7 +19,7 @@ m_window(win){
         bgfx::renderFrame();
 
         bgfx::Init init;
-        init.type = bgfx::RendererType::OpenGL;
+        init.type = bgfx::RendererType::Vulkan;
         init.resolution.width  = m_size.x;
         init.resolution.height = m_size.y;
         bgfx::init(init);
@@ -35,9 +34,7 @@ m_window(win){
         );
 }
 
-void Context::beginFrame(){
-    cc::Vector2ui  newSize = m_window.getSize();
-
+void Context::beginFrame(cc::Vector2ui newSize){
     if(newSize.x != m_size.x || newSize.y != m_size.y){
         std::cout<<"resize "<<newSize.x<<" "<<newSize.y<<std::endl;
         bgfx::reset(newSize.x, newSize.y);

@@ -17,13 +17,12 @@ class Context{
 public:
     explicit Context(WindowSdl& win);
 
-    void beginFrame();
+    void beginFrame(cc::Vector2ui newSize);
     void endFrame();
 
     [[nodiscard]] GraphicsApi getApi() const;
 
 private:
-    WindowSdl& m_window;
     cc::Vector2ui m_size;
 
     bool sdlSetWindow(WindowSdl& win);

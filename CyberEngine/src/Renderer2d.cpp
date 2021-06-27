@@ -54,8 +54,6 @@ Renderer2d::Renderer2d() {
     m_rectangleIndices = bgfx::createIndexBuffer(
             bgfx::makeRef(g_rectangleIndicesData.data(), sizeof(g_rectangleIndicesData) )
     );
-
-    // TODO shader
 }
 
 Renderer2d::~Renderer2d() {
@@ -86,12 +84,21 @@ void Renderer2d::drawRectangle(const cc::Vector2f &pos, const cc::Vector2f &size
     bgfx::setVertexBuffer(0, m_rectangleVertices);
     bgfx::setIndexBuffer(m_rectangleIndices);
 
+    float colorTmp[4] = {static_cast<float>(color.red) / 255.f,
+                         static_cast<float>(color.green) / 255.f,
+                         static_cast<float>(color.blue) / 255.f,
+                         static_cast<float>(color.alpha) / 255.f};
+
+    bgfx::setUniform(m_color, colorTmp, 1);
+
     // Submit primitive for rendering to view 0.
-    bgfx::submit(0, {0});
+    bgfx::submit(0, m_program);
 }
 
 void Renderer2d::setShader(bgfx::ProgramHandle shader) {
     m_program = shader;
+
+    m_color = bgfx::createUniform("u_color", bgfx::UniformType::Vec4, 1);
 }
 
 void Renderer2d::updateSize(cc::Vector2ui size) {
