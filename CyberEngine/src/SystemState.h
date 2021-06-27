@@ -7,10 +7,10 @@
 
 #include "TextureManager.h"
 #include "ShaderManager.h"
-#include "Frame.h"
 #include "WindowSdl.h"
 #include "Context.h"
 #include "GameLoader.h"
+#include "Renderer2d.h"
 
 class SystemState{
 public:
@@ -25,6 +25,7 @@ private:
     Context m_context;
     TextureManager m_textures;
     ShaderManager m_shaders;
+    std::unique_ptr<Renderer2d> m_renderer2d;
     GameLoader m_gameLoader;
 };
 

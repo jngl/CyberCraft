@@ -4,7 +4,6 @@
 
 #include "Context.h"
 
-#include "Frame.h"
 #include "WindowSdl.h"
 
 #include <iostream>
@@ -34,11 +33,9 @@ m_window(win){
         , 1.0f
         , 0
         );
-
-        m_renderer2d = std::make_unique<Renderer2d>();
 }
 
-Frame Context::beginFrame(){
+void Context::beginFrame(){
     cc::Vector2ui  newSize = m_window.getSize();
 
     if(newSize.x != m_size.x || newSize.y != m_size.y){
@@ -47,22 +44,11 @@ Frame Context::beginFrame(){
         m_size = newSize;
     }
 
-    cc::Matrix4f proj;
-    constexpr float dist = 100.f;
-    proj.projectOrthographic(0, static_cast<float>(m_size.x), static_cast<float>(m_size.y), 0, -dist, dist);
-
-    cc::Matrix4f view;
-
-    m_renderer2d->setViewTransform(proj, view);
-
     bgfx::setViewRect(0, 0, 0, uint16_t(m_size.x), uint16_t(m_size.y) );
     bgfx::touch(0);
 
     bgfx::dbgTextClear();
     bgfx::dbgTextPrintf(0, 1, 0x0f, "win : %i %i", m_size.x, m_size.y);
-
-
-    return Frame(*m_renderer2d);
 }
 
 bool Context::sdlSetWindow(WindowSdl& win)
@@ -123,4 +109,8 @@ GraphicsApi Context::getApi() const {
         default:
             throw SystemError{"Unknown Graphics Api"};
     }
+}
+
+void Context::endFrame() {
+    bgfx::frame();
 }

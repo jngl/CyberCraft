@@ -4,29 +4,40 @@
 
 #include "ShaderManager.h"
 
+#include "Context.h"
+
 #include <iostream>
 #include <filesystem>
 #include <string>
 #include <string_view>
 
-Shader::Shader(std::string_view name):
-    m_name(name){
-    std::cout<<"load shader "<<m_name<<std::endl;
-}
+#include <bx/readerwriter.h>
+#include <bx/file.h>
 
-Shader::~Shader() {
-    std::cout<<"Unload Shader "<<m_name<<std::endl;
-}
-
-Shader::Shader(Shader && other):
-    m_name(other.m_name)
+// TODO temporary
+static const bgfx::Memory* loadMem(bx::FileReaderI* _reader, const char* _filePath)
 {
-    other.m_name = "";
+    if (bx::open(_reader, _filePath) )
+    {
+        uint32_t size = (uint32_t)bx::getSize(_reader);
+        const bgfx::Memory* mem = bgfx::alloc(size+1);
+        bx::read(_reader, mem->data, size);
+        bx::close(_reader);
+        mem->data[mem->size-1] = '\0';
+        return mem;
+    }
+
+    std::cout<<"Failed to load "<< _filePath<<std::endl;
+    return nullptr;
 }
+
+static bx::FileReaderI* s_fileReader = NULL;
 
 ShaderManager::ShaderManager(Context& ctx):
     m_context(ctx)
 {
+    s_fileReader = new bx::FileReader();
+
     loadShader();
 }
 
@@ -38,7 +49,8 @@ void ShaderManager::loadShader() {
     for (const auto &p: fs::directory_iterator(shaderDir)) {
         auto name = fileStemToShaderName(p.path().stem().string());
         if(name.has_value()){
-            m_shaders.emplace_back(name.value());
+            std::cout<<"load shader "<<name.value()<<std::endl;
+            m_shaders.push_back(Shader{name.value(), loadShaderProgram(name.value())});
         }
     }
 }
@@ -57,4 +69,20 @@ std::optional<std::string> ShaderManager::fileStemToShaderName(std::string_view 
     }
 
     return {name};
+}
+
+bgfx::ShaderHandle ShaderManager::loadShader(std::string_view name) {
+    std::string filePath = "./data/shader/" + std::string(GetGraphicsApiShaderType(m_context.getApi())) + "/" + std::string(name) + ".bin";
+
+    bgfx::ShaderHandle handle = bgfx::createShader(loadMem(s_fileReader, filePath.c_str()) );
+    bgfx::setName(handle, std::string(name).c_str());
+
+    return handle;
+}
+
+bgfx::ProgramHandle ShaderManager::loadShaderProgram(std::string_view name) {
+    bgfx::ShaderHandle vsh = loadShader(std::string("vs_")+std::string(name));
+    bgfx::ShaderHandle fsh = loadShader(std::string("fs_")+std::string(name));
+
+    return bgfx::createProgram(vsh, fsh, true /* destroy shaders when program is destroyed */);
 }

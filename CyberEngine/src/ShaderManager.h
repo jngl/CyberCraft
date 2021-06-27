@@ -9,26 +9,28 @@
 
 #include <Core/Bases.h>
 
-class Shader : public cc::NonCopyable {
-public:
-    Shader(std::string_view name);
-    Shader(Shader&&);
-    ~Shader();
-
-private:
-    std::string m_name;
-};
+#include <bgfx/bgfx.h>
+#include <vector>
+#include <optional>
 
 class ShaderManager : public cc::NonCopyable {
 public:
     explicit ShaderManager(Context&);
 
 private:
+    struct Shader{
+        std::string m_name;
+        bgfx::ProgramHandle m_program;
+    };
+
     Context& m_context;
     std::vector<Shader> m_shaders;
 
     void loadShader();
     static std::optional<std::string> fileStemToShaderName(std::string_view fileStem);
+
+    bgfx::ShaderHandle loadShader(std::string_view name);
+    bgfx::ProgramHandle loadShaderProgram(std::string_view name);
 };
 
 

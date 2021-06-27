@@ -19,13 +19,13 @@ public:
     m_pos(pos)
     {}
 
-    static constexpr float speed = 1.f;
+    static constexpr float speed = 0.1f;
 
     void exec() override {
         if constexpr(dir == Direction::UP) {
-            m_pos.y += speed;
-        } else if constexpr(dir == Direction::DOWN) {
             m_pos.y -= speed;
+        } else if constexpr(dir == Direction::DOWN) {
+            m_pos.y += speed;
         } else if constexpr(dir == Direction::LEFT) {
             m_pos.x -= speed;
         } else if constexpr(dir == Direction::RIGHT) {

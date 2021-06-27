@@ -64,6 +64,17 @@ Renderer2d::~Renderer2d() {
 }
 
 void Renderer2d::drawRectangle(const cc::Vector2f &pos, const cc::Vector2f &size, const cc::Color &color) {
+    bgfx::dbgTextPrintf(0, 0, 0x0f,
+                        "rect : %.2f %.2f %.2f %.2f %i %i %i %i",
+                        static_cast<double>(pos.x),
+                        static_cast<double>(pos.y),
+                        static_cast<double>(size.x),
+                        static_cast<double>(size.y),
+                        static_cast<int>(color.red),
+                        static_cast<int>(color.green),
+                        static_cast<int>(color.blue),
+                        static_cast<int>(color.alpha));
+
     cc::Matrix4f transform;
     transform.addTranslation(pos.x, pos.y, 0.f);
     transform.addScale(size.x, size.y, 1.f);
@@ -77,6 +88,20 @@ void Renderer2d::drawRectangle(const cc::Vector2f &pos, const cc::Vector2f &size
 
     // Submit primitive for rendering to view 0.
     bgfx::submit(0, {0});
+}
+
+void Renderer2d::setShader(bgfx::ProgramHandle shader) {
+    m_program = shader;
+}
+
+void Renderer2d::updateSize(cc::Vector2ui size) {
+    cc::Matrix4f proj;
+    constexpr float dist = 100.f;
+    proj.projectOrthographic(0, static_cast<float>(size.x), static_cast<float>(size.y), 0, -dist, dist);
+
+    cc::Matrix4f view;
+
+    setViewTransform(proj, view);
 }
 
 void Renderer2d::setViewTransform(const cc::Matrix4f &proj, const cc::Matrix4f &view) {
