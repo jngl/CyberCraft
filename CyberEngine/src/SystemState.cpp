@@ -8,7 +8,7 @@ SystemState::SystemState() :
 m_context(m_window),
 m_shaders(m_context)
 {
-    m_renderer2d.setShader(m_shaders.get("simple2d"));
+    m_renderer2d.setShader(m_shaders.get(m_shaders.getHandleFromFile("simple2d")));
 }
 
 bool SystemState::isRunning() const {
