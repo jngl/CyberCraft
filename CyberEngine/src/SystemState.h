@@ -5,12 +5,8 @@
 #ifndef CYBERCRAFT_SYSTEMSTATE_H
 #define CYBERCRAFT_SYSTEMSTATE_H
 
-#include "TextureManager.h"
-#include "ShaderManager.h"
-#include "WindowSdl.h"
-#include "Context.h"
+#include <Graphics/Graphics.h>
 #include "GameLoader.h"
-#include "Renderer2d.h"
 
 class SystemState{
 public:
@@ -21,11 +17,7 @@ public:
     void frame();
 
 private:
-    WindowSdl m_window;
-    Context m_context;
-    TextureManager m_textures;
-    ShaderManager m_shaders;
-    Renderer2d m_renderer2d;
+    cg::Graphics m_graphics;
     GameLoader m_gameLoader;
 };
 
