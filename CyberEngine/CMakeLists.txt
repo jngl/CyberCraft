@@ -12,10 +12,7 @@ target_include_directories(GameEngine PUBLIC
 
 target_link_libraries(GameEngine
         LibCyberCraftCore
-<<<<<<< HEAD
         LibCyberCraftKernel
-=======
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f
         ${SDL2_LIBRARIES}
         bgfx
         ${X11_LIBRARIES}

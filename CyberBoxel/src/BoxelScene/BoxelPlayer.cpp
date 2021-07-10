@@ -5,11 +5,8 @@ BoxelPlayer::BoxelPlayer() :
         mObject("PlayerObject") {
     mObject.model = Renderer::createModel("playerModel");
 
-<<<<<<< HEAD
     ck::TextureHandle tex = Renderer::getHandleFromFile("test.dds");
-=======
-    cc::TextureHandle tex = Renderer::getHandleFromFile("test.dds");
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f
+
     Renderer::loadTexture(tex);
 
     Renderer::Material_handle mat = Renderer::createMaterial(tex, "playerMaterial");

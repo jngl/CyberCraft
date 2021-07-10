@@ -5,9 +5,9 @@
 #ifndef CYBERCRAFT_BGFXFRAME_H
 #define CYBERCRAFT_BGFXFRAME_H
 
-#include <Core/Engine.h>
+#include <Kernel/Engine.h>
 
-class BgfxFrame final : public cc::ColoredRectangleDrawer {
+class BgfxFrame final : public ck::ColoredRectangleDrawer {
 public:
     friend class MyBgfxContext;
 

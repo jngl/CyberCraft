@@ -6,14 +6,15 @@
 #define CYBERCRAFT_ENGINE_H
 
 #include "Key.h"
-#include "Math.h"
 #include "Engine2D.h"
+
+#include <Core/Math.h>
 
 #include <memory>
 #include <unordered_map>
 #include <set>
 
-namespace cc
+namespace ck
 {
     class Command
     {
@@ -57,7 +58,7 @@ namespace cc
     public:
 
 
-        virtual void render(cc::ColoredRectangleDrawer& renderer) = 0;
+        virtual void render(ck::ColoredRectangleDrawer& renderer) = 0;
 
         void updateMultiFrameAction(){
             for(Command* cmd: m_currentMulti){
@@ -67,7 +68,7 @@ namespace cc
             }
         }
 
-        void processKeyDown(cc::Key key){
+        void processKeyDown(ck::Key key){
             const auto itOne = m_oneFrameAction.find(key);
             if(itOne != std::end(m_oneFrameAction)){
                 itOne->second->exec();
@@ -80,7 +81,7 @@ namespace cc
             }
         }
 
-        void processKeyUp(cc::Key key){
+        void processKeyUp(ck::Key key){
             const auto itMulti = m_multiFrameAction.find(key);
             if(itMulti != std::end(m_multiFrameAction)){
                 Command* cmd = itMulti->second.get();
@@ -89,17 +90,17 @@ namespace cc
         }
 
     protected:
-        void createOneFrameAction(std::unique_ptr<Command> command, cc::Key defaultKey){
+        void createOneFrameAction(std::unique_ptr<Command> command, ck::Key defaultKey){
             m_oneFrameAction.insert({defaultKey, std::move(command)});
         }
 
-        void createMultiFrameAction(std::unique_ptr<Command> command, cc::Key defaultKey){
+        void createMultiFrameAction(std::unique_ptr<Command> command, ck::Key defaultKey){
             m_multiFrameAction.insert({defaultKey, std::move(command)});
         }
 
     private:
-        std::unordered_map<cc::Key, std::unique_ptr<Command>> m_oneFrameAction;
-        std::unordered_map<cc::Key, std::unique_ptr<Command>> m_multiFrameAction;
+        std::unordered_map<ck::Key, std::unique_ptr<Command>> m_oneFrameAction;
+        std::unordered_map<ck::Key, std::unique_ptr<Command>> m_multiFrameAction;
         std::set<Command*> m_currentMulti;
     };
 }

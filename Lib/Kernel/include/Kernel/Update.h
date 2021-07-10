@@ -8,11 +8,7 @@
 #include <memory>
 #include <chrono>
 
-<<<<<<< HEAD:Lib/Kernel/include/Kernel/Update.h
 namespace ck {
-=======
-namespace cc {
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:LibCyberCraftCore/include/Core/Update.h
     class FixStepUpdater {
     public:
         using clock = std::chrono::high_resolution_clock;

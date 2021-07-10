@@ -7,19 +7,11 @@
 #include "Component.h"
 #include "World.h"
 
-<<<<<<< HEAD
 #include <Kernel/Engine2D.h>
 
 #include <SFML/Window.hpp>
 
 void drawSprite(cc::Ref<ck::SpriteDrawer> renderContext, ck::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite) {
-=======
-#include <Core/Engine2D.h>
-
-#include <SFML/Window.hpp>
-
-void drawSprite(cc::Ref<cc::SpriteDrawer> renderContext, cc::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite) {
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f
     renderContext->drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
 }
 

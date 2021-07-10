@@ -10,9 +10,5 @@ int main() {
     CyberCraft game(cc::make_ref(renderContext));
 
     constexpr auto updateTime = std::chrono::milliseconds{16};
-<<<<<<< HEAD:src/CyberCraftProto/main.cpp
 	return ck::mainLoop(window, renderContext, game, updateTime);
-=======
-	return cc::mainLoop(window, renderContext, game, updateTime);
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:src/main.cpp
 }

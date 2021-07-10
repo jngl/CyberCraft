@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_KEY_H
 #define CYBERCRAFT_KEY_H
 
-namespace cc
+namespace ck
 {
     enum class Key{
         UP,

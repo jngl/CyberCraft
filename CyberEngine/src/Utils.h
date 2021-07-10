@@ -6,12 +6,8 @@
 #define CYBERCRAFT_UTILS_H
 
 #include <Core/Math.h>
-<<<<<<< HEAD
 
 #include <Kernel/Key.h>
-=======
-#include <Core/Key.h>
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f
 
 #include <exception>
 #include <string>
@@ -45,7 +41,6 @@ private:
     std::string m_message;
 };
 
-<<<<<<< HEAD
 ck::Key keyFromSdlKey(SDL_Keycode sdlKey);
 
 enum class GraphicsApi{
@@ -113,8 +108,5 @@ constexpr std::string_view GetGraphicsApiShaderType(GraphicsApi api){
             return "";
     }
 }
-=======
-cc::Key keyFromSdlKey(SDL_Keycode sdlKey);
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f
 
 #endif //CYBERCRAFT_UTILS_H

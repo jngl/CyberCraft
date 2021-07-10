@@ -20,11 +20,7 @@ namespace Renderer {
     void resize(int width, int height);
 
     // material
-<<<<<<< HEAD:CyberBoxel/include/Renderer.hpp
     Material_handle createMaterial(ck::TextureHandle tex, std::string_view name);
-=======
-    Material_handle createMaterial(cc::TextureHandle tex, std::string_view name);
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:Cyber-Engine/include/Renderer.hpp
     void destroyMaterial(Material_handle handle);
 
     void setWithAlpha(Material_handle handle, bool alpha);
@@ -53,15 +49,9 @@ namespace Renderer {
     };
 
     // TextureGL
-<<<<<<< HEAD:CyberBoxel/include/Renderer.hpp
     [[nodiscard]] ck::TextureHandle getHandleFromFile(std::string_view filename);
     void loadTexture(ck::TextureHandle handle);
     void unloadTexture(ck::TextureHandle handle);
-=======
-    [[nodiscard]] cc::TextureHandle getHandleFromFile(std::string_view filename);
-    void loadTexture(cc::TextureHandle handle);
-    void unloadTexture(cc::TextureHandle handle);
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:Cyber-Engine/include/Renderer.hpp
 
     // camera
     Camera_handle createCamera();
@@ -74,11 +64,8 @@ namespace Renderer {
     void setActiveCamera(Camera_handle handle);
 
     // sprite
-<<<<<<< HEAD:CyberBoxel/include/Renderer.hpp
     Sprite_handle createSprite(ck::TextureHandle handle);
-=======
-    Sprite_handle createSprite(cc::TextureHandle handle);
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:Cyber-Engine/include/Renderer.hpp
+
     void destroySprite(Sprite_handle sprite);
 
     cc::Matrix4f &getSpriteMatrixRef(Sprite_handle handle);

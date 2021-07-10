@@ -107,11 +107,7 @@ namespace cs {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-<<<<<<< HEAD:Lib/System/src/Graphics.cpp
     void GraphicsContext::setCurrentTexture(ck::TextureHandle handle) {
-=======
-    void GraphicsContext::setCurrentTexture(cc::TextureHandle handle) {
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:LibCyberCraftSystem/src/Graphics.cpp
         const Texture& texture = m_textures.at(handle.value());
 
         glCheck(glActiveTexture(GL_TEXTURE0));
@@ -120,54 +116,31 @@ namespace cs {
         m_current_texture = handle;
     }
 
-<<<<<<< HEAD:Lib/System/src/Graphics.cpp
     ck::TextureHandle GraphicsContext::getCurrentTexture() const {
         return m_current_texture;
     }
 
     ck::TextureHandle GraphicsContext::getHandleFromFile(std::string_view filename) {
-=======
-    cc::TextureHandle GraphicsContext::getCurrentTexture() const {
-        return m_current_texture;
-    }
-
-    cc::TextureHandle GraphicsContext::getHandleFromFile(std::string_view filename) {
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:LibCyberCraftSystem/src/Graphics.cpp
         auto it = std::find_if(begin(m_textures), end(m_textures), [filename](const Texture& tex ){
             return tex.fileName == filename;
         });
 
         if(it != std::end(m_textures)){
-<<<<<<< HEAD:Lib/System/src/Graphics.cpp
             return ck::TextureHandle(static_cast<uint>(std::distance(std::begin(m_textures), it)));
-=======
-            return cc::TextureHandle(static_cast<uint>(std::distance(std::begin(m_textures), it)));
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:LibCyberCraftSystem/src/Graphics.cpp
         }
 
         m_textures.emplace_back();
         m_textures.back().fileName = filename;
 
-<<<<<<< HEAD:Lib/System/src/Graphics.cpp
         return ck::TextureHandle(static_cast<uint>(m_textures.size()-1));
     }
 
     void GraphicsContext::loadTexture(ck::TextureHandle texture) {
-=======
-        return cc::TextureHandle(static_cast<uint>(m_textures.size()-1));
-    }
-
-    void GraphicsContext::loadTexture(cc::TextureHandle texture) {
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:LibCyberCraftSystem/src/Graphics.cpp
         Texture& textureData = m_textures.at(texture.value());
         textureData.glId = TextureGlLoad(textureData.fileName);
     }
 
-<<<<<<< HEAD:Lib/System/src/Graphics.cpp
     void GraphicsContext::unloadTexture(ck::TextureHandle texture) {
-=======
-    void GraphicsContext::unloadTexture(cc::TextureHandle texture) {
->>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:LibCyberCraftSystem/src/Graphics.cpp
         Texture& textureData = m_textures.at(texture.value());
         TextureGlUnload(textureData.glId);
         textureData.glId = 0;
