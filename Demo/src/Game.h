@@ -5,15 +5,16 @@
 #ifndef CYBERCRAFT_GAME_H
 #define CYBERCRAFT_GAME_H
 
-#include <Core/Engine.h>
+#include <Kernel/Engine.h>
+
 #include <Core/Bases.h>
 #include <Core/Math.h>
 
-class Game final : public cc::GameBase, public cc::NonCopyable {
+class Game final : public ck::GameBase, public cc::NonCopyable {
 public:
     Game();
 
-    void render(cc::ColoredRectangleDrawer& renderer) final;
+    void render(ck::ColoredRectangleDrawer& renderer) final;
 
 private:
     cc::Vector2f m_pos{200, 200};

@@ -12,7 +12,7 @@ enum class Direction{
 };
 
 template<Direction dir>
-class CommandMove : public cc::Command, public cc::NonCopyable
+class CommandMove : public ck::Command, public cc::NonCopyable
 {
 public:
     explicit CommandMove(cc::Vector2f& pos):
@@ -37,10 +37,10 @@ private:
     cc::Vector2f& m_pos;
 };
 
-class CommandExit : public cc::Command
+class CommandExit : public ck::Command
 {
 public:
-    explicit CommandExit(cc::Runnable& runnable):
+    explicit CommandExit(ck::Runnable& runnable):
     m_runnable(runnable)
     {}
 
@@ -49,22 +49,22 @@ public:
     }
 
 private:
-    cc::Runnable& m_runnable;
+    ck::Runnable& m_runnable;
 };
 
 Game::Game() {
-    createOneFrameAction(std::make_unique<CommandExit>(*this), cc::Key::ESCAPE);
+    createOneFrameAction(std::make_unique<CommandExit>(*this), ck::Key::ESCAPE);
 
-    createMultiFrameAction(std::make_unique<CommandMove<Direction::UP>>(m_pos), cc::Key::UP);
-    createMultiFrameAction(std::make_unique<CommandMove<Direction::DOWN>>(m_pos), cc::Key::DOWN);
-    createMultiFrameAction(std::make_unique<CommandMove<Direction::LEFT>>(m_pos), cc::Key::LEFT);
-    createMultiFrameAction(std::make_unique<CommandMove<Direction::RIGHT>>(m_pos), cc::Key::RIGHT);
+    createMultiFrameAction(std::make_unique<CommandMove<Direction::UP>>(m_pos), ck::Key::UP);
+    createMultiFrameAction(std::make_unique<CommandMove<Direction::DOWN>>(m_pos), ck::Key::DOWN);
+    createMultiFrameAction(std::make_unique<CommandMove<Direction::LEFT>>(m_pos), ck::Key::LEFT);
+    createMultiFrameAction(std::make_unique<CommandMove<Direction::RIGHT>>(m_pos), ck::Key::RIGHT);
 }
 
-void Game::render(cc::ColoredRectangleDrawer &renderer) {
+void Game::render(ck::ColoredRectangleDrawer &renderer) {
     renderer.drawRectangle(m_pos, cc::Vector2f{m_playerSize, m_playerSize}, cc::Color{0,100,0});
 }
 
-extern "C" cc::GameBase* createGame(){
+extern "C" ck::GameBase* createGame(){
     return new Game();
 }
