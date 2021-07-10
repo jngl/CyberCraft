@@ -8,11 +8,11 @@
 #include <Core/Id.h>
 #include <Core/Bases.h>
 
-namespace cc
+namespace ck
 {
-    using ShaderHandle = Id<unsigned int, struct ShaderHandleTag>;
+    using ShaderHandle = cc::Id<unsigned int, struct ShaderHandleTag>;
 
-    class ShaderManager : public NonCopyable{
+class ShaderManager : public cc::NonCopyable{
     public:
         [[nodiscard]] virtual ShaderHandle getHandleFromFile(std::string_view filename) = 0;
         virtual void loadShader(ShaderHandle) = 0;

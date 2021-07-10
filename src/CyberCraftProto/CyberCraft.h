@@ -5,8 +5,8 @@
 #ifndef CYBERCRAFT_CYBERCRAFT_H
 #define CYBERCRAFT_CYBERCRAFT_H
 
-#include <Core/Engine2D.h>
-#include <Core/Game.h>
+#include <Kernel/Engine2D.h>
+#include <Kernel/Game.h>
 #include <Core/pointer.h>
 
 #include "Game/Component.h"
@@ -18,9 +18,9 @@ struct Player {
     cc::Vector2f pos;
 };
 
-class CyberCraft : public cc::Game {
+class CyberCraft : public ck::Game {
 public:
-    explicit CyberCraft(cc::Ref<cc::RenderContext2D> renderContext);
+    explicit CyberCraft(cc::Ref<ck::RenderContext2D> renderContext);
     CyberCraft(const CyberCraft&) = delete;
     CyberCraft(const CyberCraft&&) = delete;
 
@@ -44,8 +44,8 @@ private:
     };
 
     World m_world;
-    cc::TextureHandle texture;
-    cc::Ref<cc::RenderContext2D> m_renderContext;
+    ck::TextureHandle texture;
+    cc::Ref<ck::RenderContext2D> m_renderContext;
 };
 
 

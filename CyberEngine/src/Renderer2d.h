@@ -8,11 +8,11 @@
 #include <Core/Bases.h>
 #include <Core/Math.h>
 #include <Core/Color.h>
-#include <Core/Engine2D.h>
+#include <Kernel/Engine2D.h>
 
 #include <bgfx/bgfx.h>
 
-class Renderer2d : public cc::NonCopyable, public cc::ColoredRectangleDrawer {
+class Renderer2d : public cc::NonCopyable, public ck::ColoredRectangleDrawer {
 public:
     Renderer2d();
     ~Renderer2d() override;

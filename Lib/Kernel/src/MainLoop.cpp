@@ -2,14 +2,14 @@
 // Created by jngl on 19/09/2020.
 //
 
-#include <Core/MainLoop.h>
+#include <Kernel/MainLoop.h>
 
-#include <Core/Game.h>
-#include <Core/Window.h>
-#include <Core/Engine2D.h>
-#include <Core/Update.h>
+#include <Kernel/Game.h>
+#include <Kernel/Window.h>
+#include <Kernel/Engine2D.h>
+#include <Kernel/Update.h>
 
-namespace cc {
+namespace ck {
     [[maybe_unused]] int mainLoop(Window &window, RenderContext2D&, Game &game, std::chrono::milliseconds updateTime) {
         FixStepUpdater updater(updateTime);
 

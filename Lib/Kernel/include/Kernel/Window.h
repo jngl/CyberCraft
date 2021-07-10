@@ -2,10 +2,10 @@
 // Created by jngl on 27/06/2020.
 //
 
-#ifndef CYBERCRAFT_WINDOW_H
-#define CYBERCRAFT_WINDOW_H
+#ifndef CYBERCRAFTKERNEL_WINDOW_H
+#define CYBERCRAFTKERNEL_WINDOW_H
 
-namespace cc {
+namespace ck {
     class Window {
     public:
         virtual ~Window() = default;

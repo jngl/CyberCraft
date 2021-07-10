@@ -10,6 +10,7 @@ target_include_directories(LibCyberCraftSystem PUBLIC include)
 target_include_directories(LibCyberCraftSystem PUBLIC ${SDL2_INCLUDE_DIRS})
 target_link_libraries(LibCyberCraftSystem
         LibCyberCraftCore
+        LibCyberCraftKernel
         ${SDL2_LIBRARIES}
         Glad
         Imgui

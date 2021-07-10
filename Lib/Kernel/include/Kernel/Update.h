@@ -8,7 +8,7 @@
 #include <memory>
 #include <chrono>
 
-namespace cc {
+namespace ck {
     class FixStepUpdater {
     public:
         using clock = std::chrono::high_resolution_clock;

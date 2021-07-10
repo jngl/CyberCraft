@@ -8,11 +8,6 @@
 #include <string_view>
 
 namespace cc {
-    struct Color;
-    class Window;
-    class RenderContext2D;
-    class Game;
-
     void printTabs(int nb);
 
     using Uint8 = unsigned char;

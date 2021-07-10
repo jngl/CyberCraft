@@ -107,7 +107,7 @@ namespace cs {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    void GraphicsContext::setCurrentTexture(cc::TextureHandle handle) {
+    void GraphicsContext::setCurrentTexture(ck::TextureHandle handle) {
         const Texture& texture = m_textures.at(handle.value());
 
         glCheck(glActiveTexture(GL_TEXTURE0));
@@ -116,31 +116,31 @@ namespace cs {
         m_current_texture = handle;
     }
 
-    cc::TextureHandle GraphicsContext::getCurrentTexture() const {
+    ck::TextureHandle GraphicsContext::getCurrentTexture() const {
         return m_current_texture;
     }
 
-    cc::TextureHandle GraphicsContext::getHandleFromFile(std::string_view filename) {
+    ck::TextureHandle GraphicsContext::getHandleFromFile(std::string_view filename) {
         auto it = std::find_if(begin(m_textures), end(m_textures), [filename](const Texture& tex ){
             return tex.fileName == filename;
         });
 
         if(it != std::end(m_textures)){
-            return cc::TextureHandle(static_cast<uint>(std::distance(std::begin(m_textures), it)));
+            return ck::TextureHandle(static_cast<uint>(std::distance(std::begin(m_textures), it)));
         }
 
         m_textures.emplace_back();
         m_textures.back().fileName = filename;
 
-        return cc::TextureHandle(static_cast<uint>(m_textures.size()-1));
+        return ck::TextureHandle(static_cast<uint>(m_textures.size()-1));
     }
 
-    void GraphicsContext::loadTexture(cc::TextureHandle texture) {
+    void GraphicsContext::loadTexture(ck::TextureHandle texture) {
         Texture& textureData = m_textures.at(texture.value());
         textureData.glId = TextureGlLoad(textureData.fileName);
     }
 
-    void GraphicsContext::unloadTexture(cc::TextureHandle texture) {
+    void GraphicsContext::unloadTexture(ck::TextureHandle texture) {
         Texture& textureData = m_textures.at(texture.value());
         TextureGlUnload(textureData.glId);
         textureData.glId = 0;

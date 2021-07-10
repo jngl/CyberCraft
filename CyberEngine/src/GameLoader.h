@@ -5,8 +5,8 @@
 #ifndef CYBERCRAFT_GAMELOADER_H
 #define CYBERCRAFT_GAMELOADER_H
 
-#include <Core/Key.h>
-#include <Core/Engine.h>
+#include <Kernel/Key.h>
+#include <Kernel/Engine.h>
 
 #include <memory>
 #include <SDL2/SDL.h>
@@ -25,14 +25,14 @@ public:
     void reload();
     void clear();
 
-    cc::GameBase& getGame();
+    ck::GameBase& getGame();
 
-    [[nodiscard]] const cc::GameBase& getGame() const;
+    [[nodiscard]] const ck::GameBase& getGame() const;
 
     void processEvent();
 
 private:
-    std::unique_ptr<cc::GameBase> m_game;
+    std::unique_ptr<ck::GameBase> m_game;
     void* m_gameCodeHandle = nullptr;
 
     void processKeyUp(SDL_KeyboardEvent& keyEvent);

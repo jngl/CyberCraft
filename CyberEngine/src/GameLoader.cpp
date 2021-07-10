@@ -21,7 +21,7 @@ void GameLoader::reload(){
 
     clear();
 
-    using Func = cc::GameBase*(*)();
+    using Func = ck::GameBase*(*)();
 
     m_gameCodeHandle = SDL_LoadObject("./libDemo.so");
     if(m_gameCodeHandle == nullptr){
@@ -33,17 +33,17 @@ void GameLoader::reload(){
         throw SystemError{SDL_GetError()};
     }
 
-    m_game = std::unique_ptr<cc::GameBase>(creator());
+    m_game = std::unique_ptr<ck::GameBase>(creator());
 }
 
-cc::GameBase& GameLoader::getGame(){
+ck::GameBase& GameLoader::getGame(){
     if(!m_game){
         throw SystemError("Game not loaded");
     }
     return *m_game;
 }
 
-const cc::GameBase& GameLoader::getGame() const{
+const ck::GameBase& GameLoader::getGame() const{
     if(!m_game){
         throw SystemError("Game not loaded");
     }
@@ -70,15 +70,15 @@ void GameLoader::processEvent(){
 }
 
 void GameLoader::processKeyUp(SDL_KeyboardEvent& keyEvent){
-    cc::Key key = keyFromSdlKey(keyEvent.keysym.sym);
+    ck::Key key = keyFromSdlKey(keyEvent.keysym.sym);
 
     getGame().processKeyUp(key);
 }
 
 void GameLoader::processKeyDown(SDL_KeyboardEvent& keyEvent){
-    cc::Key key = keyFromSdlKey(keyEvent.keysym.sym);
+    ck::Key key = keyFromSdlKey(keyEvent.keysym.sym);
 
-    if(key == cc::Key::F5){
+    if(key == ck::Key::F5){
         reload();
     }
 

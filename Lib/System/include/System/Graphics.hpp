@@ -4,7 +4,8 @@
 
 #include <Core/Math.h>
 #include <Core/Id.h>
-#include <Core/Texture.h>
+
+#include <Kernel/Texture.h>
 
 #include "System/Common.h"
 
@@ -37,17 +38,17 @@ namespace cs {
 //        void add(DrawCommand cmd);
 //    };
 //
-    class GraphicsContext : public cc::TextureManager
+    class GraphicsContext : public ck::TextureManager
     {
     public:
         GraphicsContext();
 
-        [[nodiscard]] cc::TextureHandle getHandleFromFile(std::string_view filename) override;
-        void loadTexture(cc::TextureHandle handle) override;
-        void unloadTexture(cc::TextureHandle handle) override;
+        [[nodiscard]] ck::TextureHandle getHandleFromFile(std::string_view filename) override;
+        void loadTexture(ck::TextureHandle handle) override;
+        void unloadTexture(ck::TextureHandle handle) override;
 
-        void setCurrentTexture(cc::TextureHandle);
-        [[nodiscard]] cc::TextureHandle getCurrentTexture() const;
+        void setCurrentTexture(ck::TextureHandle);
+        [[nodiscard]] ck::TextureHandle getCurrentTexture() const;
 
 //        MeshId loadMesh(const MeshBuilder& builder);
 //        void unloadMesh(MeshId mesh);
@@ -63,10 +64,10 @@ namespace cs {
             std::string fileName;
         };
 
-        cc::IdGenerator<cc::TextureHandle::ValueType, cc::TextureHandle::Tag> m_textureIdGenerator;
+        cc::IdGenerator<ck::TextureHandle::ValueType, ck::TextureHandle::Tag> m_textureIdGenerator;
         std::vector<Texture> m_textures;
 
-        cc::TextureHandle m_current_texture;
+        ck::TextureHandle m_current_texture;
     };
 
 

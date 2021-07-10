@@ -20,31 +20,31 @@ namespace ccSf {
 
     }
 
-    cc::TextureHandle RenderContextSFML::getHandleFromFile(std::string_view filename) {
+    ck::TextureHandle RenderContextSFML::getHandleFromFile(std::string_view filename) {
         for(unsigned int i=0; i<m_textures.size(); ++i){
             if(m_textures[i].fileName == filename){
-                return cc::TextureHandle(i);
+                return ck::TextureHandle(i);
             }
         }
 
         m_textures.emplace_back();
         m_textures.back().fileName = filename;
 
-        return cc::TextureHandle(static_cast<unsigned int>(m_textures.size()-1));
+        return ck::TextureHandle(static_cast<unsigned int>(m_textures.size()-1));
     }
 
-    void RenderContextSFML::loadTexture(cc::TextureHandle texture) {
+    void RenderContextSFML::loadTexture(ck::TextureHandle texture) {
         Texture& textureData = m_textures.at(texture.value());
         textureData.sfTexture = std::make_unique<sf::Texture>();
         textureData.sfTexture->loadFromFile(textureData.fileName);
     }
 
-    void RenderContextSFML::unloadTexture(cc::TextureHandle texture) {
+    void RenderContextSFML::unloadTexture(ck::TextureHandle texture) {
         Texture& textureData = m_textures.at(texture.value());
         textureData.sfTexture.reset();
     }
 
-    void RenderContextSFML::drawSprite(cc::TextureHandle textureHandle,
+    void RenderContextSFML::drawSprite(ck::TextureHandle textureHandle,
                                        const cc::Vector2f &pos,
                                        const cc::Vector2i &textureIndex,
                                        cc::Color color,
@@ -77,7 +77,7 @@ namespace ccSf {
         m_target.draw(sfSprite);
     }
 
-    void RenderContextSFML::drawSprite(cc::TextureHandle textureHandle,
+    void RenderContextSFML::drawSprite(ck::TextureHandle textureHandle,
                                        const cc::Vector2f &pos,
                                        float scale,
                                        cc::Color color) {

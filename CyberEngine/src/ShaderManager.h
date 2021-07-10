@@ -8,22 +8,23 @@
 #include "Context.h"
 
 #include <Core/Bases.h>
-#include <Core/Shader.h>
+
+#include <Kernel/Shader.h>
 
 #include <bgfx/bgfx.h>
 #include <vector>
 #include <optional>
 #include <filesystem>
 
-class ShaderManager : public cc::ShaderManager {
+class ShaderManager : public ck::ShaderManager {
 public:
     explicit ShaderManager(Context&);
 
-    bgfx::ProgramHandle get(cc::ShaderHandle);
+    bgfx::ProgramHandle get(ck::ShaderHandle);
 
-    [[nodiscard]] cc::ShaderHandle getHandleFromFile(std::string_view filename) override;
-    void loadShader(cc::ShaderHandle handle) override;
-    void unloadShader(cc::ShaderHandle handle) override;
+    [[nodiscard]] ck::ShaderHandle getHandleFromFile(std::string_view filename) override;
+    void loadShader(ck::ShaderHandle handle) override;
+    void unloadShader(ck::ShaderHandle handle) override;
 
     std::string getShaderDir() const;
 

@@ -13,43 +13,43 @@ SystemError::SystemError(std::string_view msg)
     return m_message.c_str();
 }
 
-cc::Key keyFromSdlKey(SDL_Keycode sdlKey){
+ck::Key keyFromSdlKey(SDL_Keycode sdlKey){
     switch (sdlKey){
         case SDLK_ESCAPE:
-            return cc::Key::ESCAPE;
+            return ck::Key::ESCAPE;
         case SDLK_UP:
-            return cc::Key::UP;
+            return ck::Key::UP;
         case SDLK_DOWN:
-            return cc::Key::DOWN;
+            return ck::Key::DOWN;
         case SDLK_LEFT:
-            return cc::Key::LEFT;
+            return ck::Key::LEFT;
         case SDLK_RIGHT:
-            return cc::Key::RIGHT;
+            return ck::Key::RIGHT;
         case SDLK_F1:
-            return cc::Key::F1;
+            return ck::Key::F1;
         case SDLK_F2:
-            return cc::Key::F2;
+            return ck::Key::F2;
         case SDLK_F3:
-            return cc::Key::F3;
+            return ck::Key::F3;
         case SDLK_F4:
-            return cc::Key::F4;
+            return ck::Key::F4;
         case SDLK_F5:
-            return cc::Key::F5;
+            return ck::Key::F5;
         case SDLK_F6:
-            return cc::Key::F6;
+            return ck::Key::F6;
         case SDLK_F7:
-            return cc::Key::F7;
+            return ck::Key::F7;
         case SDLK_F8:
-            return cc::Key::F8;
+            return ck::Key::F8;
         case SDLK_F9:
-            return cc::Key::F9;
+            return ck::Key::F9;
         case SDLK_F10:
-            return cc::Key::F10;
+            return ck::Key::F10;
         case SDLK_F11:
-            return cc::Key::F11;
+            return ck::Key::F11;
         case SDLK_F12:
-            return cc::Key::F12;
+            return ck::Key::F12;
         default:
-            return cc::Key::UNKNOWN;
+            return ck::Key::UNKNOWN;
     }
 }

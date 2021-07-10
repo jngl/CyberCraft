@@ -7,9 +7,9 @@
 
 #include "Common.h"
 #include "Core/pointer.h"
-#include "Core/Engine2D.h"
+#include "Kernel/Engine2D.h"
 
-void drawSprite(cc::Ref<cc::SpriteDrawer> renderContext, cc::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite);
+void drawSprite(cc::Ref<ck::SpriteDrawer> renderContext, ck::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite);
 void movePlayer(cc::Ref<cc::Vector2f> pos, const World& world);
 
 #endif //CYBERCRAFT_SYSTEM_H

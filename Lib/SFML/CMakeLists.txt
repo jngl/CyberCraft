@@ -7,4 +7,4 @@ add_library(LibCyberCraftSFML
         )
 
 target_include_directories(LibCyberCraftSFML PUBLIC include)
-target_link_libraries(LibCyberCraftSFML LibCyberCraftCore sfml-graphics)
+target_link_libraries(LibCyberCraftSFML LibCyberCraftCore LibCyberCraftKernel sfml-graphics)

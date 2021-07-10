@@ -7,7 +7,7 @@
 
 #include <Core/Bases.h>
 
-namespace cc {
+namespace ck {
     class Game: public cc::NonCopyable {
     public:
         virtual void update() = 0;

@@ -9,7 +9,11 @@
 
 #include <chrono>
 
-namespace cc {
+namespace ck {
+    class Window;
+    class RenderContext2D;
+    class Game;
+
     [[maybe_unused]] int mainLoop(Window &window, RenderContext2D &renderContext, Game &game, std::chrono::milliseconds updateTime);
 }
 

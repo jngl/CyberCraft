@@ -5,19 +5,19 @@
 #ifndef CYBERCRAFT_TEXTUREMANAGER_H
 #define CYBERCRAFT_TEXTUREMANAGER_H
 
-#include <Core/Texture.h>
+#include <Kernel/Texture.h>
 
 #include <string>
 #include <filesystem>
 #include <vector>
 
-class TextureManager : public cc::TextureManager {
+class TextureManager : public ck::TextureManager {
 public:
     TextureManager();
 
-    [[nodiscard]] cc::TextureHandle getHandleFromFile(std::string_view filename) override;
-    void loadTexture(cc::TextureHandle handle) override;
-    void unloadTexture(cc::TextureHandle handle) override;
+    [[nodiscard]] ck::TextureHandle getHandleFromFile(std::string_view filename) override;
+    void loadTexture(ck::TextureHandle handle) override;
+    void unloadTexture(ck::TextureHandle handle) override;
 
 private:
     struct Texture{

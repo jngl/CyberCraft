@@ -6,7 +6,8 @@
 #define CYBERCRAFT_UTILS_H
 
 #include <Core/Math.h>
-#include <Core/Key.h>
+
+#include <Kernel/Key.h>
 
 #include <exception>
 #include <string>
@@ -40,7 +41,7 @@ private:
     std::string m_message;
 };
 
-cc::Key keyFromSdlKey(SDL_Keycode sdlKey);
+ck::Key keyFromSdlKey(SDL_Keycode sdlKey);
 
 enum class GraphicsApi{
     Noop,         //!< No rendering.

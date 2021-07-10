@@ -138,7 +138,7 @@ namespace Renderer {
     float ratio;
 
     struct Material {
-        cc::TextureHandle texture;
+        ck::TextureHandle texture;
         bool withAlpha = false;
         std::string name;
     };
@@ -177,7 +177,7 @@ namespace Renderer {
     std::set<Object *> objectArray;
 
     struct Sprite {
-        cc::TextureHandle mTexture;
+        ck::TextureHandle mTexture;
         cc::Matrix4f mMatrix;
     };
 
@@ -237,7 +237,7 @@ namespace Renderer {
     constexpr int maxNumberOfMaterial = 100;
     cc::PoolAllocator<Material, maxNumberOfMaterial> MaterialPool;
 
-    Material_handle createMaterial(cc::TextureHandle tex, std::string_view name) {
+    Material_handle createMaterial(ck::TextureHandle tex, std::string_view name) {
         cc::log("Renderer", "create materia \"", name, "\"");
         Material_handle result = MaterialPool.create();
         result->texture = std::move(tex);
@@ -359,15 +359,15 @@ namespace Renderer {
      * Textures
     ********************************************************/
 
-    [[nodiscard]] cc::TextureHandle getHandleFromFile(std::string_view filename){
+    [[nodiscard]] ck::TextureHandle getHandleFromFile(std::string_view filename){
         return g_graphicsContext->getHandleFromFile(filename);
     }
 
-    void loadTexture(cc::TextureHandle handle){
+    void loadTexture(ck::TextureHandle handle){
         g_graphicsContext->loadTexture(handle);
     }
 
-    void unloadTexture(cc::TextureHandle handle){
+    void unloadTexture(ck::TextureHandle handle){
         g_graphicsContext->unloadTexture(handle);
     }
 
@@ -410,7 +410,7 @@ namespace Renderer {
     constexpr int MaxNumberOfSprite = 1000;
     cc::PoolAllocator<Sprite, MaxNumberOfSprite> SpritePool;
 
-    Sprite_handle createSprite(cc::TextureHandle handle) {
+    Sprite_handle createSprite(ck::TextureHandle handle) {
         cc::log("Renderer", "create sprite");
         Sprite_handle result = SpritePool.create();
         result->mMatrix.setIdentity();

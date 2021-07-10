@@ -5,11 +5,11 @@
 #ifndef CYBERCRAFT_WINDOWSFML_H
 #define CYBERCRAFT_WINDOWSFML_H
 
-#include <Core/Window.h>
+#include <Kernel/Window.h>
 #include <SFML/Graphics/RenderWindow.hpp>
 
 namespace ccSf {
-    class WindowSFML : public cc::Window {
+    class WindowSFML : public ck::Window {
     public:
         WindowSFML();
 

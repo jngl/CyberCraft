@@ -25,7 +25,7 @@ void TextureManager::loadTexture(const std::filesystem::path& file) {
     std::cout<<"load texture : "<<file.stem()<<"\n";
 }
 
-cc::TextureHandle TextureManager::getHandleFromFile(std::string_view filename) {
+ck::TextureHandle TextureManager::getHandleFromFile(std::string_view filename) {
     auto isFileNameCorrect = [filename](const Texture& texture) -> bool{
         return texture.file.stem() == filename;
     };
@@ -33,16 +33,16 @@ cc::TextureHandle TextureManager::getHandleFromFile(std::string_view filename) {
     auto it = std::find_if(m_textures.begin(), m_textures.end(), isFileNameCorrect);
 
     if(it == std::end(m_textures)){
-        return cc::TextureHandle();
+        return ck::TextureHandle();
     }
 
     unsigned int index = static_cast<unsigned int>(it - std::begin(m_textures));
 
-    return cc::TextureHandle(index);
+    return ck::TextureHandle(index);
 }
 
-void TextureManager::loadTexture(cc::TextureHandle /*unused*/) {
+void TextureManager::loadTexture(ck::TextureHandle /*unused*/) {
 }
 
-void TextureManager::unloadTexture(cc::TextureHandle /*unused*/) {
+void TextureManager::unloadTexture(ck::TextureHandle /*unused*/) {
 }

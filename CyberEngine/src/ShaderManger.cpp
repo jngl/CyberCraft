@@ -84,7 +84,7 @@ void ShaderManager::loadShaderProgram(std::string_view name) {
     m_shaders.push_back(Shader{std::string(name), program});
 }
 
-bgfx::ProgramHandle ShaderManager::get(cc::ShaderHandle handle) {
+bgfx::ProgramHandle ShaderManager::get(ck::ShaderHandle handle) {
     if(handle.value() < 0 || handle.value() >= m_shaders.size()){
         return bgfx::ProgramHandle();
     }
@@ -92,7 +92,7 @@ bgfx::ProgramHandle ShaderManager::get(cc::ShaderHandle handle) {
     return m_shaders[handle.value()].m_program;
 }
 
-cc::ShaderHandle ShaderManager::getHandleFromFile(std::string_view filename) {
+ck::ShaderHandle ShaderManager::getHandleFromFile(std::string_view filename) {
     auto isFileNameCorrect = [filename](const Shader& shader) -> bool{
         return shader.name == filename;
     };
@@ -100,19 +100,19 @@ cc::ShaderHandle ShaderManager::getHandleFromFile(std::string_view filename) {
     auto it = std::find_if(m_shaders.begin(), m_shaders.end(), isFileNameCorrect);
 
     if(it == std::end(m_shaders)){
-        return cc::ShaderHandle();
+        return ck::ShaderHandle();
     }
 
     unsigned int index = static_cast<unsigned int>(it - std::begin(m_shaders));
 
-    return cc::ShaderHandle(index);
+    return ck::ShaderHandle(index);
 }
 
-void ShaderManager::loadShader(cc::ShaderHandle /*handle*/) {
+void ShaderManager::loadShader(ck::ShaderHandle /*handle*/) {
 
 }
 
-void ShaderManager::unloadShader(cc::ShaderHandle /*handle*/) {
+void ShaderManager::unloadShader(ck::ShaderHandle /*handle*/) {
 
 }
 
