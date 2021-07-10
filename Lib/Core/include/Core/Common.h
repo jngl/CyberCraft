@@ -8,6 +8,14 @@
 #include <string_view>
 
 namespace cc {
+<<<<<<< HEAD:Lib/Core/include/Core/Common.h
+=======
+    struct Color;
+    class Window;
+    class RenderContext2D;
+    class Game;
+
+>>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:LibCyberCraftCore/include/Core/Common.h
     void printTabs(int nb);
 
     using Uint8 = unsigned char;

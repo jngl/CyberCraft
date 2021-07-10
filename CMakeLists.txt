@@ -39,6 +39,10 @@ enable_doxygen()
 include(cmake/StaticAnalyzers.cmake)
 
 option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
+<<<<<<< HEAD
+=======
+option(ENABLE_TESTING "Enable Test Builds" ON)
+>>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f
 option(ENABLE_FUZZING "Enable Fuzzing Builds" OFF)
 
 # Very basic PCH example
@@ -64,6 +68,14 @@ if(ENABLE_TESTING)
   add_subdirectory(test)
 endif()
 
+<<<<<<< HEAD
+=======
+if(ENABLE_FUZZING)
+  message("Building Fuzz Tests, using fuzzing sanitizer https://www.llvm.org/docs/LibFuzzer.html")
+  add_subdirectory(fuzz_test)
+endif()
+
+>>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f
 option(ENABLE_UNITY "Enable Unity builds of projects" OFF)
 if(ENABLE_UNITY)
   # Add for any project you want to apply unity builds for
@@ -88,6 +100,12 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Game)
 add_subdirectory(Demo)
 add_subdirectory(src)
 add_subdirectory(third_party)
+<<<<<<< HEAD
 add_subdirectory(Lib)
+=======
+add_subdirectory(LibCyberCraftCore)
+add_subdirectory(LibCyberCraftSFML)
+add_subdirectory(LibCyberCraftSystem)
+>>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f
 add_subdirectory(CyberBoxel)
 add_subdirectory(CyberEngine)

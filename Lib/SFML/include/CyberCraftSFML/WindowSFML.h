@@ -9,7 +9,11 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 namespace ccSf {
+<<<<<<< HEAD:Lib/SFML/include/CyberCraftSFML/WindowSFML.h
     class WindowSFML : public ck::Window {
+=======
+    class WindowSFML : public cc::Window {
+>>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:LibCyberCraftSFML/include/CyberCraftSFML/WindowSFML.h
     public:
         WindowSFML();
 

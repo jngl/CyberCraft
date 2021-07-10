@@ -273,7 +273,11 @@ BoxelScene::BoxelScene() :
         const BoxelMap::BlockType &type = mBoxelMap.getBlockType(i);
         if (type.visible) {
             std::string filename = std::string(type.name) + ".dds";
+<<<<<<< HEAD:CyberBoxel/src/BoxelScene/BoxelScene.cpp
             ck::TextureHandle tex = Renderer::getHandleFromFile(filename);
+=======
+            cc::TextureHandle tex = Renderer::getHandleFromFile(filename);
+>>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:Cyber-Engine/src/BoxelScene/BoxelScene.cpp
             Renderer::loadTexture(tex);
             mBlockMaterial.at(i) = Renderer::createMaterial(tex, std::string(type.name) + "Material");
 

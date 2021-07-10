@@ -42,7 +42,11 @@ const char* gameMap =
         "~~~~~~~~~~              ~~~~~~~~"
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
 
+<<<<<<< HEAD
 CyberCraft::CyberCraft(cc::Ref<ck::RenderContext2D> renderContext):
+=======
+CyberCraft::CyberCraft(cc::Ref<cc::RenderContext2D> renderContext):
+>>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f
         m_renderContext(renderContext)
 {
     texture = renderContext->getHandleFromFile("./data/tileset.png");

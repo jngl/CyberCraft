@@ -5,39 +5,39 @@
 #ifndef CYBERCRAFT_ENGINE2D_H
 #define CYBERCRAFT_ENGINE2D_H
 
-#include <Kernel/Texture.h>
+#include <Core/Texture.h>
 #include <Core/Math.h>
 #include <Core/Color.h>
 #include <Core/Bases.h>
 
-namespace ck
+namespace cc
 {
-class ColoredRectangleDrawer : public cc::Copyable
+    class ColoredRectangleDrawer : public Copyable
     {
     public:
-        virtual void drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cc::Color& color) = 0;
+        virtual void drawRectangle(const Vector2f& pos, const Vector2f& size, const Color& color) = 0;
     };
 
-    class SpriteDrawer : public cc::Copyable
+    class SpriteDrawer : public Copyable
     {
     public:
         virtual void drawSprite(TextureHandle texture,
-                                const cc::Vector2f &pos,
-                                const cc::Vector2i &textureIndex,
-                                cc::Color color,
-                                cc::Color backgroundColor,
+                                const Vector2f &pos,
+                                const Vector2i &textureIndex,
+                                Color color,
+                                Color backgroundColor,
                                 float rotation) = 0;
 
         virtual void drawSprite(TextureHandle texture,
-                                const cc::Vector2f &pos,
+                                const Vector2f &pos,
                                 float scale,
-                                cc::Color color) = 0;
+                                Color color) = 0;
     };
 
-    class Camera2D : public cc::Copyable
+    class Camera2D : public Copyable
     {
     public:
-        virtual void setViewCenter(cc::Vector2f pos) = 0;
+        virtual void setViewCenter(Vector2f pos) = 0;
     };
 
     class RenderContext2D : public TextureManager, public Camera2D, public SpriteDrawer  {

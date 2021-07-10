@@ -138,7 +138,11 @@ namespace Renderer {
     float ratio;
 
     struct Material {
+<<<<<<< HEAD:CyberBoxel/src/Renderer.cpp
         ck::TextureHandle texture;
+=======
+        cc::TextureHandle texture;
+>>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:Cyber-Engine/src/Renderer.cpp
         bool withAlpha = false;
         std::string name;
     };
@@ -177,7 +181,11 @@ namespace Renderer {
     std::set<Object *> objectArray;
 
     struct Sprite {
+<<<<<<< HEAD:CyberBoxel/src/Renderer.cpp
         ck::TextureHandle mTexture;
+=======
+        cc::TextureHandle mTexture;
+>>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:Cyber-Engine/src/Renderer.cpp
         cc::Matrix4f mMatrix;
     };
 
@@ -237,7 +245,11 @@ namespace Renderer {
     constexpr int maxNumberOfMaterial = 100;
     cc::PoolAllocator<Material, maxNumberOfMaterial> MaterialPool;
 
+<<<<<<< HEAD:CyberBoxel/src/Renderer.cpp
     Material_handle createMaterial(ck::TextureHandle tex, std::string_view name) {
+=======
+    Material_handle createMaterial(cc::TextureHandle tex, std::string_view name) {
+>>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:Cyber-Engine/src/Renderer.cpp
         cc::log("Renderer", "create materia \"", name, "\"");
         Material_handle result = MaterialPool.create();
         result->texture = std::move(tex);
@@ -359,6 +371,7 @@ namespace Renderer {
      * Textures
     ********************************************************/
 
+<<<<<<< HEAD:CyberBoxel/src/Renderer.cpp
     [[nodiscard]] ck::TextureHandle getHandleFromFile(std::string_view filename){
         return g_graphicsContext->getHandleFromFile(filename);
     }
@@ -368,6 +381,17 @@ namespace Renderer {
     }
 
     void unloadTexture(ck::TextureHandle handle){
+=======
+    [[nodiscard]] cc::TextureHandle getHandleFromFile(std::string_view filename){
+        return g_graphicsContext->getHandleFromFile(filename);
+    }
+
+    void loadTexture(cc::TextureHandle handle){
+        g_graphicsContext->loadTexture(handle);
+    }
+
+    void unloadTexture(cc::TextureHandle handle){
+>>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:Cyber-Engine/src/Renderer.cpp
         g_graphicsContext->unloadTexture(handle);
     }
 
@@ -410,7 +434,11 @@ namespace Renderer {
     constexpr int MaxNumberOfSprite = 1000;
     cc::PoolAllocator<Sprite, MaxNumberOfSprite> SpritePool;
 
+<<<<<<< HEAD:CyberBoxel/src/Renderer.cpp
     Sprite_handle createSprite(ck::TextureHandle handle) {
+=======
+    Sprite_handle createSprite(cc::TextureHandle handle) {
+>>>>>>> b0d8808aab9721dbaa8c9afaf9c8a706f1faee8f:Cyber-Engine/src/Renderer.cpp
         cc::log("Renderer", "create sprite");
         Sprite_handle result = SpritePool.create();
         result->mMatrix.setIdentity();
