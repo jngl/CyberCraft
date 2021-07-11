@@ -2,10 +2,14 @@
 // Created by jngl on 10/07/2021.
 //
 
-#ifndef CYBERCRAFT_IMPL_GRAPHICS_H
-#define CYBERCRAFT_IMPL_GRAPHICS_H
+#ifndef CYBERCRAFT_PRIVATE_IMPL_GRAPHICS_H
+#define CYBERCRAFT_PRIVATE_IMPL_GRAPHICS_H
 
-namespace cg{
+#include <Kernel/Key.h>
+
+#include <SDL.h>
+
+namespace cg::Impl{
 
     constexpr cc::Vector2f generateWindowViewSize(int windowX, int windowY){
         constexpr float minSize = 100;
@@ -118,4 +122,4 @@ namespace cg{
 
 }
 
-#endif //CYBERCRAFT_IMPL_GRAPHICS_H
+#endif //CYBERCRAFT_PRIVATE_IMPL_GRAPHICS_H

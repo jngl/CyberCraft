@@ -5,16 +5,23 @@
 #ifndef CYBERCRAFT_SYSTEMSTATE_H
 #define CYBERCRAFT_SYSTEMSTATE_H
 
+#include <Core/Bases.h>
+
 #include <Graphics/Graphics.h>
 #include "GameLoader.h"
 
-class SystemState{
-public:
-    SystemState();
+#include <SDL.h>
 
+class SystemState : public ck::KeyListener, public ck::ExitListener, public cc::NonCopyable{
+public:
     [[nodiscard]] bool isRunning() const;
 
     void frame();
+
+    void onKeyUp(ck::Key key) override;
+    void onKeyDown(ck::Key key) override;
+
+    void onExit() override;
 
 private:
     cg::Graphics m_graphics;

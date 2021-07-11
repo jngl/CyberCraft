@@ -4,23 +4,31 @@
 
 #include "SystemState.h"
 
-SystemState::SystemState()
-{
-}
-
 bool SystemState::isRunning() const {
     return m_gameLoader.getGame().isRunning();
 }
 
 void SystemState::frame() {
-    m_gameLoader.processEvent();
+    m_graphics.processEvent(*this, *this);
     m_gameLoader.getGame().updateMultiFrameAction();
 
-    auto size = m_graphics.getWindowSdl().getSize();
-    m_graphics.getContext().beginFrame(size);
-    m_graphics.getRenderer2d().updateSize(size);
+    std::unique_ptr<ck::Frame> frame = m_graphics.createFrame();
 
-    m_gameLoader.getGame().render(m_graphics.getRenderer2d());
+    m_gameLoader.getGame().render( frame->getColoredRectangleDrawer());
+}
 
-    m_graphics.getContext().endFrame();
+void SystemState::onKeyUp(ck::Key key) {
+    m_gameLoader.getGame().processKeyUp(key);
+}
+
+void SystemState::onKeyDown(ck::Key key) {
+    if(key == ck::Key::F5){
+        m_gameLoader.reload();
+    }
+
+    m_gameLoader.getGame().processKeyDown(key);
+}
+
+void SystemState::onExit() {
+    m_gameLoader.getGame().exit();
 }

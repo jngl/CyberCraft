@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+#include <SDL2/SDL.h>
+
 GameLoader::GameLoader(){
     reload();
 }
@@ -25,12 +27,12 @@ void GameLoader::reload(){
 
     m_gameCodeHandle = SDL_LoadObject("./libDemo.so");
     if(m_gameCodeHandle == nullptr){
-        throw cg::SystemError{SDL_GetError()};
+        throw GameLoaderError{SDL_GetError()};
     }
 
     Func creator = reinterpret_cast<Func>(SDL_LoadFunction(m_gameCodeHandle, "createGame")); // NOLINT
     if(creator == nullptr){
-        throw cg::SystemError{SDL_GetError()};
+        throw ck::GraphicsError{SDL_GetError()};
     }
 
     m_game = std::unique_ptr<ck::GameBase>(creator());
@@ -38,51 +40,16 @@ void GameLoader::reload(){
 
 ck::GameBase& GameLoader::getGame(){
     if(!m_game){
-        throw cg::SystemError("Game not loaded");
+        throw ck::GraphicsError("Game not loaded");
     }
     return *m_game;
 }
 
 const ck::GameBase& GameLoader::getGame() const{
     if(!m_game){
-        throw cg::SystemError("Game not loaded");
+        throw ck::GraphicsError("Game not loaded");
     }
     return *m_game;
-}
-
-void GameLoader::processEvent(){
-    SDL_Event event;
-    while (SDL_PollEvent(&event) != 0) {
-        switch(event.type){
-            case SDL_KEYDOWN:
-                processKeyDown(event.key);
-                break;
-            case SDL_KEYUP:
-                processKeyUp(event.key);
-                break;
-            case SDL_QUIT:
-                getGame().exit();
-                break;
-            default:
-                break;
-        }
-    }
-}
-
-void GameLoader::processKeyUp(SDL_KeyboardEvent& keyEvent){
-    ck::Key key = cg::keyFromSdlKey(keyEvent.keysym.sym);
-
-    getGame().processKeyUp(key);
-}
-
-void GameLoader::processKeyDown(SDL_KeyboardEvent& keyEvent){
-    ck::Key key = cg::keyFromSdlKey(keyEvent.keysym.sym);
-
-    if(key == ck::Key::F5){
-        reload();
-    }
-
-    getGame().processKeyDown(key);
 }
 
 void GameLoader::clear() {
@@ -90,4 +57,13 @@ void GameLoader::clear() {
     if(m_gameCodeHandle != nullptr){
         SDL_UnloadObject(m_gameCodeHandle);
     }
+}
+
+GameLoaderError::GameLoaderError(std::string_view msg):
+m_message(msg){
+
+}
+
+const char *GameLoaderError::what() const noexcept {
+    return m_message.c_str();
 }
