@@ -7,6 +7,9 @@
 
 #include "Graphics/Graphics.h"
 
+#include "SdlWindowAdapter.h"
+#include "BgfxAdapter.h"
+
 #include <Core/Math.h>
 #include <Core/Bases.h>
 
@@ -23,65 +26,9 @@
 
 #include <SDL_keycode.h>
 
-class SDL_Window;
+struct SDL_Window;
 
 namespace cg::Impl {
-    constexpr int windowSizeXDefault = 1024;
-    constexpr int windowSizeYDefault = 768;
-
-    constexpr cc::Vector2f generateWindowViewSize(int windowX, int windowY);
-
-    constexpr ck::Key keyFromSdlKey(SDL_Keycode sdlKey);
-
-    enum class GraphicsApi{
-        Noop,         /// No rendering.
-        Direct3D9,    /// Direct3D 9.0
-        Direct3D11,   /// Direct3D 11.0
-        Direct3D12,   /// Direct3D 12.0
-        Gnm,          /// GNM
-        Metal,        /// Metal
-        Nvn,          /// NVN
-        OpenGLES,     /// OpenGL ES 2.0+
-        OpenGL,       /// OpenGL 2.1+
-        Vulkan,       /// Vulkan
-        WebGPU,       /// WebGPU
-    };
-
-    constexpr std::string_view GetGraphicsApiName(GraphicsApi api);
-    constexpr std::string_view GetGraphicsApiShaderType(GraphicsApi api);
-
-    class WindowSdl {
-    public:
-        WindowSdl();
-        ~WindowSdl();
-
-        SDL_Window* GetSdlWindow();
-
-        void swap();
-
-        void* sdlNativeWindowHandle();
-
-        [[nodiscard]] cc::Vector2ui getSize() const;
-
-    private:
-        SDL_Window *m_window;
-    };
-
-    class Context{
-    public:
-        explicit Context(WindowSdl& win);
-
-        void beginFrame(cc::Vector2ui newSize);
-        void endFrame();
-
-        [[nodiscard]] GraphicsApi getApi() const;
-
-    private:
-        cc::Vector2ui m_size;
-
-        bool sdlSetWindow(WindowSdl& win);
-    };
-
     class TextureManager : public ck::TextureManager {
     public:
         TextureManager();
@@ -102,7 +49,7 @@ namespace cg::Impl {
 
     class ShaderManager : public ck::ShaderManager {
     public:
-        explicit ShaderManager(Context&);
+        explicit ShaderManager(BgfxAdapter&);
 
         bgfx::ProgramHandle get(ck::ShaderHandle);
 
@@ -118,7 +65,7 @@ namespace cg::Impl {
             bgfx::ProgramHandle m_program;
         };
 
-        Context& m_context;
+        BgfxAdapter& m_bgfxAdapter;
         std::vector<Shader> m_shaders;
 
         static std::optional<std::string> fileStemToShaderName(std::string_view fileStem);
@@ -147,14 +94,35 @@ namespace cg::Impl {
         void setViewTransform(const cc::Matrix4f& proj, const cc::Matrix4f& view);
     };
 
-    struct GraphicsData {
-        WindowSdl m_window;
-        Context m_context;
+    class Common
+    {
+    public:
+        Common();
+
+        void startFrame();
+        void endFrame();
+
+        Renderer2d& getRenderer2d();
+
+        void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener);
+
+    private:
+        SdlWindowAdapter m_window;
+        BgfxAdapter m_bgfxAdapter;
         TextureManager m_textures;
         ShaderManager m_shaders;
         Renderer2d m_renderer2d;
+    };
 
-        GraphicsData();
+    class GraphicsImpl {
+    public:
+        GraphicsImpl();
+
+        void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener);
+
+        std::unique_ptr<Frame> createFrame();
+    private:
+        Common m_common;
     };
 
     class Frame : public ck::Frame
@@ -162,16 +130,14 @@ namespace cg::Impl {
     public:
         friend class Graphics;
 
-        explicit Frame(Graphics&) ;
+        explicit Frame(Common&) ;
         ~Frame() override;
 
         ck::ColoredRectangleDrawer& getColoredRectangleDrawer() override;
 
     private:
-        Graphics& m_graphics;
+        Common& m_common;
     };
 }
-
-#include "private_impl_Graphics.h"
 
 #endif //CYBERCRAFT_PRIVATE_GRAPHICS_H

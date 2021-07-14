@@ -11,7 +11,7 @@ namespace cg{
     class Graphics;
 
     namespace Impl{
-        struct GraphicsData;
+        class GraphicsImpl;
         class Frame;
     }
 
@@ -27,7 +27,7 @@ namespace cg{
         void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener) override;
 
     private:
-        Impl::GraphicsData* m_data = nullptr;
+        Impl::GraphicsImpl* m_data = nullptr;
     };
 }
 

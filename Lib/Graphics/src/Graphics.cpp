@@ -9,7 +9,7 @@
 namespace cg{
     Graphics::Graphics()
     {
-        m_data = new Impl::GraphicsData;
+        m_data = new Impl::GraphicsImpl;
     }
 
     Graphics::~Graphics() {
@@ -17,25 +17,10 @@ namespace cg{
     }
 
     std::unique_ptr<ck::Frame> Graphics::createFrame() {
-        return std::make_unique<Impl::Frame>(*this);
+        return m_data->createFrame();
     }
 
     void Graphics::processEvent(ck::ExitListener& exitListener, ck::KeyListener &keyListener) {
-        SDL_Event event;
-        while (SDL_PollEvent(&event) != 0) {
-            switch(event.type){
-                case SDL_KEYDOWN:
-                    keyListener.onKeyDown(Impl::keyFromSdlKey(event.key.keysym.sym));
-                    break;
-                case SDL_KEYUP:
-                    keyListener.onKeyUp(Impl::keyFromSdlKey(event.key.keysym.sym));
-                    break;
-                case SDL_QUIT:
-                    exitListener.onExit();
-                    break;
-                default:
-                    break;
-            }
-        }
+        m_data->processEvent(exitListener, keyListener);
     }
 }

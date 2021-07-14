@@ -4,9 +4,6 @@
 
 #include "private_Graphics.h"
 
-#include <SDL.h>
-#include <SDL2/SDL_syswm.h>
-
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -14,178 +11,7 @@
 #include <bx/readerwriter.h>
 #include <bx/file.h>
 
-#include <bgfx/platform.h>
-
 namespace cg::Impl{
-
-    WindowSdl::WindowSdl(){
-        if(SDL_Init(0) != 0){
-            throw ck::GraphicsError{SDL_GetError()};
-        }
-
-        m_window = SDL_CreateWindow("OpenGL Test", 0, 0, windowSizeXDefault, windowSizeYDefault, SDL_WINDOW_RESIZABLE);
-        if (m_window == nullptr) {
-            throw ck::GraphicsError{SDL_GetError()};
-        }
-    }
-
-    WindowSdl::~WindowSdl(){
-        SDL_DestroyWindow(m_window);
-        SDL_Quit();
-    }
-
-    SDL_Window* WindowSdl::GetSdlWindow(){
-        return m_window;
-    }
-
-    void WindowSdl::swap(){
-        SDL_GL_SwapWindow(m_window);
-    }
-
-    void* WindowSdl::sdlNativeWindowHandle()
-    {
-        SDL_SysWMinfo wmi;
-        SDL_VERSION(&wmi.version);
-        if (!SDL_GetWindowWMInfo(m_window, &wmi) )
-        {
-            return NULL;
-        }
-
-#	if BX_PLATFORM_LINUX || BX_PLATFORM_BSD
-        #		if ENTRY_CONFIG_USE_WAYLAND
-        wl_egl_window *win_impl = (wl_egl_window*)SDL_GetWindowData(_window, "wl_egl_window");
-		if(!win_impl)
-		{
-			int width, height;
-			SDL_GetWindowSize(_window, &width, &height);
-			struct wl_surface* surface = wmi.info.wl.surface;
-			if(!surface)
-				return nullptr;
-			win_impl = wl_egl_window_create(surface, width, height);
-			SDL_SetWindowData(_window, "wl_egl_window", win_impl);
-		}
-		return (void*)(uintptr_t)win_impl;
-#		else
-        return reinterpret_cast<void*>(wmi.info.x11.window);
-#		endif
-#	elif BX_PLATFORM_OSX
-        return wmi.info.cocoa.window;
-#	elif BX_PLATFORM_WINDOWS
-        return wmi.info.win.window;
-#   else
-        throw SystemError("Unknown platform in MySdlWindow");
-#	endif // BX_PLATFORM_
-    }
-
-    [[nodiscard]] cc::Vector2ui WindowSdl::getSize() const {
-        int x = 1;
-        int y = 1;
-        SDL_GetWindowSize(m_window, &x, &y);
-        return cc::Vector2ui{static_cast<uint>(x), static_cast<uint>(y)};
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    Context::Context(WindowSdl& win){
-        sdlSetWindow(win);
-
-        m_size = win.getSize();
-
-        bgfx::renderFrame();
-
-        bgfx::Init init;
-        init.type = bgfx::RendererType::Vulkan;
-        init.resolution.width  = m_size.x;
-        init.resolution.height = m_size.y;
-        bgfx::init(init);
-
-        bgfx::setDebug(BGFX_DEBUG_TEXT);
-
-        bgfx::setViewClear(0
-                , BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH
-                , 0x303030ff
-                , 1.0f
-                , 0
-        );
-    }
-
-    void Context::beginFrame(cc::Vector2ui newSize){
-        if(newSize.x != m_size.x || newSize.y != m_size.y){
-            std::cout<<"resize "<<newSize.x<<" "<<newSize.y<<std::endl;
-            bgfx::reset(newSize.x, newSize.y);
-            m_size = newSize;
-        }
-
-        bgfx::setViewRect(0, 0, 0, uint16_t(m_size.x), uint16_t(m_size.y) );
-        bgfx::touch(0);
-
-        bgfx::dbgTextClear();
-        bgfx::dbgTextPrintf(0, 1, 0x0f, "win : %i %i", m_size.x, m_size.y);
-    }
-
-    bool Context::sdlSetWindow(WindowSdl& win)
-    {
-        SDL_SysWMinfo wmi;
-        SDL_VERSION(&wmi.version);
-        if (!SDL_GetWindowWMInfo(win.GetSdlWindow(), &wmi) )
-        {
-            return false;
-        }
-
-        bgfx::PlatformData pd;
-#	if BX_PLATFORM_LINUX || BX_PLATFORM_BSD
-        #		if ENTRY_CONFIG_USE_WAYLAND
-    pd.ndt          = wmi.info.wl.display;
-#		else
-    pd.ndt          = wmi.info.x11.display;
-#		endif
-#	elif BX_PLATFORM_OSX
-        pd.ndt          = NULL;
-#	elif BX_PLATFORM_WINDOWS
-        pd.ndt          = NULL;
-#	endif // BX_PLATFORM_
-        pd.nwh          = win.sdlNativeWindowHandle();
-
-        pd.context      = NULL;
-        pd.backBuffer   = NULL;
-        pd.backBufferDS = NULL;
-        bgfx::setPlatformData(pd);
-
-        return true;
-    }
-
-    GraphicsApi Context::getApi() const {
-        switch (bgfx::getRendererType()){
-            case bgfx::RendererType::Noop:
-                return GraphicsApi::Noop;
-            case bgfx::RendererType::Direct3D9:
-                return GraphicsApi::Direct3D9;
-            case bgfx::RendererType::Direct3D11:
-                return GraphicsApi::Direct3D11;
-            case bgfx::RendererType::Direct3D12:
-                return GraphicsApi::Direct3D12;
-            case bgfx::RendererType::Gnm:
-                return GraphicsApi::Gnm;
-            case bgfx::RendererType::Metal:
-                return GraphicsApi::Metal;
-            case bgfx::RendererType::Nvn:
-                return GraphicsApi::Nvn;
-            case bgfx::RendererType::OpenGL:
-                return GraphicsApi::OpenGL;
-            case bgfx::RendererType::OpenGLES:
-                return GraphicsApi::OpenGLES;
-            case bgfx::RendererType::Vulkan:
-                return GraphicsApi::Vulkan;
-            case bgfx::RendererType::WebGPU:
-                return GraphicsApi::WebGPU;
-            default:
-                throw ck::GraphicsError{"Unknown Graphics Api"};
-        }
-    }
-
-    void Context::endFrame() {
-        bgfx::frame();
-    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -249,8 +75,8 @@ namespace cg::Impl{
 
     static bx::FileReaderI* s_fileReader = NULL;
 
-    ShaderManager::ShaderManager(Context& ctx):
-            m_context(ctx)
+    ShaderManager::ShaderManager(BgfxAdapter& bgfxAdapter):
+            m_bgfxAdapter(bgfxAdapter)
     {
         s_fileReader = new bx::FileReader();
 
@@ -280,7 +106,7 @@ namespace cg::Impl{
     }
 
     bgfx::ShaderHandle ShaderManager::loadShader(std::string_view name) {
-        std::string filePath = "./data/shader/" + std::string(GetGraphicsApiShaderType(m_context.getApi())) + "/" + std::string(name) + ".bin";
+        std::string filePath = "./data/shader/" + std::string(GetGraphicsApiShaderType(m_bgfxAdapter.getApi())) + "/" + std::string(name) + ".bin";
 
         bgfx::ShaderHandle handle = bgfx::createShader(loadMem(s_fileReader, filePath.c_str()) );
         bgfx::setName(handle, std::string(name).c_str());
@@ -332,7 +158,7 @@ namespace cg::Impl{
     }
 
     std::string ShaderManager::getShaderDir() const {
-        std::string shaderType(GetGraphicsApiShaderType(m_context.getApi()));
+        std::string shaderType(GetGraphicsApiShaderType(m_bgfxAdapter.getApi()));
         return "data/shader/" + shaderType;
     }
 
@@ -450,28 +276,58 @@ namespace cg::Impl{
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    GraphicsData::GraphicsData():
-            m_context(m_window),
-            m_shaders(m_context)
+    Common::Common():
+            m_bgfxAdapter(m_window),
+            m_shaders(m_bgfxAdapter)
     {
         m_renderer2d.setShader(m_shaders.get(m_shaders.getHandleFromFile("simple2d")));
     }
 
+    void Common::startFrame() {
+        auto size = m_window.getSize();
+        m_bgfxAdapter.beginFrame(size);
+        m_renderer2d.updateSize(size);
+    }
+
+    void Common::endFrame() {
+        m_bgfxAdapter.endFrame();
+    }
+
+    Renderer2d &Common::getRenderer2d() {
+        return m_renderer2d;
+    }
+
+    void Common::processEvent(ck::ExitListener &exitListener, ck::KeyListener &keyListener) {
+        m_window.processEvent(exitListener, keyListener);
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Frame::Frame(Graphics &graphics):
-            m_graphics(graphics)
+    GraphicsImpl::GraphicsImpl()
     {
-        auto size = m_graphics.m_data->m_window.getSize();
-        m_graphics.m_data->m_context.beginFrame(size);
-        m_graphics.m_data->m_renderer2d.updateSize(size);
+    }
+
+    void GraphicsImpl::processEvent(ck::ExitListener &exitListener, ck::KeyListener &keyListener) {
+        m_common.processEvent(exitListener, keyListener);
+    }
+
+    std::unique_ptr<Frame> GraphicsImpl::createFrame() {
+        return std::make_unique<Impl::Frame>(m_common);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    Frame::Frame(Common &common):
+            m_common(common)
+    {
+        m_common.startFrame();
     }
 
     ck::ColoredRectangleDrawer &Frame::getColoredRectangleDrawer() {
-        return m_graphics.m_data->m_renderer2d;
+        return m_common.getRenderer2d();
     }
 
     Frame::~Frame() {
-        m_graphics.m_data->m_context.endFrame();
+        m_common.endFrame();
     }
 }
