@@ -10,7 +10,12 @@
 
 namespace cc{
     template<class T>
-    bool equal(T a, T b, T precision = static_cast<T>(0.0001)){
+    struct Precision{
+        static constexpr T value = static_cast<T>(0.0001);
+    };
+
+    template<class T>
+    bool equal(T a, T b, T precision = Precision<T>::value){
         return a-precision<b && b<a+precision;
     }
 
@@ -96,6 +101,10 @@ namespace cc{
             x /= right.x;
             y /= right.y;
             return *this;
+        }
+
+        constexpr bool operator==(const Vector2<T>& right) const{
+            return equal(x, right.x) && equal(y, right.y);
         }
 
         constexpr T getDotProduct(const Vector2<T> &t) const { return x * t.x + y * t.y; }
