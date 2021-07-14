@@ -1,3 +1,5 @@
 ignore:
   - "third_party"
   - "test"
+codecov:
+  token: 19952d01-0640-4463-af67-cedef10083b5
