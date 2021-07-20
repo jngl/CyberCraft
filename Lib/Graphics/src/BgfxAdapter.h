@@ -15,7 +15,7 @@ namespace bgfx
 
 namespace cc{
     template<class T>
-    class Vector2;
+    struct Vector2;
 
     using Vector2ui = Vector2<unsigned int>;
 }
