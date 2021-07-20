@@ -67,19 +67,19 @@ namespace cc{
             return Vector2<T>{x * scale, y * scale};
         }
 
-        constexpr Vector2<T> operator/(T scale) const {
-            return Vector2<T>{x / scale, y / scale};
-        }
-
         constexpr Vector2<T> operator*(const Vector2<T> &right) const {
             return Vector2<T>{x * right.x, y * right.y};
+        }
+
+        constexpr Vector2<T> operator/(T scale) const {
+            return Vector2<T>{x / scale, y / scale};
         }
 
         constexpr Vector2<T> operator/(const Vector2<T> &right) const {
             return Vector2<T>{x / right.x, y / right.y};
         }
 
-        constexpr Vector2<T> &operator+=(const Vector2<T> &right) const {
+        constexpr Vector2<T> &operator+=(const Vector2<T> &right) {
             x += right.x;
             y += right.y;
             return *this;
