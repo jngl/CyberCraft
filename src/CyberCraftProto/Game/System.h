@@ -5,9 +5,14 @@
 #ifndef CYBERCRAFT_SYSTEM_H
 #define CYBERCRAFT_SYSTEM_H
 
-#include "Common.h"
 #include "Core/pointer.h"
 #include "Kernel/Engine2D.h"
+
+class World;
+
+namespace component{
+    class Sprite;
+}
 
 void drawSprite(cc::Ref<ck::SpriteDrawer> renderContext, ck::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite);
 
