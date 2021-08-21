@@ -6,6 +6,7 @@
 #define CYBERCRAFT_POINTER_H
 
 #include <exception>
+#include <optional>
 
 #include "Core/Common.h"
 
@@ -60,7 +61,7 @@ namespace cc {
         }
 
     private:
-        T* m_pointer;
+        T* m_pointer = nullptr;
     };
 
     template<class T>
@@ -89,6 +90,12 @@ namespace cc {
             from.m_pointer = nullptr;
         };
 
+        constexpr OptionalRef(std::optional<T>& opt){
+            if(opt.has_value()){
+                m_pointer = &opt.value();
+            }
+        }
+
         ~OptionalRef() = default;
 
         constexpr OptionalRef<T>& operator=(const OptionalRef<T>&) = default;
@@ -104,6 +111,14 @@ namespace cc {
         constexpr bool operator==(const T* other) const{
             return m_pointer == other;
         };
+
+        constexpr T* operator->(){
+            return m_pointer;
+        }
+
+        [[nodiscard]] bool hasValue() const {
+            return m_pointer != nullptr;
+        }
 
     private:
         T* m_pointer = nullptr;

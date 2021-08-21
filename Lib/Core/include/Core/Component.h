@@ -5,6 +5,8 @@
 #ifndef CYBERCRAFT_COMPONENT_H
 #define CYBERCRAFT_COMPONENT_H
 
+#include "Core/pointer.h"
+
 namespace cc{
     template<class T,class Id>
     class ComponentManager{
@@ -23,7 +25,10 @@ namespace cc{
             m_data[id.value()].reset();
         }
 
-        std::optional<T>& get(Id id){
+        cc::OptionalRef<T> get(Id id){
+            if(id.value() >= m_data.size()){
+                return {};
+            }
             return m_data[id.value()];
         }
 
