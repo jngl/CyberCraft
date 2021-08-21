@@ -1,5 +1,5 @@
 # Generic test that uses conan libs
-file(GLOB_RECURSE CyberCraftProto_source_files ./CyberCraftProto/*)
+file(GLOB_RECURSE CyberCraftProto_source_files ./src/*)
 add_executable(CyberCraftProto ${CyberCraftProto_source_files})
 target_link_libraries(
   CyberCraftProto

@@ -2,7 +2,7 @@
 // Created by jngl on 18/07/2020.
 //
 
-#ifndef CYBERCRAFT_SYSTEM_H
+#ifndef CYBERCRAFT_SYSTEMIMPL_H
 #define CYBERCRAFT_SYSTEM_H
 
 #include "Core/pointer.h"
@@ -18,4 +18,4 @@ void drawSprite(cc::Ref<ck::SpriteDrawer> renderContext, ck::TextureHandle textu
 
 void movePlayer(cc::Ref<cc::Vector2f> pos, const World& world);
 
-#endif //CYBERCRAFT_SYSTEM_H
+#endif //CYBERCRAFT_SYSTEMIMPL_H
