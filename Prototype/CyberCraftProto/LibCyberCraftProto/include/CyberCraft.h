@@ -7,12 +7,13 @@
 
 #include <Kernel/Engine2D.h>
 #include <Kernel/Game.h>
+#include <Kernel/Window.h>
 
 #include <Core/pointer.h>
 
-#include "Game/Component.h"
-#include "Game/Bloc.h"
-#include "Game/World.h"
+#include "Component.h"
+#include "Bloc.h"
+#include "World.h"
 
 struct Player {
     component::Sprite sprite;
@@ -21,7 +22,7 @@ struct Player {
 
 class CyberCraft : public ck::Game {
 public:
-    explicit CyberCraft(cc::Ref<ck::RenderContext2D> renderContext);
+    explicit CyberCraft(cc::Ref<ck::RenderContext2D> renderContext, cc::Ref<ck::Window> win);
     CyberCraft(const CyberCraft&) = delete;
     CyberCraft(const CyberCraft&&) = delete;
 
@@ -47,6 +48,7 @@ private:
     World m_world;
     ck::TextureHandle texture;
     cc::Ref<ck::RenderContext2D> m_renderContext;
+    cc::Ref<ck::Window> m_window;
 };
 
 

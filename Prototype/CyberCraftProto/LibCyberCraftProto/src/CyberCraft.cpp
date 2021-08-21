@@ -4,9 +4,7 @@
 
 #include "CyberCraft.h"
 
-#include "Game/System.h"
-
-#include <Core/Debug.h>
+#include "System.h"
 
 const char* gameMap =
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -42,8 +40,9 @@ const char* gameMap =
         "~~~~~~~~~~              ~~~~~~~~"
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
 
-CyberCraft::CyberCraft(cc::Ref<ck::RenderContext2D> renderContext):
-        m_renderContext(renderContext)
+CyberCraft::CyberCraft(cc::Ref<ck::RenderContext2D> renderContext, cc::Ref<ck::Window> win):
+        m_renderContext(renderContext),
+        m_window(win)
 {
     texture = renderContext->getHandleFromFile("./data/tileset.png");
     renderContext->loadTexture(texture);
@@ -114,7 +113,7 @@ CyberCraft::CyberCraft(cc::Ref<ck::RenderContext2D> renderContext):
 }
 
 void CyberCraft::update() {
-    movePlayer(cc::make_ref(player.pos), m_world);
+    movePlayer(m_window, cc::make_ref(player.pos), m_world);
 }
 
 void CyberCraft::draw() {

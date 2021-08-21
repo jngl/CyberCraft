@@ -9,15 +9,14 @@
 
 #include <Kernel/Engine2D.h>
 
-#include <SFML/Window.hpp>
-
 void drawSprite(cc::Ref<ck::SpriteDrawer> renderContext, ck::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite) {
     renderContext->drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
 }
 
-void movePlayer(cc::Ref<cc::Vector2f> pos, const World& world) {
-    auto funcMove = [&pos, &world](sf::Keyboard::Key key, cc::Vector2f move){
-        if(!sf::Keyboard::isKeyPressed(key)){
+void movePlayer(cc::Ref<ck::Window> win,cc::Ref<cc::Vector2f> pos, const World& world) {
+
+    auto funcMove = [&win, &pos, &world](ck::Key key, cc::Vector2f move){
+        if(!win->isKeyPressed(key)){
             return;
         }
 
@@ -39,8 +38,8 @@ void movePlayer(cc::Ref<cc::Vector2f> pos, const World& world) {
 
     constexpr float speed = 0.1f;
 
-    funcMove(sf::Keyboard::Right, {speed, 0});
-    funcMove(sf::Keyboard::Left, {-speed, 0});
-    funcMove(sf::Keyboard::Up, {0, -speed});
-    funcMove(sf::Keyboard::Down, {0, speed});
+    funcMove(ck::Key::RIGHT, {speed, 0});
+    funcMove(ck::Key::LEFT, {-speed, 0});
+    funcMove(ck::Key::UP, {0, -speed});
+    funcMove(ck::Key::DOWN, {0, speed});
 }

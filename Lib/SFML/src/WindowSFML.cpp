@@ -9,6 +9,7 @@
 #include "conversion.h"
 
 #include <Core/Color.h>
+#include <SFML/Graphics/VertexArray.hpp>
 
 constexpr int defaultWindowSizeX = 800;
 constexpr int defaultWindowSizeY = 600;
@@ -53,6 +54,25 @@ namespace ccSf {
 
     sf::RenderWindow &WindowSFML::getRenderWindow() {
         return m_window;
+    }
+
+    bool WindowSFML::isKeyPressed(ck::Key key) {
+        auto convKey  = [](ck::Key ckKey) -> sf::Keyboard::Key{
+            switch(ckKey){
+                case ck::Key::LEFT:
+                    return sf::Keyboard::Left;
+                case ck::Key::RIGHT:
+                    return sf::Keyboard::Right;
+                case ck::Key::UP:
+                    return sf::Keyboard::Up;
+                case ck::Key::DOWN:
+                    return sf::Keyboard::Down;
+                default:
+                    return sf::Keyboard::KeyCount;
+            }
+        };
+
+        return sf::Keyboard::isKeyPressed(convKey(key));
     }
 
     WindowSFML::~WindowSFML() = default;

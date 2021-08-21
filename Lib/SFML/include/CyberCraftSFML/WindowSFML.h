@@ -23,6 +23,8 @@ namespace ccSf {
 
         sf::RenderWindow &getRenderWindow();
 
+        bool isKeyPressed(ck::Key key) override;
+
     private:
         sf::RenderWindow m_window;
     };

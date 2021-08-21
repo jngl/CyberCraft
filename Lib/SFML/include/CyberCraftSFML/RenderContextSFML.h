@@ -34,10 +34,10 @@ namespace ccSf {
                         cc::Color backgroundColor,
                         float rotation) override;
 
-        void drawSprite(ck::TextureHandle texture,
+       /* void drawSprite(ck::TextureHandle texture,
                         const cc::Vector2f &pos,
                         float scale,
-                        cc::Color color) override;
+                        cc::Color color) override;*/
 
         void setViewCenter(cc::Vector2f pos) override;
 

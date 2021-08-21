@@ -13,7 +13,7 @@
 
 namespace ck
 {
-class ColoredRectangleDrawer : public cc::Copyable
+    class ColoredRectangleDrawer : public cc::Copyable
     {
     public:
         virtual void drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cc::Color& color) = 0;
@@ -29,10 +29,10 @@ class ColoredRectangleDrawer : public cc::Copyable
                                 cc::Color backgroundColor,
                                 float rotation) = 0;
 
-        virtual void drawSprite(TextureHandle texture,
+        /*virtual void drawSprite(TextureHandle texture,
                                 const cc::Vector2f &pos,
                                 float scale,
-                                cc::Color color) = 0;
+                                cc::Color color) = 0;*/
     };
 
     class Camera2D : public cc::Copyable

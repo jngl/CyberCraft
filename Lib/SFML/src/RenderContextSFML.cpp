@@ -77,7 +77,7 @@ namespace ccSf {
         m_target.draw(sfSprite);
     }
 
-    void RenderContextSFML::drawSprite(ck::TextureHandle textureHandle,
+   /* void RenderContextSFML::drawSprite(ck::TextureHandle textureHandle,
                                        const cc::Vector2f &pos,
                                        float scale,
                                        cc::Color color) {
@@ -88,7 +88,7 @@ namespace ccSf {
         sfSprite.setScale(scale, scale);
         sfSprite.setColor(toSfColor(color));
         m_target.draw(sfSprite);
-    }
+    }*/
 
     void RenderContextSFML::setViewCenter(cc::Vector2f pos) {
         sf::View view(m_target.getView());

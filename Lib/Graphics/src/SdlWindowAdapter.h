@@ -15,8 +15,6 @@ struct SDL_Window;
 namespace cc{
     template<class T>
     struct Vector2;
-
-    using Vector2io = Vector2<uint>;
 }
 
 namespace cg::Impl{

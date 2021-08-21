@@ -5,6 +5,8 @@
 #ifndef CYBERCRAFTKERNEL_WINDOW_H
 #define CYBERCRAFTKERNEL_WINDOW_H
 
+#include "Key.h"
+
 namespace ck {
     class Window {
     public:
@@ -15,6 +17,8 @@ namespace ck {
         virtual void beginFrame() = 0;
 
         virtual void endFrame() = 0;
+
+        virtual bool isKeyPressed(Key) = 0;
     };
 }
 
