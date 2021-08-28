@@ -116,4 +116,25 @@ namespace cg::Impl {
     void BgfxAdapter::endFrame() {
         bgfx::frame();
     }
+
+    ShaderHandle BgfxAdapter::createShader(const cc::ByteArray& mem) {
+        const bgfx::Memory* bgfxMem = bgfx::alloc(mem.size());
+        memcpy(bgfxMem->data, mem.data(), mem.size());
+        bgfx::ShaderHandle bgfxShader = bgfx::createShader(bgfxMem);
+        ShaderHandle shader{bgfxShader.idx};
+        if(!bgfx::isValid(bgfxShader)){
+            std::cout<<"Shader erreur"<<std::endl;
+        }
+        return shader;
+    }
+
+    ProgramHandle BgfxAdapter::createProgram(ShaderHandle vsh, ShaderHandle fsh, bool destroyShaders) {
+        bgfx::ShaderHandle bgfxVsh{static_cast<uint16_t>(vsh.value())};
+        bgfx::ShaderHandle bgfxFsh{static_cast<uint16_t>(fsh.value())};
+        bgfx::ProgramHandle bgfxProgram = bgfx::createProgram(bgfxVsh, bgfxFsh, destroyShaders);
+        if(!bgfx::isValid(bgfxProgram)){
+            std::cout<<"Shader programm erreur"<<std::endl;
+        }
+        return ProgramHandle{bgfxProgram.idx};
+    }
 }

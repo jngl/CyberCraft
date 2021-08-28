@@ -56,30 +56,9 @@ namespace cg::Impl{
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // TODO temporary
-    static const bgfx::Memory* loadMem(bx::FileReaderI* _reader, const char* _filePath)
-    {
-        if (bx::open(_reader, _filePath) )
-        {
-            uint32_t size = (uint32_t)bx::getSize(_reader);
-            const bgfx::Memory* mem = bgfx::alloc(size+1);
-            bx::read(_reader, mem->data, size);
-            bx::close(_reader);
-            mem->data[mem->size-1] = '\0';
-            return mem;
-        }
-
-        std::cout<<"Failed to load "<< _filePath<<std::endl;
-        return nullptr;
-    }
-
-    static bx::FileReaderI* s_fileReader = NULL;
-
     ShaderManager::ShaderManager(BgfxAdapter& bgfxAdapter):
             m_bgfxAdapter(bgfxAdapter)
     {
-        s_fileReader = new bx::FileReader();
-
         namespace fs = std::filesystem;
         for (const auto &p: fs::directory_iterator(getShaderDir())) {
             auto name = fileStemToShaderName(p.path().stem().string());
@@ -105,35 +84,28 @@ namespace cg::Impl{
         return {name};
     }
 
-    bgfx::ShaderHandle ShaderManager::loadShader(std::string_view name) {
+    ShaderHandle ShaderManager::loadShader(std::string_view name) {
         std::string filePath = "./data/shader/" + std::string(GetGraphicsApiShaderType(m_bgfxAdapter.getApi())) + "/" + std::string(name) + ".bin";
-
-        bgfx::ShaderHandle handle = bgfx::createShader(loadMem(s_fileReader, filePath.c_str()) );
-        bgfx::setName(handle, std::string(name).c_str());
-
-        return handle;
+        std::optional<cc::ByteArray> memory = cc::ByteArray::loadFromFile(filePath);
+        if(!memory.has_value()){
+            std::cout<<"error while loading the shader "<<name<<std::endl;
+            return {};
+        }
+        return m_bgfxAdapter.createShader(memory.value());
     }
 
     void ShaderManager::loadShaderProgram(std::string_view name) {
         std::cout<<"load shader "<<name<<std::endl;
 
-        bgfx::ShaderHandle vsh = loadShader(std::string("vs_")+std::string(name));
-        bgfx::ShaderHandle fsh = loadShader(std::string("fs_")+std::string(name));
+        ShaderHandle vsh = loadShader(std::string("vs_")+std::string(name));
+        ShaderHandle fsh = loadShader(std::string("fs_")+std::string(name));
 
-        bgfx::ProgramHandle program = bgfx::createProgram(vsh, fsh, true);
+        ProgramHandle program = m_bgfxAdapter.createProgram(vsh, fsh, true);
 
         m_shaders.push_back(Shader{std::string(name), program});
     }
 
-    bgfx::ProgramHandle ShaderManager::get(ck::ShaderHandle handle) {
-        if(handle.value() < 0 || handle.value() >= m_shaders.size()){
-            return bgfx::ProgramHandle();
-        }
-
-        return m_shaders[handle.value()].m_program;
-    }
-
-    ck::ShaderHandle ShaderManager::getHandleFromFile(std::string_view filename) {
+    ProgramHandle ShaderManager::getHandleFromFile(std::string_view filename) {
         auto isFileNameCorrect = [filename](const Shader& shader) -> bool{
             return shader.name == filename;
         };
@@ -141,20 +113,10 @@ namespace cg::Impl{
         auto it = std::find_if(m_shaders.begin(), m_shaders.end(), isFileNameCorrect);
 
         if(it == std::end(m_shaders)){
-            return ck::ShaderHandle();
+            return {};
         }
 
-        unsigned int index = static_cast<unsigned int>(it - std::begin(m_shaders));
-
-        return ck::ShaderHandle(index);
-    }
-
-    void ShaderManager::loadShader(ck::ShaderHandle /*handle*/) {
-
-    }
-
-    void ShaderManager::unloadShader(ck::ShaderHandle /*handle*/) {
-
+        return it->m_program;
     }
 
     std::string ShaderManager::getShaderDir() const {
@@ -251,10 +213,10 @@ namespace cg::Impl{
         bgfx::setUniform(m_color, colorTmp, 1);
 
         // Submit primitive for rendering to view 0.
-        bgfx::submit(0, m_program);
+        bgfx::submit(0, bgfx::ProgramHandle{static_cast<uint16_t>(m_program.value())});
     }
 
-    void Renderer2d::setShader(bgfx::ProgramHandle shader) {
+    void Renderer2d::setShader(ProgramHandle shader) {
         m_program = shader;
 
         m_color = bgfx::createUniform("u_color", bgfx::UniformType::Vec4, 1);
@@ -280,7 +242,7 @@ namespace cg::Impl{
             m_bgfxAdapter(m_window),
             m_shaders(m_bgfxAdapter)
     {
-        m_renderer2d.setShader(m_shaders.get(m_shaders.getHandleFromFile("simple2d")));
+        m_renderer2d.setShader(m_shaders.getHandleFromFile("simple2d"));
     }
 
     void Common::startFrame() {

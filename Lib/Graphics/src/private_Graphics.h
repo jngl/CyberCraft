@@ -16,7 +16,6 @@
 #include <Kernel/Engine.h>
 #include <Kernel/Key.h>
 #include <Kernel/Texture.h>
-#include <Kernel/Shader.h>
 
 #include <exception>
 #include <string>
@@ -47,22 +46,18 @@ namespace cg::Impl {
         void loadTexture(const std::filesystem::path& file);
     };
 
-    class ShaderManager : public ck::ShaderManager {
+    class ShaderManager {
     public:
         explicit ShaderManager(BgfxAdapter&);
 
-        bgfx::ProgramHandle get(ck::ShaderHandle);
+        [[nodiscard]] ProgramHandle getHandleFromFile(std::string_view filename);
 
-        [[nodiscard]] ck::ShaderHandle getHandleFromFile(std::string_view filename) override;
-        void loadShader(ck::ShaderHandle handle) override;
-        void unloadShader(ck::ShaderHandle handle) override;
-
-        std::string getShaderDir() const;
+        [[nodiscard]] std::string getShaderDir() const;
 
     private:
         struct Shader{
             std::string name;
-            bgfx::ProgramHandle m_program;
+            ProgramHandle m_program;
         };
 
         BgfxAdapter& m_bgfxAdapter;
@@ -70,7 +65,7 @@ namespace cg::Impl {
 
         static std::optional<std::string> fileStemToShaderName(std::string_view fileStem);
 
-        bgfx::ShaderHandle loadShader(std::string_view name);
+        ShaderHandle loadShader(std::string_view name);
         void loadShaderProgram(std::string_view name);
     };
 
@@ -79,7 +74,7 @@ namespace cg::Impl {
         Renderer2d();
         ~Renderer2d() override;
 
-        void setShader(bgfx::ProgramHandle shader);
+        void setShader(ProgramHandle shader);
 
         void updateSize(cc::Vector2ui size);
 
@@ -88,7 +83,7 @@ namespace cg::Impl {
     private:
         bgfx::VertexBufferHandle m_rectangleVertices{};
         bgfx::IndexBufferHandle m_rectangleIndices{};
-        bgfx::ProgramHandle m_program{};
+        ProgramHandle m_program{};
         bgfx::UniformHandle m_color{};
 
         void setViewTransform(const cc::Matrix4f& proj, const cc::Matrix4f& view);
