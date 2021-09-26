@@ -44,8 +44,7 @@ CyberCraft::CyberCraft(cc::Ref<ck::RenderContext2D> renderContext, cc::Ref<ck::W
         m_renderContext(renderContext),
         m_window(win)
 {
-    texture = renderContext->getHandleFromFile("./data/tileset.png");
-    renderContext->loadTexture(texture);
+    texture = renderContext->loadTextureFromFile("./data/tileset.png");
 
     m_world.forEach([this](int x, int y, Bloc& bloc){
         char tile = gameMap[y*World::sizeX+x]; // NOLINT
@@ -120,14 +119,11 @@ void CyberCraft::draw() {
 
     m_world.forEach([this](int x, int y, Bloc bloc){
         cc::Vector2f pos{static_cast<float>(x), static_cast<float>(y)};
-        drawSprite(m_renderContext, texture, pos, getBlocInfo(bloc).sprite);
+        drawSprite(m_renderContext, *texture, pos, getBlocInfo(bloc).sprite);
     });
 
-    drawSprite(m_renderContext, texture, player.pos, player.sprite);
+    drawSprite(m_renderContext, *texture, player.pos, player.sprite);
     m_renderContext->setViewCenter(player.pos);
 }
 
-CyberCraft::~CyberCraft() {
-    m_renderContext->unloadTexture(texture);
-}
 

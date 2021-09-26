@@ -96,6 +96,10 @@ namespace cs {
         glDeleteTextures(1, &id);
     }
 
+    Texture::~Texture() {
+        TextureGlUnload(glId);
+    }
+
 /********************************************************
  * Graphics Context
 ********************************************************/
@@ -107,43 +111,36 @@ namespace cs {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    void GraphicsContext::setCurrentTexture(ck::TextureHandle handle) {
-        const Texture& texture = m_textures.at(handle.value());
+    void GraphicsContext::setCurrentTexture(const ck::Texture* tex) {
+        const auto* texture = dynamic_cast<const Texture*>(tex);
 
         glCheck(glActiveTexture(GL_TEXTURE0));
-        glCheck(glBindTexture(GL_TEXTURE_2D, texture.glId));
+        glCheck(glBindTexture(GL_TEXTURE_2D, texture->glId));
 
-        m_current_texture = handle;
+        m_current_texture = texture;
     }
 
-    ck::TextureHandle GraphicsContext::getCurrentTexture() const {
+    const ck::Texture* GraphicsContext::getCurrentTexture() const {
         return m_current_texture;
     }
 
-    ck::TextureHandle GraphicsContext::getHandleFromFile(std::string_view filename) {
-        auto it = std::find_if(begin(m_textures), end(m_textures), [filename](const Texture& tex ){
-            return tex.fileName == filename;
+    std::shared_ptr<ck::Texture> GraphicsContext::loadTextureFromFile(std::string_view filename) {
+        auto it = std::find_if(begin(m_textures), end(m_textures), [filename](std::shared_ptr<Texture> tex ){
+            return tex->fileName == filename;
         });
 
         if(it != std::end(m_textures)){
-            return ck::TextureHandle(static_cast<uint>(std::distance(std::begin(m_textures), it)));
+            return *it;
         }
 
-        m_textures.emplace_back();
-        m_textures.back().fileName = filename;
+        auto newTexture = std::make_shared<Texture>();
 
-        return ck::TextureHandle(static_cast<uint>(m_textures.size()-1));
-    }
+        newTexture->fileName = filename;
+        newTexture->glId = TextureGlLoad(filename);
 
-    void GraphicsContext::loadTexture(ck::TextureHandle texture) {
-        Texture& textureData = m_textures.at(texture.value());
-        textureData.glId = TextureGlLoad(textureData.fileName);
-    }
+        m_textures.emplace_back(newTexture);
 
-    void GraphicsContext::unloadTexture(ck::TextureHandle texture) {
-        Texture& textureData = m_textures.at(texture.value());
-        TextureGlUnload(textureData.glId);
-        textureData.glId = 0;
+        return newTexture;
     }
 
 /********************************************************

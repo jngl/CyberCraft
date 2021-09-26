@@ -38,17 +38,24 @@ namespace cs {
 //        void add(DrawCommand cmd);
 //    };
 //
-    class GraphicsContext : public ck::TextureManager
+
+    class Texture : public ck::Texture{
+    public:
+        unsigned int glId = 0;
+        std::string fileName;
+
+        ~Texture() override;
+    };
+
+    class GraphicsContext : public ck::TextureFactory
     {
     public:
         GraphicsContext();
 
-        [[nodiscard]] ck::TextureHandle getHandleFromFile(std::string_view filename) override;
-        void loadTexture(ck::TextureHandle handle) override;
-        void unloadTexture(ck::TextureHandle handle) override;
+        std::shared_ptr<ck::Texture> loadTextureFromFile(std::string_view filename) override;
 
-        void setCurrentTexture(ck::TextureHandle);
-        [[nodiscard]] ck::TextureHandle getCurrentTexture() const;
+        void setCurrentTexture(const ck::Texture*);
+        [[nodiscard]] const ck::Texture* getCurrentTexture() const;
 
 //        MeshId loadMesh(const MeshBuilder& builder);
 //        void unloadMesh(MeshId mesh);
@@ -59,15 +66,10 @@ namespace cs {
 //        void draw(DrawCommandList& cmdList);
 
     private:
-        struct Texture{
-            unsigned int glId = 0;
-            std::string fileName;
-        };
 
-        cc::IdGenerator<ck::TextureHandle::ValueType, ck::TextureHandle::Tag> m_textureIdGenerator;
-        std::vector<Texture> m_textures;
+        std::vector<std::shared_ptr<Texture>> m_textures;
 
-        ck::TextureHandle m_current_texture;
+        const Texture* m_current_texture = nullptr;
     };
 
 

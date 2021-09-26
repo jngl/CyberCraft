@@ -9,7 +9,7 @@
 
 #include <Kernel/Engine2D.h>
 
-void drawSprite(cc::Ref<ck::SpriteDrawer> renderContext, ck::TextureHandle texture, const cc::Vector2f& pos, const component::Sprite& sprite) {
+void drawSprite(cc::Ref<ck::SpriteDrawer> renderContext, const ck::Texture& texture, const cc::Vector2f& pos, const component::Sprite& sprite) {
     renderContext->drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
 }
 

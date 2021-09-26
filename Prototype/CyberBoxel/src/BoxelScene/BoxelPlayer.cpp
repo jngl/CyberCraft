@@ -5,11 +5,9 @@ BoxelPlayer::BoxelPlayer() :
         mObject("PlayerObject") {
     mObject.model = Renderer::createModel("playerModel");
 
-    ck::TextureHandle tex = Renderer::getHandleFromFile("test.dds");
+    auto tex = Renderer::loadTextureFromFile("test.dds");
 
-    Renderer::loadTexture(tex);
-
-    Renderer::Material_handle mat = Renderer::createMaterial(tex, "playerMaterial");
+    Renderer::Material_handle mat = Renderer::createMaterial(*tex, "playerMaterial");
     //24
     Renderer::addSubMesh(mObject.model,
                          cubeNumberOfFace * cubeVertexByFace,

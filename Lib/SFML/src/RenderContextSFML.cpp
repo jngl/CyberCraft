@@ -20,38 +20,15 @@ namespace ccSf {
 
     }
 
-    ck::TextureHandle RenderContextSFML::getHandleFromFile(std::string_view filename) {
-        for(unsigned int i=0; i<m_textures.size(); ++i){
-            if(m_textures[i].fileName == filename){
-                return ck::TextureHandle(i);
-            }
-        }
 
-        m_textures.emplace_back();
-        m_textures.back().fileName = filename;
-
-        return ck::TextureHandle(static_cast<unsigned int>(m_textures.size()-1));
-    }
-
-    void RenderContextSFML::loadTexture(ck::TextureHandle texture) {
-        Texture& textureData = m_textures.at(texture.value());
-        textureData.sfTexture = std::make_unique<sf::Texture>();
-        textureData.sfTexture->loadFromFile(textureData.fileName);
-    }
-
-    void RenderContextSFML::unloadTexture(ck::TextureHandle texture) {
-        Texture& textureData = m_textures.at(texture.value());
-        textureData.sfTexture.reset();
-    }
-
-    void RenderContextSFML::drawSprite(ck::TextureHandle textureHandle,
+    void RenderContextSFML::drawSprite(const ck::Texture& textureHandle,
                                        const cc::Vector2f &pos,
                                        const cc::Vector2i &textureIndex,
                                        cc::Color color,
                                        cc::Color backgroundColor,
                                        float rotation){
 
-        sf::Texture &texture = *m_textures[textureHandle.value()].sfTexture;
+        auto texture = dynamic_cast<const Texture*>(&textureHandle);
 
         sf::RectangleShape background;
 
@@ -70,7 +47,7 @@ namespace ccSf {
                                             tileTextureSize * textureIndex.y,
                                             tileTextureSize,
                                             tileTextureSize));
-        sfSprite.setTexture(texture);
+        sfSprite.setTexture(texture->sfTexture);
         sfSprite.setColor(toSfColor(color));
         sfSprite.setOrigin(tileTextureCenter,tileTextureCenter);
         sfSprite.setRotation(rotation);
@@ -94,5 +71,20 @@ namespace ccSf {
         sf::View view(m_target.getView());
         view.setCenter(toSfVector2(pos*tileSize));
         m_target.setView(view);
+    }
+
+    std::shared_ptr<ck::Texture> RenderContextSFML::loadTextureFromFile(std::string_view filename) {
+        for(auto & texture : m_textures){
+            if(texture->fileName == filename){
+                return texture;
+            }
+        }
+
+        auto texture = std::make_shared<Texture>();
+
+        texture->fileName = filename;
+        texture->sfTexture.loadFromFile(std::string(filename));
+
+        return texture;
     }
 }

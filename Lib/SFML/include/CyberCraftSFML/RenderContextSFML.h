@@ -14,20 +14,19 @@
 #include <map>
 
 namespace ccSf {
-    struct Texture{
+    class Texture : public ck::Texture{
+    public:
         std::string fileName;
-        std::unique_ptr<sf::Texture> sfTexture;
+        sf::Texture sfTexture;
     };
 
     class RenderContextSFML : public ck::RenderContext2D {
     public:
         explicit RenderContextSFML(sf::RenderTarget &target);
 
-        [[nodiscard]] ck::TextureHandle getHandleFromFile(std::string_view filename) override;
-        void loadTexture(ck::TextureHandle handle) override;
-        void unloadTexture(ck::TextureHandle handle) override;
+        std::shared_ptr<ck::Texture> loadTextureFromFile(std::string_view filename) override;
 
-        void drawSprite(ck::TextureHandle texture,
+        void drawSprite(const ck::Texture& texture,
                         const cc::Vector2f &pos,
                         const cc::Vector2i &textureIndex,
                         cc::Color color,
@@ -42,8 +41,7 @@ namespace ccSf {
         void setViewCenter(cc::Vector2f pos) override;
 
     private:
-        cc::IdGenerator<ck::TextureHandle::ValueType, ck::TextureHandle::Tag> m_textureIdGenerator;
-        std::vector<Texture> m_textures;
+        std::vector<std::shared_ptr<Texture>> m_textures;
         sf::RenderTarget &m_target;
     };
 }

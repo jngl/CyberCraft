@@ -29,8 +29,6 @@ public:
     CyberCraft& operator=(const CyberCraft&) = delete;
     CyberCraft& operator=(CyberCraft&&) = delete;
 
-    ~CyberCraft() override;
-
     void update() override;
     void draw() override;
 
@@ -46,7 +44,7 @@ private:
     };
 
     World m_world;
-    ck::TextureHandle texture;
+    std::shared_ptr<ck::Texture> texture;
     cc::Ref<ck::RenderContext2D> m_renderContext;
     cc::Ref<ck::Window> m_window;
 };

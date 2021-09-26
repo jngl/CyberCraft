@@ -138,7 +138,7 @@ namespace Renderer {
     float ratio;
 
     struct Material {
-        ck::TextureHandle texture;
+        const ck::Texture* texture = nullptr;
 
         bool withAlpha = false;
         std::string name;
@@ -178,7 +178,7 @@ namespace Renderer {
     std::set<Object *> objectArray;
 
     struct Sprite {
-        ck::TextureHandle mTexture;
+        const ck::Texture* mTexture;
 
         cc::Matrix4f mMatrix;
     };
@@ -239,11 +239,11 @@ namespace Renderer {
     constexpr int maxNumberOfMaterial = 100;
     cc::PoolAllocator<Material, maxNumberOfMaterial> MaterialPool;
 
-    Material_handle createMaterial(ck::TextureHandle tex, std::string_view name) {
+    Material_handle createMaterial(const ck::Texture& tex, std::string_view name) {
 
         cc::log("Renderer", "create materia \"", name, "\"");
         Material_handle result = MaterialPool.create();
-        result->texture = std::move(tex);
+        result->texture = &tex;
         result->withAlpha = false;
         result->name = name;
         return result;
@@ -282,7 +282,7 @@ namespace Renderer {
 
         cs::Mesh &subMesh = model->subMeshs.back();
 
-        if (!material->texture.isValid()) {
+        if (material->texture == nullptr) {
             subMesh.beginLoad();
             subMesh.addBuffer(0, vertices,
                               nbVertices * sizeof(float) * 3, 3);
@@ -325,7 +325,7 @@ namespace Renderer {
                 Model_handle model = object->model;
                 for (std::size_t i(0); i < model->subMeshs.size(); ++i) {
                     if (model->materials[i]->withAlpha == alpha) {
-                        if (!model->materials[i]->texture.isValid()) {
+                        if (model->materials[i]->texture == nullptr) {
                             defaultNoTextureShader.set();
                             defaultNoTextureShader.setMatrixInput(defaultNoTextureShaderMVP, MVP);
                         } else {
@@ -362,16 +362,8 @@ namespace Renderer {
      * Textures
     ********************************************************/
 
-    [[nodiscard]] ck::TextureHandle getHandleFromFile(std::string_view filename){
-        return g_graphicsContext->getHandleFromFile(filename);
-    }
-
-    void loadTexture(ck::TextureHandle handle){
-        g_graphicsContext->loadTexture(handle);
-    }
-
-    void unloadTexture(ck::TextureHandle handle){
-        g_graphicsContext->unloadTexture(handle);
+    std::shared_ptr<ck::Texture> loadTextureFromFile(std::string_view filename){
+        return g_graphicsContext->loadTextureFromFile(filename);
     }
 
 /********************************************************
@@ -413,11 +405,11 @@ namespace Renderer {
     constexpr int MaxNumberOfSprite = 1000;
     cc::PoolAllocator<Sprite, MaxNumberOfSprite> SpritePool;
 
-    Sprite_handle createSprite(ck::TextureHandle handle) {
+    Sprite_handle createSprite(const ck::Texture& handle) {
         cc::log("Renderer", "create sprite");
         Sprite_handle result = SpritePool.create();
         result->mMatrix.setIdentity();
-        result->mTexture = std::move(handle);
+        result->mTexture = &handle;
         return result;
     }
 
