@@ -7,6 +7,11 @@
 #include <fstream>
 
 namespace cc{
+    ByteArray::ByteArray():
+    m_size(0),
+    m_data(nullptr){
+    }
+
     ByteArray::ByteArray(Uint8 *copyFrom, Uint32 size):
     m_size(size){
         m_data = new Uint8[m_size];
@@ -31,7 +36,7 @@ namespace cc{
     }
 
     ByteArray::~ByteArray() {
-        delete[] m_data;
+        clear();
     }
 
     ByteArray &ByteArray::operator=(ByteArray&& from) {
@@ -69,6 +74,23 @@ namespace cc{
 
     Uint8 *ByteArray::data() {
         return m_data;
+    }
+
+    void ByteArray::copy(Uint8 *copyFrom, Uint32 size) {
+        clear();
+        m_size = size;
+        m_data = new Uint8[m_size];
+        memcpy(m_data, copyFrom, m_size);
+    }
+
+    void ByteArray::copy(void *copyFrom, Uint32 size) {
+        copy(reinterpret_cast<Uint8*>(copyFrom), size);
+    }
+
+    void ByteArray::clear() {
+        if(m_data)delete[] m_data;
+        m_data = nullptr;
+        m_size = 0;
     }
 }
 

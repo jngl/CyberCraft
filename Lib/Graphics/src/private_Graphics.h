@@ -28,20 +28,23 @@
 struct SDL_Window;
 
 namespace cg::Impl {
-    class TextureManager : public ck::TextureManager {
+    class TextureManager : public ck::TextureManager{
     public:
-        TextureManager();
+        TextureManager(BgfxAdapter&);
 
         [[nodiscard]] ck::TextureHandle getHandleFromFile(std::string_view filename) override;
-        void loadTexture(ck::TextureHandle handle) override;
-        void unloadTexture(ck::TextureHandle handle) override;
+
+        void loadTexture(ck::TextureHandle) override;
+        void unloadTexture(ck::TextureHandle) override;
 
     private:
         struct Texture{
             std::filesystem::path file;
+            TextureHandle texture;
         };
 
         std::vector<Texture> m_textures;
+        BgfxAdapter& m_bgfxAdapter;
 
         void loadTexture(const std::filesystem::path& file);
     };

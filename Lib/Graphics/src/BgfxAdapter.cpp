@@ -16,6 +16,179 @@
 
 namespace cg::Impl {
 
+    bgfx::TextureFormat::Enum convTextureFormat(TextureFormat format){
+        switch (format) {
+            case TextureFormat::BC1:
+                return bgfx::TextureFormat::BC1;
+            case TextureFormat::BC2:
+                return bgfx::TextureFormat::BC2;
+            case TextureFormat::BC3:
+                return bgfx::TextureFormat::BC3;
+            case TextureFormat::BC4:
+                return bgfx::TextureFormat::BC4;
+            case TextureFormat::BC5:
+                return bgfx::TextureFormat::BC5;
+            case TextureFormat::BC6H:
+                return bgfx::TextureFormat::BC6H;
+            case TextureFormat::BC7:
+                return bgfx::TextureFormat::BC7;
+            case TextureFormat::ETC1:
+                return bgfx::TextureFormat::ETC1;
+            case TextureFormat::ETC2:
+                return bgfx::TextureFormat::ETC2;
+            case TextureFormat::ETC2A:
+                return bgfx::TextureFormat::ETC2A;
+            case TextureFormat::ETC2A1:
+                return bgfx::TextureFormat::ETC2A1;
+            case TextureFormat::PTC12:
+                return bgfx::TextureFormat::PTC12;
+            case TextureFormat::PTC14:
+                return bgfx::TextureFormat::PTC14;
+            case TextureFormat::PTC12A:
+                return bgfx::TextureFormat::PTC12A;
+            case TextureFormat::PTC14A:
+                return bgfx::TextureFormat::PTC14A;
+            case TextureFormat::PTC22:
+                return bgfx::TextureFormat::PTC22;
+            case TextureFormat::PTC24:
+                return bgfx::TextureFormat::PTC24;
+            case TextureFormat::ATC:
+                return bgfx::TextureFormat::ATC;
+            case TextureFormat::ATCE:
+                return bgfx::TextureFormat::ATCE;
+            case TextureFormat::ATCI:
+                return bgfx::TextureFormat::ATCI;
+            case TextureFormat::ASTC4x4:
+                return bgfx::TextureFormat::ASTC4x4;
+            case TextureFormat::ASTC5x5:
+                return bgfx::TextureFormat::ASTC5x5;
+            case TextureFormat::ASTC6x6:
+                return bgfx::TextureFormat::ASTC6x6;
+            case TextureFormat::ASTC8x5:
+                return bgfx::TextureFormat::ASTC8x5;
+            case TextureFormat::ASTC8x6:
+                return bgfx::TextureFormat::ASTC8x6;
+            case TextureFormat::ASTC10x5:
+                return bgfx::TextureFormat::ASTC10x5;
+            case TextureFormat::R1:
+                return bgfx::TextureFormat::R1;
+            case TextureFormat::A8:
+                return bgfx::TextureFormat::A8;
+            case TextureFormat::R8:
+                return bgfx::TextureFormat::R8;
+            case TextureFormat::R8I:
+                return bgfx::TextureFormat::R8I;
+            case TextureFormat::R8U:
+                return bgfx::TextureFormat::R8U;
+            case TextureFormat::R8S:
+                return bgfx::TextureFormat::R8S;
+            case TextureFormat::R16:
+                return bgfx::TextureFormat::R16;
+            case TextureFormat::R16I:
+                return bgfx::TextureFormat::R16I;
+            case TextureFormat::R16U:
+                return bgfx::TextureFormat::R16U;
+            case TextureFormat::R16F:
+                return bgfx::TextureFormat::R16F;
+            case TextureFormat::R16S:
+                return bgfx::TextureFormat::R16S;
+            case TextureFormat::R32I:
+                return bgfx::TextureFormat::R32I;
+            case TextureFormat::R32U:
+                return bgfx::TextureFormat::R32U;
+            case TextureFormat::R32F:
+                return bgfx::TextureFormat::R32F;
+            case TextureFormat::RG8:
+                return bgfx::TextureFormat::RG8;
+            case TextureFormat::RG8I:
+                return bgfx::TextureFormat::RG8I;
+            case TextureFormat::RG8U:
+                return bgfx::TextureFormat::RG8U;
+            case TextureFormat::RG8S:
+                return bgfx::TextureFormat::RG8S;
+            case TextureFormat::RG16:
+                return bgfx::TextureFormat::RG16;
+            case TextureFormat::RG16I:
+                return bgfx::TextureFormat::RG16I;
+            case TextureFormat::RG16U:
+                return bgfx::TextureFormat::RG16U;
+            case TextureFormat::RG16F:
+                return bgfx::TextureFormat::RG16F;
+            case TextureFormat::RG16S:
+                return bgfx::TextureFormat::RG16S;
+            case TextureFormat::RG32I:
+                return bgfx::TextureFormat::RG32I;
+            case TextureFormat::RG32U:
+                return bgfx::TextureFormat::RG32U;
+            case TextureFormat::RG32F:
+                return bgfx::TextureFormat::RG32F;
+            case TextureFormat::RGB8:
+                return bgfx::TextureFormat::RGB8;
+            case TextureFormat::RGB8I:
+                return bgfx::TextureFormat::RGB8I;
+            case TextureFormat::RGB8U:
+                return bgfx::TextureFormat::RGB8U;
+            case TextureFormat::RGB8S:
+                return bgfx::TextureFormat::RGB8S;
+            case TextureFormat::RGB9E5F:
+                return bgfx::TextureFormat::RGB9E5F;
+            case TextureFormat::BGRA8:
+                return bgfx::TextureFormat::BGRA8;
+            case TextureFormat::RGBA8:
+                return bgfx::TextureFormat::RGBA8;
+            case TextureFormat::RGBA8I:
+                return bgfx::TextureFormat::RGBA8I;
+            case TextureFormat::RGBA8U:
+                return bgfx::TextureFormat::RGBA8U;
+            case TextureFormat::RGBA8S:
+                return bgfx::TextureFormat::RGBA8S;
+            case TextureFormat::RGBA16:
+                return bgfx::TextureFormat::RGBA16;
+            case TextureFormat::RGBA16I:
+                return bgfx::TextureFormat::RGBA16I;
+            case TextureFormat::RGBA16U:
+                return bgfx::TextureFormat::RGBA16U;
+            case TextureFormat::RGBA16F:
+                return bgfx::TextureFormat::RGBA16F;
+            case TextureFormat::RGBA16S:
+                return bgfx::TextureFormat::RGBA16S;
+            case TextureFormat::RGBA32I:
+                return bgfx::TextureFormat::RGBA32I;
+            case TextureFormat::RGBA32U:
+                return bgfx::TextureFormat::RGBA32U;
+            case TextureFormat::RGBA32F:
+                return bgfx::TextureFormat::RGBA32F;
+            case TextureFormat::R5G6B5:
+                return bgfx::TextureFormat::R5G6B5;
+            case TextureFormat::RGBA4:
+                return bgfx::TextureFormat::RGBA4;
+            case TextureFormat::RGB5A1:
+                return bgfx::TextureFormat::RGB5A1;
+            case TextureFormat::RGB10A2:
+                return bgfx::TextureFormat::RGB10A2;
+            case TextureFormat::RG11B10F:
+                return bgfx::TextureFormat::RG11B10F;
+            case TextureFormat::D16:
+                return bgfx::TextureFormat::D16;
+            case TextureFormat::D24:
+                return bgfx::TextureFormat::D24;
+            case TextureFormat::D24S8:
+                return bgfx::TextureFormat::D24S8;
+            case TextureFormat::D32:
+                return bgfx::TextureFormat::D32;
+            case TextureFormat::D16F:
+                return bgfx::TextureFormat::D16F;
+            case TextureFormat::D24F:
+                return bgfx::TextureFormat::D24F;
+            case TextureFormat::D32F:
+                return bgfx::TextureFormat::D32F;
+            case TextureFormat::D0S8:
+                return bgfx::TextureFormat::D0S8;
+            default:
+                return bgfx::TextureFormat::Unknown;
+        }
+    }
+
     BgfxAdapter::BgfxAdapter(SdlWindowAdapter& win){
         sdlSetWindow(win);
 
@@ -136,5 +309,27 @@ namespace cg::Impl {
             std::cout<<"Shader programm erreur"<<std::endl;
         }
         return ProgramHandle{bgfxProgram.idx};
+    }
+
+    TextureHandle BgfxAdapter::createTexture2D(int width,
+                                               int height,
+                                               bool hasMips,
+                                               int numLayers,
+                                               TextureFormat format,
+                                               cc::Uint64 flags,
+                                               const cc::ByteArray &mem){
+        const bgfx::Memory* bgfxMem = bgfx::alloc(mem.size());
+        memcpy(bgfxMem->data, mem.data(), mem.size());
+
+        bgfx::TextureFormat::Enum bgfxFormat = convTextureFormat(format);
+
+        bgfx::TextureHandle bgfxTexture = bgfx::createTexture2D(static_cast<uint16_t >(width),
+                                                                static_cast<uint16_t >(height),
+                                                                hasMips,
+                                                                static_cast<uint16_t >(numLayers),
+                                                                bgfxFormat,
+                                                                flags,
+                                                                bgfxMem);
+        return  TextureHandle{bgfxTexture.idx};
     }
 }

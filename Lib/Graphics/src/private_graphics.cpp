@@ -4,18 +4,75 @@
 
 #include "private_Graphics.h"
 
+#include <Core/Debug.h>
+
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <optional>
 
-#include <bx/readerwriter.h>
-#include <bx/file.h>
+#include "BimgAdapter.h"
 
 namespace cg::Impl{
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    TextureManager::TextureManager() {
+    TextureHandle loadTextureFile(BgfxAdapter& bgfxAdapter,
+                                    std::string_view filePath,
+                                    uint64_t _flags,
+                                    Orientation* _orientation)
+    {
+
+
+        std::optional<cc::ByteArray> data = cc::ByteArray::loadFromFile(filePath);
+        if (!data.has_value()) {
+            throw cc::Error("Texture File not found");
+        }
+
+        std::optional<ImageContainer> imageContainer = imageParse(data.value());
+        if (!imageContainer.has_value()){
+            throw cc::Error(std::string("Texture File format not supported : ") + std::string(filePath));
+        }
+
+        TextureHandle handle;
+       /*
+
+            if (imageContainer.has_value())
+            {
+                if (nullptr != _orientation)
+                {
+                    *_orientation = imageContainer->m_orientation;
+                }
+
+                if (bgfx::isTextureValid(0,
+                                              false,
+                                              imageContainer->m_numLayers,
+                                              bgfx::TextureFormat::Enum(imageContainer->m_format), _flags) )
+                {
+                    bgfxAdapter.createTexture2D(
+                            uint16_t(imageContainer->m_width),
+                            uint16_t(imageContainer->m_height),
+                            1 < imageContainer->m_numMips,
+                            imageContainer->m_numLayers,
+                            imageContainer->m_format,
+                            _flags,
+                            imageContainer->data
+                            );
+                }
+
+//                if (bgfx::isValid(handle) )
+//                {
+//                    bgfx::setName(handle, _filePath);
+//                }
+
+            }*/
+
+        return handle;
+    }
+
+    TextureManager::TextureManager(BgfxAdapter& bgfxAdapter):
+    m_bgfxAdapter(bgfxAdapter)
+    {
         namespace fs = std::filesystem;
         for(const auto& p: fs::directory_iterator("data")){
             loadTexture(p.path());
@@ -23,11 +80,13 @@ namespace cg::Impl{
     }
 
     void TextureManager::loadTexture(const std::filesystem::path& file) {
-        if(file.extension() != ".dds" && file.extension() != ".png"){
+        if(file.extension() != ".dds" /*&& file.extension() != ".png"*/){
             return;
         }
 
-        m_textures.push_back(Texture{file});
+        TextureHandle texture = loadTextureFile(m_bgfxAdapter, file.string(), 0, nullptr);
+
+        m_textures.push_back(Texture{file, texture});
 
         std::cout<<"load texture : "<<file.stem()<<"\n";
     }
@@ -48,10 +107,10 @@ namespace cg::Impl{
         return ck::TextureHandle(index);
     }
 
-    void TextureManager::loadTexture(ck::TextureHandle /*unused*/) {
+    void TextureManager::loadTexture(ck::TextureHandle) {
     }
 
-    void TextureManager::unloadTexture(ck::TextureHandle /*unused*/) {
+    void TextureManager::unloadTexture(ck::TextureHandle) {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -240,6 +299,7 @@ namespace cg::Impl{
 
     Common::Common():
             m_bgfxAdapter(m_window),
+            m_textures(m_bgfxAdapter),
             m_shaders(m_bgfxAdapter)
     {
         m_renderer2d.setShader(m_shaders.getHandleFromFile("simple2d"));

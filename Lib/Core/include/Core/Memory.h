@@ -17,11 +17,16 @@ namespace cc{
         Uint32 m_size = 0;
 
     public:
+        ByteArray();
         ByteArray(Uint8* copyFrom, Uint32 size);
         explicit ByteArray(Uint32 size);
         ByteArray(const ByteArray&) = delete;
         ByteArray(ByteArray&& moveFrom) noexcept;
         ~ByteArray();
+
+        void clear();
+        void copy(Uint8* copyFrom, Uint32 size);
+        void copy(void* copyFrom, Uint32 size);
 
         ByteArray& operator=(const ByteArray&) = delete;
         ByteArray& operator=(ByteArray&&);
