@@ -6,6 +6,8 @@
 
 #include "SdlWindowAdapter.h"
 
+#include <Core/Debug.h>
+
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
 
@@ -311,25 +313,33 @@ namespace cg::Impl {
         return ProgramHandle{bgfxProgram.idx};
     }
 
-    TextureHandle BgfxAdapter::createTexture2D(int width,
-                                               int height,
-                                               bool hasMips,
-                                               int numLayers,
-                                               TextureFormat format,
-                                               cc::Uint64 flags,
-                                               const cc::ByteArray &mem){
+    BgfxTexture::BgfxTexture(int width,
+                             int height,
+                             bool hasMips,
+                             int numLayers,
+                             TextureFormat format,
+                             cc::Uint64 flags,
+                             const cc::ByteArray &mem)
+    {
         const bgfx::Memory* bgfxMem = bgfx::alloc(mem.size());
         memcpy(bgfxMem->data, mem.data(), mem.size());
 
         bgfx::TextureFormat::Enum bgfxFormat = convTextureFormat(format);
 
-        bgfx::TextureHandle bgfxTexture = bgfx::createTexture2D(static_cast<uint16_t >(width),
-                                                                static_cast<uint16_t >(height),
-                                                                hasMips,
-                                                                static_cast<uint16_t >(numLayers),
-                                                                bgfxFormat,
-                                                                flags,
-                                                                bgfxMem);
-        return  TextureHandle{bgfxTexture.idx};
+        m_handle = bgfx::createTexture2D(static_cast<uint16_t >(width),
+                                         static_cast<uint16_t >(height),
+                                         hasMips,
+                                         static_cast<uint16_t >(numLayers),
+                                         bgfxFormat,
+                                         flags,
+                                         bgfxMem);
+
+        if(!bgfx::isValid(m_handle)){
+            throw cc::Error("Error when loading a texture");
+        }
+    }
+
+    BgfxTexture::~BgfxTexture() {
+        bgfx::destroy(m_handle);
     }
 }

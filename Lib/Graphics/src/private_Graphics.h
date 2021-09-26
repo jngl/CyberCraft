@@ -40,7 +40,7 @@ namespace cg::Impl {
     private:
         struct Texture{
             std::filesystem::path file;
-            TextureHandle texture;
+            BgfxTexture texture;
         };
 
         std::vector<Texture> m_textures;

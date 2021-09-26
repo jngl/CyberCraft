@@ -17,7 +17,7 @@ namespace cg::Impl{
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    TextureHandle loadTextureFile(BgfxAdapter& bgfxAdapter,
+    BgfxTexture loadTextureFile(BgfxAdapter& bgfxAdapter,
                                     std::string_view filePath,
                                     uint64_t _flags,
                                     Orientation* _orientation)
@@ -34,40 +34,28 @@ namespace cg::Impl{
             throw cc::Error(std::string("Texture File format not supported : ") + std::string(filePath));
         }
 
-        TextureHandle handle;
-       /*
+        if (nullptr != _orientation)
+        {
+            *_orientation = imageContainer->m_orientation;
+        }
 
-            if (imageContainer.has_value())
-            {
-                if (nullptr != _orientation)
-                {
-                    *_orientation = imageContainer->m_orientation;
-                }
+        if(!bgfx::isTextureValid(0,
+                                 false,
+                                 imageContainer->m_numLayers,
+                                 bgfx::TextureFormat::Enum(imageContainer->m_format), _flags))
+        {
+            throw cc::Error("Invalid Texture");
+        }
 
-                if (bgfx::isTextureValid(0,
-                                              false,
-                                              imageContainer->m_numLayers,
-                                              bgfx::TextureFormat::Enum(imageContainer->m_format), _flags) )
-                {
-                    bgfxAdapter.createTexture2D(
-                            uint16_t(imageContainer->m_width),
-                            uint16_t(imageContainer->m_height),
-                            1 < imageContainer->m_numMips,
-                            imageContainer->m_numLayers,
-                            imageContainer->m_format,
-                            _flags,
-                            imageContainer->data
-                            );
-                }
-
-//                if (bgfx::isValid(handle) )
-//                {
-//                    bgfx::setName(handle, _filePath);
-//                }
-
-            }*/
-
-        return handle;
+        return BgfxTexture(
+                uint16_t(imageContainer->m_width),
+                uint16_t(imageContainer->m_height),
+                1 < imageContainer->m_numMips,
+                imageContainer->m_numLayers,
+                imageContainer->m_format,
+                _flags,
+                imageContainer->data
+                );
     }
 
     TextureManager::TextureManager(BgfxAdapter& bgfxAdapter):
@@ -84,9 +72,9 @@ namespace cg::Impl{
             return;
         }
 
-        TextureHandle texture = loadTextureFile(m_bgfxAdapter, file.string(), 0, nullptr);
+        BgfxTexture texture = loadTextureFile(m_bgfxAdapter, file.string(), 0, nullptr);
 
-        m_textures.push_back(Texture{file, texture});
+        m_textures.push_back(Texture{file, std::move(texture)});
 
         std::cout<<"load texture : "<<file.stem()<<"\n";
     }

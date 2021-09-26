@@ -8,6 +8,8 @@
 #include <Kernel/Engine.h>
 #include <Core/Memory.h>
 
+#include <bgfx/bgfx.h>
+
 #include "TextureEnum.h"
 
 namespace bgfx
@@ -27,7 +29,27 @@ namespace cg::Impl {
 
     using ShaderHandle = cc::Id<unsigned int, struct ShaderHandleTag>;
     using ProgramHandle = cc::Id<unsigned int, struct ProgramHandleTag>;
-    using TextureHandle = cc::Id<unsigned int, struct TextureHandleTag>;
+
+    class BgfxTexture
+    {
+    public:
+        BgfxTexture(int width,
+                    int height,
+                    bool hasMips,
+                    int numLayers,
+                    TextureFormat format,
+                    cc::Uint64 flags,
+                    const cc::ByteArray& mem);
+        BgfxTexture(const BgfxTexture&) = delete;
+        BgfxTexture(BgfxTexture&&) = default;
+        BgfxTexture& operator=(const BgfxTexture&) = delete;
+        BgfxTexture& operator=(BgfxTexture&&) = default;
+
+        virtual ~BgfxTexture();
+
+    private:
+        bgfx::TextureHandle m_handle;
+    };
 
     class BgfxAdapter {
     public:
@@ -35,16 +57,6 @@ namespace cg::Impl {
 
         ShaderHandle createShader(const cc::ByteArray& mem);
         ProgramHandle createProgram(ShaderHandle vsh, ShaderHandle fsh, bool destroyShaders);
-
-        TextureHandle createTexture2D(int width,
-                                      int height,
-                                      bool hasMips,
-                                      int numLayers,
-                                      TextureFormat _format,
-                                      cc::Uint64 flags,
-                                      const cc::ByteArray& mem);
-
-
 
         void beginFrame(cc::Vector2ui newSize);
         void endFrame();
