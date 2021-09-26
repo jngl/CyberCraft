@@ -22,7 +22,7 @@ namespace ck
     class SpriteDrawer : public cc::Copyable
     {
     public:
-        virtual void drawSprite(TextureHandle texture,
+        virtual void drawSprite(const Texture& texture,
                                 const cc::Vector2f &pos,
                                 const cc::Vector2i &textureIndex,
                                 cc::Color color,
@@ -41,7 +41,7 @@ namespace ck
         virtual void setViewCenter(cc::Vector2f pos) = 0;
     };
 
-    class RenderContext2D : public TextureManager, public Camera2D, public SpriteDrawer  {
+    class RenderContext2D : public TextureFactory, public Camera2D, public SpriteDrawer  {
     public:
     };
 }

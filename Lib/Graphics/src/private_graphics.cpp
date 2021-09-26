@@ -17,92 +17,6 @@ namespace cg::Impl{
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    BgfxTexture loadTextureFile(BgfxAdapter& bgfxAdapter,
-                                    std::string_view filePath,
-                                    uint64_t _flags,
-                                    Orientation* _orientation)
-    {
-
-
-        std::optional<cc::ByteArray> data = cc::ByteArray::loadFromFile(filePath);
-        if (!data.has_value()) {
-            throw cc::Error("Texture File not found");
-        }
-
-        std::optional<ImageContainer> imageContainer = imageParse(data.value());
-        if (!imageContainer.has_value()){
-            throw cc::Error(std::string("Texture File format not supported : ") + std::string(filePath));
-        }
-
-        if (nullptr != _orientation)
-        {
-            *_orientation = imageContainer->m_orientation;
-        }
-
-        if(!bgfx::isTextureValid(0,
-                                 false,
-                                 imageContainer->m_numLayers,
-                                 bgfx::TextureFormat::Enum(imageContainer->m_format), _flags))
-        {
-            throw cc::Error("Invalid Texture");
-        }
-
-        return BgfxTexture(
-                uint16_t(imageContainer->m_width),
-                uint16_t(imageContainer->m_height),
-                1 < imageContainer->m_numMips,
-                imageContainer->m_numLayers,
-                imageContainer->m_format,
-                _flags,
-                imageContainer->data
-                );
-    }
-
-    TextureManager::TextureManager(BgfxAdapter& bgfxAdapter):
-    m_bgfxAdapter(bgfxAdapter)
-    {
-        namespace fs = std::filesystem;
-        for(const auto& p: fs::directory_iterator("data")){
-            loadTexture(p.path());
-        }
-    }
-
-    void TextureManager::loadTexture(const std::filesystem::path& file) {
-        if(file.extension() != ".dds" /*&& file.extension() != ".png"*/){
-            return;
-        }
-
-        BgfxTexture texture = loadTextureFile(m_bgfxAdapter, file.string(), 0, nullptr);
-
-        m_textures.push_back(Texture{file, std::move(texture)});
-
-        std::cout<<"load texture : "<<file.stem()<<"\n";
-    }
-
-    ck::TextureHandle TextureManager::getHandleFromFile(std::string_view filename) {
-        auto isFileNameCorrect = [filename](const Texture& texture) -> bool{
-            return texture.file.stem() == filename;
-        };
-
-        auto it = std::find_if(m_textures.begin(), m_textures.end(), isFileNameCorrect);
-
-        if(it == std::end(m_textures)){
-            return ck::TextureHandle();
-        }
-
-        unsigned int index = static_cast<unsigned int>(it - std::begin(m_textures));
-
-        return ck::TextureHandle(index);
-    }
-
-    void TextureManager::loadTexture(ck::TextureHandle) {
-    }
-
-    void TextureManager::unloadTexture(ck::TextureHandle) {
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     ShaderManager::ShaderManager(BgfxAdapter& bgfxAdapter):
             m_bgfxAdapter(bgfxAdapter)
     {
@@ -287,7 +201,6 @@ namespace cg::Impl{
 
     Common::Common():
             m_bgfxAdapter(m_window),
-            m_textures(m_bgfxAdapter),
             m_shaders(m_bgfxAdapter)
     {
         m_renderer2d.setShader(m_shaders.getHandleFromFile("simple2d"));

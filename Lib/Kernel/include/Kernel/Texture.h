@@ -8,15 +8,19 @@
 #include <Core/Id.h>
 #include <Core/Bases.h>
 
+#include <memory>
+
 namespace ck
 {
-    using TextureHandle = cc::Id<unsigned int, struct TextureHandleTag>;
-
-    class TextureManager : public cc::NonCopyable{
+    class Texture : public cc::NonCopyable
+    {
     public:
-        [[nodiscard]] virtual TextureHandle getHandleFromFile(std::string_view filename) = 0;
-        virtual void loadTexture(TextureHandle) = 0;
-        virtual void unloadTexture(TextureHandle) = 0;
+    };
+
+    class TextureFactory : public cc::NonCopyable
+    {
+    public:
+        virtual std::shared_ptr<Texture> loadTextureFromFile(std::string_view filename) = 0;
     };
 }
 

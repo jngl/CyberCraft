@@ -5,6 +5,7 @@
 #include "BgfxAdapter.h"
 
 #include "SdlWindowAdapter.h"
+#include "BimgAdapter.h"
 
 #include <Core/Debug.h>
 
@@ -15,6 +16,7 @@
 #include <SDL2/SDL_syswm.h>
 
 #include <iostream>
+#include <algorithm>
 
 namespace cg::Impl {
 
@@ -313,13 +315,66 @@ namespace cg::Impl {
         return ProgramHandle{bgfxProgram.idx};
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     BgfxTexture::BgfxTexture(int width,
                              int height,
                              bool hasMips,
                              int numLayers,
                              TextureFormat format,
                              cc::Uint64 flags,
-                             const cc::ByteArray &mem)
+                             const cc::ByteArray &mem):
+            m_handle(BGFX_INVALID_HANDLE)
+    {
+        load(width, height, hasMips, numLayers, format, flags, mem);
+    }
+
+    BgfxTexture::~BgfxTexture() {
+        bgfx::destroy(m_handle);
+    }
+
+    BgfxTexture::BgfxTexture(std::string_view filePath, uint64_t _flags, Orientation *_orientation) {
+        std::optional<cc::ByteArray> data = cc::ByteArray::loadFromFile(filePath);
+        if (!data.has_value()) {
+            throw cc::Error("Texture File not found");
+        }
+
+        std::optional<ImageContainer> imageContainer = imageParse(data.value());
+        if (!imageContainer.has_value()){
+            throw cc::Error(std::string("Texture File format not supported : ") + std::string(filePath));
+        }
+
+        if (nullptr != _orientation)
+        {
+            *_orientation = imageContainer->m_orientation;
+        }
+
+        if(!bgfx::isTextureValid(0,
+                                 false,
+                                 imageContainer->m_numLayers,
+                                 bgfx::TextureFormat::Enum(imageContainer->m_format), _flags))
+        {
+            throw cc::Error("Invalid Texture");
+        }
+
+        load(
+                uint16_t(imageContainer->m_width),
+                uint16_t(imageContainer->m_height),
+                1 < imageContainer->m_numMips,
+                imageContainer->m_numLayers,
+                imageContainer->m_format,
+                _flags,
+                imageContainer->data
+        );
+    }
+
+    void BgfxTexture::load(int width,
+                           int height,
+                           bool hasMips,
+                           int numLayers,
+                           TextureFormat format,
+                           cc::Uint64 flags,
+                           const cc::ByteArray &mem)
     {
         const bgfx::Memory* bgfxMem = bgfx::alloc(mem.size());
         memcpy(bgfxMem->data, mem.data(), mem.size());
@@ -339,7 +394,39 @@ namespace cg::Impl {
         }
     }
 
-    BgfxTexture::~BgfxTexture() {
-        bgfx::destroy(m_handle);
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    BgfxTextureFactory::BgfxTextureFactory()
+    {
+        namespace fs = std::filesystem;
+        for(const auto& p: fs::directory_iterator("data")){
+            loadTexture(p.path());
+        }
+    }
+
+    void BgfxTextureFactory::loadTexture(const std::filesystem::path& file) {
+        if(file.extension() != ".dds" /*&& file.extension() != ".png"*/){
+            return;
+        }
+
+        std::shared_ptr<BgfxTexture> texture( new BgfxTexture(file.string()));
+
+        m_textures.push_back(Texture{file, texture});
+
+        std::cout<<"load texture : "<<file.stem()<<"\n";
+    }
+
+    std::shared_ptr<ck::Texture> BgfxTextureFactory::loadTextureFromFile(std::string_view filename) {
+        auto isFileNameCorrect = [filename](const Texture& texture) -> bool{
+            return texture.file.stem() == filename;
+        };
+
+        auto it = std::find_if(m_textures.begin(), m_textures.end(), isFileNameCorrect);
+
+        if(it == std::end(m_textures)){
+            return {};
+        }
+
+        return it->texture;
     }
 }
