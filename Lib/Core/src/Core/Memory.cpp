@@ -27,6 +27,12 @@ namespace cc{
         }
     }
 
+    ByteArray::ByteArray(const ByteArray &other):
+    m_size(other.size()){
+        m_data = new Uint8[m_size];
+        memcpy(m_data, other.m_data, m_size);
+    }
+
     ByteArray::ByteArray(ByteArray &&moveFrom) noexcept:
     m_size(moveFrom.m_size),
     m_data(moveFrom.m_data)
@@ -37,6 +43,19 @@ namespace cc{
 
     ByteArray::~ByteArray() {
         clear();
+    }
+
+    ByteArray &ByteArray::operator=(const ByteArray & other) {
+        if(&other == this){
+            return *this;
+        }
+
+        m_size = other.size();
+
+        m_data = new Uint8[m_size];
+        memcpy(m_data, other.m_data, m_size);
+
+        return *this;
     }
 
     ByteArray &ByteArray::operator=(ByteArray&& from) {

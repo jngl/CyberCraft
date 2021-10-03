@@ -12,6 +12,7 @@
 
 #include <Core/Math.h>
 #include <Core/Bases.h>
+#include <Core/pointer.h>
 
 #include <Kernel/Engine.h>
 #include <Kernel/Key.h>
@@ -20,8 +21,6 @@
 #include <exception>
 #include <string>
 #include <filesystem>
-
-#include <bgfx/bgfx.h>
 
 #include <SDL_keycode.h>
 
@@ -33,14 +32,14 @@ namespace cg::Impl {
     public:
         explicit ShaderManager(BgfxAdapter&);
 
-        [[nodiscard]] ProgramHandle getHandleFromFile(std::string_view filename);
+        [[nodiscard]] cc::OptionalRef<BgfxProgram> getHandleFromFile(std::string_view filename);
 
         [[nodiscard]] std::string getShaderDir() const;
 
     private:
         struct Shader{
             std::string name;
-            ProgramHandle m_program;
+            BgfxProgram m_program;
         };
 
         BgfxAdapter& m_bgfxAdapter;
@@ -48,16 +47,14 @@ namespace cg::Impl {
 
         static std::optional<std::string> fileStemToShaderName(std::string_view fileStem);
 
-        ShaderHandle loadShader(std::string_view name);
+        BgfxShader loadShader(std::string_view name);
         void loadShaderProgram(std::string_view name);
     };
 
     class Renderer2d : public cc::NonCopyable, public ck::ColoredRectangleDrawer {
     public:
-        Renderer2d();
+        explicit Renderer2d(BgfxProgram& shader);
         ~Renderer2d() override;
-
-        void setShader(ProgramHandle shader);
 
         void updateSize(cc::Vector2ui size);
 
@@ -66,8 +63,8 @@ namespace cg::Impl {
     private:
         bgfx::VertexBufferHandle m_rectangleVertices{};
         bgfx::IndexBufferHandle m_rectangleIndices{};
-        ProgramHandle m_program{};
-        bgfx::UniformHandle m_color{};
+        BgfxProgram& m_program;
+        BgfxUniform m_color;
 
         void setViewTransform(const cc::Matrix4f& proj, const cc::Matrix4f& view);
     };
@@ -108,13 +105,19 @@ namespace cg::Impl {
     public:
         friend class Graphics;
 
-        explicit Frame(Common&) ;
+        explicit Frame(Common&);
+        Frame(const Frame&) = delete;
+        Frame(Frame&&) noexcept;
+
+        Frame& operator=(const Frame&) = delete;
+        Frame& operator=(Frame&&) noexcept;
+
         ~Frame() override;
 
         ck::ColoredRectangleDrawer& getColoredRectangleDrawer() override;
 
     private:
-        Common& m_common;
+        Common* m_common;
     };
 }
 

@@ -20,7 +20,7 @@ namespace cc{
         ByteArray();
         ByteArray(Uint8* copyFrom, Uint32 size);
         explicit ByteArray(Uint32 size);
-        ByteArray(const ByteArray&) = delete;
+        ByteArray(const ByteArray&);
         ByteArray(ByteArray&& moveFrom) noexcept;
         ~ByteArray();
 
@@ -28,7 +28,7 @@ namespace cc{
         void copy(Uint8* copyFrom, Uint32 size);
         void copy(void* copyFrom, Uint32 size);
 
-        ByteArray& operator=(const ByteArray&) = delete;
+        ByteArray& operator=(const ByteArray&);
         ByteArray& operator=(ByteArray&&);
 
         [[nodiscard]] Uint32 size() const;

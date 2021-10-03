@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "Core/Common.h"
+#include "Core/Debug.h"
 
 namespace cc {
     template<class T>
@@ -74,7 +75,7 @@ namespace cc {
     public:
         constexpr OptionalRef() = default;
 
-        constexpr OptionalRef(T* pointer): // NOLINT(hicpp-explicit-conversions)
+        constexpr explicit OptionalRef(T* pointer):
             m_pointer(pointer)
         {}
 
@@ -103,8 +104,13 @@ namespace cc {
         constexpr OptionalRef<T>& operator=(OptionalRef&& from) noexcept {
             if(this != &from){
                 m_pointer = from.m_pointer;
-                m_pointer = nullptr;
+                from.m_pointer = nullptr;
             }
+            return *this;
+        }
+
+        constexpr OptionalRef<T>& operator=(T& from) noexcept {
+            m_pointer = &from;
             return *this;
         }
 
@@ -118,6 +124,34 @@ namespace cc {
 
         [[nodiscard]] bool hasValue() const {
             return m_pointer != nullptr;
+        }
+
+        constexpr T& value(){
+            if(m_pointer == nullptr){
+                throw cc::Error("OptionalRef::value() : no value");
+            }
+            return *m_pointer;
+        }
+
+        constexpr const T& value() const{
+            if(m_pointer == nullptr){
+                throw cc::Error("OptionalRef::value() : no value");
+            }
+            return *m_pointer;
+        }
+
+        constexpr T& valueOrError(std::string_view msg){
+            if(m_pointer == nullptr){
+                throw cc::Error(msg);
+            }
+            return *m_pointer;
+        }
+
+        constexpr const T& valueOrError(std::string_view msg) const{
+            if(m_pointer == nullptr){
+                throw cc::Error(msg);
+            }
+            return *m_pointer;
         }
 
     private:

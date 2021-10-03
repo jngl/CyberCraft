@@ -193,6 +193,27 @@ namespace cg::Impl {
         }
     }
 
+    bgfx::UniformType::Enum convUniformType(UniformType type){
+        switch (type) {
+            case UniformType::Sampler:
+                return bgfx::UniformType::Sampler;
+            case UniformType::Mat3:
+                return bgfx::UniformType::Mat3;
+            case UniformType::Mat4:
+                return bgfx::UniformType::Mat4;
+            case UniformType::Vec4:
+                return bgfx::UniformType::Vec4;
+            default:
+                return bgfx::UniformType::Count;
+        }
+    }
+
+    const bgfx::Memory* createBgfxMemory(const cc::ByteArray& mem){
+        const bgfx::Memory* bgfxMem = bgfx::alloc(mem.size());
+        memcpy(bgfxMem->data, mem.data(), mem.size());
+        return bgfxMem;
+    }
+
     BgfxAdapter::BgfxAdapter(SdlWindowAdapter& win){
         sdlSetWindow(win);
 
@@ -294,27 +315,6 @@ namespace cg::Impl {
         bgfx::frame();
     }
 
-    ShaderHandle BgfxAdapter::createShader(const cc::ByteArray& mem) {
-        const bgfx::Memory* bgfxMem = bgfx::alloc(mem.size());
-        memcpy(bgfxMem->data, mem.data(), mem.size());
-        bgfx::ShaderHandle bgfxShader = bgfx::createShader(bgfxMem);
-        ShaderHandle shader{bgfxShader.idx};
-        if(!bgfx::isValid(bgfxShader)){
-            std::cout<<"Shader erreur"<<std::endl;
-        }
-        return shader;
-    }
-
-    ProgramHandle BgfxAdapter::createProgram(ShaderHandle vsh, ShaderHandle fsh, bool destroyShaders) {
-        bgfx::ShaderHandle bgfxVsh{static_cast<uint16_t>(vsh.value())};
-        bgfx::ShaderHandle bgfxFsh{static_cast<uint16_t>(fsh.value())};
-        bgfx::ProgramHandle bgfxProgram = bgfx::createProgram(bgfxVsh, bgfxFsh, destroyShaders);
-        if(!bgfx::isValid(bgfxProgram)){
-            std::cout<<"Shader programm erreur"<<std::endl;
-        }
-        return ProgramHandle{bgfxProgram.idx};
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     BgfxTexture::BgfxTexture(int width,
@@ -376,8 +376,7 @@ namespace cg::Impl {
                            cc::Uint64 flags,
                            const cc::ByteArray &mem)
     {
-        const bgfx::Memory* bgfxMem = bgfx::alloc(mem.size());
-        memcpy(bgfxMem->data, mem.data(), mem.size());
+        const bgfx::Memory* bgfxMem = createBgfxMemory(mem);
 
         bgfx::TextureFormat::Enum bgfxFormat = convTextureFormat(format);
 
@@ -428,5 +427,99 @@ namespace cg::Impl {
         }
 
         return it->texture;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    BgfxShader::BgfxShader(const cc::ByteArray& data) {
+        const bgfx::Memory* bgfxMem = createBgfxMemory(data);
+        m_handle = bgfx::createShader(bgfxMem);
+
+        if(!bgfx::isValid(m_handle)){
+            throw cc::Error("Error when loading a shader");
+        }
+    }
+
+    BgfxShader::~BgfxShader() {
+        if(bgfx::isValid(m_handle)) {
+            bgfx::destroy(m_handle);
+        }
+    }
+
+    bgfx::ShaderHandle BgfxShader::getHandle() {
+        return m_handle;
+    }
+
+    BgfxShader::BgfxShader(BgfxShader && other) noexcept {
+        m_handle = other.m_handle;
+        other.m_handle = BGFX_INVALID_HANDLE;
+    }
+
+    BgfxShader &BgfxShader::operator=(BgfxShader && other) noexcept {
+        m_handle = other.m_handle;
+        other.m_handle = BGFX_INVALID_HANDLE;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    BgfxProgram::BgfxProgram(BgfxShader &vsh, BgfxShader &fsh) {
+        m_handle = bgfx::createProgram(vsh.getHandle(), fsh.getHandle());
+
+        if(!bgfx::isValid(m_handle)){
+            throw cc::Error("Error when loading a shader program");
+        }
+    }
+
+    BgfxProgram::~BgfxProgram() {
+        if(bgfx::isValid(m_handle)){
+            bgfx::destroy(m_handle);
+        }
+    }
+
+    bgfx::ProgramHandle BgfxProgram::getHandle() {
+        return m_handle;
+    }
+
+    BgfxProgram::BgfxProgram(BgfxProgram && other) noexcept:
+            m_handle(other.m_handle){
+        other.m_handle = BGFX_INVALID_HANDLE;
+    }
+
+    BgfxProgram &BgfxProgram::operator=(BgfxProgram && other) noexcept{
+        m_handle = other.m_handle;
+        other.m_handle = BGFX_INVALID_HANDLE;
+        return *this;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    BgfxUniform::BgfxUniform(std::string_view name, UniformType type, int num) {
+        m_handle = bgfx::createUniform(std::string(name).c_str(), convUniformType(type), static_cast<uint16_t >(num));
+    }
+
+    BgfxUniform::~BgfxUniform() {
+        if(bgfx::isValid(m_handle)) {
+            bgfx::destroy(m_handle);
+        }
+    }
+
+    bgfx::UniformHandle BgfxUniform::getHandle() {
+        return m_handle;
+    }
+
+    void BgfxUniform::setColor(const cc::Color & color) {
+        float colorTmp[4] = {static_cast<float>(color.red) / 255.f,
+                             static_cast<float>(color.green) / 255.f,
+                             static_cast<float>(color.blue) / 255.f,
+                             static_cast<float>(color.alpha) / 255.f};
+        bgfx::setUniform(m_handle, colorTmp, 1);
+    }
+
+    BgfxUniform::BgfxUniform(BgfxUniform && other) noexcept{
+        m_handle = other.m_handle;
+        other.m_handle = BGFX_INVALID_HANDLE;
+    }
+
+    BgfxUniform &BgfxUniform::operator=(BgfxUniform && other) noexcept {
+        m_handle = other.m_handle;
+        other.m_handle = BGFX_INVALID_HANDLE;
+        return *this;
     }
 }

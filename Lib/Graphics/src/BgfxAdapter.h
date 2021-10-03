@@ -12,7 +12,7 @@
 
 #include <filesystem>
 
-#include "TextureEnum.h"
+#include "Enum.h"
 
 namespace bgfx
 {
@@ -29,9 +29,77 @@ namespace cc{
 namespace cg::Impl {
     class SdlWindowAdapter;
 
-    using ShaderHandle = cc::Id<unsigned int, struct ShaderHandleTag>;
-    using ProgramHandle = cc::Id<unsigned int, struct ProgramHandleTag>;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// BGFX Uniform
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    class BgfxUniform
+    {
+    public:
+        explicit BgfxUniform(std::string_view name, UniformType type, int num);
 
+        BgfxUniform(const BgfxUniform&) = delete;
+        BgfxUniform(BgfxUniform&&) noexcept;
+
+        BgfxUniform& operator=(const BgfxUniform&) = delete;
+        BgfxUniform& operator=(BgfxUniform&&) noexcept;
+
+        virtual ~BgfxUniform();
+
+        bgfx::UniformHandle getHandle();
+
+        void setColor(const cc::Color&);
+
+    private:
+        bgfx::UniformHandle m_handle;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// BGFX Shader
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    class BgfxShader
+    {
+    public:
+        explicit BgfxShader(const cc::ByteArray&);
+
+        BgfxShader(const BgfxShader&) = delete;
+        BgfxShader(BgfxShader&&) noexcept;
+
+        BgfxShader& operator=(const BgfxShader&) = delete;
+        BgfxShader& operator=(BgfxShader&&) noexcept;
+
+        virtual ~BgfxShader();
+
+        bgfx::ShaderHandle getHandle();
+
+    private:
+        bgfx::ShaderHandle m_handle;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// BGFX Shader
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    class BgfxProgram
+    {
+    public:
+        explicit BgfxProgram(BgfxShader& vsh, BgfxShader& fsh);
+
+        BgfxProgram(const BgfxProgram&) = delete;
+        BgfxProgram(BgfxProgram&&) noexcept;
+
+        BgfxProgram& operator=(const BgfxProgram&) = delete;
+        BgfxProgram& operator=(BgfxProgram&&) noexcept;
+
+        virtual ~BgfxProgram();
+
+        bgfx::ProgramHandle getHandle();
+
+    private:
+        bgfx::ProgramHandle m_handle;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// BGFX Texture
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
     class BgfxTexture : public ck::Texture
     {
     public:
@@ -60,6 +128,9 @@ namespace cg::Impl {
                   const cc::ByteArray& mem);
     };
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// BGFX Texture Factory
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
     class BgfxTextureFactory : public ck::TextureFactory{
     public:
         BgfxTextureFactory();
@@ -77,12 +148,12 @@ namespace cg::Impl {
         void loadTexture(const std::filesystem::path& file);
     };
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// BGFX Adapter
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
     class BgfxAdapter {
     public:
         explicit BgfxAdapter(SdlWindowAdapter& win);
-
-        ShaderHandle createShader(const cc::ByteArray& mem);
-        ProgramHandle createProgram(ShaderHandle vsh, ShaderHandle fsh, bool destroyShaders);
 
         void beginFrame(cc::Vector2ui newSize);
         void endFrame();

@@ -7,7 +7,7 @@
 
 #include <Core/Memory.h>
 
-#include "TextureEnum.h"
+#include "Enum.h"
 
 namespace cg::Impl
 {

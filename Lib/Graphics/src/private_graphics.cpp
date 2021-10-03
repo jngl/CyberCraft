@@ -45,28 +45,26 @@ namespace cg::Impl{
         return {name};
     }
 
-    ShaderHandle ShaderManager::loadShader(std::string_view name) {
+    BgfxShader ShaderManager::loadShader(std::string_view name) {
         std::string filePath = "./data/shader/" + std::string(GetGraphicsApiShaderType(m_bgfxAdapter.getApi())) + "/" + std::string(name) + ".bin";
         std::optional<cc::ByteArray> memory = cc::ByteArray::loadFromFile(filePath);
         if(!memory.has_value()){
-            std::cout<<"error while loading the shader "<<name<<std::endl;
-            return {};
+            throw cc::Error("error while opening a shader file");
         }
-        return m_bgfxAdapter.createShader(memory.value());
+        BgfxShader shader(memory.value());
+        return shader;
     }
 
     void ShaderManager::loadShaderProgram(std::string_view name) {
         std::cout<<"load shader "<<name<<std::endl;
 
-        ShaderHandle vsh = loadShader(std::string("vs_")+std::string(name));
-        ShaderHandle fsh = loadShader(std::string("fs_")+std::string(name));
+        BgfxShader vsh = loadShader(std::string("vs_")+std::string(name));
+        BgfxShader fsh = loadShader(std::string("fs_")+std::string(name));
 
-        ProgramHandle program = m_bgfxAdapter.createProgram(vsh, fsh, true);
-
-        m_shaders.push_back(Shader{std::string(name), program});
+        m_shaders.push_back(Shader{std::string(name), BgfxProgram(vsh, fsh)});
     }
 
-    ProgramHandle ShaderManager::getHandleFromFile(std::string_view filename) {
+    cc::OptionalRef<BgfxProgram> ShaderManager::getHandleFromFile(std::string_view filename) {
         auto isFileNameCorrect = [filename](const Shader& shader) -> bool{
             return shader.name == filename;
         };
@@ -77,7 +75,7 @@ namespace cg::Impl{
             return {};
         }
 
-        return it->m_program;
+        return cc::OptionalRef<BgfxProgram>(it->m_program);
     }
 
     std::string ShaderManager::getShaderDir() const {
@@ -127,7 +125,10 @@ namespace cg::Impl{
     };
 
 
-    Renderer2d::Renderer2d() {
+    Renderer2d::Renderer2d(BgfxProgram& shader):
+            m_program(shader),
+            m_color("u_color", UniformType::Vec4, 1)
+    {
         m_rectangleVertices  = bgfx::createVertexBuffer(
                 bgfx::makeRef(g_rectangleVerticesData.data(), sizeof(g_rectangleVerticesData) ),
                 Pos2dVertex::getLayout()
@@ -166,21 +167,10 @@ namespace cg::Impl{
         bgfx::setVertexBuffer(0, m_rectangleVertices);
         bgfx::setIndexBuffer(m_rectangleIndices);
 
-        float colorTmp[4] = {static_cast<float>(color.red) / 255.f,
-                             static_cast<float>(color.green) / 255.f,
-                             static_cast<float>(color.blue) / 255.f,
-                             static_cast<float>(color.alpha) / 255.f};
-
-        bgfx::setUniform(m_color, colorTmp, 1);
+        m_color.setColor(color);
 
         // Submit primitive for rendering to view 0.
-        bgfx::submit(0, bgfx::ProgramHandle{static_cast<uint16_t>(m_program.value())});
-    }
-
-    void Renderer2d::setShader(ProgramHandle shader) {
-        m_program = shader;
-
-        m_color = bgfx::createUniform("u_color", bgfx::UniformType::Vec4, 1);
+        bgfx::submit(0, m_program.getHandle());
     }
 
     void Renderer2d::updateSize(cc::Vector2ui size) {
@@ -201,9 +191,9 @@ namespace cg::Impl{
 
     Common::Common():
             m_bgfxAdapter(m_window),
-            m_shaders(m_bgfxAdapter)
+            m_shaders(m_bgfxAdapter),
+            m_renderer2d(m_shaders.getHandleFromFile("simple2d").valueOrError("shader program simple2d not found"))
     {
-        m_renderer2d.setShader(m_shaders.getHandleFromFile("simple2d"));
     }
 
     void Common::startFrame() {
@@ -241,16 +231,29 @@ namespace cg::Impl{
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Frame::Frame(Common &common):
-            m_common(common)
+            m_common(&common)
     {
-        m_common.startFrame();
+        m_common->startFrame();
     }
 
     ck::ColoredRectangleDrawer &Frame::getColoredRectangleDrawer() {
-        return m_common.getRenderer2d();
+        return m_common->getRenderer2d();
     }
 
     Frame::~Frame() {
-        m_common.endFrame();
+        if(m_common != nullptr){
+            m_common->endFrame();
+        }
+    }
+
+    Frame::Frame(Frame && other) noexcept {
+        m_common = other.m_common;
+        other.m_common = nullptr;
+    }
+
+    Frame &Frame::operator=(Frame && other) noexcept {
+        m_common = other.m_common;
+        other.m_common = nullptr;
+        return *this;
     }
 }

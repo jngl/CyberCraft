@@ -2,8 +2,8 @@
 // Created by jngl on 26/09/2021.
 //
 
-#ifndef CYBERCRAFT_TEXTUREENUM_H
-#define CYBERCRAFT_TEXTUREENUM_H
+#ifndef CYBERCRAFT_ENUM_H
+#define CYBERCRAFT_ENUM_H
 
 namespace cg::Impl
 {
@@ -114,6 +114,17 @@ namespace cg::Impl
 
         Count
     };
+
+    enum class UniformType
+    {
+        Sampler, //!< Sampler.
+
+        Vec4,    //!< 4 floats vector.
+        Mat3,    //!< 3x3 matrix.
+        Mat4,    //!< 4x4 matrix.
+
+        Count
+    };
 }
 
-#endif //CYBERCRAFT_TEXTUREENUM_H
+#endif //CYBERCRAFT_ENUM_H
