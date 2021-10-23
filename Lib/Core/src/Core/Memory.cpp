@@ -84,13 +84,9 @@ namespace cc{
 
         ByteArray result(size);
 
-        file.read (reinterpret_cast<char*>(result.data()),size);
+        file.read (reinterpret_cast<char*>(result.m_data),size);
 
         return result;
-    }
-
-    void *ByteArray::data() {
-        return m_data;
     }
 
     void ByteArray::copy(void *copyFrom, Uint32 size) {
@@ -104,6 +100,68 @@ namespace cc{
         if(m_data)delete[] m_data;
         m_data = nullptr;
         m_size = 0;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ByteArrayView::ByteArrayView(const void *refFrom, Uint32 size):
+    m_data(refFrom),
+    m_size(size)
+    {
+    }
+
+    ByteArrayView::ByteArrayView(const ByteArray & from):
+    m_data(from.data()),
+    m_size(from.size())
+    {
+    }
+
+    ByteArrayView::ByteArrayView(const ByteArrayView & from):
+    m_data(from.m_data),
+    m_size(from.m_size)
+    {
+    }
+
+    ByteArrayView::ByteArrayView(ByteArrayView &&moveFrom) noexcept:
+    m_data(moveFrom.m_data),
+    m_size(moveFrom.m_size)
+    {
+    }
+
+    void ByteArrayView::clear() {
+        m_data = nullptr;
+        m_size = 0;
+    }
+
+    void ByteArrayView::ref(void *refFrom, Uint32 size) {
+        m_data = refFrom;
+        m_size = size;
+    }
+
+    ByteArrayView &ByteArrayView::operator=(const ByteArray& from) {
+        m_data = from.data();
+        m_size = from.size();
+        return *this;
+    }
+
+    ByteArrayView &ByteArrayView::operator=(const ByteArrayView& from) {
+        m_data = from.m_data;
+        m_size = from.m_size;
+        return *this;
+    }
+
+    ByteArrayView &ByteArrayView::operator=(ByteArrayView &&from) {
+        m_data = from.m_data;
+        m_size = from.m_size;
+        return *this;
+    }
+
+    Uint32 ByteArrayView::size() const {
+        return m_size;
+    }
+
+    const void *ByteArrayView::data() const {
+        return m_data;
     }
 }
 

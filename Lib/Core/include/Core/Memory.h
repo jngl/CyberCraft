@@ -33,12 +33,41 @@ namespace cc{
 
         [[nodiscard]] Uint32 size() const;
         [[nodiscard]] const void* data() const;
-        [[nodiscard]] void* data();
 
         static std::optional<ByteArray> loadFromFile(std::string_view filename);
 
         template<class T, size_t size>
         static ByteArray copyFromArray(const std::array<T, size>& array){
+            return ByteArray(array.data(), array.size() * sizeof(T));
+        }
+    };
+
+    class ByteArrayView
+    {
+    private:
+        const void* m_data = nullptr;
+        Uint32 m_size = 0;
+
+    public:
+        ByteArrayView() = default;
+        ByteArrayView(const void* refFrom, Uint32 size);
+        ByteArrayView(const ByteArray&);
+        ByteArrayView(const ByteArrayView&);
+        ByteArrayView(ByteArrayView&& moveFrom) noexcept;
+
+        void clear();
+        void ref(void* refFrom, Uint32 size);
+
+        ByteArrayView& operator=(const ByteArray&);
+
+        ByteArrayView& operator=(const ByteArrayView&);
+        ByteArrayView& operator=(ByteArrayView&&);
+
+        [[nodiscard]] Uint32 size() const;
+        [[nodiscard]] const void* data() const;
+
+        template<class T, size_t size>
+        static ByteArray fromArray(const std::array<T, size>& array){
             return ByteArray(array.data(), array.size() * sizeof(T));
         }
     };

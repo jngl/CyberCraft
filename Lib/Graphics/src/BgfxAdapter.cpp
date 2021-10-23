@@ -270,7 +270,7 @@ namespace cg::Impl {
         }
     }
 
-    const bgfx::Memory* createBgfxMemory(const cc::ByteArray& mem){
+    const bgfx::Memory* createBgfxMemory(const cc::ByteArrayView& mem){
         const bgfx::Memory* bgfxMem = bgfx::alloc(mem.size());
         memcpy(bgfxMem->data, mem.data(), mem.size());
         return bgfxMem;
@@ -387,7 +387,7 @@ namespace cg::Impl {
                              int numLayers,
                              TextureFormat format,
                              cc::Uint64 flags,
-                             const cc::ByteArray &mem):
+                             const cc::ByteArrayView &mem):
             m_handle(BGFX_INVALID_HANDLE)
     {
         load(width, height, hasMips, numLayers, format, flags, mem);
@@ -438,7 +438,7 @@ namespace cg::Impl {
                            int numLayers,
                            TextureFormat format,
                            cc::Uint64 flags,
-                           const cc::ByteArray &mem)
+                           const cc::ByteArrayView &mem)
     {
         const bgfx::Memory* bgfxMem = createBgfxMemory(mem);
 
@@ -494,7 +494,7 @@ namespace cg::Impl {
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    BgfxShader::BgfxShader(const cc::ByteArray& data) {
+    BgfxShader::BgfxShader(const cc::ByteArrayView& data) {
         const bgfx::Memory* bgfxMem = createBgfxMemory(data);
         m_handle = bgfx::createShader(bgfxMem);
 
@@ -675,7 +675,7 @@ namespace cg::Impl {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    VertexBuffer::VertexBuffer(const cc::ByteArray& data, const VertexLayout& layout) {
+    VertexBuffer::VertexBuffer(const cc::ByteArrayView& data, const VertexLayout& layout) {
         m_handle  = bgfx::createVertexBuffer(
                 createBgfxMemory(data),
                 layout.getBgfxLayout()

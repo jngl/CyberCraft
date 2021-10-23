@@ -36,7 +36,7 @@ namespace cg::Impl {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     class VertexBuffer{
     public:
-        VertexBuffer(const cc::ByteArray& data, const VertexLayout& layout);
+        VertexBuffer(const cc::ByteArrayView& data, const VertexLayout& layout);
         ~VertexBuffer();
 
         [[nodiscard]] bgfx::VertexBufferHandle getBgfxHandle() const;
@@ -90,7 +90,7 @@ namespace cg::Impl {
     class BgfxShader
     {
     public:
-        explicit BgfxShader(const cc::ByteArray&);
+        explicit BgfxShader(const cc::ByteArrayView&);
 
         BgfxShader(const BgfxShader&) = delete;
         BgfxShader(BgfxShader&&) noexcept;
@@ -168,7 +168,7 @@ namespace cg::Impl {
                     int numLayers,
                     TextureFormat format,
                     cc::Uint64 flags,
-                    const cc::ByteArray& mem);
+                    const cc::ByteArrayView& mem);
         explicit BgfxTexture(std::string_view filePath,
                     uint64_t _flags = 0,
                     Orientation* _orientation = nullptr);
@@ -184,7 +184,7 @@ namespace cg::Impl {
                   int numLayers,
                   TextureFormat format,
                   cc::Uint64 flags,
-                  const cc::ByteArray& mem);
+                  const cc::ByteArrayView& mem);
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
