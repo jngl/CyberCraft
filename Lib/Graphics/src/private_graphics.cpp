@@ -53,17 +53,11 @@ namespace cg::Impl{
 
 
     Renderer2d::Renderer2d(BgfxProgram& shader):
-            m_rectangleVertices(cc::ByteArray::copyFromArray(g_rectangleVerticesData), Pos2dVertex::getLayout()),
+            m_rectangleVertices(cc::ByteArrayView::fromArray(g_rectangleVerticesData), Pos2dVertex::getLayout()),
+            m_rectangleIndices(cc::ByteArrayView::fromArray(g_rectangleIndicesData)),
             m_program(shader),
             m_color("u_color", UniformType::Vec4, 1)
     {
-        m_rectangleIndices = bgfx::createIndexBuffer(
-                bgfx::makeRef(g_rectangleIndicesData.data(), sizeof(g_rectangleIndicesData) )
-        );
-    }
-
-    Renderer2d::~Renderer2d() {
-        bgfx::destroy(m_rectangleIndices);
     }
 
     void Renderer2d::drawRectangle(const cc::Vector2f &pos, const cc::Vector2f &size, const cc::Color &color) {
@@ -87,7 +81,7 @@ namespace cg::Impl{
 
         // Set vertex and index buffer.
         bgfx::setVertexBuffer(0, m_rectangleVertices.getBgfxHandle());
-        bgfx::setIndexBuffer(m_rectangleIndices);
+        bgfx::setIndexBuffer(m_rectangleIndices.getBgfxHandle());
 
         m_color.setColor(color);
 
