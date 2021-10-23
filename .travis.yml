@@ -42,6 +42,7 @@ jobs:
             - python3-pip
             - libsdl2-dev
             - libsfml-dev
+            - libfmt-dev
 
 
 before_script:
