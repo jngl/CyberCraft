@@ -321,6 +321,10 @@ namespace cg::Impl {
         bgfx::dbgTextPrintf(0, 0, 0x0f, textStr.c_str());
     }
 
+    BgfxTextureFactory &BgfxAdapter::getTextureFactory() {
+        return m_textures;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     BgfxTexture::BgfxTexture(int width,
@@ -397,6 +401,10 @@ namespace cg::Impl {
         if(!bgfx::isValid(m_handle)){
             throw cc::Error("Error when loading a texture");
         }
+    }
+
+    bgfx::TextureHandle BgfxTexture::getHandle() const {
+        return m_handle;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -527,6 +535,11 @@ namespace cg::Impl {
         m_handle = other.m_handle;
         other.m_handle = BGFX_INVALID_HANDLE;
         return *this;
+    }
+
+    void BgfxUniform::setTexture(const ck::Texture& texture) {
+        const auto* bgfxTexture = dynamic_cast<const BgfxTexture*>(&texture);
+        bgfx::setTexture(0, m_handle, bgfxTexture->getHandle());
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////

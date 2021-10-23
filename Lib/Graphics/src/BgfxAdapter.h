@@ -94,6 +94,7 @@ namespace cg::Impl {
         bgfx::UniformHandle getHandle();
 
         void setColor(const cc::Color&);
+        void setTexture(const ck::Texture&);
 
     private:
         bgfx::UniformHandle m_handle;
@@ -190,6 +191,8 @@ namespace cg::Impl {
 
         virtual ~BgfxTexture();
 
+        bgfx::TextureHandle getHandle() const;
+
     private:
         bgfx::TextureHandle m_handle;
 
@@ -253,6 +256,7 @@ namespace cg::Impl {
         void endFrame();
 
         BgfxProgramFactory& getProgramFactory();
+        BgfxTextureFactory& getTextureFactory();
 
         void setTransform(const cc::Matrix4f&);
 

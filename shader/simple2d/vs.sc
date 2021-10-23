@@ -1,4 +1,5 @@
-$input a_position
+$input a_position, a_texcoord0
+$output v_texcoord0
 
 /*
  * Copyright 2011-2021 Branimir Karadzic. All rights reserved.
@@ -9,5 +10,6 @@ $input a_position
 
 void main()
 {
+    v_texcoord0 = a_texcoord0;
 	gl_Position = mul(u_modelViewProj, vec4(a_position, 0.0, 1.0) );
 }

@@ -19,6 +19,8 @@ namespace cg::Impl{
     {
         float m_x;
         float m_y;
+        float m_u;
+        float m_v;
 
         static const VertexLayout& getLayout(){
             auto init = [](){
@@ -26,6 +28,7 @@ namespace cg::Impl{
 
                 layout.begin();
                 layout.add(Attrib::Position, 2, AttribType::Float);
+                layout.add(Attrib::TexCoord0, 2, AttribType::Float);
                 layout.end();
 
                 return layout;
@@ -39,10 +42,10 @@ namespace cg::Impl{
 
     constexpr std::array<Pos2dVertex, 4> g_rectangleVerticesData{
             {
-                    {-1.0f, 1.0f},
-                    {1.0f,  1.0f},
-                    {-1.0f, -1.0f},
-                    {1.0f,  -1.0f}
+                    {-1.0f, 1.0f, 0.f, 1.f},
+                    {1.0f,  1.0f, 1.f, 1.f},
+                    {-1.0f, -1.0f, 0.f, 0.f},
+                    {1.0f,  -1.0f, 1.f, 0.f}
             }
     };
 
@@ -59,7 +62,9 @@ namespace cg::Impl{
             m_rectangleVertices(cc::ByteArrayView::fromArray(g_rectangleVerticesData), Pos2dVertex::getLayout()),
             m_rectangleIndices(cc::ByteArrayView::fromArray(g_rectangleIndicesData)),
             m_program(m_bgfxAdapter.getProgramFactory().loadProgramFromFile("simple2d")),
-            m_color("u_color", UniformType::Vec4, 1)
+            m_textureTest(m_bgfxAdapter.getTextureFactory().loadTextureFromFile("dirt")),
+            m_color("u_color", UniformType::Vec4, 1),
+            m_texture("u_texture", UniformType::Sampler, 1)
     {
     }
 
@@ -80,6 +85,7 @@ namespace cg::Impl{
         m_bgfxAdapter.setIndexBuffer(m_rectangleIndices);
 
         m_color.setColor(color);
+        m_texture.setTexture(*m_textureTest);
 
         // Submit primitive for rendering to view 0.
         m_bgfxAdapter.submit(*m_program);

@@ -19,7 +19,7 @@ public:
 private:
     cc::Vector2f m_pos{200, 200};
 
-    static constexpr float m_playerSize = 10;
+    static constexpr float m_playerSize = 50;
 };
 
 #endif //CYBERCRAFT_GAME_H
