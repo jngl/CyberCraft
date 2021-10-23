@@ -28,29 +28,6 @@ struct SDL_Window;
 
 namespace cg::Impl {
 
-    class ShaderManager {
-    public:
-        explicit ShaderManager(BgfxAdapter&);
-
-        [[nodiscard]] cc::OptionalRef<BgfxProgram> getHandleFromFile(std::string_view filename);
-
-        [[nodiscard]] std::string getShaderDir() const;
-
-    private:
-        struct Shader{
-            std::string name;
-            BgfxProgram m_program;
-        };
-
-        BgfxAdapter& m_bgfxAdapter;
-        std::vector<Shader> m_shaders;
-
-        static std::optional<std::string> fileStemToShaderName(std::string_view fileStem);
-
-        BgfxShader loadShader(std::string_view name);
-        void loadShaderProgram(std::string_view name);
-    };
-
     class Renderer2d : public cc::NonCopyable, public ck::ColoredRectangleDrawer {
     public:
         explicit Renderer2d(BgfxProgram& shader);
@@ -85,7 +62,7 @@ namespace cg::Impl {
         SdlWindowAdapter m_window;
         BgfxAdapter m_bgfxAdapter;
         BgfxTextureFactory m_textures;
-        ShaderManager m_shaders;
+        BgfxProgramFactory m_programs;
         Renderer2d m_renderer2d;
     };
 

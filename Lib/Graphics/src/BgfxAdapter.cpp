@@ -9,6 +9,8 @@
 
 #include <Core/Debug.h>
 
+#include "Kernel/Engine.h"
+
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
 
@@ -208,11 +210,73 @@ namespace cg::Impl {
         }
     }
 
+    bgfx::Attrib::Enum convAttrib(Attrib attrib){
+        switch (attrib) {
+            case Attrib::Position:
+                return bgfx::Attrib::Position;
+            case Attrib::Normal:
+                return bgfx::Attrib::Normal;
+            case Attrib::Tangent:
+                return bgfx::Attrib::Tangent;
+            case Attrib::Bitangent:
+                return bgfx::Attrib::Bitangent;
+            case Attrib::Color0:
+                return bgfx::Attrib::Color0;
+            case Attrib::Color1:
+                return bgfx::Attrib::Color1;
+            case Attrib::Color2:
+                return bgfx::Attrib::Color2;
+            case Attrib::Color3:
+                return bgfx::Attrib::Color3;
+            case Attrib::Indices:
+                return bgfx::Attrib::Indices;
+            case Attrib::Weight:
+                return bgfx::Attrib::Weight;
+            case Attrib::TexCoord0:
+                return bgfx::Attrib::TexCoord0;
+            case Attrib::TexCoord1:
+                return bgfx::Attrib::TexCoord1;
+            case Attrib::TexCoord2:
+                return bgfx::Attrib::TexCoord2;
+            case Attrib::TexCoord3:
+                return bgfx::Attrib::TexCoord3;
+            case Attrib::TexCoord4:
+                return bgfx::Attrib::TexCoord4;
+            case Attrib::TexCoord5:
+                return bgfx::Attrib::TexCoord5;
+            case Attrib::TexCoord6:
+                return bgfx::Attrib::TexCoord6;
+            case Attrib::TexCoord7:
+                return bgfx::Attrib::TexCoord7;
+            default:
+                return bgfx::Attrib::Count;
+        }
+    }
+
+    bgfx::AttribType::Enum convAttribType(AttribType type){
+        switch (type) {
+            case AttribType::Uint8:
+                return bgfx::AttribType::Uint8;
+            case AttribType::Uint10:
+                return bgfx::AttribType::Uint10;
+            case AttribType::Int16:
+                return bgfx::AttribType::Int16;
+            case AttribType::Half:
+                return bgfx::AttribType::Half;
+            case AttribType::Float:
+                return bgfx::AttribType::Float;
+            default:
+                return bgfx::AttribType::Count;
+        }
+    }
+
     const bgfx::Memory* createBgfxMemory(const cc::ByteArray& mem){
         const bgfx::Memory* bgfxMem = bgfx::alloc(mem.size());
         memcpy(bgfxMem->data, mem.data(), mem.size());
         return bgfxMem;
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     BgfxAdapter::BgfxAdapter(SdlWindowAdapter& win){
         sdlSetWindow(win);
@@ -521,5 +585,92 @@ namespace cg::Impl {
         m_handle = other.m_handle;
         other.m_handle = BGFX_INVALID_HANDLE;
         return *this;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    BgfxProgramFactory::BgfxProgramFactory(BgfxAdapter& bgfxAdapter):
+    m_bgfxAdapter(bgfxAdapter){
+        namespace fs = std::filesystem;
+        for (const auto &p: fs::directory_iterator(getProgramDir())) {
+            auto name = fileStemToProgramName(p.path().stem().string());
+            if(name.has_value()){
+                loadProgramProgram(name.value());
+            }
+        }
+    }
+
+    std::shared_ptr<BgfxProgram> BgfxProgramFactory::loadProgramFromFile(std::string_view filename) {
+        auto isFileNameCorrect = [filename](const Program& program) -> bool{
+            return program.file.stem() == filename;
+        };
+
+        auto it = std::find_if(m_programs.begin(), m_programs.end(), isFileNameCorrect);
+
+        if(it == std::end(m_programs)){
+            return {};
+        }
+
+        return it->program;
+    }
+
+    std::string BgfxProgramFactory::getProgramDir() const {
+        std::string shaderType(ck::GetGraphicsApiShaderType(m_bgfxAdapter.getApi()));
+        return "data/shader/" + shaderType;
+    }
+
+    std::optional<std::string> BgfxProgramFactory::fileStemToProgramName(std::string_view fileStem) {
+        size_t indexUnderscore = fileStem.find('_');
+        if (indexUnderscore == std::string::npos) {
+            return {};
+        }
+
+        std::string prefix(fileStem.substr(0, indexUnderscore));
+        std::string name(fileStem.substr(indexUnderscore + 1));
+
+        if (prefix != "vs") {
+            return {};
+        }
+
+        return {name};
+    }
+
+    BgfxShader BgfxProgramFactory::loadShader(std::string_view name) {
+        std::string filePath = "./data/shader/" + std::string(ck::GetGraphicsApiShaderType(m_bgfxAdapter.getApi())) + "/" + std::string(name) + ".bin";
+        std::optional<cc::ByteArray> memory = cc::ByteArray::loadFromFile(filePath);
+        if(!memory.has_value()){
+            throw cc::Error("error while opening a shader file");
+        }
+        BgfxShader shader(memory.value());
+        return shader;
+    }
+
+    void BgfxProgramFactory::loadProgramProgram(std::string_view name) {
+        std::cout<<"load shader "<<name<<std::endl;
+
+        BgfxShader vsh = loadShader(std::string("vs_") + std::string(name));
+        BgfxShader fsh = loadShader(std::string("fs_") + std::string(name));
+
+        std::shared_ptr<BgfxProgram> program = std::make_shared<BgfxProgram>(vsh, fsh);
+
+        m_programs.push_back(Program{std::string(name), program});
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    void VertexLayout::begin() {
+        m_layout.begin();
+    }
+
+    void VertexLayout::add(Attrib attrib, uint8_t num, AttribType type, bool normalized, bool asInt) {
+        bgfx::Attrib::Enum bgfxAttrib = convAttrib(attrib);
+        bgfx::AttribType::Enum bgfxType = convAttribType(type);
+        m_layout.add(bgfxAttrib, num, bgfxType, normalized, asInt);
+    }
+
+    void VertexLayout::end() {
+        m_layout.end();
+    }
+
+    const bgfx::VertexLayout &VertexLayout::getBgfxLayout() const {
+        return m_layout;
     }
 }

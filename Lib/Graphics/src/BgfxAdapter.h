@@ -28,6 +28,22 @@ namespace cc{
 
 namespace cg::Impl {
     class SdlWindowAdapter;
+    class BgfxAdapter;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// Vertex Layout
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    class VertexLayout{
+    public:
+        void begin();
+        void add(Attrib attrib, uint8_t num, AttribType type, bool normalized = false, bool asInt = false);
+        void end();
+
+        [[nodiscard]] const bgfx::VertexLayout& getBgfxLayout() const;
+
+    private:
+        bgfx::VertexLayout m_layout;
+    };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// BGFX Uniform
@@ -95,6 +111,34 @@ namespace cg::Impl {
 
     private:
         bgfx::ProgramHandle m_handle;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// BGFX Program Factory
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    class BgfxProgramFactory
+    {
+    public:
+        BgfxProgramFactory(BgfxAdapter&);
+
+        [[nodiscard]] std::shared_ptr<BgfxProgram> loadProgramFromFile(std::string_view filename);
+
+        [[nodiscard]] std::string getProgramDir() const;
+
+    private:
+        struct Program{
+            std::filesystem::path file;
+            std::shared_ptr<BgfxProgram> program;
+        };
+
+        std::vector<Program> m_programs;
+        BgfxAdapter& m_bgfxAdapter;
+
+        static std::optional<std::string> fileStemToProgramName(std::string_view fileStem);
+
+        BgfxShader loadShader(std::string_view name);
+        void loadProgramProgram(std::string_view name);
+
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////

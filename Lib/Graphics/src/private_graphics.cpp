@@ -4,105 +4,30 @@
 
 #include "private_Graphics.h"
 
-#include <Core/Debug.h>
-
-#include <iostream>
 #include <string>
 #include <algorithm>
-#include <optional>
 
 #include "BimgAdapter.h"
 
 namespace cg::Impl{
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    ShaderManager::ShaderManager(BgfxAdapter& bgfxAdapter):
-            m_bgfxAdapter(bgfxAdapter)
-    {
-        namespace fs = std::filesystem;
-        for (const auto &p: fs::directory_iterator(getShaderDir())) {
-            auto name = fileStemToShaderName(p.path().stem().string());
-            if(name.has_value()){
-                loadShaderProgram(name.value());
-            }
-        }
-    }
-
-    std::optional<std::string> ShaderManager::fileStemToShaderName(std::string_view fileStem) {
-        size_t indexUnderscore = fileStem.find('_');
-        if (indexUnderscore == std::string::npos) {
-            return {};
-        }
-
-        std::string prefix(fileStem.substr(0, indexUnderscore));
-        std::string name(fileStem.substr(indexUnderscore + 1));
-
-        if (prefix != "vs") {
-            return {};
-        }
-
-        return {name};
-    }
-
-    BgfxShader ShaderManager::loadShader(std::string_view name) {
-        std::string filePath = "./data/shader/" + std::string(GetGraphicsApiShaderType(m_bgfxAdapter.getApi())) + "/" + std::string(name) + ".bin";
-        std::optional<cc::ByteArray> memory = cc::ByteArray::loadFromFile(filePath);
-        if(!memory.has_value()){
-            throw cc::Error("error while opening a shader file");
-        }
-        BgfxShader shader(memory.value());
-        return shader;
-    }
-
-    void ShaderManager::loadShaderProgram(std::string_view name) {
-        std::cout<<"load shader "<<name<<std::endl;
-
-        BgfxShader vsh = loadShader(std::string("vs_")+std::string(name));
-        BgfxShader fsh = loadShader(std::string("fs_")+std::string(name));
-
-        m_shaders.push_back(Shader{std::string(name), BgfxProgram(vsh, fsh)});
-    }
-
-    cc::OptionalRef<BgfxProgram> ShaderManager::getHandleFromFile(std::string_view filename) {
-        auto isFileNameCorrect = [filename](const Shader& shader) -> bool{
-            return shader.name == filename;
-        };
-
-        auto it = std::find_if(m_shaders.begin(), m_shaders.end(), isFileNameCorrect);
-
-        if(it == std::end(m_shaders)){
-            return {};
-        }
-
-        return cc::OptionalRef<BgfxProgram>(it->m_program);
-    }
-
-    std::string ShaderManager::getShaderDir() const {
-        std::string shaderType(GetGraphicsApiShaderType(m_bgfxAdapter.getApi()));
-        return "data/shader/" + shaderType;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     struct Pos2dVertex
     {
         float m_x;
         float m_y;
 
-        static const bgfx::VertexLayout& getLayout(){
+        static const VertexLayout& getLayout(){
             auto init = [](){
-                bgfx::VertexLayout layout;
+                VertexLayout layout;
 
                 layout.begin();
-                layout.add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float);
+                layout.add(Attrib::Position, 2, AttribType::Float);
                 layout.end();
 
                 return layout;
             };
 
-            static bgfx::VertexLayout layout = init();
+            static VertexLayout layout = init();
 
             return layout;
         }
@@ -131,7 +56,7 @@ namespace cg::Impl{
     {
         m_rectangleVertices  = bgfx::createVertexBuffer(
                 bgfx::makeRef(g_rectangleVerticesData.data(), sizeof(g_rectangleVerticesData) ),
-                Pos2dVertex::getLayout()
+                Pos2dVertex::getLayout().getBgfxLayout()
         );
 
         m_rectangleIndices = bgfx::createIndexBuffer(
@@ -191,8 +116,8 @@ namespace cg::Impl{
 
     Common::Common():
             m_bgfxAdapter(m_window),
-            m_shaders(m_bgfxAdapter),
-            m_renderer2d(m_shaders.getHandleFromFile("simple2d").valueOrError("shader program simple2d not found"))
+            m_programs(m_bgfxAdapter),
+            m_renderer2d(*m_programs.loadProgramFromFile("simple2d").get())
     {
     }
 
