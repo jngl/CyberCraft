@@ -689,4 +689,18 @@ namespace cg::Impl {
     bgfx::VertexBufferHandle VertexBuffer::getBgfxHandle() const {
         return m_handle;
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    IndexBuffer::IndexBuffer(const cc::ByteArrayView& data) {
+        m_handle = bgfx::createIndexBuffer(createBgfxMemory(data));
+    }
+
+    IndexBuffer::~IndexBuffer() {
+        bgfx::destroy(m_handle);
+    }
+
+    bgfx::IndexBufferHandle IndexBuffer::getBgfxHandle() const {
+        return m_handle;
+    }
 }

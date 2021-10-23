@@ -31,7 +31,6 @@ namespace cg::Impl {
     class Renderer2d : public cc::NonCopyable, public ck::ColoredRectangleDrawer {
     public:
         explicit Renderer2d(BgfxProgram& shader);
-        ~Renderer2d() override;
 
         void updateSize(cc::Vector2ui size);
 
@@ -39,7 +38,7 @@ namespace cg::Impl {
 
     private:
         VertexBuffer m_rectangleVertices;
-        bgfx::IndexBufferHandle m_rectangleIndices{};
+        IndexBuffer m_rectangleIndices;
         BgfxProgram& m_program;
         BgfxUniform m_color;
 
