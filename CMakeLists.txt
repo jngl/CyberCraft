@@ -78,6 +78,9 @@ find_package(SFML 2 COMPONENTS system window graphics network audio)
 #OpenGL
 find_package(OpenGL REQUIRED)
 
+#FMT
+find_package(fmt REQUIRED)
+
 #Sdl
 pkg_search_module(SDL2 REQUIRED sdl2)
 

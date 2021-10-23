@@ -316,6 +316,11 @@ namespace cg::Impl {
         bgfx::submit(0, program.getHandle());
     }
 
+    void BgfxAdapter::dbgTextPrint(uint16_t _x, uint16_t _y, std::string_view text) {
+        std::string textStr(text);
+        bgfx::dbgTextPrintf(0, 0, 0x0f, textStr.c_str());
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     BgfxTexture::BgfxTexture(int width,
@@ -681,7 +686,6 @@ namespace cg::Impl {
         bgfx::touch(0);
 
         bgfx::dbgTextClear();
-        bgfx::dbgTextPrintf(0, 1, 0x0f, "win : %i %i", m_size.x, m_size.y);
     }
 
     void BgfxContext::endFrame() {

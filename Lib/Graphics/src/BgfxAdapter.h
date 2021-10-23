@@ -260,6 +260,8 @@ namespace cg::Impl {
         void setIndexBuffer(const IndexBuffer&);
         void submit(const BgfxProgram& _program);
 
+        void dbgTextPrint(uint16_t _x, uint16_t _y, std::string_view text);
+
         [[nodiscard]] ck::GraphicsApi getApi() const;
 
     private:

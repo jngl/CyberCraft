@@ -7,6 +7,8 @@
 #include <string>
 #include <algorithm>
 
+#include <fmt/core.h>
+
 #include "BimgAdapter.h"
 
 #include <Core/Memory.h>
@@ -62,16 +64,9 @@ namespace cg::Impl{
     }
 
     void Renderer2d::drawRectangle(const cc::Vector2f &pos, const cc::Vector2f &size, const cc::Color &color) {
-        bgfx::dbgTextPrintf(0, 0, 0x0f,
-                            "rect : %.2f %.2f %.2f %.2f %i %i %i %i",
-                            static_cast<double>(pos.x),
-                            static_cast<double>(pos.y),
-                            static_cast<double>(size.x),
-                            static_cast<double>(size.y),
-                            static_cast<int>(color.red),
-                            static_cast<int>(color.green),
-                            static_cast<int>(color.blue),
-                            static_cast<int>(color.alpha));
+        std::string msg = fmt::format("Pos = {: 4.0f} ; {: 4.0f}       Size = {: 2.0f} ; {: 2.0f}       Color = {} {} {} {}",
+                                      pos.x, pos.y, size.x, size.y, color.red, color.green, color.blue, color.alpha);
+        m_bgfxAdapter.dbgTextPrint(0,0,msg);
 
         cc::Matrix4f transform;
         transform.addTranslation(pos.x, pos.y, 0.f);
