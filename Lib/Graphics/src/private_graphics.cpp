@@ -52,10 +52,11 @@ namespace cg::Impl{
     };
 
 
-    Renderer2d::Renderer2d(BgfxProgram& shader):
+    Renderer2d::Renderer2d(BgfxAdapter& bgfxAdapter):
+            m_bgfxAdapter(bgfxAdapter),
             m_rectangleVertices(cc::ByteArrayView::fromArray(g_rectangleVerticesData), Pos2dVertex::getLayout()),
             m_rectangleIndices(cc::ByteArrayView::fromArray(g_rectangleIndicesData)),
-            m_program(shader),
+            m_program(m_bgfxAdapter.getProgramFactory().loadProgramFromFile("simple2d")),
             m_color("u_color", UniformType::Vec4, 1)
     {
     }
@@ -77,16 +78,16 @@ namespace cg::Impl{
         transform.addScale(size.x, size.y, 1.f);
 
         // Set model matrix for rendering.
-        bgfx::setTransform(transform.m.data());
+        m_bgfxAdapter.setTransform(transform);
 
         // Set vertex and index buffer.
-        bgfx::setVertexBuffer(0, m_rectangleVertices.getBgfxHandle());
-        bgfx::setIndexBuffer(m_rectangleIndices.getBgfxHandle());
+        m_bgfxAdapter.setVertexBuffer(0, m_rectangleVertices);
+        m_bgfxAdapter.setIndexBuffer(m_rectangleIndices);
 
         m_color.setColor(color);
 
         // Submit primitive for rendering to view 0.
-        bgfx::submit(0, m_program.getHandle());
+        m_bgfxAdapter.submit(*m_program);
     }
 
     void Renderer2d::updateSize(cc::Vector2ui size) {
@@ -107,8 +108,7 @@ namespace cg::Impl{
 
     Common::Common():
             m_bgfxAdapter(m_window),
-            m_programs(m_bgfxAdapter),
-            m_renderer2d(*m_programs.loadProgramFromFile("simple2d").get())
+            m_renderer2d(m_bgfxAdapter)
     {
     }
 

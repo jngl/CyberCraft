@@ -30,16 +30,17 @@ namespace cg::Impl {
 
     class Renderer2d : public cc::NonCopyable, public ck::ColoredRectangleDrawer {
     public:
-        explicit Renderer2d(BgfxProgram& shader);
+        explicit Renderer2d(BgfxAdapter&);
 
         void updateSize(cc::Vector2ui size);
 
         void drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cc::Color& color) override;
 
     private:
+        BgfxAdapter& m_bgfxAdapter;
         VertexBuffer m_rectangleVertices;
         IndexBuffer m_rectangleIndices;
-        BgfxProgram& m_program;
+        std::shared_ptr<BgfxProgram> m_program;
         BgfxUniform m_color;
 
         void setViewTransform(const cc::Matrix4f& proj, const cc::Matrix4f& view);
@@ -60,8 +61,6 @@ namespace cg::Impl {
     private:
         SdlWindowAdapter m_window;
         BgfxAdapter m_bgfxAdapter;
-        BgfxTextureFactory m_textures;
-        BgfxProgramFactory m_programs;
         Renderer2d m_renderer2d;
     };
 

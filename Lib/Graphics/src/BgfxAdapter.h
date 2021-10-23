@@ -30,6 +30,7 @@ namespace cg::Impl {
     class SdlWindowAdapter;
     class BgfxAdapter;
     class VertexLayout;
+    class BgfxContext;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Index Buffer
@@ -136,7 +137,7 @@ namespace cg::Impl {
 
         virtual ~BgfxProgram();
 
-        bgfx::ProgramHandle getHandle();
+        bgfx::ProgramHandle getHandle() const;
 
     private:
         bgfx::ProgramHandle m_handle;
@@ -148,7 +149,7 @@ namespace cg::Impl {
     class BgfxProgramFactory
     {
     public:
-        BgfxProgramFactory(BgfxAdapter&);
+        BgfxProgramFactory(BgfxContext&);
 
         [[nodiscard]] std::shared_ptr<BgfxProgram> loadProgramFromFile(std::string_view filename);
 
@@ -161,7 +162,7 @@ namespace cg::Impl {
         };
 
         std::vector<Program> m_programs;
-        BgfxAdapter& m_bgfxAdapter;
+        BgfxContext& m_bgfxContext;
 
         static std::optional<std::string> fileStemToProgramName(std::string_view fileStem);
 
@@ -222,11 +223,13 @@ namespace cg::Impl {
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// BGFX Adapter
+    /// BGFX Context
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxAdapter {
+    class BgfxContext
+    {
     public:
-        explicit BgfxAdapter(SdlWindowAdapter& win);
+        explicit BgfxContext(SdlWindowAdapter& wi);
+        ~BgfxContext();
 
         void beginFrame(cc::Vector2ui newSize);
         void endFrame();
@@ -237,6 +240,32 @@ namespace cg::Impl {
         cc::Vector2ui m_size;
 
         bool sdlSetWindow(SdlWindowAdapter& win);
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// BGFX Adapter
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    class BgfxAdapter {
+    public:
+        explicit BgfxAdapter(SdlWindowAdapter& win);
+
+        void beginFrame(cc::Vector2ui newSize);
+        void endFrame();
+
+        BgfxProgramFactory& getProgramFactory();
+
+        void setTransform(const cc::Matrix4f&);
+
+        void setVertexBuffer(uint8_t stream, const VertexBuffer&);
+        void setIndexBuffer(const IndexBuffer&);
+        void submit(const BgfxProgram& _program);
+
+        [[nodiscard]] ck::GraphicsApi getApi() const;
+
+    private:
+        BgfxContext m_context;
+        BgfxTextureFactory m_textures;
+        BgfxProgramFactory m_programs;
     };
 }
 

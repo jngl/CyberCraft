@@ -278,105 +278,42 @@ namespace cg::Impl {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    BgfxAdapter::BgfxAdapter(SdlWindowAdapter& win){
-        sdlSetWindow(win);
-
-        m_size = win.getSize();
-
-        bgfx::renderFrame();
-
-        bgfx::Init init;
-        init.type = bgfx::RendererType::Vulkan;
-        init.resolution.width  = m_size.x;
-        init.resolution.height = m_size.y;
-        bgfx::init(init);
-
-        bgfx::setDebug(BGFX_DEBUG_TEXT);
-
-        bgfx::setViewClear(0
-                , BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH
-                , 0x303030ff
-                , 1.0f
-                , 0
-        );
+    BgfxAdapter::BgfxAdapter(SdlWindowAdapter& win):
+        m_context(win),
+        m_programs(m_context)
+    {
     }
 
     void BgfxAdapter::beginFrame(cc::Vector2ui newSize){
-        if(newSize.x != m_size.x || newSize.y != m_size.y){
-            std::cout<<"resize "<<newSize.x<<" "<<newSize.y<<std::endl;
-            bgfx::reset(newSize.x, newSize.y);
-            m_size = newSize;
-        }
-
-        bgfx::setViewRect(0, 0, 0, uint16_t(m_size.x), uint16_t(m_size.y) );
-        bgfx::touch(0);
-
-        bgfx::dbgTextClear();
-        bgfx::dbgTextPrintf(0, 1, 0x0f, "win : %i %i", m_size.x, m_size.y);
-    }
-
-    bool BgfxAdapter::sdlSetWindow(SdlWindowAdapter& win)
-    {
-        SDL_SysWMinfo wmi;
-        SDL_VERSION(&wmi.version);
-        if (!SDL_GetWindowWMInfo(win.GetSdlWindow(), &wmi) )
-        {
-            return false;
-        }
-
-        bgfx::PlatformData pd;
-#	if BX_PLATFORM_LINUX || BX_PLATFORM_BSD
-        #		if ENTRY_CONFIG_USE_WAYLAND
-    pd.ndt          = wmi.info.wl.display;
-#		else
-    pd.ndt          = wmi.info.x11.display;
-#		endif
-#	elif BX_PLATFORM_OSX
-        pd.ndt          = NULL;
-#	elif BX_PLATFORM_WINDOWS
-        pd.ndt          = NULL;
-#	endif // BX_PLATFORM_
-        pd.nwh          = win.sdlNativeWindowHandle();
-
-        pd.context      = NULL;
-        pd.backBuffer   = NULL;
-        pd.backBufferDS = NULL;
-        bgfx::setPlatformData(pd);
-
-        return true;
+        m_context.beginFrame(newSize);
     }
 
     ck::GraphicsApi BgfxAdapter::getApi() const {
-        switch (bgfx::getRendererType()){
-            case bgfx::RendererType::Noop:
-                return ck::GraphicsApi::Noop;
-            case bgfx::RendererType::Direct3D9:
-                return ck::GraphicsApi::Direct3D9;
-            case bgfx::RendererType::Direct3D11:
-                return ck::GraphicsApi::Direct3D11;
-            case bgfx::RendererType::Direct3D12:
-                return ck::GraphicsApi::Direct3D12;
-            case bgfx::RendererType::Gnm:
-                return ck::GraphicsApi::Gnm;
-            case bgfx::RendererType::Metal:
-                return ck::GraphicsApi::Metal;
-            case bgfx::RendererType::Nvn:
-                return ck::GraphicsApi::Nvn;
-            case bgfx::RendererType::OpenGL:
-                return ck::GraphicsApi::OpenGL;
-            case bgfx::RendererType::OpenGLES:
-                return ck::GraphicsApi::OpenGLES;
-            case bgfx::RendererType::Vulkan:
-                return ck::GraphicsApi::Vulkan;
-            case bgfx::RendererType::WebGPU:
-                return ck::GraphicsApi::WebGPU;
-            default:
-                throw ck::GraphicsError{"Unknown Graphics Api"};
-        }
+        return m_context.getApi();
     }
 
     void BgfxAdapter::endFrame() {
-        bgfx::frame();
+        m_context.endFrame();
+    }
+
+    BgfxProgramFactory &BgfxAdapter::getProgramFactory() {
+        return m_programs;
+    }
+
+    void BgfxAdapter::setTransform(const cc::Matrix4f &transform) {
+        bgfx::setTransform(transform.m.data());
+    }
+
+    void BgfxAdapter::setVertexBuffer(uint8_t stream, const VertexBuffer&vertices) {
+        bgfx::setVertexBuffer(0, vertices.getBgfxHandle());
+    }
+
+    void BgfxAdapter::setIndexBuffer(const IndexBuffer &indices) {
+        bgfx::setIndexBuffer(indices.getBgfxHandle());
+    }
+
+    void BgfxAdapter::submit(const BgfxProgram &program) {
+        bgfx::submit(0, program.getHandle());
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -538,7 +475,7 @@ namespace cg::Impl {
         }
     }
 
-    bgfx::ProgramHandle BgfxProgram::getHandle() {
+    bgfx::ProgramHandle BgfxProgram::getHandle() const {
         return m_handle;
     }
 
@@ -588,8 +525,8 @@ namespace cg::Impl {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    BgfxProgramFactory::BgfxProgramFactory(BgfxAdapter& bgfxAdapter):
-    m_bgfxAdapter(bgfxAdapter){
+    BgfxProgramFactory::BgfxProgramFactory(BgfxContext& bgfxContext):
+    m_bgfxContext(bgfxContext){
         namespace fs = std::filesystem;
         for (const auto &p: fs::directory_iterator(getProgramDir())) {
             auto name = fileStemToProgramName(p.path().stem().string());
@@ -614,7 +551,7 @@ namespace cg::Impl {
     }
 
     std::string BgfxProgramFactory::getProgramDir() const {
-        std::string shaderType(ck::GetGraphicsApiShaderType(m_bgfxAdapter.getApi()));
+        std::string shaderType(ck::GetGraphicsApiShaderType(m_bgfxContext.getApi()));
         return "data/shader/" + shaderType;
     }
 
@@ -635,7 +572,7 @@ namespace cg::Impl {
     }
 
     BgfxShader BgfxProgramFactory::loadShader(std::string_view name) {
-        std::string filePath = "./data/shader/" + std::string(ck::GetGraphicsApiShaderType(m_bgfxAdapter.getApi())) + "/" + std::string(name) + ".bin";
+        std::string filePath = "./data/shader/" + std::string(ck::GetGraphicsApiShaderType(m_bgfxContext.getApi())) + "/" + std::string(name) + ".bin";
         std::optional<cc::ByteArray> memory = cc::ByteArray::loadFromFile(filePath);
         if(!memory.has_value()){
             throw cc::Error("error while opening a shader file");
@@ -702,5 +639,112 @@ namespace cg::Impl {
 
     bgfx::IndexBufferHandle IndexBuffer::getBgfxHandle() const {
         return m_handle;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    BgfxContext::BgfxContext(SdlWindowAdapter& win) {
+        sdlSetWindow(win);
+
+        m_size = win.getSize();
+
+        bgfx::renderFrame();
+
+        bgfx::Init init;
+        init.type = bgfx::RendererType::Vulkan;
+        init.resolution.width  = m_size.x;
+        init.resolution.height = m_size.y;
+        bgfx::init(init);
+
+        bgfx::setDebug(BGFX_DEBUG_TEXT);
+
+        bgfx::setViewClear(0
+                , BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH
+                , 0x303030ff
+                , 1.0f
+                , 0
+        );
+    }
+
+    BgfxContext::~BgfxContext() {
+
+    }
+
+    void BgfxContext::beginFrame(cc::Vector2ui newSize) {
+        if(newSize.x != m_size.x || newSize.y != m_size.y){
+            std::cout<<"resize "<<newSize.x<<" "<<newSize.y<<std::endl;
+            bgfx::reset(newSize.x, newSize.y);
+            m_size = newSize;
+        }
+
+        bgfx::setViewRect(0, 0, 0, uint16_t(m_size.x), uint16_t(m_size.y) );
+        bgfx::touch(0);
+
+        bgfx::dbgTextClear();
+        bgfx::dbgTextPrintf(0, 1, 0x0f, "win : %i %i", m_size.x, m_size.y);
+    }
+
+    void BgfxContext::endFrame() {
+        bgfx::frame();
+    }
+
+    bool BgfxContext::sdlSetWindow(SdlWindowAdapter& win)
+    {
+        SDL_SysWMinfo wmi;
+        SDL_VERSION(&wmi.version);
+        if (!SDL_GetWindowWMInfo(win.GetSdlWindow(), &wmi) )
+        {
+            return false;
+        }
+
+        bgfx::PlatformData pd;
+#	if BX_PLATFORM_LINUX || BX_PLATFORM_BSD
+#		if ENTRY_CONFIG_USE_WAYLAND
+        pd.ndt          = wmi.info.wl.display;
+#		else
+        pd.ndt          = wmi.info.x11.display;
+#		endif
+#	elif BX_PLATFORM_OSX
+        pd.ndt          = NULL;
+#	elif BX_PLATFORM_WINDOWS
+        pd.ndt          = NULL;
+#	endif // BX_PLATFORM_
+        pd.nwh          = win.sdlNativeWindowHandle();
+
+        pd.context      = NULL;
+        pd.backBuffer   = NULL;
+        pd.backBufferDS = NULL;
+        bgfx::setPlatformData(pd);
+
+        return true;
+    }
+
+    ck::GraphicsApi BgfxContext::getApi() const {
+        switch (bgfx::getRendererType()){
+            case bgfx::RendererType::Noop:
+                return ck::GraphicsApi::Noop;
+            case bgfx::RendererType::Direct3D9:
+                return ck::GraphicsApi::Direct3D9;
+            case bgfx::RendererType::Direct3D11:
+                return ck::GraphicsApi::Direct3D11;
+            case bgfx::RendererType::Direct3D12:
+                return ck::GraphicsApi::Direct3D12;
+            case bgfx::RendererType::Gnm:
+                return ck::GraphicsApi::Gnm;
+            case bgfx::RendererType::Metal:
+                return ck::GraphicsApi::Metal;
+            case bgfx::RendererType::Nvn:
+                return ck::GraphicsApi::Nvn;
+            case bgfx::RendererType::OpenGL:
+                return ck::GraphicsApi::OpenGL;
+            case bgfx::RendererType::OpenGLES:
+                return ck::GraphicsApi::OpenGLES;
+            case bgfx::RendererType::Vulkan:
+                return ck::GraphicsApi::Vulkan;
+            case bgfx::RendererType::WebGPU:
+                return ck::GraphicsApi::WebGPU;
+            default:
+                throw ck::GraphicsError{"Unknown Graphics Api"};
+        }
     }
 }
