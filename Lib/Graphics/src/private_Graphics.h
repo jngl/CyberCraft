@@ -38,7 +38,7 @@ namespace cg::Impl {
         void drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cc::Color& color) override;
 
     private:
-        bgfx::VertexBufferHandle m_rectangleVertices{};
+        VertexBuffer m_rectangleVertices;
         bgfx::IndexBufferHandle m_rectangleIndices{};
         BgfxProgram& m_program;
         BgfxUniform m_color;

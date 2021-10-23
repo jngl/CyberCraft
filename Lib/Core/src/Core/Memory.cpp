@@ -8,11 +8,11 @@
 
 namespace cc{
     ByteArray::ByteArray():
-    m_size(0),
-    m_data(nullptr){
+    m_data(nullptr),
+    m_size(0){
     }
 
-    ByteArray::ByteArray(Uint8 *copyFrom, Uint32 size):
+    ByteArray::ByteArray(const void *copyFrom, Uint32 size):
     m_size(size){
         m_data = new Uint8[m_size];
         memcpy(m_data, copyFrom, m_size);
@@ -22,9 +22,7 @@ namespace cc{
     m_size(size)
     {
         m_data = new Uint8[m_size];
-        for(Uint32 i=0; i<m_size; ++i){
-            m_data[i] = 0;
-        }
+        memset(m_data, static_cast<int>(m_size), 1);
     }
 
     ByteArray::ByteArray(const ByteArray &other):
@@ -34,8 +32,8 @@ namespace cc{
     }
 
     ByteArray::ByteArray(ByteArray &&moveFrom) noexcept:
-    m_size(moveFrom.m_size),
-    m_data(moveFrom.m_data)
+    m_data(moveFrom.m_data),
+    m_size(moveFrom.m_size)
     {
         moveFrom.m_size = 0;
         moveFrom.m_data = nullptr;
@@ -70,7 +68,7 @@ namespace cc{
         return m_size;
     }
 
-    const Uint8 *ByteArray::data() const {
+    const void *ByteArray::data() const {
         return m_data;
     }
 
@@ -91,19 +89,15 @@ namespace cc{
         return result;
     }
 
-    Uint8 *ByteArray::data() {
+    void *ByteArray::data() {
         return m_data;
     }
 
-    void ByteArray::copy(Uint8 *copyFrom, Uint32 size) {
+    void ByteArray::copy(void *copyFrom, Uint32 size) {
         clear();
         m_size = size;
         m_data = new Uint8[m_size];
         memcpy(m_data, copyFrom, m_size);
-    }
-
-    void ByteArray::copy(void *copyFrom, Uint32 size) {
-        copy(reinterpret_cast<Uint8*>(copyFrom), size);
     }
 
     void ByteArray::clear() {

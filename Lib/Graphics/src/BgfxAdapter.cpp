@@ -673,4 +673,20 @@ namespace cg::Impl {
     const bgfx::VertexLayout &VertexLayout::getBgfxLayout() const {
         return m_layout;
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    VertexBuffer::VertexBuffer(const cc::ByteArray& data, const VertexLayout& layout) {
+        m_handle  = bgfx::createVertexBuffer(
+                createBgfxMemory(data),
+                layout.getBgfxLayout()
+        );
+    }
+
+    VertexBuffer::~VertexBuffer() {
+        bgfx::destroy(m_handle);
+    }
+
+    bgfx::VertexBufferHandle VertexBuffer::getBgfxHandle() const {
+        return m_handle;
+    }
 }

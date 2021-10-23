@@ -29,6 +29,21 @@ namespace cc{
 namespace cg::Impl {
     class SdlWindowAdapter;
     class BgfxAdapter;
+    class VertexLayout;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// Vertex Buffer
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    class VertexBuffer{
+    public:
+        VertexBuffer(const cc::ByteArray& data, const VertexLayout& layout);
+        ~VertexBuffer();
+
+        [[nodiscard]] bgfx::VertexBufferHandle getBgfxHandle() const;
+
+    private:
+        bgfx::VertexBufferHandle m_handle;
+    };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Vertex Layout
