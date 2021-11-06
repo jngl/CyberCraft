@@ -63,8 +63,8 @@ namespace cg::Impl{
             m_rectangleIndices(cc::ByteArrayView::fromArray(g_rectangleIndicesData)),
             m_program(m_bgfxAdapter.getProgramFactory().loadProgramFromFile("simple2d")),
             m_textureTest(m_bgfxAdapter.getTextureFactory().loadTextureFromFile("dirt")),
-            m_color("u_color", UniformType::Vec4, 1),
-            m_texture("u_texture", UniformType::Sampler, 1)
+            m_color(m_bgfxAdapter.getUniformFactory().createUniform("u_color", ck::Uniform::Type::Vec4, 1)),
+            m_texture(m_bgfxAdapter.getUniformFactory().createUniform("u_texture", ck::Uniform::Type::Sampler, 1))
     {
     }
 
@@ -84,8 +84,8 @@ namespace cg::Impl{
         m_bgfxAdapter.setVertexBuffer(0, m_rectangleVertices);
         m_bgfxAdapter.setIndexBuffer(m_rectangleIndices);
 
-        m_color.setColor(color);
-        m_texture.setTexture(*m_textureTest);
+        m_color->setColor(color);
+        m_texture->setTexture(*m_textureTest);
 
         // Submit primitive for rendering to view 0.
         m_bgfxAdapter.submit(*m_program);

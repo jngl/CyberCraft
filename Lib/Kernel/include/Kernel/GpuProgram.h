@@ -5,8 +5,41 @@
 #ifndef CYBERCRAFT_GPUPROGRAM_H
 #define CYBERCRAFT_GPUPROGRAM_H
 
+#include <Core/Bases.h>
+
+namespace cc
+{
+    struct Color;
+}
+
 namespace ck
 {
+    class Texture;
+
+    class Uniform : public cc::NonCopyable
+    {
+    public:
+        enum class Type
+        {
+            Sampler,
+
+            Vec4,
+            Mat3,
+            Mat4,
+
+            Count
+        };
+
+        virtual void setColor(const cc::Color&) = 0;
+        virtual void setTexture(const ck::Texture&) = 0;
+    };
+
+    class UniformFactory : public cc::NonCopyable
+    {
+    public:
+        [[nodiscard]] virtual std::shared_ptr<Uniform> createUniform(std::string_view name, Uniform::Type type, int num) = 0;
+    };
+
     class GpuProgram : public cc::NonCopyable
     {
     public:

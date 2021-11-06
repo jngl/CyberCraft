@@ -195,15 +195,15 @@ namespace cg::Impl {
         }
     }
 
-    bgfx::UniformType::Enum convUniformType(UniformType type){
+    bgfx::UniformType::Enum convUniformType(ck::Uniform::Type type){
         switch (type) {
-            case UniformType::Sampler:
+            case ck::Uniform::Type::Sampler:
                 return bgfx::UniformType::Sampler;
-            case UniformType::Mat3:
+            case ck::Uniform::Type::Mat3:
                 return bgfx::UniformType::Mat3;
-            case UniformType::Mat4:
+            case ck::Uniform::Type::Mat4:
                 return bgfx::UniformType::Mat4;
-            case UniformType::Vec4:
+            case ck::Uniform::Type::Vec4:
                 return bgfx::UniformType::Vec4;
             default:
                 return bgfx::UniformType::Count;
@@ -326,6 +326,10 @@ namespace cg::Impl {
 
     BgfxTextureFactory &BgfxAdapter::getTextureFactory() {
         return m_textures;
+    }
+
+    BgfxUniformFactory &BgfxAdapter::getUniformFactory() {
+        return m_uniforms;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -507,7 +511,7 @@ namespace cg::Impl {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    BgfxUniform::BgfxUniform(std::string_view name, UniformType type, int num) {
+    BgfxUniform::BgfxUniform(std::string_view name, ck::Uniform::Type type, int num) {
         m_handle = bgfx::createUniform(std::string(name).c_str(), convUniformType(type), static_cast<uint16_t >(num));
     }
 
@@ -529,20 +533,18 @@ namespace cg::Impl {
         bgfx::setUniform(m_handle, colorTmp, 1);
     }
 
-    BgfxUniform::BgfxUniform(BgfxUniform && other) noexcept{
-        m_handle = other.m_handle;
-        other.m_handle = BGFX_INVALID_HANDLE;
-    }
-
-    BgfxUniform &BgfxUniform::operator=(BgfxUniform && other) noexcept {
-        m_handle = other.m_handle;
-        other.m_handle = BGFX_INVALID_HANDLE;
-        return *this;
-    }
-
     void BgfxUniform::setTexture(const ck::Texture& texture) {
         const auto* bgfxTexture = dynamic_cast<const BgfxTexture*>(&texture);
         bgfx::setTexture(0, m_handle, bgfxTexture->getHandle());
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    std::shared_ptr<ck::Uniform> BgfxUniformFactory::createUniform(std::string_view name,
+                                                                   ck::Uniform::Type type,
+                                                                   int num)
+    {
+        return std::make_shared<BgfxUniform>(name, type, num);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////

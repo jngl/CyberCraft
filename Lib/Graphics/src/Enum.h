@@ -115,17 +115,6 @@ namespace cg::Impl
         Count
     };
 
-    enum class UniformType
-    {
-        Sampler, //!< Sampler.
-
-        Vec4,    //!< 4 floats vector.
-        Mat3,    //!< 3x3 matrix.
-        Mat4,    //!< 4x4 matrix.
-
-        Count
-    };
-
     /// Corresponds to vertex shader attribute.
     enum class Attrib
     {

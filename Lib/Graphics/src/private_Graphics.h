@@ -42,8 +42,8 @@ namespace cg::Impl {
         IndexBuffer m_rectangleIndices;
         std::shared_ptr<ck::GpuProgram> m_program;
         std::shared_ptr<ck::Texture> m_textureTest;
-        BgfxUniform m_color;
-        BgfxUniform m_texture;
+        std::shared_ptr<ck::Uniform> m_color;
+        std::shared_ptr<ck::Uniform> m_texture;
 
         void setViewTransform(const cc::Matrix4f& proj, const cc::Matrix4f& view);
     };

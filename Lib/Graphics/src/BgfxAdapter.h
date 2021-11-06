@@ -80,26 +80,29 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// BGFX Uniform
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxUniform
+    class BgfxUniform : public ck::Uniform
     {
     public:
-        explicit BgfxUniform(std::string_view name, UniformType type, int num);
+        explicit BgfxUniform(std::string_view name, ck::Uniform::Type type, int num);
 
-        BgfxUniform(const BgfxUniform&) = delete;
-        BgfxUniform(BgfxUniform&&) noexcept;
-
-        BgfxUniform& operator=(const BgfxUniform&) = delete;
-        BgfxUniform& operator=(BgfxUniform&&) noexcept;
-
-        virtual ~BgfxUniform();
+        ~BgfxUniform() override;
 
         bgfx::UniformHandle getHandle();
 
-        void setColor(const cc::Color&);
-        void setTexture(const ck::Texture&);
+        void setColor(const cc::Color& color) override;
+        void setTexture(const ck::Texture& texture) override;
 
     private:
         bgfx::UniformHandle m_handle;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// BGFX Uniform
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    class BgfxUniformFactory : ck::UniformFactory
+    {
+    public:
+        [[nodiscard]] std::shared_ptr<ck::Uniform> createUniform(std::string_view name, ck::Uniform::Type type, int num) override;
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -259,6 +262,7 @@ namespace cg::Impl {
 
         BgfxProgramFactory& getProgramFactory();
         BgfxTextureFactory& getTextureFactory();
+        BgfxUniformFactory& getUniformFactory();
 
         void setTransform(const cc::Matrix4f&);
 
@@ -274,6 +278,7 @@ namespace cg::Impl {
         BgfxContext m_context;
         BgfxTextureFactory m_textures;
         BgfxProgramFactory m_programs;
+        BgfxUniformFactory m_uniforms;
     };
 }
 
