@@ -40,7 +40,7 @@ namespace cg::Impl {
         BgfxAdapter& m_bgfxAdapter;
         VertexBuffer m_rectangleVertices;
         IndexBuffer m_rectangleIndices;
-        std::shared_ptr<BgfxProgram> m_program;
+        std::shared_ptr<ck::GpuProgram> m_program;
         std::shared_ptr<ck::Texture> m_textureTest;
         BgfxUniform m_color;
         BgfxUniform m_texture;

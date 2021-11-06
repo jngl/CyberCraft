@@ -6,6 +6,8 @@
 #define CYBERCRAFT_BGFXADAPTER_H
 
 #include <Kernel/Engine.h>
+#include <Kernel/GpuProgram.h>
+
 #include <Core/Memory.h>
 
 #include <bgfx/bgfx.h>
@@ -125,7 +127,7 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// BGFX Shader
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxProgram
+    class BgfxProgram : public ck::GpuProgram
     {
     public:
         explicit BgfxProgram(BgfxShader& vsh, BgfxShader& fsh);
@@ -138,7 +140,7 @@ namespace cg::Impl {
 
         virtual ~BgfxProgram();
 
-        bgfx::ProgramHandle getHandle() const;
+        [[nodiscard]] bgfx::ProgramHandle getHandle() const;
 
     private:
         bgfx::ProgramHandle m_handle;
@@ -147,12 +149,12 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// BGFX Program Factory
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxProgramFactory
+    class BgfxProgramFactory : public ck::GpuProgramFactory
     {
     public:
         BgfxProgramFactory(BgfxContext&);
 
-        [[nodiscard]] std::shared_ptr<BgfxProgram> loadProgramFromFile(std::string_view filename);
+        [[nodiscard]] std::shared_ptr<ck::GpuProgram> loadProgramFromFile(std::string_view filename) override;
 
         [[nodiscard]] std::string getProgramDir() const;
 
@@ -262,7 +264,7 @@ namespace cg::Impl {
 
         void setVertexBuffer(uint8_t stream, const VertexBuffer&);
         void setIndexBuffer(const IndexBuffer&);
-        void submit(const BgfxProgram& _program);
+        void submit(const ck::GpuProgram& _program);
 
         void dbgTextPrint(uint16_t _x, uint16_t _y, std::string_view text);
 

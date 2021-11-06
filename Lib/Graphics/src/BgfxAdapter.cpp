@@ -312,8 +312,11 @@ namespace cg::Impl {
         bgfx::setIndexBuffer(indices.getBgfxHandle());
     }
 
-    void BgfxAdapter::submit(const BgfxProgram &program) {
-        bgfx::submit(0, program.getHandle());
+    void BgfxAdapter::submit(const ck::GpuProgram &program) {
+        const auto* bgfxProgram = dynamic_cast<const BgfxProgram*>(&program);
+        if(bgfxProgram != nullptr){
+            bgfx::submit(0, bgfxProgram->getHandle());
+        }
     }
 
     void BgfxAdapter::dbgTextPrint(uint16_t _x, uint16_t _y, std::string_view text) {
@@ -554,7 +557,7 @@ namespace cg::Impl {
         }
     }
 
-    std::shared_ptr<BgfxProgram> BgfxProgramFactory::loadProgramFromFile(std::string_view filename) {
+    std::shared_ptr<ck::GpuProgram> BgfxProgramFactory::loadProgramFromFile(std::string_view filename) {
         auto isFileNameCorrect = [filename](const Program& program) -> bool{
             return program.file.stem() == filename;
         };
