@@ -9,6 +9,7 @@
 
 #include <optional>
 #include <array>
+#include <string_view>
 
 namespace cc{
     class ByteArray

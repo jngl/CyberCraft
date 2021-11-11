@@ -10,6 +10,7 @@
 #include "System/GraphicsData.h"
 
 #include <vector>
+#include <string_view>
 
 namespace cs {
     TextureData readDdsFile(std::string_view filename);
