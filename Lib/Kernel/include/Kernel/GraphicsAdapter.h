@@ -11,11 +11,14 @@
 
 namespace ck
 {
+    class GpuAdapter;
+    class Window;
+
     class GraphicsAdapter : public cc::NonCopyable
     {
     public:
-        virtual std::unique_ptr<ck::Frame> createFrame() = 0;
-        virtual void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener) = 0;
+        virtual ck::GpuAdapter& getGpuAdapter() = 0;
+        virtual ck::Window& getWindow() = 0;
     };
 }
 

@@ -4,7 +4,10 @@
 
 #include "SystemState.h"
 
-SystemState::SystemState() : m_graphicsAdapter(cg::createGraphicsAdapter())
+#include <Kernel/Window.h>
+#include <Kernel/GpuAdapter.h>
+
+SystemState::SystemState() : m_graphicsAdapter(cg::createGraphicsAdapter()), m_renderer2d(m_graphicsAdapter->getGpuAdapter())
 {
 }
 
@@ -13,12 +16,18 @@ bool SystemState::isRunning() const {
 }
 
 void SystemState::frame() {
-    m_graphicsAdapter->processEvent(*this, *this);
+    m_graphicsAdapter->getWindow().processEvent(*this, *this);
     m_gameLoader.getGame().updateMultiFrameAction();
 
-    std::unique_ptr<ck::Frame> frame = m_graphicsAdapter->createFrame();
+    auto size = m_graphicsAdapter->getWindow().getSize();
+    m_graphicsAdapter->getGpuAdapter().beginFrame(size);
 
-    m_gameLoader.getGame().render( frame->getColoredRectangleDrawer());
+
+    m_renderer2d.updateSize(size);
+
+    m_gameLoader.getGame().render(m_renderer2d);
+
+    m_graphicsAdapter->getGpuAdapter().endFrame();
 }
 
 void SystemState::onKeyUp(ck::Key key) {

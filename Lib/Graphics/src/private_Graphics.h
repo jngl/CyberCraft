@@ -29,44 +29,17 @@
 struct SDL_Window;
 
 namespace cg::Impl {
-    class Common
-    {
-    public:
-        Common();
-
-        SdlWindowAdapter m_window;
-        std::unique_ptr<ck::GpuAdapter> m_bgfxAdapter;
-        ck::Renderer2d m_renderer2d;
-    };
-
-    class Frame : public ck::Frame
-    {
-    public:
-        friend class Graphics;
-
-        explicit Frame(Common&);
-        Frame(const Frame&) = delete;
-        Frame(Frame&&) noexcept;
-
-        Frame& operator=(const Frame&) = delete;
-        Frame& operator=(Frame&&) noexcept;
-
-        ~Frame() override;
-
-        ck::ColoredRectangleDrawer& getColoredRectangleDrawer() override;
-
-    private:
-        Common* m_common;
-    };
-
     class GraphicsAdapter : public ck::GraphicsAdapter
     {
     public:
-        std::unique_ptr<ck::Frame> createFrame() override;
-        void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener) override;
+        GraphicsAdapter();
+
+        ck::GpuAdapter& getGpuAdapter() override;
+        ck::Window& getWindow() override;
 
     private:
-        Common m_common;
+        SdlWindowAdapter m_window;
+        std::unique_ptr<ck::GpuAdapter> m_bgfxAdapter;
     };
 }
 

@@ -17,55 +17,15 @@
 
 namespace cg::Impl{
 
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    Common::Common():
-            m_bgfxAdapter(createBgfxAdapter(m_window)),
-            m_renderer2d(*m_bgfxAdapter)
+    GraphicsAdapter::GraphicsAdapter(): m_bgfxAdapter(createBgfxAdapter(m_window))
     {
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    Frame::Frame(Common &common):
-            m_common(&common)
-    {
-
-        auto size = m_common->m_window.getSize();
-        m_common->m_bgfxAdapter->beginFrame(size);
-        m_common->m_renderer2d.updateSize(size);
+    ck::GpuAdapter &GraphicsAdapter::getGpuAdapter() {
+        return *m_bgfxAdapter;
     }
 
-    ck::ColoredRectangleDrawer &Frame::getColoredRectangleDrawer() {
-        return m_common->m_renderer2d;
-    }
-
-    Frame::~Frame() {
-        if(m_common != nullptr){
-            m_common->m_bgfxAdapter->endFrame();
-        }
-    }
-
-    Frame::Frame(Frame && other) noexcept {
-        m_common = other.m_common;
-        other.m_common = nullptr;
-    }
-
-    Frame &Frame::operator=(Frame && other) noexcept {
-        m_common = other.m_common;
-        other.m_common = nullptr;
-        return *this;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    std::unique_ptr<ck::Frame> GraphicsAdapter::createFrame() {
-        return std::make_unique<Impl::Frame>(m_common);
-    }
-
-    void GraphicsAdapter::processEvent(ck::ExitListener &exitListener, ck::KeyListener &keyListener) {
-        m_common.m_window.processEvent(exitListener, keyListener);
+    ck::Window &GraphicsAdapter::getWindow() {
+        return m_window;
     }
 }
