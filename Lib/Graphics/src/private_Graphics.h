@@ -18,6 +18,7 @@
 #include <Kernel/Key.h>
 #include <Kernel/Texture.h>
 #include <Kernel/GpuProgram.h>
+#include <Kernel/Renderer2d.h>
 
 #include <exception>
 #include <string>
@@ -28,27 +29,6 @@
 struct SDL_Window;
 
 namespace cg::Impl {
-
-    class Renderer2d : public cc::NonCopyable, public ck::ColoredRectangleDrawer {
-    public:
-        explicit Renderer2d(ck::GpuAdapter&);
-
-        void updateSize(cc::Vector2ui size);
-
-        void drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cc::Color& color) override;
-
-    private:
-        ck::GpuAdapter& m_bgfxAdapter;
-        std::shared_ptr<ck::VertexBuffer> m_rectangleVertices;
-        std::shared_ptr<ck::IndexBuffer> m_rectangleIndices;
-        std::shared_ptr<ck::GpuProgram> m_program;
-        std::shared_ptr<ck::Texture> m_textureTest;
-        std::shared_ptr<ck::Uniform> m_color;
-        std::shared_ptr<ck::Uniform> m_texture;
-
-        void setViewTransform(const cc::Matrix4f& proj, const cc::Matrix4f& view);
-    };
-
     class Common
     {
     public:
@@ -57,14 +37,14 @@ namespace cg::Impl {
         void startFrame();
         void endFrame();
 
-        Renderer2d& getRenderer2d();
+        ck::Renderer2d& getRenderer2d();
 
         void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener);
 
     private:
         SdlWindowAdapter m_window;
         std::unique_ptr<ck::GpuAdapter> m_bgfxAdapter;
-        Renderer2d m_renderer2d;
+        ck::Renderer2d m_renderer2d;
     };
 
     class GraphicsImpl {
