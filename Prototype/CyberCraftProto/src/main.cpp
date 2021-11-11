@@ -1,14 +1,18 @@
 #include "CyberCraft.h"
 
-#include <CyberCraftSFML/WindowSFML.h>
-#include <CyberCraftSFML/RenderContextSFML.h>
+#include <Graphics/Graphics.h>
+
 #include <Kernel/MainLoop.h>
+#include <Kernel/Renderer2d.h>
+#include <Kernel/Kernel.h>
 
 int main() {
-    ccSf::WindowSFML window;
-    ccSf::RenderContextSFML renderContext(window.getRenderWindow());
-    CyberCraft game(cc::make_ref(renderContext), cc::make_ref(window));
+    auto graphics = cg::createGraphicsAdapter();
+    ck::Kernel kernel(*graphics);
 
-    constexpr auto updateTime = std::chrono::milliseconds{16};
-	return ck::mainLoop(window, renderContext, game, updateTime);
+    // TODO
+//    CyberCraft game(renderer2D, graphics->getWindow());
+//
+//    constexpr auto updateTime = std::chrono::milliseconds{16};
+//	return ck::mainLoop(graphics->getWindow(), renderer2D, game, updateTime);
 }

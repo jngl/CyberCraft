@@ -8,6 +8,7 @@
 #include <Core/Bases.h>
 
 #include <Kernel/Renderer2d.h>
+#include <Kernel/Kernel.h>
 
 #include <Graphics/Graphics.h>
 #include "GameLoader.h"
@@ -29,8 +30,8 @@ public:
 
 private:
     std::unique_ptr<ck::GraphicsAdapter> m_graphicsAdapter;
+    ck::Kernel m_kernel;
     GameLoader m_gameLoader;
-    ck::Renderer2d m_renderer2d;
 };
 
 #endif //CYBERCRAFT_SYSTEMSTATE_H

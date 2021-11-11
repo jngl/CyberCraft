@@ -7,7 +7,7 @@
 #include <Kernel/Window.h>
 #include <Kernel/GpuAdapter.h>
 
-SystemState::SystemState() : m_graphicsAdapter(cg::createGraphicsAdapter()), m_renderer2d(m_graphicsAdapter->getGpuAdapter())
+SystemState::SystemState() : m_graphicsAdapter(cg::createGraphicsAdapter()), m_kernel(*m_graphicsAdapter)
 {
 }
 
@@ -19,15 +19,11 @@ void SystemState::frame() {
     m_graphicsAdapter->getWindow().processEvent(*this, *this);
     m_gameLoader.getGame().updateMultiFrameAction();
 
-    auto size = m_graphicsAdapter->getWindow().getSize();
-    m_graphicsAdapter->getGpuAdapter().beginFrame(size);
+    m_kernel.beginFrame();
 
+    m_gameLoader.getGame().render(m_kernel.getRenderer2d());
 
-    m_renderer2d.updateSize(size);
-
-    m_gameLoader.getGame().render(m_renderer2d);
-
-    m_graphicsAdapter->getGpuAdapter().endFrame();
+    m_kernel.endFrame();
 }
 
 void SystemState::onKeyUp(ck::Key key) {
