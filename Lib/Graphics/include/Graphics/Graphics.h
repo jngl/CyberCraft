@@ -7,28 +7,10 @@
 
 #include <Kernel/Graphics.h>
 
+#include <Kernel/GraphicsAdapter.h>
+
 namespace cg{
-    class Graphics;
-
-    namespace Impl{
-        class GraphicsImpl;
-        class Frame;
-    }
-
-    class Graphics : ck::Graphics{
-    public:
-        friend class Impl::Frame;
-
-        Graphics();
-        ~Graphics() override;
-
-        std::unique_ptr<ck::Frame> createFrame() override;
-
-        void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener) override;
-
-    private:
-        Impl::GraphicsImpl* m_data = nullptr;
-    };
+    [[maybe_unused]] std::unique_ptr<ck::GraphicsAdapter> createGraphicsAdapter();
 }
 
 #endif //CYBERCRAFT_GRAPHICS_H

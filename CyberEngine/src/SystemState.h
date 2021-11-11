@@ -14,6 +14,8 @@
 
 class SystemState : public ck::KeyListener, public ck::ExitListener, public cc::NonCopyable{
 public:
+    SystemState();
+
     [[nodiscard]] bool isRunning() const;
 
     void frame();
@@ -24,7 +26,7 @@ public:
     void onExit() override;
 
 private:
-    cg::Graphics m_graphics;
+    std::unique_ptr<ck::GraphicsAdapter> m_graphicsAdapter;
     GameLoader m_gameLoader;
 };
 

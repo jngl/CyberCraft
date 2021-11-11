@@ -34,28 +34,9 @@ namespace cg::Impl {
     public:
         Common();
 
-        void startFrame();
-        void endFrame();
-
-        ck::Renderer2d& getRenderer2d();
-
-        void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener);
-
-    private:
         SdlWindowAdapter m_window;
         std::unique_ptr<ck::GpuAdapter> m_bgfxAdapter;
         ck::Renderer2d m_renderer2d;
-    };
-
-    class GraphicsImpl {
-    public:
-        GraphicsImpl();
-
-        void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener);
-
-        std::unique_ptr<Frame> createFrame();
-    private:
-        Common m_common;
     };
 
     class Frame : public ck::Frame
@@ -76,6 +57,16 @@ namespace cg::Impl {
 
     private:
         Common* m_common;
+    };
+
+    class GraphicsAdapter : public ck::GraphicsAdapter
+    {
+    public:
+        std::unique_ptr<ck::Frame> createFrame() override;
+        void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener) override;
+
+    private:
+        Common m_common;
     };
 }
 

@@ -4,15 +4,19 @@
 
 #include "SystemState.h"
 
+SystemState::SystemState() : m_graphicsAdapter(cg::createGraphicsAdapter())
+{
+}
+
 bool SystemState::isRunning() const {
     return m_gameLoader.getGame().isRunning();
 }
 
 void SystemState::frame() {
-    m_graphics.processEvent(*this, *this);
+    m_graphicsAdapter->processEvent(*this, *this);
     m_gameLoader.getGame().updateMultiFrameAction();
 
-    std::unique_ptr<ck::Frame> frame = m_graphics.createFrame();
+    std::unique_ptr<ck::Frame> frame = m_graphicsAdapter->createFrame();
 
     m_gameLoader.getGame().render( frame->getColoredRectangleDrawer());
 }
@@ -32,3 +36,4 @@ void SystemState::onKeyDown(ck::Key key) {
 void SystemState::onExit() {
     m_gameLoader.getGame().exit();
 }
+

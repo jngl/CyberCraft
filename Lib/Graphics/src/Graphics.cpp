@@ -7,20 +7,8 @@
 #include "private_Graphics.h"
 
 namespace cg{
-    Graphics::Graphics()
+    [[maybe_unused]] std::unique_ptr<ck::GraphicsAdapter> createGraphicsAdapter()
     {
-        m_data = new Impl::GraphicsImpl;
-    }
-
-    Graphics::~Graphics() {
-        delete m_data;
-    }
-
-    std::unique_ptr<ck::Frame> Graphics::createFrame() {
-        return m_data->createFrame();
-    }
-
-    void Graphics::processEvent(ck::ExitListener& exitListener, ck::KeyListener &keyListener) {
-        m_data->processEvent(exitListener, keyListener);
+        return std::make_unique<Impl::GraphicsAdapter>();
     }
 }

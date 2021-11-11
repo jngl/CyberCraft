@@ -44,12 +44,6 @@ namespace ck {
     public:
         virtual ck::ColoredRectangleDrawer& getColoredRectangleDrawer() = 0;
     };
-
-    class Graphics : public cc::NonCopyable {
-    public:
-        virtual std::unique_ptr<Frame> createFrame() = 0;
-        virtual void processEvent(ExitListener& exitListener, KeyListener& keyListener) = 0;
-    };
 }
 
 #endif //CYBERCRAFT_GRAPHICS_H
