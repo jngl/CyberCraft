@@ -5,7 +5,6 @@
 #include "SystemState.h"
 
 #include <Kernel/Window.h>
-#include <Kernel/GpuAdapter.h>
 
 SystemState::SystemState() : m_graphicsAdapter(cg::createGraphicsAdapter()), m_kernel(*m_graphicsAdapter)
 {
@@ -19,11 +18,9 @@ void SystemState::frame() {
     m_graphicsAdapter->getWindow().processEvent(*this, *this);
     m_gameLoader.getGame().updateMultiFrameAction();
 
-    m_kernel.beginFrame();
-
     m_gameLoader.getGame().render(m_kernel.getRenderer2d());
 
-    m_kernel.endFrame();
+    m_kernel.nextFrame();
 }
 
 void SystemState::onKeyUp(ck::Key key) {
