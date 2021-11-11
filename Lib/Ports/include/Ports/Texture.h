@@ -10,7 +10,7 @@
 
 #include <memory>
 
-namespace ck
+namespace cp
 {
     class Texture : public cc::NonCopyable
     {
