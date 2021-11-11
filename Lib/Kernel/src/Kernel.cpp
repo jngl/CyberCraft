@@ -13,10 +13,17 @@ namespace ck
     m_graphicsAdapter(graphicsAdapter),
     m_renderer2d(m_graphicsAdapter.getGpuAdapter())
     {
+        beginFrame();
     }
 
     ck::Renderer2d &Kernel::getRenderer2d() {
         return m_renderer2d;
+    }
+
+    void Kernel::nextFrame() {
+        m_graphicsAdapter.getGpuAdapter().endFrame();
+
+        beginFrame();
     }
 
     void Kernel::beginFrame() {
@@ -24,9 +31,5 @@ namespace ck
         m_graphicsAdapter.getGpuAdapter().beginFrame(size);
 
         m_renderer2d.updateSize(size);
-    }
-
-    void Kernel::endFrame() {
-        m_graphicsAdapter.getGpuAdapter().endFrame();
     }
 }

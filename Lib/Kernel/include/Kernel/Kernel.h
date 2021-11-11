@@ -18,12 +18,14 @@ namespace ck
 
         ck::Renderer2d& getRenderer2d();
 
-        void beginFrame();
-        void endFrame();
+
+        void nextFrame();
 
     private:
         ck::GraphicsAdapter& m_graphicsAdapter;
         ck::Renderer2d m_renderer2d;
+
+        void beginFrame();
     };
 }
 
