@@ -14,9 +14,10 @@
 #include <Core/Bases.h>
 #include <Core/pointer.h>
 
+#include <Ports/Texture.h>
+
 #include <Kernel/Engine.h>
 #include <Kernel/Key.h>
-#include <Kernel/Texture.h>
 #include <Kernel/GpuProgram.h>
 #include <Kernel/Renderer2d.h>
 

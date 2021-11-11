@@ -15,7 +15,7 @@ namespace component{
     class Sprite;
 }
 
-void drawSprite(cc::Ref<ck::SpriteDrawer> renderContext, const ck::Texture& texture, const cc::Vector2f& pos, const component::Sprite& sprite);
+void drawSprite(cc::Ref<ck::SpriteDrawer> renderContext, const cp::Texture& texture, const cc::Vector2f& pos, const component::Sprite& sprite);
 
 void movePlayer(cc::Ref<ck::Window> win, cc::Ref<cc::Vector2f> pos, const World& world);
 

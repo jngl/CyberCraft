@@ -21,7 +21,7 @@ namespace ccSf {
     }
 
 
-    void RenderContextSFML::drawSprite(const ck::Texture& textureHandle,
+    void RenderContextSFML::drawSprite(const cp::Texture& textureHandle,
                                        const cc::Vector2f &pos,
                                        const cc::Vector2i &textureIndex,
                                        cc::Color color,
@@ -73,7 +73,7 @@ namespace ccSf {
         m_target.setView(view);
     }
 
-    std::shared_ptr<ck::Texture> RenderContextSFML::loadTextureFromFile(std::string_view filename) {
+    std::shared_ptr<cp::Texture> RenderContextSFML::loadTextureFromFile(std::string_view filename) {
         for(auto & texture : m_textures){
             if(texture->fileName == filename){
                 return texture;

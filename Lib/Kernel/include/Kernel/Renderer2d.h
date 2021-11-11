@@ -28,7 +28,7 @@ namespace ck
         std::shared_ptr<ck::VertexBuffer> m_rectangleVertices;
         std::shared_ptr<ck::IndexBuffer> m_rectangleIndices;
         std::shared_ptr<ck::GpuProgram> m_program;
-        std::shared_ptr<ck::Texture> m_textureTest;
+        std::shared_ptr<cp::Texture> m_textureTest;
         std::shared_ptr<ck::Uniform> m_color;
         std::shared_ptr<ck::Uniform> m_texture;
 

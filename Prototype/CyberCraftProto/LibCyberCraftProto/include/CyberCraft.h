@@ -44,7 +44,7 @@ private:
     };
 
     World m_world;
-    std::shared_ptr<ck::Texture> texture;
+    std::shared_ptr<cp::Texture> texture;
     cc::Ref<ck::RenderContext2D> m_renderContext;
     cc::Ref<ck::Window> m_window;
 };

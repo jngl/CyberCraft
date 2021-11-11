@@ -111,7 +111,7 @@ namespace cs {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    void GraphicsContext::setCurrentTexture(const ck::Texture* tex) {
+    void GraphicsContext::setCurrentTexture(const cp::Texture* tex) {
         const auto* texture = dynamic_cast<const Texture*>(tex);
 
         glCheck(glActiveTexture(GL_TEXTURE0));
@@ -120,11 +120,11 @@ namespace cs {
         m_current_texture = texture;
     }
 
-    const ck::Texture* GraphicsContext::getCurrentTexture() const {
+    const cp::Texture* GraphicsContext::getCurrentTexture() const {
         return m_current_texture;
     }
 
-    std::shared_ptr<ck::Texture> GraphicsContext::loadTextureFromFile(std::string_view filename) {
+    std::shared_ptr<cp::Texture> GraphicsContext::loadTextureFromFile(std::string_view filename) {
         auto it = std::find_if(begin(m_textures), end(m_textures), [filename](std::shared_ptr<Texture> tex ){
             return tex->fileName == filename;
         });

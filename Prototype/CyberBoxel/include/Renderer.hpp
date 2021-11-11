@@ -20,7 +20,7 @@ namespace Renderer {
     void resize(int width, int height);
 
     // material
-    Material_handle createMaterial(const ck::Texture& tex, std::string_view name);
+    Material_handle createMaterial(const cp::Texture& tex, std::string_view name);
     void destroyMaterial(Material_handle handle);
 
     void setWithAlpha(Material_handle handle, bool alpha);
@@ -49,7 +49,7 @@ namespace Renderer {
     };
 
     // TextureGL
-    std::shared_ptr<ck::Texture> loadTextureFromFile(std::string_view filename);
+    std::shared_ptr<cp::Texture> loadTextureFromFile(std::string_view filename);
 
     // camera
     Camera_handle createCamera();
@@ -62,7 +62,7 @@ namespace Renderer {
     void setActiveCamera(Camera_handle handle);
 
     // sprite
-    Sprite_handle createSprite(const ck::Texture& handle);
+    Sprite_handle createSprite(const cp::Texture& handle);
 
     void destroySprite(Sprite_handle sprite);
 

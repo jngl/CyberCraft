@@ -14,7 +14,7 @@
 #include <map>
 
 namespace ccSf {
-    class Texture : public ck::Texture{
+    class Texture : public cp::Texture{
     public:
         std::string fileName;
         sf::Texture sfTexture;
@@ -24,9 +24,9 @@ namespace ccSf {
     public:
         explicit RenderContextSFML(sf::RenderTarget &target);
 
-        std::shared_ptr<ck::Texture> loadTextureFromFile(std::string_view filename) override;
+        std::shared_ptr<cp::Texture> loadTextureFromFile(std::string_view filename) override;
 
-        void drawSprite(const ck::Texture& texture,
+        void drawSprite(const cp::Texture& texture,
                         const cc::Vector2f &pos,
                         const cc::Vector2i &textureIndex,
                         cc::Color color,

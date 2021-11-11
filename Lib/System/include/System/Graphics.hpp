@@ -5,7 +5,7 @@
 #include <Core/Math.h>
 #include <Core/Id.h>
 
-#include <Kernel/Texture.h>
+#include <Ports/Texture.h>
 
 #include "System/Common.h"
 
@@ -39,7 +39,7 @@ namespace cs {
 //    };
 //
 
-    class Texture : public ck::Texture{
+    class Texture : public cp::Texture{
     public:
         unsigned int glId = 0;
         std::string fileName;
@@ -47,15 +47,15 @@ namespace cs {
         ~Texture() override;
     };
 
-    class GraphicsContext : public ck::TextureFactory
+    class GraphicsContext : public cp::TextureFactory
     {
     public:
         GraphicsContext();
 
-        std::shared_ptr<ck::Texture> loadTextureFromFile(std::string_view filename) override;
+        std::shared_ptr<cp::Texture> loadTextureFromFile(std::string_view filename) override;
 
-        void setCurrentTexture(const ck::Texture*);
-        [[nodiscard]] const ck::Texture* getCurrentTexture() const;
+        void setCurrentTexture(const cp::Texture*);
+        [[nodiscard]] const cp::Texture* getCurrentTexture() const;
 
 //        MeshId loadMesh(const MeshBuilder& builder);
 //        void unloadMesh(MeshId mesh);

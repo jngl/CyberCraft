@@ -330,7 +330,7 @@ namespace cg::Impl {
         bgfx::dbgTextPrintf(0, 0, 0x0f, textStr.c_str());
     }
 
-    ck::TextureFactory &BgfxAdapter::getTextureFactory() {
+    cp::TextureFactory &BgfxAdapter::getTextureFactory() {
         return m_textures;
     }
 
@@ -450,7 +450,7 @@ namespace cg::Impl {
         std::cout<<"load texture : "<<file.stem()<<"\n";
     }
 
-    std::shared_ptr<ck::Texture> BgfxTextureFactory::loadTextureFromFile(std::string_view filename) {
+    std::shared_ptr<cp::Texture> BgfxTextureFactory::loadTextureFromFile(std::string_view filename) {
         auto isFileNameCorrect = [filename](const Texture& texture) -> bool{
             return texture.file.stem() == filename;
         };
@@ -547,7 +547,7 @@ namespace cg::Impl {
         bgfx::setUniform(m_handle, colorTmp, 1);
     }
 
-    void BgfxUniform::setTexture(const ck::Texture& texture) {
+    void BgfxUniform::setTexture(const cp::Texture& texture) {
         const auto* bgfxTexture = dynamic_cast<const BgfxTexture*>(&texture);
         bgfx::setTexture(0, m_handle, bgfxTexture->getHandle());
     }

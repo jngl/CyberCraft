@@ -96,7 +96,7 @@ namespace cg::Impl {
         bgfx::UniformHandle getHandle();
 
         void setColor(const cc::Color& color) override;
-        void setTexture(const ck::Texture& texture) override;
+        void setTexture(const cp::Texture& texture) override;
 
     private:
         bgfx::UniformHandle m_handle;
@@ -186,7 +186,7 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// BGFX Texture
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxTexture : public ck::Texture
+    class BgfxTexture : public cp::Texture
     {
     public:
         BgfxTexture(int width,
@@ -219,16 +219,16 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// BGFX Texture Factory
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxTextureFactory : public ck::TextureFactory{
+    class BgfxTextureFactory : public cp::TextureFactory{
     public:
         BgfxTextureFactory();
 
-        std::shared_ptr<ck::Texture> loadTextureFromFile(std::string_view filename) override;
+        std::shared_ptr<cp::Texture> loadTextureFromFile(std::string_view filename) override;
 
     private:
         struct Texture{
             std::filesystem::path file;
-            std::shared_ptr<ck::Texture> texture;
+            std::shared_ptr<cp::Texture> texture;
         };
 
         std::vector<Texture> m_textures;
@@ -267,7 +267,7 @@ namespace cg::Impl {
         void endFrame() override;
 
         ck::GpuProgramFactory& getProgramFactory() override;
-        ck::TextureFactory& getTextureFactory() override;
+        cp::TextureFactory& getTextureFactory() override;
         ck::UniformFactory& getUniformFactory() override;
         ck::GpuBufferFactory& getBufferFactory() override;
 

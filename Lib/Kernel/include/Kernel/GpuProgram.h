@@ -12,10 +12,13 @@ namespace cc
     struct Color;
 }
 
-namespace ck
+namespace cp
 {
     class Texture;
+}
 
+namespace ck
+{
     class Uniform : public cc::NonCopyable
     {
     public:
@@ -31,7 +34,7 @@ namespace ck
         };
 
         virtual void setColor(const cc::Color&) = 0;
-        virtual void setTexture(const ck::Texture&) = 0;
+        virtual void setTexture(const cp::Texture&) = 0;
     };
 
     class UniformFactory : public cc::NonCopyable

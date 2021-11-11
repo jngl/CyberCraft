@@ -21,11 +21,15 @@ namespace cc{
     using Matrix4f = Matrix4<float>;
 }
 
+namespace cp
+{
+    class TextureFactory;
+}
+
 namespace ck
 {
     class GpuProgram;
     class GpuProgramFactory;
-    class TextureFactory;
     class UniformFactory;
     class VertexBuffer;
     class IndexBuffer;
@@ -38,7 +42,7 @@ namespace ck
         virtual void endFrame() = 0;
 
         virtual GpuProgramFactory& getProgramFactory() = 0;
-        virtual TextureFactory& getTextureFactory() = 0;
+        virtual cp::TextureFactory& getTextureFactory() = 0;
         virtual UniformFactory& getUniformFactory() = 0;
         virtual GpuBufferFactory& getBufferFactory() = 0;
 

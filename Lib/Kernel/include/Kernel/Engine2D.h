@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_ENGINE2D_H
 #define CYBERCRAFT_ENGINE2D_H
 
-#include <Kernel/Texture.h>
+#include <Ports/Texture.h>
 
 #include <Core/Math.h>
 #include <Core/Color.h>
@@ -22,7 +22,7 @@ namespace ck
     class SpriteDrawer : public cc::Copyable
     {
     public:
-        virtual void drawSprite(const Texture& texture,
+        virtual void drawSprite(const cp::Texture& texture,
                                 const cc::Vector2f &pos,
                                 const cc::Vector2i &textureIndex,
                                 cc::Color color,
@@ -41,7 +41,7 @@ namespace ck
         virtual void setViewCenter(cc::Vector2f pos) = 0;
     };
 
-    class RenderContext2D : public TextureFactory, public Camera2D, public SpriteDrawer  {
+class RenderContext2D : public cp::TextureFactory, public Camera2D, public SpriteDrawer  {
     public:
     };
 }
