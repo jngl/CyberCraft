@@ -6,7 +6,7 @@
 
 #include <Core/Memory.h>
 
-#include <Kernel/GpuBuffer.h>
+#include <Ports/GpuBuffer.h>
 
 #include <fmt/core.h>
 
@@ -19,12 +19,12 @@ namespace ck
         float m_u;
         float m_v;
 
-        static std::unique_ptr<ck::VertexLayout> getLayout(ck::GpuBufferFactory& factory){
-            std::unique_ptr<ck::VertexLayout> layout = factory.createVertexLayout();
+        static std::unique_ptr<cp::VertexLayout> getLayout(cp::GpuBufferFactory& factory){
+            std::unique_ptr<cp::VertexLayout> layout = factory.createVertexLayout();
 
             layout->begin();
-            layout->add(ck::Attrib::Position, 2, ck::AttribType::Float);
-            layout->add(ck::Attrib::TexCoord0, 2, ck::AttribType::Float);
+            layout->add(cp::Attrib::Position, 2, cp::AttribType::Float);
+            layout->add(cp::Attrib::TexCoord0, 2, cp::AttribType::Float);
             layout->end();
 
             return layout;

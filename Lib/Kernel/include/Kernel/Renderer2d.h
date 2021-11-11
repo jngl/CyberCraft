@@ -25,8 +25,8 @@ namespace ck
 
         private:
         ck::GpuAdapter& m_gpuAdapter;
-        std::shared_ptr<ck::VertexBuffer> m_rectangleVertices;
-        std::shared_ptr<ck::IndexBuffer> m_rectangleIndices;
+        std::shared_ptr<cp::VertexBuffer> m_rectangleVertices;
+        std::shared_ptr<cp::IndexBuffer> m_rectangleIndices;
         std::shared_ptr<ck::GpuProgram> m_program;
         std::shared_ptr<cp::Texture> m_textureTest;
         std::shared_ptr<ck::Uniform> m_color;

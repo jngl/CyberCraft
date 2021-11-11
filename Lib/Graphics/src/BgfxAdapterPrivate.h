@@ -9,7 +9,8 @@
 
 #include <Kernel/Engine.h>
 #include <Kernel/GpuProgram.h>
-#include <Kernel/GpuBuffer.h>
+
+#include <Ports/GpuBuffer.h>
 
 #include <bgfx/bgfx.h>
 
@@ -33,7 +34,7 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Index Buffer
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxIndexBuffer : public ck::IndexBuffer{
+    class BgfxIndexBuffer : public cp::IndexBuffer{
     public:
         explicit BgfxIndexBuffer(const cc::ByteArrayView&);
         ~BgfxIndexBuffer() override;
@@ -47,7 +48,7 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Vertex Buffer
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxVertexBuffer : public ck::VertexBuffer{
+    class BgfxVertexBuffer : public cp::VertexBuffer{
     public:
         BgfxVertexBuffer(const cc::ByteArrayView& data, const BgfxVertexLayout& layout);
         ~BgfxVertexBuffer() override;
@@ -61,10 +62,10 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Vertex Layout
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxVertexLayout : public ck::VertexLayout{
+    class BgfxVertexLayout : public cp::VertexLayout{
     public:
         void begin() override;
-        void add(ck::Attrib attrib, uint8_t num, ck::AttribType type, bool normalized = false, bool asInt = false) override;
+        void add(cp::Attrib attrib, uint8_t num, cp::AttribType type, bool normalized = false, bool asInt = false) override;
         void end() override;
 
         [[nodiscard]] const bgfx::VertexLayout& getBgfxLayout() const;
@@ -76,11 +77,11 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Vertex Layout
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class bgfxGpuBufferFactory : public ck::GpuBufferFactory{
+    class bgfxGpuBufferFactory : public cp::GpuBufferFactory{
     public:
-        std::unique_ptr<ck::IndexBuffer> createIndexBuffer(const cc::ByteArrayView& data) override;
-        std::unique_ptr<ck::VertexBuffer> createVertexBuffer(const cc::ByteArrayView& data, const ck::VertexLayout& layout) override;
-        std::unique_ptr<ck::VertexLayout> createVertexLayout() override;
+        std::unique_ptr<cp::IndexBuffer> createIndexBuffer(const cc::ByteArrayView& data) override;
+        std::unique_ptr<cp::VertexBuffer> createVertexBuffer(const cc::ByteArrayView& data, const cp::VertexLayout& layout) override;
+        std::unique_ptr<cp::VertexLayout> createVertexLayout() override;
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -269,12 +270,12 @@ namespace cg::Impl {
         ck::GpuProgramFactory& getProgramFactory() override;
         cp::TextureFactory& getTextureFactory() override;
         ck::UniformFactory& getUniformFactory() override;
-        ck::GpuBufferFactory& getBufferFactory() override;
+        cp::GpuBufferFactory& getBufferFactory() override;
 
         void setTransform(const cc::Matrix4f&) override;
 
-        void setVertexBuffer(uint8_t stream, const ck::VertexBuffer&) override;
-        void setIndexBuffer(const ck::IndexBuffer&) override;
+        void setVertexBuffer(uint8_t stream, const cp::VertexBuffer&) override;
+        void setIndexBuffer(const cp::IndexBuffer&) override;
         void submit(const ck::GpuProgram& _program) override;
 
         void setViewTransform(const cc::Matrix4f &proj, const cc::Matrix4f &view) override;

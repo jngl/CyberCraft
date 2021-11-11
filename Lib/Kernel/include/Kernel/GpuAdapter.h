@@ -24,6 +24,9 @@ namespace cc{
 namespace cp
 {
     class TextureFactory;
+    class VertexBuffer;
+    class IndexBuffer;
+    class GpuBufferFactory;
 }
 
 namespace ck
@@ -31,9 +34,6 @@ namespace ck
     class GpuProgram;
     class GpuProgramFactory;
     class UniformFactory;
-    class VertexBuffer;
-    class IndexBuffer;
-    class GpuBufferFactory;
 
     class GpuAdapter : public cc::NonCopyable
     {
@@ -44,12 +44,12 @@ namespace ck
         virtual GpuProgramFactory& getProgramFactory() = 0;
         virtual cp::TextureFactory& getTextureFactory() = 0;
         virtual UniformFactory& getUniformFactory() = 0;
-        virtual GpuBufferFactory& getBufferFactory() = 0;
+        virtual cp::GpuBufferFactory& getBufferFactory() = 0;
 
         virtual void setTransform(const cc::Matrix4f&) = 0;
 
-        virtual void setVertexBuffer(uint8_t stream, const VertexBuffer&) = 0;
-        virtual void setIndexBuffer(const IndexBuffer&) = 0;
+        virtual void setVertexBuffer(uint8_t stream, const cp::VertexBuffer&) = 0;
+        virtual void setIndexBuffer(const cp::IndexBuffer&) = 0;
         virtual void submit(const ck::GpuProgram& _program) = 0;
 
         virtual void setViewTransform(const cc::Matrix4f &proj, const cc::Matrix4f &view) = 0;

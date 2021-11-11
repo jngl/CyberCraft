@@ -12,7 +12,7 @@ namespace cc
     class ByteArrayView;
 }
 
-namespace ck
+namespace cp
 {
     /// Corresponds to vertex shader attribute.
     enum class Attrib

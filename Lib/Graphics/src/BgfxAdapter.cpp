@@ -210,60 +210,60 @@ namespace cg::Impl {
         }
     }
 
-    bgfx::Attrib::Enum convAttrib(ck::Attrib attrib){
+    bgfx::Attrib::Enum convAttrib(cp::Attrib attrib){
         switch (attrib) {
-            case ck::Attrib::Position:
+            case cp::Attrib::Position:
                 return bgfx::Attrib::Position;
-            case ck::Attrib::Normal:
+            case cp::Attrib::Normal:
                 return bgfx::Attrib::Normal;
-            case ck::Attrib::Tangent:
+            case cp::Attrib::Tangent:
                 return bgfx::Attrib::Tangent;
-            case ck::Attrib::Bitangent:
+            case cp::Attrib::Bitangent:
                 return bgfx::Attrib::Bitangent;
-            case ck::Attrib::Color0:
+            case cp::Attrib::Color0:
                 return bgfx::Attrib::Color0;
-            case ck::Attrib::Color1:
+            case cp::Attrib::Color1:
                 return bgfx::Attrib::Color1;
-            case ck::Attrib::Color2:
+            case cp::Attrib::Color2:
                 return bgfx::Attrib::Color2;
-            case ck::Attrib::Color3:
+            case cp::Attrib::Color3:
                 return bgfx::Attrib::Color3;
-            case ck::Attrib::Indices:
+            case cp::Attrib::Indices:
                 return bgfx::Attrib::Indices;
-            case ck::Attrib::Weight:
+            case cp::Attrib::Weight:
                 return bgfx::Attrib::Weight;
-            case ck::Attrib::TexCoord0:
+            case cp::Attrib::TexCoord0:
                 return bgfx::Attrib::TexCoord0;
-            case ck::Attrib::TexCoord1:
+            case cp::Attrib::TexCoord1:
                 return bgfx::Attrib::TexCoord1;
-            case ck::Attrib::TexCoord2:
+            case cp::Attrib::TexCoord2:
                 return bgfx::Attrib::TexCoord2;
-            case ck::Attrib::TexCoord3:
+            case cp::Attrib::TexCoord3:
                 return bgfx::Attrib::TexCoord3;
-            case ck::Attrib::TexCoord4:
+            case cp::Attrib::TexCoord4:
                 return bgfx::Attrib::TexCoord4;
-            case ck::Attrib::TexCoord5:
+            case cp::Attrib::TexCoord5:
                 return bgfx::Attrib::TexCoord5;
-            case ck::Attrib::TexCoord6:
+            case cp::Attrib::TexCoord6:
                 return bgfx::Attrib::TexCoord6;
-            case ck::Attrib::TexCoord7:
+            case cp::Attrib::TexCoord7:
                 return bgfx::Attrib::TexCoord7;
             default:
                 return bgfx::Attrib::Count;
         }
     }
 
-    bgfx::AttribType::Enum convAttribType(ck::AttribType type){
+    bgfx::AttribType::Enum convAttribType(cp::AttribType type){
         switch (type) {
-            case ck::AttribType::Uint8:
+            case cp::AttribType::Uint8:
                 return bgfx::AttribType::Uint8;
-            case ck::AttribType::Uint10:
+            case cp::AttribType::Uint10:
                 return bgfx::AttribType::Uint10;
-            case ck::AttribType::Int16:
+            case cp::AttribType::Int16:
                 return bgfx::AttribType::Int16;
-            case ck::AttribType::Half:
+            case cp::AttribType::Half:
                 return bgfx::AttribType::Half;
-            case ck::AttribType::Float:
+            case cp::AttribType::Float:
                 return bgfx::AttribType::Float;
             default:
                 return bgfx::AttribType::Count;
@@ -304,14 +304,14 @@ namespace cg::Impl {
         bgfx::setTransform(transform.m.data());
     }
 
-    void BgfxAdapter::setVertexBuffer(uint8_t stream, const ck::VertexBuffer&vertices) {
+    void BgfxAdapter::setVertexBuffer(uint8_t stream, const cp::VertexBuffer&vertices) {
         const auto* bgfxBuffer = dynamic_cast<const BgfxVertexBuffer*>(&vertices);
         if(bgfxBuffer != nullptr){
             bgfx::setVertexBuffer(0, bgfxBuffer->getBgfxHandle());
         }
     }
 
-    void BgfxAdapter::setIndexBuffer(const ck::IndexBuffer &indices) {
+    void BgfxAdapter::setIndexBuffer(const cp::IndexBuffer &indices) {
         const auto* bgfxBuffer = dynamic_cast<const BgfxIndexBuffer*>(&indices);
         if(bgfxBuffer != nullptr){
             bgfx::setIndexBuffer(bgfxBuffer->getBgfxHandle());
@@ -338,7 +338,7 @@ namespace cg::Impl {
         return m_uniforms;
     }
 
-    ck::GpuBufferFactory &BgfxAdapter::getBufferFactory() {
+    cp::GpuBufferFactory &BgfxAdapter::getBufferFactory() {
         return m_buffers;
     }
 
@@ -634,7 +634,7 @@ namespace cg::Impl {
         m_layout.begin();
     }
 
-    void BgfxVertexLayout::add(ck::Attrib attrib, uint8_t num, ck::AttribType type, bool normalized, bool asInt) {
+    void BgfxVertexLayout::add(cp::Attrib attrib, uint8_t num, cp::AttribType type, bool normalized, bool asInt) {
         bgfx::Attrib::Enum bgfxAttrib = convAttrib(attrib);
         bgfx::AttribType::Enum bgfxType = convAttribType(type);
         m_layout.add(bgfxAttrib, num, bgfxType, normalized, asInt);
@@ -650,17 +650,17 @@ namespace cg::Impl {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    std::unique_ptr<ck::IndexBuffer> bgfxGpuBufferFactory::createIndexBuffer(const cc::ByteArrayView &data) {
+    std::unique_ptr<cp::IndexBuffer> bgfxGpuBufferFactory::createIndexBuffer(const cc::ByteArrayView &data) {
         return std::make_unique<BgfxIndexBuffer>(data);
     }
 
-    std::unique_ptr<ck::VertexBuffer>
-    bgfxGpuBufferFactory::createVertexBuffer(const cc::ByteArrayView& data, const ck::VertexLayout& layout) {
+    std::unique_ptr<cp::VertexBuffer>
+    bgfxGpuBufferFactory::createVertexBuffer(const cc::ByteArrayView& data, const cp::VertexLayout& layout) {
         const auto& bgfxLayout = dynamic_cast<const BgfxVertexLayout&>(layout);
         return std::make_unique<BgfxVertexBuffer>(data, bgfxLayout);
     }
 
-    std::unique_ptr<ck::VertexLayout> bgfxGpuBufferFactory::createVertexLayout() {
+    std::unique_ptr<cp::VertexLayout> bgfxGpuBufferFactory::createVertexLayout() {
         return std::make_unique<BgfxVertexLayout>();
     }
 
