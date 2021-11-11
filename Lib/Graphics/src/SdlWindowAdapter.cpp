@@ -30,10 +30,6 @@ namespace cg::Impl {
         return m_window;
     }
 
-    void SdlWindowAdapter::swap(){
-        SDL_GL_SwapWindow(m_window);
-    }
-
     void* SdlWindowAdapter::sdlNativeWindowHandle()
     {
         SDL_SysWMinfo wmi;
@@ -134,5 +130,19 @@ namespace cg::Impl {
             default:
                 return ck::Key::UNKNOWN;
         }
+    }
+
+    bool SdlWindowAdapter::isOpen() const {
+        return true;
+    }
+
+    void SdlWindowAdapter::beginFrame() {
+    }
+
+    void SdlWindowAdapter::endFrame() {
+    }
+
+    bool SdlWindowAdapter::isKeyPressed(ck::Key) {
+        return false;
     }
 }
