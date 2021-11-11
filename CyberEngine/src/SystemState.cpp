@@ -4,7 +4,7 @@
 
 #include "SystemState.h"
 
-#include <Kernel/Window.h>
+#include <Ports/Window.h>
 
 SystemState::SystemState() : m_graphicsAdapter(cg::createGraphicsAdapter()), m_kernel(*m_graphicsAdapter)
 {
@@ -15,7 +15,8 @@ bool SystemState::isRunning() const {
 }
 
 void SystemState::frame() {
-    m_graphicsAdapter->getWindow().processEvent(*this, *this);
+    // TODO
+    //m_graphicsAdapter->getWindow().processEvent(*this, *this);
     m_gameLoader.getGame().updateMultiFrameAction();
 
     m_gameLoader.getGame().render(m_kernel.getRenderer2d());
@@ -23,12 +24,12 @@ void SystemState::frame() {
     m_kernel.nextFrame();
 }
 
-void SystemState::onKeyUp(ck::Key key) {
+void SystemState::onKeyUp(cp::Key key) {
     m_gameLoader.getGame().processKeyUp(key);
 }
 
-void SystemState::onKeyDown(ck::Key key) {
-    if(key == ck::Key::F5){
+void SystemState::onKeyDown(cp::Key key) {
+    if(key == cp::Key::F5){
         m_gameLoader.reload();
     }
 

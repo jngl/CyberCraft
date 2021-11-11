@@ -7,7 +7,7 @@
 
 #include <Kernel/Engine2D.h>
 #include <Kernel/Game.h>
-#include <Kernel/Window.h>
+#include <Ports/Window.h>
 
 #include <Core/pointer.h>
 
@@ -22,7 +22,7 @@ struct Player {
 
 class CyberCraft : public ck::Game {
 public:
-    explicit CyberCraft(cc::Ref<ck::RenderContext2D> renderContext, cc::Ref<ck::Window> win);
+    explicit CyberCraft(cc::Ref<ck::RenderContext2D> renderContext, cc::Ref<cp::Window> win);
     CyberCraft(const CyberCraft&) = delete;
     CyberCraft(const CyberCraft&&) = delete;
 
@@ -46,7 +46,7 @@ private:
     World m_world;
     std::shared_ptr<cp::Texture> texture;
     cc::Ref<ck::RenderContext2D> m_renderContext;
-    cc::Ref<ck::Window> m_window;
+    cc::Ref<cp::Window> m_window;
 };
 
 

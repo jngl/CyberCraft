@@ -9,7 +9,7 @@
 
 #include <Core/Bases.h>
 
-namespace ck
+namespace cp
 {
     class GpuAdapter;
     class Window;
@@ -17,8 +17,8 @@ namespace ck
     class GraphicsAdapter : public cc::NonCopyable
     {
     public:
-        virtual ck::GpuAdapter& getGpuAdapter() = 0;
-        virtual ck::Window& getWindow() = 0;
+        virtual GpuAdapter& getGpuAdapter() = 0;
+        virtual Window& getWindow() = 0;
     };
 }
 

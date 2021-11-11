@@ -5,11 +5,11 @@
 #ifndef CYBERCRAFT_WINDOWSFML_H
 #define CYBERCRAFT_WINDOWSFML_H
 
-#include <Kernel/Window.h>
+#include <Ports/Window.h>
 #include <SFML/Graphics/RenderWindow.hpp>
 
 namespace ccSf {
-    class WindowSFML : public ck::Window {
+    class WindowSFML : public cp::Window {
     public:
         WindowSFML();
 
@@ -23,11 +23,9 @@ namespace ccSf {
 
         sf::RenderWindow &getRenderWindow();
 
-        bool isKeyPressed(ck::Key key) override;
+        bool isKeyPressed(cp::Key key) override;
 
         [[nodiscard]] cc::Vector2ui getSize() const override;
-
-        void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener) override;
 
     private:
         sf::RenderWindow m_window;

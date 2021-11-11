@@ -17,8 +17,8 @@
 #include <Ports/Texture.h>
 
 #include <Kernel/Engine.h>
-#include <Kernel/Key.h>
-#include <Kernel/GpuProgram.h>
+#include <Ports/Key.h>
+#include <Ports/GpuProgram.h>
 #include <Kernel/Renderer2d.h>
 
 #include <exception>
@@ -30,17 +30,17 @@
 struct SDL_Window;
 
 namespace cg::Impl {
-    class GraphicsAdapter : public ck::GraphicsAdapter
+    class GraphicsAdapter : public cp::GraphicsAdapter
     {
     public:
         GraphicsAdapter();
 
-        ck::GpuAdapter& getGpuAdapter() override;
-        ck::Window& getWindow() override;
+        cp::GpuAdapter& getGpuAdapter() override;
+        cp::Window& getWindow() override;
 
     private:
         SdlWindowAdapter m_window;
-        std::unique_ptr<ck::GpuAdapter> m_bgfxAdapter;
+        std::unique_ptr<cp::GpuAdapter> m_bgfxAdapter;
     };
 }
 

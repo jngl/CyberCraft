@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_BGFXADAPTER_H
 #define CYBERCRAFT_BGFXADAPTER_H
 
-#include <Kernel/GpuAdapter.h>
+#include <Ports/GpuAdapter.h>
 
 #include <memory>
 
@@ -14,7 +14,7 @@ namespace cg::Impl {
 }
 
 namespace cg {
-    std::unique_ptr<ck::GpuAdapter> createBgfxAdapter(Impl::SdlWindowAdapter& win);
+    std::unique_ptr<cp::GpuAdapter> createBgfxAdapter(Impl::SdlWindowAdapter& win);
 }
 
 #endif //CYBERCRAFT_BGFXADAPTER_H

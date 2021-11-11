@@ -9,12 +9,16 @@
 
 #include <chrono>
 
-namespace ck {
+namespace cp
+{
     class Window;
+}
+
+namespace ck {
     class RenderContext2D;
     class Game;
 
-    [[maybe_unused]] int mainLoop(Window &window, RenderContext2D &renderContext, Game &game, std::chrono::milliseconds updateTime);
+    [[maybe_unused]] int mainLoop(cp::Window &window, RenderContext2D &renderContext, Game &game, std::chrono::milliseconds updateTime);
 }
 
 #endif //CYBERCRAFT_MAINLOOP_H

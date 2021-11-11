@@ -10,11 +10,11 @@ namespace cg::Impl{
     {
     }
 
-    ck::GpuAdapter &GraphicsAdapter::getGpuAdapter() {
+    cp::GpuAdapter &GraphicsAdapter::getGpuAdapter() {
         return *m_bgfxAdapter;
     }
 
-    ck::Window &GraphicsAdapter::getWindow() {
+    cp::Window &GraphicsAdapter::getWindow() {
         return m_window;
     }
 }

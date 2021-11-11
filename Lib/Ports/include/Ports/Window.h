@@ -15,10 +15,7 @@ namespace cc
     using Vector2ui = Vector2<unsigned int>;
 }
 
-namespace ck {
-    class ExitListener;
-    class KeyListener;
-
+namespace cp {
     class Window {
     public:
         virtual ~Window() = default;
@@ -32,8 +29,6 @@ namespace ck {
         virtual bool isKeyPressed(Key) = 0;
 
         [[nodiscard]] virtual cc::Vector2ui getSize() const = 0;
-
-        virtual void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener) = 0;
     };
 }
 

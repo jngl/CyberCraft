@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_WINDOW_H
 #define CYBERCRAFT_WINDOW_H
 
-#include <Kernel/Window.h>
+#include <Ports/Window.h>
 
 #include <SDL.h>
 #include <map>

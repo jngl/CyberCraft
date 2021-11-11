@@ -56,16 +56,16 @@ namespace ccSf {
         return m_window;
     }
 
-    bool WindowSFML::isKeyPressed(ck::Key key) {
-        auto convKey  = [](ck::Key ckKey) -> sf::Keyboard::Key{
+    bool WindowSFML::isKeyPressed(cp::Key key) {
+        auto convKey  = [](cp::Key ckKey) -> sf::Keyboard::Key{
             switch(ckKey){
-                case ck::Key::LEFT:
+                case cp::Key::LEFT:
                     return sf::Keyboard::Left;
-                case ck::Key::RIGHT:
+                case cp::Key::RIGHT:
                     return sf::Keyboard::Right;
-                case ck::Key::UP:
+                case cp::Key::UP:
                     return sf::Keyboard::Up;
-                case ck::Key::DOWN:
+                case cp::Key::DOWN:
                     return sf::Keyboard::Down;
                 default:
                     return sf::Keyboard::KeyCount;
@@ -73,10 +73,6 @@ namespace ccSf {
         };
 
         return sf::Keyboard::isKeyPressed(convKey(key));
-    }
-
-    void WindowSFML::processEvent(ck::ExitListener &exitListener, ck::KeyListener &keyListener) {
-        // TODO
     }
 
     cc::Vector2ui WindowSFML::getSize() const {

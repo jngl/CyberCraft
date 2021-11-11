@@ -7,14 +7,17 @@
 
 #include "Renderer2d.h"
 
-namespace ck
+namespace cp
 {
     class GraphicsAdapter;
+}
 
+namespace ck
+{
     class Kernel
     {
     public:
-        explicit Kernel(ck::GraphicsAdapter&);
+        explicit Kernel(cp::GraphicsAdapter&);
 
         ck::Renderer2d& getRenderer2d();
 
@@ -22,7 +25,7 @@ namespace ck
         void nextFrame();
 
     private:
-        ck::GraphicsAdapter& m_graphicsAdapter;
+        cp::GraphicsAdapter& m_graphicsAdapter;
         ck::Renderer2d m_renderer2d;
 
         void beginFrame();

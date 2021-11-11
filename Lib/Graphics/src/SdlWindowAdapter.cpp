@@ -91,44 +91,44 @@ namespace cg::Impl {
         }
     }
 
-    ck::Key SdlWindowAdapter::keyFromSdlKey(SDL_Keycode sdlKey) {
+    cp::Key SdlWindowAdapter::keyFromSdlKey(SDL_Keycode sdlKey) {
         switch (sdlKey){
             case SDLK_ESCAPE:
-                return ck::Key::ESCAPE;
+                return cp::Key::ESCAPE;
             case SDLK_UP:
-                return ck::Key::UP;
+                return cp::Key::UP;
             case SDLK_DOWN:
-                return ck::Key::DOWN;
+                return cp::Key::DOWN;
             case SDLK_LEFT:
-                return ck::Key::LEFT;
+                return cp::Key::LEFT;
             case SDLK_RIGHT:
-                return ck::Key::RIGHT;
+                return cp::Key::RIGHT;
             case SDLK_F1:
-                return ck::Key::F1;
+                return cp::Key::F1;
             case SDLK_F2:
-                return ck::Key::F2;
+                return cp::Key::F2;
             case SDLK_F3:
-                return ck::Key::F3;
+                return cp::Key::F3;
             case SDLK_F4:
-                return ck::Key::F4;
+                return cp::Key::F4;
             case SDLK_F5:
-                return ck::Key::F5;
+                return cp::Key::F5;
             case SDLK_F6:
-                return ck::Key::F6;
+                return cp::Key::F6;
             case SDLK_F7:
-                return ck::Key::F7;
+                return cp::Key::F7;
             case SDLK_F8:
-                return ck::Key::F8;
+                return cp::Key::F8;
             case SDLK_F9:
-                return ck::Key::F9;
+                return cp::Key::F9;
             case SDLK_F10:
-                return ck::Key::F10;
+                return cp::Key::F10;
             case SDLK_F11:
-                return ck::Key::F11;
+                return cp::Key::F11;
             case SDLK_F12:
-                return ck::Key::F12;
+                return cp::Key::F12;
             default:
-                return ck::Key::UNKNOWN;
+                return cp::Key::UNKNOWN;
         }
     }
 
@@ -142,7 +142,7 @@ namespace cg::Impl {
     void SdlWindowAdapter::endFrame() {
     }
 
-    bool SdlWindowAdapter::isKeyPressed(ck::Key) {
+    bool SdlWindowAdapter::isKeyPressed(cp::Key) {
         return false;
     }
 }

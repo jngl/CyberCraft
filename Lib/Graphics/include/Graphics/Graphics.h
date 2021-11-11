@@ -7,10 +7,10 @@
 
 #include <Kernel/Graphics.h>
 
-#include <Kernel/GraphicsAdapter.h>
+#include <Ports/GraphicsAdapter.h>
 
 namespace cg{
-    [[maybe_unused]] std::unique_ptr<ck::GraphicsAdapter> createGraphicsAdapter();
+    [[maybe_unused]] std::unique_ptr<cp::GraphicsAdapter> createGraphicsAdapter();
 }
 
 #endif //CYBERCRAFT_GRAPHICS_H

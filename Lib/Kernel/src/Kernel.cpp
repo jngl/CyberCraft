@@ -4,12 +4,12 @@
 
 #include "Kernel/Kernel.h"
 
-#include "Kernel/GraphicsAdapter.h"
-#include "Kernel/Window.h"
+#include "Ports/GraphicsAdapter.h"
+#include "Ports/Window.h"
 
 namespace ck
 {
-    Kernel::Kernel(GraphicsAdapter &graphicsAdapter) :
+    Kernel::Kernel(cp::GraphicsAdapter &graphicsAdapter) :
     m_graphicsAdapter(graphicsAdapter),
     m_renderer2d(m_graphicsAdapter.getGpuAdapter())
     {

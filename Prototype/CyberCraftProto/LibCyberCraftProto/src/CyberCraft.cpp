@@ -40,7 +40,7 @@ const char* gameMap =
         "~~~~~~~~~~              ~~~~~~~~"
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
 
-CyberCraft::CyberCraft(cc::Ref<ck::RenderContext2D> renderContext, cc::Ref<ck::Window> win):
+CyberCraft::CyberCraft(cc::Ref<ck::RenderContext2D> renderContext, cc::Ref<cp::Window> win):
         m_renderContext(renderContext),
         m_window(win)
 {

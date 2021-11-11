@@ -23,13 +23,13 @@ public:
 
     void frame();
 
-    void onKeyUp(ck::Key key) override;
-    void onKeyDown(ck::Key key) override;
+    void onKeyUp(cp::Key key) override;
+    void onKeyDown(cp::Key key) override;
 
     void onExit() override;
 
 private:
-    std::unique_ptr<ck::GraphicsAdapter> m_graphicsAdapter;
+    std::unique_ptr<cp::GraphicsAdapter> m_graphicsAdapter;
     ck::Kernel m_kernel;
     GameLoader m_gameLoader;
 };

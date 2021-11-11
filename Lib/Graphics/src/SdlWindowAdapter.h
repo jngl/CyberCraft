@@ -6,7 +6,7 @@
 #define CYBERCRAFT_SDLWINDOWADAPTER_H
 
 #include <Kernel/Graphics.h>
-#include <Kernel/Window.h>
+#include <Ports/Window.h>
 
 typedef int32_t SDL_Keycode;
 struct SDL_Window;
@@ -17,7 +17,7 @@ namespace cc{
 }
 
 namespace cg::Impl{
-class SdlWindowAdapter : public ck::Window{
+class SdlWindowAdapter : public cp::Window{
     public:
         static constexpr int windowSizeXDefault = 1024;
         static constexpr int windowSizeYDefault = 768;
@@ -31,7 +31,8 @@ class SdlWindowAdapter : public ck::Window{
 
         [[nodiscard]] cc::Vector2ui getSize() const override;
 
-        void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener) override;
+        // TODO
+        void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener) /*override*/;
 
         [[nodiscard]] bool isOpen() const override;
 
@@ -39,12 +40,12 @@ class SdlWindowAdapter : public ck::Window{
 
         void endFrame() override;
 
-        bool isKeyPressed(ck::Key key) override;
+        bool isKeyPressed(cp::Key key) override;
 
     private:
         SDL_Window *m_window;
 
-        ck::Key keyFromSdlKey(SDL_Keycode sdlKey);
+        cp::Key keyFromSdlKey(SDL_Keycode sdlKey);
     };
 }
 

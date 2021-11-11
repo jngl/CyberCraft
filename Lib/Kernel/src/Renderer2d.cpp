@@ -48,7 +48,7 @@ namespace ck
     };
 
 
-    Renderer2d::Renderer2d(ck::GpuAdapter& bgfxAdapter):
+    Renderer2d::Renderer2d(cp::GpuAdapter& bgfxAdapter):
             m_gpuAdapter(bgfxAdapter),
             m_rectangleVertices(m_gpuAdapter.getBufferFactory().createVertexBuffer(
                     cc::ByteArrayView::fromArray(g_rectangleVerticesData),
@@ -57,8 +57,8 @@ namespace ck
                     cc::ByteArrayView::fromArray(g_rectangleIndicesData))),
             m_program(m_gpuAdapter.getProgramFactory().loadProgramFromFile("simple2d")),
             m_textureTest(m_gpuAdapter.getTextureFactory().loadTextureFromFile("dirt")),
-            m_color(m_gpuAdapter.getUniformFactory().createUniform("u_color", ck::Uniform::Type::Vec4, 1)),
-            m_texture(m_gpuAdapter.getUniformFactory().createUniform("u_texture", ck::Uniform::Type::Sampler, 1))
+            m_color(m_gpuAdapter.getUniformFactory().createUniform("u_color", cp::Uniform::Type::Vec4, 1)),
+            m_texture(m_gpuAdapter.getUniformFactory().createUniform("u_texture", cp::Uniform::Type::Sampler, 1))
     {
     }
 

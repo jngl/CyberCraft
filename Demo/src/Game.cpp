@@ -55,12 +55,12 @@ private:
 };
 
 Game::Game() {
-    createOneFrameAction(std::make_unique<CommandExit>(*this), ck::Key::ESCAPE);
+    createOneFrameAction(std::make_unique<CommandExit>(*this), cp::Key::ESCAPE);
 
-    createMultiFrameAction(std::make_unique<CommandMove<Direction::UP>>(m_pos), ck::Key::UP);
-    createMultiFrameAction(std::make_unique<CommandMove<Direction::DOWN>>(m_pos), ck::Key::DOWN);
-    createMultiFrameAction(std::make_unique<CommandMove<Direction::LEFT>>(m_pos), ck::Key::LEFT);
-    createMultiFrameAction(std::make_unique<CommandMove<Direction::RIGHT>>(m_pos), ck::Key::RIGHT);
+    createMultiFrameAction(std::make_unique<CommandMove<Direction::UP>>(m_pos), cp::Key::UP);
+    createMultiFrameAction(std::make_unique<CommandMove<Direction::DOWN>>(m_pos), cp::Key::DOWN);
+    createMultiFrameAction(std::make_unique<CommandMove<Direction::LEFT>>(m_pos), cp::Key::LEFT);
+    createMultiFrameAction(std::make_unique<CommandMove<Direction::RIGHT>>(m_pos), cp::Key::RIGHT);
 }
 
 void Game::render(ck::ColoredRectangleDrawer &renderer) {

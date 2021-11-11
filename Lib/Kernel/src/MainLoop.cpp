@@ -5,12 +5,12 @@
 #include <Kernel/MainLoop.h>
 
 #include <Kernel/Game.h>
-#include <Kernel/Window.h>
+#include <Ports/Window.h>
 #include <Kernel/Engine2D.h>
 #include <Kernel/Update.h>
 
 namespace ck {
-    [[maybe_unused]] int mainLoop(Window &window, RenderContext2D&, Game &game, std::chrono::milliseconds updateTime) {
+    [[maybe_unused]] int mainLoop(cp::Window &window, RenderContext2D&, Game &game, std::chrono::milliseconds updateTime) {
         FixStepUpdater updater(updateTime);
 
         while (window.isOpen()) {

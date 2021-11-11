@@ -195,15 +195,15 @@ namespace cg::Impl {
         }
     }
 
-    bgfx::UniformType::Enum convUniformType(ck::Uniform::Type type){
+    bgfx::UniformType::Enum convUniformType(cp::Uniform::Type type){
         switch (type) {
-            case ck::Uniform::Type::Sampler:
+            case cp::Uniform::Type::Sampler:
                 return bgfx::UniformType::Sampler;
-            case ck::Uniform::Type::Mat3:
+            case cp::Uniform::Type::Mat3:
                 return bgfx::UniformType::Mat3;
-            case ck::Uniform::Type::Mat4:
+            case cp::Uniform::Type::Mat4:
                 return bgfx::UniformType::Mat4;
-            case ck::Uniform::Type::Vec4:
+            case cp::Uniform::Type::Vec4:
                 return bgfx::UniformType::Vec4;
             default:
                 return bgfx::UniformType::Count;
@@ -288,7 +288,7 @@ namespace cg::Impl {
         m_context.beginFrame(newSize);
     }
 
-    ck::GraphicsApi BgfxAdapter::getApi() const {
+    cp::GraphicsApi BgfxAdapter::getApi() const {
         return m_context.getApi();
     }
 
@@ -296,7 +296,7 @@ namespace cg::Impl {
         m_context.endFrame();
     }
 
-    ck::GpuProgramFactory &BgfxAdapter::getProgramFactory() {
+    cp::GpuProgramFactory &BgfxAdapter::getProgramFactory() {
         return m_programs;
     }
 
@@ -318,7 +318,7 @@ namespace cg::Impl {
         }
     }
 
-    void BgfxAdapter::submit(const ck::GpuProgram &program) {
+    void BgfxAdapter::submit(const cp::GpuProgram &program) {
         const auto* bgfxProgram = dynamic_cast<const BgfxProgram*>(&program);
         if(bgfxProgram != nullptr){
             bgfx::submit(0, bgfxProgram->getHandle());
@@ -334,7 +334,7 @@ namespace cg::Impl {
         return m_textures;
     }
 
-    ck::UniformFactory &BgfxAdapter::getUniformFactory() {
+    cp::UniformFactory &BgfxAdapter::getUniformFactory() {
         return m_uniforms;
     }
 
@@ -525,7 +525,7 @@ namespace cg::Impl {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    BgfxUniform::BgfxUniform(std::string_view name, ck::Uniform::Type type, int num) {
+    BgfxUniform::BgfxUniform(std::string_view name, cp::Uniform::Type type, int num) {
         m_handle = bgfx::createUniform(std::string(name).c_str(), convUniformType(type), static_cast<uint16_t >(num));
     }
 
@@ -554,8 +554,8 @@ namespace cg::Impl {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    std::shared_ptr<ck::Uniform> BgfxUniformFactory::createUniform(std::string_view name,
-                                                                   ck::Uniform::Type type,
+    std::shared_ptr<cp::Uniform> BgfxUniformFactory::createUniform(std::string_view name,
+                                                                   cp::Uniform::Type type,
                                                                    int num)
     {
         return std::make_shared<BgfxUniform>(name, type, num);
@@ -573,7 +573,7 @@ namespace cg::Impl {
         }
     }
 
-    std::shared_ptr<ck::GpuProgram> BgfxProgramFactory::loadProgramFromFile(std::string_view filename) {
+    std::shared_ptr<cp::GpuProgram> BgfxProgramFactory::loadProgramFromFile(std::string_view filename) {
         auto isFileNameCorrect = [filename](const Program& program) -> bool{
             return program.file.stem() == filename;
         };
@@ -588,7 +588,7 @@ namespace cg::Impl {
     }
 
     std::string BgfxProgramFactory::getProgramDir() const {
-        std::string shaderType(ck::GetGraphicsApiShaderType(m_bgfxContext.getApi()));
+        std::string shaderType(cp::GetGraphicsApiShaderType(m_bgfxContext.getApi()));
         return "data/shader/" + shaderType;
     }
 
@@ -609,7 +609,7 @@ namespace cg::Impl {
     }
 
     BgfxShader BgfxProgramFactory::loadShader(std::string_view name) {
-        std::string filePath = "./data/shader/" + std::string(ck::GetGraphicsApiShaderType(m_bgfxContext.getApi())) + "/" + std::string(name) + ".bin";
+        std::string filePath = "./data/shader/" + std::string(cp::GetGraphicsApiShaderType(m_bgfxContext.getApi())) + "/" + std::string(name) + ".bin";
         std::optional<cc::ByteArray> memory = cc::ByteArray::loadFromFile(filePath);
         if(!memory.has_value()){
             throw cc::Error("error while opening a shader file");
@@ -771,30 +771,30 @@ namespace cg::Impl {
         return true;
     }
 
-    ck::GraphicsApi BgfxContext::getApi() const {
+    cp::GraphicsApi BgfxContext::getApi() const {
         switch (bgfx::getRendererType()){
             case bgfx::RendererType::Noop:
-                return ck::GraphicsApi::Noop;
+                return cp::GraphicsApi::Noop;
             case bgfx::RendererType::Direct3D9:
-                return ck::GraphicsApi::Direct3D9;
+                return cp::GraphicsApi::Direct3D9;
             case bgfx::RendererType::Direct3D11:
-                return ck::GraphicsApi::Direct3D11;
+                return cp::GraphicsApi::Direct3D11;
             case bgfx::RendererType::Direct3D12:
-                return ck::GraphicsApi::Direct3D12;
+                return cp::GraphicsApi::Direct3D12;
             case bgfx::RendererType::Gnm:
-                return ck::GraphicsApi::Gnm;
+                return cp::GraphicsApi::Gnm;
             case bgfx::RendererType::Metal:
-                return ck::GraphicsApi::Metal;
+                return cp::GraphicsApi::Metal;
             case bgfx::RendererType::Nvn:
-                return ck::GraphicsApi::Nvn;
+                return cp::GraphicsApi::Nvn;
             case bgfx::RendererType::OpenGL:
-                return ck::GraphicsApi::OpenGL;
+                return cp::GraphicsApi::OpenGL;
             case bgfx::RendererType::OpenGLES:
-                return ck::GraphicsApi::OpenGLES;
+                return cp::GraphicsApi::OpenGLES;
             case bgfx::RendererType::Vulkan:
-                return ck::GraphicsApi::Vulkan;
+                return cp::GraphicsApi::Vulkan;
             case bgfx::RendererType::WebGPU:
-                return ck::GraphicsApi::WebGPU;
+                return cp::GraphicsApi::WebGPU;
             default:
                 throw ck::GraphicsError{"Unknown Graphics Api"};
         }
@@ -802,7 +802,7 @@ namespace cg::Impl {
 }
 
 namespace cg {
-    std::unique_ptr<ck::GpuAdapter> createBgfxAdapter(Impl::SdlWindowAdapter& win){
+    std::unique_ptr<cp::GpuAdapter> createBgfxAdapter(Impl::SdlWindowAdapter& win){
         return std::make_unique<Impl::BgfxAdapter>(win);
     }
 }

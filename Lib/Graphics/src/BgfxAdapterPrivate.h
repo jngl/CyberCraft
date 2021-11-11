@@ -8,7 +8,7 @@
 #include "BgfxAdapter.h"
 
 #include <Kernel/Engine.h>
-#include <Kernel/GpuProgram.h>
+#include <Ports/GpuProgram.h>
 
 #include <Ports/GpuBuffer.h>
 
@@ -87,10 +87,10 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// BGFX Uniform
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxUniform : public ck::Uniform
+    class BgfxUniform : public cp::Uniform
     {
     public:
-        explicit BgfxUniform(std::string_view name, ck::Uniform::Type type, int num);
+        explicit BgfxUniform(std::string_view name, cp::Uniform::Type type, int num);
 
         ~BgfxUniform() override;
 
@@ -106,10 +106,10 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// BGFX Uniform
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxUniformFactory : public ck::UniformFactory
+    class BgfxUniformFactory : public cp::UniformFactory
     {
     public:
-        [[nodiscard]] std::shared_ptr<ck::Uniform> createUniform(std::string_view name, ck::Uniform::Type type, int num) override;
+        [[nodiscard]] std::shared_ptr<cp::Uniform> createUniform(std::string_view name, cp::Uniform::Type type, int num) override;
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,7 +137,7 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// BGFX Shader
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxProgram : public ck::GpuProgram
+    class BgfxProgram : public cp::GpuProgram
     {
     public:
         explicit BgfxProgram(BgfxShader& vsh, BgfxShader& fsh);
@@ -159,12 +159,12 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// BGFX Program Factory
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxProgramFactory : public ck::GpuProgramFactory
+    class BgfxProgramFactory : public cp::GpuProgramFactory
     {
     public:
         BgfxProgramFactory(BgfxContext&);
 
-        [[nodiscard]] std::shared_ptr<ck::GpuProgram> loadProgramFromFile(std::string_view filename) override;
+        [[nodiscard]] std::shared_ptr<cp::GpuProgram> loadProgramFromFile(std::string_view filename) override;
 
         [[nodiscard]] std::string getProgramDir() const;
 
@@ -249,7 +249,7 @@ namespace cg::Impl {
         void beginFrame(cc::Vector2ui newSize);
         void endFrame();
 
-        [[nodiscard]] ck::GraphicsApi getApi() const;
+        [[nodiscard]] cp::GraphicsApi getApi() const;
 
     private:
         cc::Vector2ui m_size;
@@ -260,29 +260,29 @@ namespace cg::Impl {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// BGFX Adapter
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    class BgfxAdapter : public ck::GpuAdapter {
+    class BgfxAdapter : public cp::GpuAdapter {
     public:
         explicit BgfxAdapter(SdlWindowAdapter& win);
 
         void beginFrame(cc::Vector2ui newSize) override;
         void endFrame() override;
 
-        ck::GpuProgramFactory& getProgramFactory() override;
+        cp::GpuProgramFactory& getProgramFactory() override;
         cp::TextureFactory& getTextureFactory() override;
-        ck::UniformFactory& getUniformFactory() override;
+        cp::UniformFactory& getUniformFactory() override;
         cp::GpuBufferFactory& getBufferFactory() override;
 
         void setTransform(const cc::Matrix4f&) override;
 
         void setVertexBuffer(uint8_t stream, const cp::VertexBuffer&) override;
         void setIndexBuffer(const cp::IndexBuffer&) override;
-        void submit(const ck::GpuProgram& _program) override;
+        void submit(const cp::GpuProgram& _program) override;
 
         void setViewTransform(const cc::Matrix4f &proj, const cc::Matrix4f &view) override;
 
         void dbgTextPrint(uint16_t _x, uint16_t _y, std::string_view text) override;
 
-        [[nodiscard]] ck::GraphicsApi getApi() const override;
+        [[nodiscard]] cp::GraphicsApi getApi() const override;
 
     private:
         BgfxContext m_context;

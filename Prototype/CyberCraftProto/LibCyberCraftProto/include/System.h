@@ -7,7 +7,7 @@
 
 #include "Core/pointer.h"
 #include "Kernel/Engine2D.h"
-#include "Kernel/Window.h"
+#include "Ports/Window.h"
 
 class World;
 
@@ -17,6 +17,6 @@ namespace component{
 
 void drawSprite(cc::Ref<ck::SpriteDrawer> renderContext, const cp::Texture& texture, const cc::Vector2f& pos, const component::Sprite& sprite);
 
-void movePlayer(cc::Ref<ck::Window> win, cc::Ref<cc::Vector2f> pos, const World& world);
+void movePlayer(cc::Ref<cp::Window> win, cc::Ref<cc::Vector2f> pos, const World& world);
 
 #endif //CYBERCRAFT_SYSTEMIMPL_H

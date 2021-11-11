@@ -7,7 +7,7 @@
 
 #include <Core/Bases.h>
 
-#include "Engine.h"
+#include "Enums.h"
 
 namespace cc{
     template<class T>
@@ -27,10 +27,6 @@ namespace cp
     class VertexBuffer;
     class IndexBuffer;
     class GpuBufferFactory;
-}
-
-namespace ck
-{
     class GpuProgram;
     class GpuProgramFactory;
     class UniformFactory;
@@ -42,21 +38,21 @@ namespace ck
         virtual void endFrame() = 0;
 
         virtual GpuProgramFactory& getProgramFactory() = 0;
-        virtual cp::TextureFactory& getTextureFactory() = 0;
+        virtual TextureFactory& getTextureFactory() = 0;
         virtual UniformFactory& getUniformFactory() = 0;
-        virtual cp::GpuBufferFactory& getBufferFactory() = 0;
+        virtual GpuBufferFactory& getBufferFactory() = 0;
 
         virtual void setTransform(const cc::Matrix4f&) = 0;
 
         virtual void setVertexBuffer(uint8_t stream, const cp::VertexBuffer&) = 0;
-        virtual void setIndexBuffer(const cp::IndexBuffer&) = 0;
-        virtual void submit(const ck::GpuProgram& _program) = 0;
+        virtual void setIndexBuffer(const IndexBuffer&) = 0;
+        virtual void submit(const GpuProgram& _program) = 0;
 
         virtual void setViewTransform(const cc::Matrix4f &proj, const cc::Matrix4f &view) = 0;
 
         virtual void dbgTextPrint(uint16_t _x, uint16_t _y, std::string_view text) = 0;
 
-        [[nodiscard]] virtual ck::GraphicsApi getApi() const = 0;
+        [[nodiscard]] virtual GraphicsApi getApi() const = 0;
     };
 }
 

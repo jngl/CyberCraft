@@ -13,9 +13,9 @@ void drawSprite(cc::Ref<ck::SpriteDrawer> renderContext, const cp::Texture& text
     renderContext->drawSprite(texture, pos, sprite.textureIndex, sprite.color, sprite.backgroundColor, sprite.rotation);
 }
 
-void movePlayer(cc::Ref<ck::Window> win,cc::Ref<cc::Vector2f> pos, const World& world) {
+void movePlayer(cc::Ref<cp::Window> win,cc::Ref<cc::Vector2f> pos, const World& world) {
 
-    auto funcMove = [&win, &pos, &world](ck::Key key, cc::Vector2f move){
+    auto funcMove = [&win, &pos, &world](cp::Key key, cc::Vector2f move){
         if(!win->isKeyPressed(key)){
             return;
         }
@@ -38,8 +38,8 @@ void movePlayer(cc::Ref<ck::Window> win,cc::Ref<cc::Vector2f> pos, const World& 
 
     constexpr float speed = 0.1f;
 
-    funcMove(ck::Key::RIGHT, {speed, 0});
-    funcMove(ck::Key::LEFT, {-speed, 0});
-    funcMove(ck::Key::UP, {0, -speed});
-    funcMove(ck::Key::DOWN, {0, speed});
+    funcMove(cp::Key::RIGHT, {speed, 0});
+    funcMove(cp::Key::LEFT, {-speed, 0});
+    funcMove(cp::Key::UP, {0, -speed});
+    funcMove(cp::Key::DOWN, {0, speed});
 }

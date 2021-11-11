@@ -8,7 +8,7 @@
 #include <Core/Bases.h>
 
 #include <Kernel/Engine2D.h>
-#include <Kernel/Key.h>
+#include <Ports/Key.h>
 
 #include <memory>
 
@@ -27,8 +27,8 @@ namespace ck {
     public:
         virtual ~KeyListener() = default;
 
-        virtual void onKeyUp(ck::Key key) = 0;
-        virtual void onKeyDown(ck::Key key) = 0;
+        virtual void onKeyUp(cp::Key key) = 0;
+        virtual void onKeyDown(cp::Key key) = 0;
     };
 
     class ExitListener
