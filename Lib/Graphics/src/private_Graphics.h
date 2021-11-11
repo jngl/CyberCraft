@@ -17,6 +17,7 @@
 #include <Kernel/Engine.h>
 #include <Kernel/Key.h>
 #include <Kernel/Texture.h>
+#include <Kernel/GpuProgram.h>
 
 #include <exception>
 #include <string>
@@ -30,16 +31,16 @@ namespace cg::Impl {
 
     class Renderer2d : public cc::NonCopyable, public ck::ColoredRectangleDrawer {
     public:
-        explicit Renderer2d(BgfxAdapter&);
+        explicit Renderer2d(ck::GpuAdapter&);
 
         void updateSize(cc::Vector2ui size);
 
         void drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cc::Color& color) override;
 
     private:
-        BgfxAdapter& m_bgfxAdapter;
-        VertexBuffer m_rectangleVertices;
-        IndexBuffer m_rectangleIndices;
+        ck::GpuAdapter& m_bgfxAdapter;
+        std::shared_ptr<ck::VertexBuffer> m_rectangleVertices;
+        std::shared_ptr<ck::IndexBuffer> m_rectangleIndices;
         std::shared_ptr<ck::GpuProgram> m_program;
         std::shared_ptr<ck::Texture> m_textureTest;
         std::shared_ptr<ck::Uniform> m_color;
@@ -62,7 +63,7 @@ namespace cg::Impl {
 
     private:
         SdlWindowAdapter m_window;
-        BgfxAdapter m_bgfxAdapter;
+        std::unique_ptr<ck::GpuAdapter> m_bgfxAdapter;
         Renderer2d m_renderer2d;
     };
 

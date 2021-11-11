@@ -1705,19 +1705,19 @@ namespace bgfx
 	{
 		VertexLayout();
 
-		/// Start VertexLayout.
+		/// Start BgfxVertexLayout.
 		///
 		/// @attention C99 equivalent is `bgfx_vertex_layout_begin`.
 		///
 		VertexLayout& begin(RendererType::Enum _renderer = RendererType::Noop);
 
-		/// End VertexLayout.
+		/// End BgfxVertexLayout.
 		///
 		/// @attention C99 equivalent is `bgfx_vertex_layout_end`.
 		///
 		void end();
 
-		/// Add attribute to VertexLayout.
+		/// Add attribute to BgfxVertexLayout.
 		///
 		/// @param[in] _attrib Attribute semantics. See: `bgfx::Attrib`
 		/// @param[in] _num Number of elements 1, 2, 3 or 4.
@@ -1761,7 +1761,7 @@ namespace bgfx
 			, bool& _asInt
 			) const;
 
-		/// Returns true if VertexLayout contains attribute.
+		/// Returns true if BgfxVertexLayout contains attribute.
 		///
 		/// @attention C99 equivalent is `bgfx_vertex_layout_has`.
 		///

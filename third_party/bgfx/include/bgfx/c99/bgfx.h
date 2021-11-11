@@ -915,7 +915,7 @@ typedef struct bgfx_encoder_s bgfx_encoder_t;
 BGFX_C_API void bgfx_attachment_init(bgfx_attachment_t* _this, bgfx_texture_handle_t _handle, bgfx_access_t _access, uint16_t _layer, uint16_t _numLayers, uint16_t _mip, uint8_t _resolve);
 
 /**
- * Start VertexLayout.
+ * Start BgfxVertexLayout.
  *
  * @param[in] _rendererType
  *
@@ -923,7 +923,7 @@ BGFX_C_API void bgfx_attachment_init(bgfx_attachment_t* _this, bgfx_texture_hand
 BGFX_C_API bgfx_vertex_layout_t* bgfx_vertex_layout_begin(bgfx_vertex_layout_t* _this, bgfx_renderer_type_t _rendererType);
 
 /**
- * Add attribute to VertexLayout.
+ * Add attribute to BgfxVertexLayout.
  * @remarks Must be called between begin/end.
  *
  * @param[in] _attrib Attribute semantics. See: `bgfx::Attrib`
@@ -953,7 +953,7 @@ BGFX_C_API bgfx_vertex_layout_t* bgfx_vertex_layout_add(bgfx_vertex_layout_t* _t
 BGFX_C_API void bgfx_vertex_layout_decode(const bgfx_vertex_layout_t* _this, bgfx_attrib_t _attrib, uint8_t * _num, bgfx_attrib_type_t * _type, bool * _normalized, bool * _asInt);
 
 /**
- * Returns true if VertexLayout contains attribute.
+ * Returns true if BgfxVertexLayout contains attribute.
  *
  * @param[in] _attrib Attribute semantics. See: `bgfx::Attrib`
  *
@@ -969,7 +969,7 @@ BGFX_C_API bool bgfx_vertex_layout_has(const bgfx_vertex_layout_t* _this, bgfx_a
 BGFX_C_API bgfx_vertex_layout_t* bgfx_vertex_layout_skip(bgfx_vertex_layout_t* _this, uint8_t _num);
 
 /**
- * End VertexLayout.
+ * End BgfxVertexLayout.
  *
  */
 BGFX_C_API void bgfx_vertex_layout_end(bgfx_vertex_layout_t* _this);

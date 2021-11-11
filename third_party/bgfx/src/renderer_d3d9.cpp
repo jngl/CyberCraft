@@ -335,7 +335,7 @@ namespace bgfx { namespace d3d9
 	};
 	BX_STATIC_ASSERT(AttribType::Count == BX_COUNTOF(s_attribType) );
 
-	static D3DVERTEXELEMENT9* fillVertexLayout(uint8_t _stream, D3DVERTEXELEMENT9* _out, const VertexLayout& _layout)
+	static D3DVERTEXELEMENT9* fillVertexLayout(uint8_t _stream, D3DVERTEXELEMENT9* _out, const BgfxVertexLayout& _layout)
 	{
 		D3DVERTEXELEMENT9* elem = _out;
 
@@ -997,10 +997,10 @@ namespace bgfx { namespace d3d9
 			m_indexBuffers[_handle.idx].destroy();
 		}
 
-		void createVertexLayout(VertexLayoutHandle _handle, const VertexLayout& _layout) override
+		void createVertexLayout(VertexLayoutHandle _handle, const BgfxVertexLayout& _layout) override
 		{
-			VertexLayout& layout = m_vertexLayouts[_handle.idx];
-			bx::memCopy(&layout, &_layout, sizeof(VertexLayout) );
+			BgfxVertexLayout& layout = m_vertexLayouts[_handle.idx];
+			bx::memCopy(&layout, &_layout, sizeof(BgfxVertexLayout) );
 			dump(layout);
 		}
 
@@ -1372,7 +1372,7 @@ namespace bgfx { namespace d3d9
 			DX_CHECK(device->SetPixelShader(program.m_fsh->m_pixelShader) );
 
 			VertexBufferD3D9& vb = m_vertexBuffers[_blitter.m_vb->handle.idx];
-			VertexLayout& layout = m_vertexLayouts[_blitter.m_vb->layoutHandle.idx];
+			BgfxVertexLayout& layout = m_vertexLayouts[_blitter.m_vb->layoutHandle.idx];
 			DX_CHECK(device->SetStreamSource(0, vb.m_ptr, 0, layout.m_stride) );
 			setInputLayout(layout, 0);
 
@@ -2087,7 +2087,7 @@ namespace bgfx { namespace d3d9
 				}
 
 				VertexBufferD3D9& vb = m_vertexBuffers[_clearQuad.m_vb.idx];
-				VertexLayout& layout = _clearQuad.m_layout;
+				BgfxVertexLayout& layout = _clearQuad.m_layout;
 				uint32_t stride = _clearQuad.m_layout.m_stride;
 
 				ProgramD3D9& program = m_program[_clearQuad.m_program[numMrt-1].idx];
@@ -2137,7 +2137,7 @@ namespace bgfx { namespace d3d9
 			}
 		}
 
-		void setInputLayout(uint8_t _numStreams, const VertexLayout** _layouts, uint16_t _numInstanceData)
+		void setInputLayout(uint8_t _numStreams, const BgfxVertexLayout** _layouts, uint16_t _numInstanceData)
 		{
 			bx::HashMurmur2A murmur;
 			murmur.begin();
@@ -2179,9 +2179,9 @@ namespace bgfx { namespace d3d9
 			DX_CHECK(m_device->SetVertexDeclaration(layout) );
 		}
 
-		void setInputLayout(const VertexLayout& _layout, uint16_t _numInstanceData)
+		void setInputLayout(const BgfxVertexLayout& _layout, uint16_t _numInstanceData)
 		{
-			const VertexLayout* layouts[1] = { &_layout };
+			const BgfxVertexLayout* layouts[1] = { &_layout };
 			setInputLayout(BX_COUNTOF(layouts), layouts, _numInstanceData);
 		}
 
@@ -2236,7 +2236,7 @@ namespace bgfx { namespace d3d9
 		ShaderD3D9 m_shaders[BGFX_CONFIG_MAX_SHADERS];
 		ProgramD3D9 m_program[BGFX_CONFIG_MAX_PROGRAMS];
 		TextureD3D9 m_textures[BGFX_CONFIG_MAX_TEXTURES];
-		VertexLayout m_vertexLayouts[BGFX_CONFIG_MAX_VERTEX_LAYOUTS];
+		BgfxVertexLayout m_vertexLayouts[BGFX_CONFIG_MAX_VERTEX_LAYOUTS];
 		FrameBufferD3D9 m_frameBuffers[BGFX_CONFIG_MAX_FRAME_BUFFERS];
 		UniformRegistry m_uniformReg;
 		void* m_uniforms[BGFX_CONFIG_MAX_UNIFORMS];
@@ -4210,7 +4210,7 @@ namespace bgfx { namespace d3d9
 					currentState.m_instanceDataOffset     = draw.m_instanceDataOffset;
 					currentState.m_instanceDataStride     = draw.m_instanceDataStride;
 
-					const VertexLayout* layouts[BGFX_CONFIG_MAX_VERTEX_STREAMS];
+					const BgfxVertexLayout* layouts[BGFX_CONFIG_MAX_VERTEX_STREAMS];
 
 					const bool instanced = true
 						&& isValid(draw.m_instanceDataBuffer)
@@ -4242,7 +4242,7 @@ namespace bgfx { namespace d3d9
 						const uint16_t layoutIdx = isValid(draw.m_stream[idx].m_layoutHandle)
 							? draw.m_stream[idx].m_layoutHandle.idx
 							: vb.m_layoutHandle.idx;
-						const VertexLayout& layout = m_vertexLayouts[layoutIdx];
+						const BgfxVertexLayout& layout = m_vertexLayouts[layoutIdx];
 						const uint32_t stride = layout.m_stride;
 
 						layouts[numStreams] = &layout;

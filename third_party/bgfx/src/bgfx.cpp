@@ -524,7 +524,7 @@ namespace bgfx
 	{
 		if (BX_ENABLED(BGFX_CONFIG_DEBUG) )
 		{
-			BX_TRACE("VertexLayout %08x (%08x), stride %d"
+			BX_TRACE("BgfxVertexLayout %08x (%08x), stride %d"
 				, _layout.m_hash
 				, bx::hash<bx::HashMurmur2A>(_layout.m_attributes)
 				, _layout.m_stride
@@ -4121,7 +4121,7 @@ namespace bgfx
 	VertexBufferHandle createVertexBuffer(const Memory* _mem, const VertexLayout& _layout, uint16_t _flags)
 	{
 		BX_ASSERT(NULL != _mem, "_mem can't be NULL");
-		BX_ASSERT(isValid(_layout), "Invalid VertexLayout.");
+		BX_ASSERT(isValid(_layout), "Invalid BgfxVertexLayout.");
 		return s_ctx->createVertexBuffer(_mem, _layout, _flags);
 	}
 
@@ -4163,14 +4163,14 @@ namespace bgfx
 
 	DynamicVertexBufferHandle createDynamicVertexBuffer(uint32_t _num, const VertexLayout& _layout, uint16_t _flags)
 	{
-		BX_ASSERT(isValid(_layout), "Invalid VertexLayout.");
+		BX_ASSERT(isValid(_layout), "Invalid BgfxVertexLayout.");
 		return s_ctx->createDynamicVertexBuffer(_num, _layout, _flags);
 	}
 
 	DynamicVertexBufferHandle createDynamicVertexBuffer(const Memory* _mem, const VertexLayout& _layout, uint16_t _flags)
 	{
 		BX_ASSERT(NULL != _mem, "_mem can't be NULL");
-		BX_ASSERT(isValid(_layout), "Invalid VertexLayout.");
+		BX_ASSERT(isValid(_layout), "Invalid BgfxVertexLayout.");
 		return s_ctx->createDynamicVertexBuffer(_mem, _layout, _flags);
 	}
 
@@ -4194,7 +4194,7 @@ namespace bgfx
 	uint32_t getAvailTransientVertexBuffer(uint32_t _num, const VertexLayout& _layout)
 	{
 		BX_ASSERT(0 < _num, "Requesting 0 vertices.");
-		BX_ASSERT(isValid(_layout), "Invalid VertexLayout.");
+		BX_ASSERT(isValid(_layout), "Invalid BgfxVertexLayout.");
 		return s_ctx->getAvailTransientVertexBuffer(_num, _layout.m_stride);
 	}
 
@@ -4229,7 +4229,7 @@ namespace bgfx
 	{
 		BX_ASSERT(NULL != _tvb, "_tvb can't be NULL");
 		BX_ASSERT(0 < _num, "Requesting 0 vertices.");
-		BX_ASSERT(isValid(_layout), "Invalid VertexLayout.");
+		BX_ASSERT(isValid(_layout), "Invalid BgfxVertexLayout.");
 		s_ctx->allocTransientVertexBuffer(_tvb, _num, _layout);
 		BX_ASSERT(_num == _tvb->size / _layout.m_stride
 			, "Failed to allocate transient vertex buffer (requested %d, available %d). "

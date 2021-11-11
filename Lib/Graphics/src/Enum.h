@@ -114,43 +114,6 @@ namespace cg::Impl
 
         Count
     };
-
-    /// Corresponds to vertex shader attribute.
-    enum class Attrib
-    {
-        Position,  //!< a_position
-        Normal,    //!< a_normal
-        Tangent,   //!< a_tangent
-        Bitangent, //!< a_bitangent
-        Color0,    //!< a_color0
-        Color1,    //!< a_color1
-        Color2,    //!< a_color2
-        Color3,    //!< a_color3
-        Indices,   //!< a_indices
-        Weight,    //!< a_weight
-        TexCoord0, //!< a_texcoord0
-        TexCoord1, //!< a_texcoord1
-        TexCoord2, //!< a_texcoord2
-        TexCoord3, //!< a_texcoord3
-        TexCoord4, //!< a_texcoord4
-        TexCoord5, //!< a_texcoord5
-        TexCoord6, //!< a_texcoord6
-        TexCoord7, //!< a_texcoord7
-
-        Count
-    };
-
-    /// Vertex attribute type enum.
-    enum class AttribType
-    {
-        Uint8,  //!< Uint8
-        Uint10, //!< Uint10, availability depends on: `BGFX_CAPS_VERTEX_ATTRIB_UINT10`.
-        Int16,  //!< Int16
-        Half,   //!< Half, availability depends on: `BGFX_CAPS_VERTEX_ATTRIB_HALF`.
-        Float,  //!< Float
-
-        Count
-    };
 }
 
 #endif //CYBERCRAFT_ENUM_H

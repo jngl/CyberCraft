@@ -13,6 +13,8 @@
 
 #include <Core/Memory.h>
 
+#include <Kernel/GpuBuffer.h>
+
 namespace cg::Impl{
 
     struct Pos2dVertex
@@ -22,19 +24,13 @@ namespace cg::Impl{
         float m_u;
         float m_v;
 
-        static const VertexLayout& getLayout(){
-            auto init = [](){
-                VertexLayout layout;
+        static std::unique_ptr<ck::VertexLayout> getLayout(ck::GpuBufferFactory& factory){
+            std::unique_ptr<ck::VertexLayout> layout = factory.createVertexLayout();
 
-                layout.begin();
-                layout.add(Attrib::Position, 2, AttribType::Float);
-                layout.add(Attrib::TexCoord0, 2, AttribType::Float);
-                layout.end();
-
-                return layout;
-            };
-
-            static VertexLayout layout = init();
+            layout->begin();
+            layout->add(ck::Attrib::Position, 2, ck::AttribType::Float);
+            layout->add(ck::Attrib::TexCoord0, 2, ck::AttribType::Float);
+            layout->end();
 
             return layout;
         }
@@ -57,10 +53,13 @@ namespace cg::Impl{
     };
 
 
-    Renderer2d::Renderer2d(BgfxAdapter& bgfxAdapter):
+    Renderer2d::Renderer2d(ck::GpuAdapter& bgfxAdapter):
             m_bgfxAdapter(bgfxAdapter),
-            m_rectangleVertices(cc::ByteArrayView::fromArray(g_rectangleVerticesData), Pos2dVertex::getLayout()),
-            m_rectangleIndices(cc::ByteArrayView::fromArray(g_rectangleIndicesData)),
+            m_rectangleVertices(m_bgfxAdapter.getBufferFactory().createVertexBuffer(
+                    cc::ByteArrayView::fromArray(g_rectangleVerticesData),
+                    *Pos2dVertex::getLayout(m_bgfxAdapter.getBufferFactory()))),
+            m_rectangleIndices(m_bgfxAdapter.getBufferFactory().createIndexBuffer(
+                    cc::ByteArrayView::fromArray(g_rectangleIndicesData))),
             m_program(m_bgfxAdapter.getProgramFactory().loadProgramFromFile("simple2d")),
             m_textureTest(m_bgfxAdapter.getTextureFactory().loadTextureFromFile("dirt")),
             m_color(m_bgfxAdapter.getUniformFactory().createUniform("u_color", ck::Uniform::Type::Vec4, 1)),
@@ -81,8 +80,8 @@ namespace cg::Impl{
         m_bgfxAdapter.setTransform(transform);
 
         // Set vertex and index buffer.
-        m_bgfxAdapter.setVertexBuffer(0, m_rectangleVertices);
-        m_bgfxAdapter.setIndexBuffer(m_rectangleIndices);
+        m_bgfxAdapter.setVertexBuffer(0, *m_rectangleVertices);
+        m_bgfxAdapter.setIndexBuffer(*m_rectangleIndices);
 
         m_color->setColor(color);
         m_texture->setTexture(*m_textureTest);
@@ -102,25 +101,25 @@ namespace cg::Impl{
     }
 
     void Renderer2d::setViewTransform(const cc::Matrix4f &proj, const cc::Matrix4f &view) {
-        bgfx::setViewTransform(0, view.m.data(), proj.m.data());
+        m_bgfxAdapter.setViewTransform(proj, view);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Common::Common():
-            m_bgfxAdapter(m_window),
-            m_renderer2d(m_bgfxAdapter)
+            m_bgfxAdapter(createBgfxAdapter(m_window)),
+            m_renderer2d(*m_bgfxAdapter)
     {
     }
 
     void Common::startFrame() {
         auto size = m_window.getSize();
-        m_bgfxAdapter.beginFrame(size);
+        m_bgfxAdapter->beginFrame(size);
         m_renderer2d.updateSize(size);
     }
 
     void Common::endFrame() {
-        m_bgfxAdapter.endFrame();
+        m_bgfxAdapter->endFrame();
     }
 
     Renderer2d &Common::getRenderer2d() {

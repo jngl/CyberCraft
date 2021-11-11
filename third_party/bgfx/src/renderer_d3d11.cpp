@@ -1723,10 +1723,10 @@ namespace bgfx { namespace d3d11
 			m_indexBuffers[_handle.idx].destroy();
 		}
 
-		void createVertexLayout(VertexLayoutHandle _handle, const VertexLayout& _layout) override
+		void createVertexLayout(VertexLayoutHandle _handle, const BgfxVertexLayout& _layout) override
 		{
-			VertexLayout& layout = m_vertexLayouts[_handle.idx];
-			bx::memCopy(&layout, &_layout, sizeof(VertexLayout) );
+			BgfxVertexLayout& layout = m_vertexLayouts[_handle.idx];
+			bx::memCopy(&layout, &_layout, sizeof(BgfxVertexLayout) );
 			dump(layout);
 		}
 
@@ -2069,7 +2069,7 @@ namespace bgfx { namespace d3d11
 		{
 			switch (_handle.type)
 			{
-			case Handle::IndexBuffer:
+			case Handle::BgfxIndexBuffer:
 				setDebugObjectName(m_indexBuffers[_handle.idx].m_ptr, "%.*s", _len, _name);
 				break;
 
@@ -2081,7 +2081,7 @@ namespace bgfx { namespace d3d11
 				setDebugObjectName(m_textures[_handle.idx].m_ptr, "%.*s", _len, _name);
 				break;
 
-			case Handle::VertexBuffer:
+			case Handle::BgfxVertexBuffer:
 				setDebugObjectName(m_vertexBuffers[_handle.idx].m_ptr, "%.*s", _len, _name);
 				break;
 
@@ -2130,7 +2130,7 @@ namespace bgfx { namespace d3d11
 			deviceCtx->PSSetConstantBuffers(0, 1, &program.m_fsh->m_buffer);
 
 			VertexBufferD3D11& vb = m_vertexBuffers[_blitter.m_vb->handle.idx];
-			VertexLayout& layout  = m_vertexLayouts[_blitter.m_vb->layoutHandle.idx];
+			BgfxVertexLayout& layout  = m_vertexLayouts[_blitter.m_vb->layoutHandle.idx];
 			uint32_t stride = layout.m_stride;
 			uint32_t offset = 0;
 			deviceCtx->IASetVertexBuffers(0, 1, &vb.m_ptr, &stride, &offset);
@@ -2637,7 +2637,7 @@ namespace bgfx { namespace d3d11
 			}
 		}
 
-		void setInputLayout(uint8_t _numStreams, const VertexLayout** _layouts, const ProgramD3D11& _program, uint16_t _numInstanceData)
+		void setInputLayout(uint8_t _numStreams, const BgfxVertexLayout** _layouts, const ProgramD3D11& _program, uint16_t _numInstanceData)
 		{
 			bx::HashMurmur2A murmur;
 			murmur.begin();
@@ -2659,8 +2659,8 @@ namespace bgfx { namespace d3d11
 
 				for (uint8_t stream = 0; stream < _numStreams; ++stream)
 				{
-					VertexLayout layout;
-					bx::memCopy(&layout, _layouts[stream], sizeof(VertexLayout) );
+					BgfxVertexLayout layout;
+					bx::memCopy(&layout, _layouts[stream], sizeof(BgfxVertexLayout) );
 
 					const bool last = stream == _numStreams-1;
 
@@ -2727,9 +2727,9 @@ namespace bgfx { namespace d3d11
 			m_deviceCtx->IASetInputLayout(inputLayout);
 		}
 
-		void setInputLayout(const VertexLayout& _layout, const ProgramD3D11& _program, uint16_t _numInstanceData)
+		void setInputLayout(const BgfxVertexLayout& _layout, const ProgramD3D11& _program, uint16_t _numInstanceData)
 		{
-			const VertexLayout* layouts[1] = { &_layout };
+			const BgfxVertexLayout* layouts[1] = { &_layout };
 			setInputLayout(BX_COUNTOF(layouts), layouts, _program, _numInstanceData);
 		}
 
@@ -3519,7 +3519,7 @@ namespace bgfx { namespace d3d11
 				}
 
 				VertexBufferD3D11& vb = m_vertexBuffers[_clearQuad.m_vb.idx];
-				const VertexLayout& layout = _clearQuad.m_layout;
+				const BgfxVertexLayout& layout = _clearQuad.m_layout;
 
 				const uint32_t stride = layout.m_stride;
 				const uint32_t offset = 0;
@@ -3583,7 +3583,7 @@ namespace bgfx { namespace d3d11
 		ShaderD3D11 m_shaders[BGFX_CONFIG_MAX_SHADERS];
 		ProgramD3D11 m_program[BGFX_CONFIG_MAX_PROGRAMS];
 		TextureD3D11 m_textures[BGFX_CONFIG_MAX_TEXTURES];
-		VertexLayout m_vertexLayouts[BGFX_CONFIG_MAX_VERTEX_LAYOUTS];
+		BgfxVertexLayout m_vertexLayouts[BGFX_CONFIG_MAX_VERTEX_LAYOUTS];
 		FrameBufferD3D11 m_frameBuffers[BGFX_CONFIG_MAX_FRAME_BUFFERS];
 		void* m_uniforms[BGFX_CONFIG_MAX_UNIFORMS];
 		Matrix4 m_predefinedUniforms[PredefinedUniform::Count];
@@ -5780,10 +5780,10 @@ namespace bgfx { namespace d3d11
 								}
 								break;
 
-							case Binding::IndexBuffer:
-							case Binding::VertexBuffer:
+							case Binding::BgfxIndexBuffer:
+							case Binding::BgfxVertexBuffer:
 								{
-									const BufferD3D11& buffer = Binding::IndexBuffer == bind.m_type
+									const BufferD3D11& buffer = Binding::BgfxIndexBuffer == bind.m_type
 										? m_indexBuffers[bind.m_idx]
 										: m_vertexBuffers[bind.m_idx]
 										;
@@ -6109,10 +6109,10 @@ namespace bgfx { namespace d3d11
 									}
 									break;
 
-								case Binding::IndexBuffer:
-								case Binding::VertexBuffer:
+								case Binding::BgfxIndexBuffer:
+								case Binding::BgfxVertexBuffer:
 									{
-										const BufferD3D11& buffer = Binding::IndexBuffer == bind.m_type
+										const BufferD3D11& buffer = Binding::BgfxIndexBuffer == bind.m_type
 											? m_indexBuffers[bind.m_idx]
 											: m_vertexBuffers[bind.m_idx]
 											;
@@ -6155,7 +6155,7 @@ namespace bgfx { namespace d3d11
 					ID3D11Buffer* buffers[BGFX_CONFIG_MAX_VERTEX_STREAMS];
 					uint32_t strides[BGFX_CONFIG_MAX_VERTEX_STREAMS];
 					uint32_t offsets[BGFX_CONFIG_MAX_VERTEX_STREAMS];
-					const VertexLayout* layouts[BGFX_CONFIG_MAX_VERTEX_STREAMS];
+					const BgfxVertexLayout* layouts[BGFX_CONFIG_MAX_VERTEX_STREAMS];
 
 					uint32_t numVertices = draw.m_numVertices;
 					uint8_t  numStreams  = 0;
@@ -6180,7 +6180,7 @@ namespace bgfx { namespace d3d11
 							const uint16_t layoutIdx = isValid(draw.m_stream[idx].m_layoutHandle)
 								? draw.m_stream[idx].m_layoutHandle.idx
 								: vb.m_layoutHandle.idx;
-							const VertexLayout& layout = m_vertexLayouts[layoutIdx];
+							const BgfxVertexLayout& layout = m_vertexLayouts[layoutIdx];
 							const uint32_t stride = layout.m_stride;
 
 							buffers[numStreams] = vb.m_ptr;

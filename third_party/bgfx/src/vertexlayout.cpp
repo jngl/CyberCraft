@@ -73,7 +73,7 @@ namespace bgfx
 
 	VertexLayout& VertexLayout::begin(RendererType::Enum _renderer)
 	{
-		m_hash = _renderer; // use hash to store renderer type while building VertexLayout.
+		m_hash = _renderer; // use hash to store renderer type while building BgfxVertexLayout.
 		m_stride = 0;
 		bx::memSet(m_attributes, 0xff, sizeof(m_attributes) );
 		bx::memSet(m_offset, 0, sizeof(m_offset) );

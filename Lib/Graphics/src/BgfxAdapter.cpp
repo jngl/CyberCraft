@@ -2,7 +2,7 @@
 // Created by jngl on 11/07/2021.
 //
 
-#include "BgfxAdapter.h"
+#include "BgfxAdapterPrivate.h"
 
 #include "SdlWindowAdapter.h"
 #include "BimgAdapter.h"
@@ -210,60 +210,60 @@ namespace cg::Impl {
         }
     }
 
-    bgfx::Attrib::Enum convAttrib(Attrib attrib){
+    bgfx::Attrib::Enum convAttrib(ck::Attrib attrib){
         switch (attrib) {
-            case Attrib::Position:
+            case ck::Attrib::Position:
                 return bgfx::Attrib::Position;
-            case Attrib::Normal:
+            case ck::Attrib::Normal:
                 return bgfx::Attrib::Normal;
-            case Attrib::Tangent:
+            case ck::Attrib::Tangent:
                 return bgfx::Attrib::Tangent;
-            case Attrib::Bitangent:
+            case ck::Attrib::Bitangent:
                 return bgfx::Attrib::Bitangent;
-            case Attrib::Color0:
+            case ck::Attrib::Color0:
                 return bgfx::Attrib::Color0;
-            case Attrib::Color1:
+            case ck::Attrib::Color1:
                 return bgfx::Attrib::Color1;
-            case Attrib::Color2:
+            case ck::Attrib::Color2:
                 return bgfx::Attrib::Color2;
-            case Attrib::Color3:
+            case ck::Attrib::Color3:
                 return bgfx::Attrib::Color3;
-            case Attrib::Indices:
+            case ck::Attrib::Indices:
                 return bgfx::Attrib::Indices;
-            case Attrib::Weight:
+            case ck::Attrib::Weight:
                 return bgfx::Attrib::Weight;
-            case Attrib::TexCoord0:
+            case ck::Attrib::TexCoord0:
                 return bgfx::Attrib::TexCoord0;
-            case Attrib::TexCoord1:
+            case ck::Attrib::TexCoord1:
                 return bgfx::Attrib::TexCoord1;
-            case Attrib::TexCoord2:
+            case ck::Attrib::TexCoord2:
                 return bgfx::Attrib::TexCoord2;
-            case Attrib::TexCoord3:
+            case ck::Attrib::TexCoord3:
                 return bgfx::Attrib::TexCoord3;
-            case Attrib::TexCoord4:
+            case ck::Attrib::TexCoord4:
                 return bgfx::Attrib::TexCoord4;
-            case Attrib::TexCoord5:
+            case ck::Attrib::TexCoord5:
                 return bgfx::Attrib::TexCoord5;
-            case Attrib::TexCoord6:
+            case ck::Attrib::TexCoord6:
                 return bgfx::Attrib::TexCoord6;
-            case Attrib::TexCoord7:
+            case ck::Attrib::TexCoord7:
                 return bgfx::Attrib::TexCoord7;
             default:
                 return bgfx::Attrib::Count;
         }
     }
 
-    bgfx::AttribType::Enum convAttribType(AttribType type){
+    bgfx::AttribType::Enum convAttribType(ck::AttribType type){
         switch (type) {
-            case AttribType::Uint8:
+            case ck::AttribType::Uint8:
                 return bgfx::AttribType::Uint8;
-            case AttribType::Uint10:
+            case ck::AttribType::Uint10:
                 return bgfx::AttribType::Uint10;
-            case AttribType::Int16:
+            case ck::AttribType::Int16:
                 return bgfx::AttribType::Int16;
-            case AttribType::Half:
+            case ck::AttribType::Half:
                 return bgfx::AttribType::Half;
-            case AttribType::Float:
+            case ck::AttribType::Float:
                 return bgfx::AttribType::Float;
             default:
                 return bgfx::AttribType::Count;
@@ -296,7 +296,7 @@ namespace cg::Impl {
         m_context.endFrame();
     }
 
-    BgfxProgramFactory &BgfxAdapter::getProgramFactory() {
+    ck::GpuProgramFactory &BgfxAdapter::getProgramFactory() {
         return m_programs;
     }
 
@@ -304,12 +304,18 @@ namespace cg::Impl {
         bgfx::setTransform(transform.m.data());
     }
 
-    void BgfxAdapter::setVertexBuffer(uint8_t stream, const VertexBuffer&vertices) {
-        bgfx::setVertexBuffer(0, vertices.getBgfxHandle());
+    void BgfxAdapter::setVertexBuffer(uint8_t stream, const ck::VertexBuffer&vertices) {
+        const auto* bgfxBuffer = dynamic_cast<const BgfxVertexBuffer*>(&vertices);
+        if(bgfxBuffer != nullptr){
+            bgfx::setVertexBuffer(0, bgfxBuffer->getBgfxHandle());
+        }
     }
 
-    void BgfxAdapter::setIndexBuffer(const IndexBuffer &indices) {
-        bgfx::setIndexBuffer(indices.getBgfxHandle());
+    void BgfxAdapter::setIndexBuffer(const ck::IndexBuffer &indices) {
+        const auto* bgfxBuffer = dynamic_cast<const BgfxIndexBuffer*>(&indices);
+        if(bgfxBuffer != nullptr){
+            bgfx::setIndexBuffer(bgfxBuffer->getBgfxHandle());
+        }
     }
 
     void BgfxAdapter::submit(const ck::GpuProgram &program) {
@@ -324,12 +330,20 @@ namespace cg::Impl {
         bgfx::dbgTextPrintf(0, 0, 0x0f, textStr.c_str());
     }
 
-    BgfxTextureFactory &BgfxAdapter::getTextureFactory() {
+    ck::TextureFactory &BgfxAdapter::getTextureFactory() {
         return m_textures;
     }
 
-    BgfxUniformFactory &BgfxAdapter::getUniformFactory() {
+    ck::UniformFactory &BgfxAdapter::getUniformFactory() {
         return m_uniforms;
+    }
+
+    ck::GpuBufferFactory &BgfxAdapter::getBufferFactory() {
+        return m_buffers;
+    }
+
+    void BgfxAdapter::setViewTransform(const cc::Matrix4f &proj, const cc::Matrix4f &view) {
+        bgfx::setViewTransform(0, view.m.data(), proj.m.data());
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -616,51 +630,67 @@ namespace cg::Impl {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    void VertexLayout::begin() {
+    void BgfxVertexLayout::begin() {
         m_layout.begin();
     }
 
-    void VertexLayout::add(Attrib attrib, uint8_t num, AttribType type, bool normalized, bool asInt) {
+    void BgfxVertexLayout::add(ck::Attrib attrib, uint8_t num, ck::AttribType type, bool normalized, bool asInt) {
         bgfx::Attrib::Enum bgfxAttrib = convAttrib(attrib);
         bgfx::AttribType::Enum bgfxType = convAttribType(type);
         m_layout.add(bgfxAttrib, num, bgfxType, normalized, asInt);
     }
 
-    void VertexLayout::end() {
+    void BgfxVertexLayout::end() {
         m_layout.end();
     }
 
-    const bgfx::VertexLayout &VertexLayout::getBgfxLayout() const {
+    const bgfx::VertexLayout &BgfxVertexLayout::getBgfxLayout() const {
         return m_layout;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    VertexBuffer::VertexBuffer(const cc::ByteArrayView& data, const VertexLayout& layout) {
+
+    std::unique_ptr<ck::IndexBuffer> bgfxGpuBufferFactory::createIndexBuffer(const cc::ByteArrayView &data) {
+        return std::make_unique<BgfxIndexBuffer>(data);
+    }
+
+    std::unique_ptr<ck::VertexBuffer>
+    bgfxGpuBufferFactory::createVertexBuffer(const cc::ByteArrayView& data, const ck::VertexLayout& layout) {
+        const auto& bgfxLayout = dynamic_cast<const BgfxVertexLayout&>(layout);
+        return std::make_unique<BgfxVertexBuffer>(data, bgfxLayout);
+    }
+
+    std::unique_ptr<ck::VertexLayout> bgfxGpuBufferFactory::createVertexLayout() {
+        return std::make_unique<BgfxVertexLayout>();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    BgfxVertexBuffer::BgfxVertexBuffer(const cc::ByteArrayView& data, const BgfxVertexLayout& layout) {
         m_handle  = bgfx::createVertexBuffer(
                 createBgfxMemory(data),
                 layout.getBgfxLayout()
         );
     }
 
-    VertexBuffer::~VertexBuffer() {
+    BgfxVertexBuffer::~BgfxVertexBuffer() {
         bgfx::destroy(m_handle);
     }
 
-    bgfx::VertexBufferHandle VertexBuffer::getBgfxHandle() const {
+    bgfx::VertexBufferHandle BgfxVertexBuffer::getBgfxHandle() const {
         return m_handle;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    IndexBuffer::IndexBuffer(const cc::ByteArrayView& data) {
+    BgfxIndexBuffer::BgfxIndexBuffer(const cc::ByteArrayView& data) {
         m_handle = bgfx::createIndexBuffer(createBgfxMemory(data));
     }
 
-    IndexBuffer::~IndexBuffer() {
+    BgfxIndexBuffer::~BgfxIndexBuffer() {
         bgfx::destroy(m_handle);
     }
 
-    bgfx::IndexBufferHandle IndexBuffer::getBgfxHandle() const {
+    bgfx::IndexBufferHandle BgfxIndexBuffer::getBgfxHandle() const {
         return m_handle;
     }
 
@@ -768,5 +798,11 @@ namespace cg::Impl {
             default:
                 throw ck::GraphicsError{"Unknown Graphics Api"};
         }
+    }
+}
+
+namespace cg {
+    std::unique_ptr<ck::GpuAdapter> createBgfxAdapter(Impl::SdlWindowAdapter& win){
+        return std::make_unique<Impl::BgfxAdapter>(win);
     }
 }
