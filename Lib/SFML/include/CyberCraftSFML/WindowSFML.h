@@ -25,6 +25,10 @@ namespace ccSf {
 
         bool isKeyPressed(ck::Key key) override;
 
+        [[nodiscard]] cc::Vector2ui getSize() const override;
+
+        void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener) override;
+
     private:
         sf::RenderWindow m_window;
     };

@@ -75,5 +75,13 @@ namespace ccSf {
         return sf::Keyboard::isKeyPressed(convKey(key));
     }
 
+    void WindowSFML::processEvent(ck::ExitListener &exitListener, ck::KeyListener &keyListener) {
+        // TODO
+    }
+
+    cc::Vector2ui WindowSFML::getSize() const {
+        return {m_window.getSize().x, m_window.getSize().y};
+    }
+
     WindowSFML::~WindowSFML() = default;
 }
