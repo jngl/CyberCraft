@@ -27,7 +27,8 @@ public:
 private:
     cp::Ports& m_ports;
     ck::Renderer2d m_renderer2d;
-    cc::Vector2f m_pos{200, 200};
+    cc::Vector2f m_pos{20, 20};
+    std::shared_ptr<cp::Texture> m_textureTest;
 
     static constexpr float m_playerSize = 50;
 };

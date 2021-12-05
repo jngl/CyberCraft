@@ -15,20 +15,24 @@
 
 namespace ck
 {
-    class Renderer2d : public cc::NonCopyable, public ck::ColoredRectangleDrawer {
+    class Renderer2d :
+            public cc::NonCopyable,
+            public ck::ColoredRectangleDrawer
+    {
     public:
         explicit Renderer2d(cp::GpuAdapter&);
 
         void updateSize(cc::Vector2ui size);
 
         void drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cc::Color& color) override;
+        void drawSprite(const cc::Vector2f& pos, const cc::Vector2f& size, const cp::Texture& texture);
 
         private:
         cp::GpuAdapter& m_gpuAdapter;
         std::shared_ptr<cp::VertexBuffer> m_rectangleVertices;
         std::shared_ptr<cp::IndexBuffer> m_rectangleIndices;
-        std::shared_ptr<cp::GpuProgram> m_program;
-        std::shared_ptr<cp::Texture> m_textureTest;
+        std::shared_ptr<cp::GpuProgram> m_programColor;
+        std::shared_ptr<cp::GpuProgram> m_programTexture;
         std::shared_ptr<cp::Uniform> m_color;
         std::shared_ptr<cp::Uniform> m_texture;
 

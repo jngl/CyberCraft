@@ -6,7 +6,10 @@
 
 #include <Ports.h>
 
-Game::Game(cp::Ports& ports): m_ports(ports), m_renderer2d(m_ports.getGpuAdapter()){
+Game::Game(cp::Ports& ports):
+m_ports(ports),
+m_renderer2d(m_ports.getGpuAdapter()),
+m_textureTest(m_ports.getGpuAdapter().getTextureFactory().loadTextureFromFile("dirt")){
 }
 
 void Game::update() {
@@ -35,7 +38,12 @@ void Game::draw() {
     auto size = m_ports.getWindow().getSize();
     m_renderer2d.updateSize(size);
 
-    m_renderer2d.drawRectangle(m_pos, cc::Vector2f{m_playerSize, m_playerSize}, cc::Color{255,255,255});
+    m_renderer2d.drawSprite(cc::Vector2f{400, 400}, cc::Vector2f{200, 200}, *m_textureTest);
+
+    m_renderer2d.drawRectangle(m_pos, cc::Vector2f{m_playerSize, m_playerSize}, cc::Color{0,255,0});
+
+
+
 }
 
 extern "C" ck::Game* createGame(cp::Ports* ports){

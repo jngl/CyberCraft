@@ -1,4 +1,6 @@
-$input v_texcoord0
+$input a_position, a_texcoord0
+$output v_texcoord0
+
 /*
  * Copyright 2011-2021 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
@@ -6,11 +8,8 @@ $input v_texcoord0
 
 #include "../common/common.sh"
 
-uniform vec4 u_color;
-
-SAMPLER2D(u_texture,  0);
-
 void main()
 {
-	gl_FragColor = u_color*texture2D(u_texture, v_texcoord0);
+    v_texcoord0 = a_texcoord0;
+	gl_Position = mul(u_modelViewProj, vec4(a_position, 0.0, 1.0) );
 }

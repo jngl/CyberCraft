@@ -15,6 +15,7 @@ then
   mkdir ./Game/data/shader/spirv
 fi
 
-compile simple2d
+compile renderer2dColor
+compile renderer2dTexture
 
 

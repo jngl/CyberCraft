@@ -55,18 +55,14 @@ namespace ck
                     *Pos2dVertex::getLayout(m_gpuAdapter.getBufferFactory()))),
             m_rectangleIndices(m_gpuAdapter.getBufferFactory().createIndexBuffer(
                     cc::ByteArrayView::fromArray(g_rectangleIndicesData))),
-            m_program(m_gpuAdapter.getProgramFactory().loadProgramFromFile("simple2d")),
-            m_textureTest(m_gpuAdapter.getTextureFactory().loadTextureFromFile("dirt")),
+            m_programColor(m_gpuAdapter.getProgramFactory().loadProgramFromFile("renderer2dColor")),
+            m_programTexture(m_gpuAdapter.getProgramFactory().loadProgramFromFile("renderer2dTexture")),
             m_color(m_gpuAdapter.getUniformFactory().createUniform("u_color", cp::Uniform::Type::Vec4, 1)),
             m_texture(m_gpuAdapter.getUniformFactory().createUniform("u_texture", cp::Uniform::Type::Sampler, 1))
     {
     }
 
     void Renderer2d::drawRectangle(const cc::Vector2f &pos, const cc::Vector2f &size, const cc::Color &color) {
-        std::string msg = fmt::format("Pos = {: 4.0f} ; {: 4.0f}       Size = {: 2.0f} ; {: 2.0f}       Color = {} {} {} {}",
-                                      pos.x, pos.y, size.x, size.y, color.red, color.green, color.blue, color.alpha);
-        m_gpuAdapter.dbgTextPrint(0, 0, msg);
-
         cc::Matrix4f transform;
         transform.addTranslation(pos.x, pos.y, 0.f);
         transform.addScale(size.x, size.y, 1.f);
@@ -79,10 +75,9 @@ namespace ck
         m_gpuAdapter.setIndexBuffer(*m_rectangleIndices);
 
         m_color->setColor(color);
-        m_texture->setTexture(*m_textureTest);
 
         // Submit primitive for rendering to view 0.
-        m_gpuAdapter.submit(*m_program);
+        m_gpuAdapter.submit(*m_programColor);
     }
 
     void Renderer2d::updateSize(cc::Vector2ui size) {
@@ -97,5 +92,23 @@ namespace ck
 
     void Renderer2d::setViewTransform(const cc::Matrix4f &proj, const cc::Matrix4f &view) {
         m_gpuAdapter.setViewTransform(proj, view);
+    }
+
+    void Renderer2d::drawSprite(const cc::Vector2f &pos, const cc::Vector2f &size, const cp::Texture &texture) {
+        cc::Matrix4f transform;
+        transform.addTranslation(pos.x, pos.y, 0.f);
+        transform.addScale(size.x, size.y, 1.f);
+
+        // Set model matrix for rendering.
+        m_gpuAdapter.setTransform(transform);
+
+        // Set vertex and index buffer.
+        m_gpuAdapter.setVertexBuffer(0, *m_rectangleVertices);
+        m_gpuAdapter.setIndexBuffer(*m_rectangleIndices);
+
+        m_texture->setTexture(texture);
+
+        // Submit primitive for rendering to view 0.
+        m_gpuAdapter.submit(*m_programTexture);
     }
 }
