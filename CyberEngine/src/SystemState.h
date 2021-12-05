@@ -8,14 +8,13 @@
 #include <Core/Bases.h>
 
 #include <Kernel/Renderer2d.h>
-#include <Kernel/Kernel.h>
 
 #include <Graphics/Graphics.h>
 #include "GameLoader.h"
 
 #include <SDL.h>
 
-class SystemState : public ck::KeyListener, public ck::ExitListener, public cc::NonCopyable{
+class SystemState : public cc::NonCopyable{
 public:
     SystemState();
 
@@ -23,14 +22,12 @@ public:
 
     void frame();
 
-    void onKeyUp(cp::Key key) override;
-    void onKeyDown(cp::Key key) override;
-
-    void onExit() override;
+//    void onKeyUp(cp::Key key) override;
+//    void onKeyDown(cp::Key key) override;
 
 private:
     std::unique_ptr<cp::GraphicsAdapter> m_graphicsAdapter;
-    ck::Kernel m_kernel;
+    ck::Renderer2d m_renderer2d;
     GameLoader m_gameLoader;
 };
 
