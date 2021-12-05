@@ -28,7 +28,7 @@
 struct SDL_Window;
 
 namespace cg::Impl {
-    class GraphicsAdapter : public cp::GraphicsAdapter
+    class GraphicsAdapter : public cp::Ports
     {
     public:
         GraphicsAdapter();

@@ -7,7 +7,7 @@
 #include "private_Graphics.h"
 
 namespace cg{
-    [[maybe_unused]] std::unique_ptr<cp::GraphicsAdapter> createGraphicsAdapter()
+    [[maybe_unused]] std::unique_ptr<cp::Ports> createGraphicsAdapter()
     {
         return std::make_unique<Impl::GraphicsAdapter>();
     }

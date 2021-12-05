@@ -2,8 +2,8 @@
 // Created by jngl on 19/09/2020.
 //
 
-#ifndef CYBERCRAFT_GAME_H
-#define CYBERCRAFT_GAME_H
+#ifndef CYBERCRAFT_KERNEL_GAME_H
+#define CYBERCRAFT_KERNEL_GAME_H
 
 #include <Core/Bases.h>
 

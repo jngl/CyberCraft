@@ -4,69 +4,40 @@
 
 #include "Game.h"
 
-enum class Direction{
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
+#include <Ports.h>
 
-template<Direction dir>
-class CommandMove : public ck::Command, public cc::NonCopyable
+Game::Game(cp::Ports& ports): m_ports(ports), m_renderer2d(m_ports.getGpuAdapter()){
+}
 
-{
-public:
-    explicit CommandMove(cc::Vector2f& pos):
-    m_pos(pos)
-    {}
-
+void Game::update() {
     static constexpr float speed = 0.1f;
 
-    void exec() override {
-        if constexpr(dir == Direction::UP) {
-            m_pos.y -= speed;
-        } else if constexpr(dir == Direction::DOWN) {
-            m_pos.y += speed;
-        } else if constexpr(dir == Direction::LEFT) {
-            m_pos.x -= speed;
-        } else if constexpr(dir == Direction::RIGHT) {
-            m_pos.x += speed;
-        }
+    cp::Window& window = m_ports.getWindow();
+
+    if(window.isKeyPressed(cp::Key::UP)){
+        m_pos.y -= speed;
     }
 
-private:
-    cc::Vector2f& m_pos;
-};
-
-class CommandExit : public ck::Command
-{
-public:
-    explicit CommandExit(ck::Runnable& runnable):
-
-    m_runnable(runnable)
-    {}
-
-    void exec() override {
-        m_runnable.exit();
+    if(window.isKeyPressed(cp::Key::DOWN)){
+        m_pos.y += speed;
     }
 
-private:
-    ck::Runnable& m_runnable;
-};
+    if(window.isKeyPressed(cp::Key::LEFT)){
+        m_pos.x -= speed;
+    }
 
-Game::Game() {
-    createOneFrameAction(std::make_unique<CommandExit>(*this), cp::Key::ESCAPE);
-
-    createMultiFrameAction(std::make_unique<CommandMove<Direction::UP>>(m_pos), cp::Key::UP);
-    createMultiFrameAction(std::make_unique<CommandMove<Direction::DOWN>>(m_pos), cp::Key::DOWN);
-    createMultiFrameAction(std::make_unique<CommandMove<Direction::LEFT>>(m_pos), cp::Key::LEFT);
-    createMultiFrameAction(std::make_unique<CommandMove<Direction::RIGHT>>(m_pos), cp::Key::RIGHT);
+    if(window.isKeyPressed(cp::Key::RIGHT)){
+        m_pos.x += speed;
+    }
 }
 
-void Game::render(ck::ColoredRectangleDrawer &renderer) {
-    renderer.drawRectangle(m_pos, cc::Vector2f{m_playerSize, m_playerSize}, cc::Color{255,255,255});
+void Game::draw() {
+    auto size = m_ports.getWindow().getSize();
+    m_renderer2d.updateSize(size);
+
+    m_renderer2d.drawRectangle(m_pos, cc::Vector2f{m_playerSize, m_playerSize}, cc::Color{255,255,255});
 }
 
-extern "C" ck::GameBase* createGame(){
-    return new Game();
+extern "C" ck::Game* createGame(cp::Ports* ports){
+    return new Game(*ports);
 }

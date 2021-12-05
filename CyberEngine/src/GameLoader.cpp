@@ -6,25 +6,26 @@
 
 #include <Core/Debug.h>
 #include <Graphics/Graphics.h>
+#include <Ports.h>
 
 #include <iostream>
 
 #include <SDL2/SDL.h>
 
-GameLoader::GameLoader(){
-    reload();
+GameLoader::GameLoader(cp::Ports&ports){
+    reload(ports);
 }
 
 GameLoader::~GameLoader(){
     clear();
 }
 
-void GameLoader::reload(){
+void GameLoader::reload(cp::Ports& ports){
     std::cout<<"Reload"<<std::endl;
 
     clear();
 
-    using Func = ck::GameBase*(*)();
+    using Func = ck::Game*(*)(cp::Ports*);
 
     m_gameCodeHandle = SDL_LoadObject("./libDemo.so");
     if(m_gameCodeHandle == nullptr){
@@ -36,17 +37,17 @@ void GameLoader::reload(){
         throw cc::Error{SDL_GetError()};
     }
 
-    m_game = std::unique_ptr<ck::GameBase>(creator());
+    m_game = std::unique_ptr<ck::Game>(creator(&ports));
 }
 
-ck::GameBase& GameLoader::getGame(){
+ck::Game& GameLoader::getGame(){
     if(!m_game){
         throw cc::Error("Game not loaded");
     }
     return *m_game;
 }
 
-const ck::GameBase& GameLoader::getGame() const{
+const ck::Game& GameLoader::getGame() const{
     if(!m_game){
         throw cc::Error("Game not loaded");
     }

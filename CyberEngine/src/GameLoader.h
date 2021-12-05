@@ -8,9 +8,15 @@
 #include <Core/Bases.h>
 
 #include <Ports/Key.h>
-#include <Kernel/Engine.h>
+#include <Kernel/Game.h>
 
 #include <memory>
+#include <string>
+
+namespace cp
+{
+    class Ports;
+}
 
 class GameLoaderError : public std::exception
 {
@@ -25,18 +31,18 @@ private:
 class GameLoader final : cc::NonCopyable
 {
 public:
-    GameLoader();
+    GameLoader(cp::Ports&);
     ~GameLoader();
 
-    void reload();
+    void reload(cp::Ports&);
     void clear();
 
-    ck::GameBase& getGame();
+    ck::Game& getGame();
 
-    [[nodiscard]] const ck::GameBase& getGame() const;
+    [[nodiscard]] const ck::Game& getGame() const;
 
 private:
-    std::unique_ptr<ck::GameBase> m_game;
+    std::unique_ptr<ck::Game> m_game;
     void* m_gameCodeHandle = nullptr;
 
 };

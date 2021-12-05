@@ -5,18 +5,28 @@
 #ifndef CYBERCRAFT_GAME_H
 #define CYBERCRAFT_GAME_H
 
-#include <Kernel/Engine.h>
+#include <Kernel/Game.h>
+#include <Kernel/Renderer2d.h>
 
 #include <Core/Bases.h>
 #include <Core/Math.h>
+#include "Game.h"
 
-class Game final : public ck::GameBase, public cc::NonCopyable {
+namespace cp
+{
+    class Ports;
+}
+
+class Game final : public ck::Game {
 public:
-    Game();
+    Game(cp::Ports& ports);
 
-    void render(ck::ColoredRectangleDrawer& renderer) final;
+    void update() final;
+    void draw() final;
 
 private:
+    cp::Ports& m_ports;
+    ck::Renderer2d m_renderer2d;
     cc::Vector2f m_pos{200, 200};
 
     static constexpr float m_playerSize = 50;

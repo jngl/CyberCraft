@@ -7,7 +7,6 @@
 
 #include <Core/Bases.h>
 
-#include <Kernel/Renderer2d.h>
 
 #include <Graphics/Graphics.h>
 #include "GameLoader.h"
@@ -26,8 +25,7 @@ public:
 //    void onKeyDown(cp::Key key) override;
 
 private:
-    std::unique_ptr<cp::GraphicsAdapter> m_graphicsAdapter;
-    ck::Renderer2d m_renderer2d;
+    std::unique_ptr<cp::Ports> m_graphicsAdapter;
     GameLoader m_gameLoader;
 };
 

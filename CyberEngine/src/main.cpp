@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include <Kernel/MainLoop.h>
+
 int main () {
     try{
         SystemState systemState;

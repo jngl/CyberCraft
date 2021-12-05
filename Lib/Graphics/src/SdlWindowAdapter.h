@@ -42,6 +42,7 @@ class SdlWindowAdapter : public cp::Window{
 
     private:
         SDL_Window *m_window;
+        bool m_isOpen = true;
 
         cp::Key keyFromSdlKey(SDL_Keycode sdlKey);
         SDL_Scancode sdlScanCodeFromKey(cp::Key);

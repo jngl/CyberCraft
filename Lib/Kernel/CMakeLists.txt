@@ -7,3 +7,4 @@ add_library(LibCyberCraftKernel
 
 target_include_directories(LibCyberCraftKernel PUBLIC include)
 target_link_libraries(LibCyberCraftKernel project_options project_warnings LibCyberCraftCore LibCyberCraftPorts)
+set_property(TARGET LibCyberCraftKernel PROPERTY POSITION_INDEPENDENT_CODE ON)

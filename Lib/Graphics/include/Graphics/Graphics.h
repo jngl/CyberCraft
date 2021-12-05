@@ -5,10 +5,12 @@
 #ifndef CYBERCRAFT_GRAPHICS_H
 #define CYBERCRAFT_GRAPHICS_H
 
-#include <Ports/GraphicsAdapter.h>
+#include <Ports.h>
+
+#include <memory>
 
 namespace cg{
-    [[maybe_unused]] std::unique_ptr<cp::GraphicsAdapter> createGraphicsAdapter();
+    [[maybe_unused]] std::unique_ptr<cp::Ports> createGraphicsAdapter();
 }
 
 #endif //CYBERCRAFT_GRAPHICS_H

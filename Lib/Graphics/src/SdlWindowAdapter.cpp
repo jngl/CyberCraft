@@ -75,25 +75,6 @@ namespace cg::Impl {
         return cc::Vector2ui{static_cast<uint>(x), static_cast<uint>(y)};
     }
 
-//    void SdlWindowAdapter::processEvent(ck::ExitListener &exitListener, ck::KeyListener &keyListener) {
-//        SDL_Event event;
-//        while (SDL_PollEvent(&event) != 0) {
-//            switch(event.type){
-//                case SDL_KEYDOWN:
-//                    keyListener.onKeyDown(keyFromSdlKey(event.key.keysym.sym));
-//                    break;
-//                case SDL_KEYUP:
-//                    keyListener.onKeyUp(keyFromSdlKey(event.key.keysym.sym));
-//                    break;
-//                case SDL_QUIT:
-//                    exitListener.onExit();
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//    }
-
     cp::Key SdlWindowAdapter::keyFromSdlKey(SDL_Keycode sdlKey) {
         switch (sdlKey){
             case SDLK_ESCAPE:
@@ -136,10 +117,20 @@ namespace cg::Impl {
     }
 
     bool SdlWindowAdapter::isOpen() const {
-        return true;
+        return m_isOpen;
     }
 
     void SdlWindowAdapter::beginFrame() {
+        SDL_Event event;
+        while (SDL_PollEvent(&event) != 0) {
+            switch(event.type){
+                case SDL_QUIT:
+                    m_isOpen = false;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     void SdlWindowAdapter::endFrame() {
@@ -147,7 +138,8 @@ namespace cg::Impl {
 
     bool SdlWindowAdapter::isKeyPressed(cp::Key key) {
         const Uint8 *state = SDL_GetKeyboardState(nullptr);
-        return state[sdlScanCodeFromKey(key)] == 1;
+        const SDL_Scancode scancode = sdlScanCodeFromKey(key);
+        return 1 == state[scancode];
     }
 
     SDL_Scancode SdlWindowAdapter::sdlScanCodeFromKey(cp::Key key) {
