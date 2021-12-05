@@ -142,7 +142,49 @@ namespace cg::Impl {
     void SdlWindowAdapter::endFrame() {
     }
 
-    bool SdlWindowAdapter::isKeyPressed(cp::Key) {
-        return false;
+    bool SdlWindowAdapter::isKeyPressed(cp::Key key) {
+        const Uint8 *state = SDL_GetKeyboardState(nullptr);
+        return state[sdlScanCodeFromKey(key)] == 1;
+    }
+
+    SDL_Scancode SdlWindowAdapter::sdlScanCodeFromKey(cp::Key key) {
+        switch(key) {
+            case cp::Key::UP:
+                return SDL_SCANCODE_UP;
+            case cp::Key::DOWN:
+                return SDL_SCANCODE_DOWN;
+            case cp::Key::LEFT:
+                return SDL_SCANCODE_LEFT;
+            case cp::Key::RIGHT:
+                return SDL_SCANCODE_RIGHT;
+            case cp::Key::ESCAPE:
+                return SDL_SCANCODE_ESCAPE;
+            case cp::Key::F1:
+                return SDL_SCANCODE_F1;
+            case cp::Key::F2:
+                return SDL_SCANCODE_F2;
+            case cp::Key::F3:
+                return SDL_SCANCODE_F3;
+            case cp::Key::F4:
+                return SDL_SCANCODE_F4;
+            case cp::Key::F5:
+                return SDL_SCANCODE_F5;
+            case cp::Key::F6:
+                return SDL_SCANCODE_F6;
+            case cp::Key::F7:
+                return SDL_SCANCODE_F7;
+            case cp::Key::F8:
+                return SDL_SCANCODE_F8;
+            case cp::Key::F9:
+                return SDL_SCANCODE_F9;
+            case cp::Key::F10:
+                return SDL_SCANCODE_F10;
+            case cp::Key::F11:
+                return SDL_SCANCODE_F11;
+            case cp::Key::F12:
+                return SDL_SCANCODE_F12;
+            default:
+                return SDL_SCANCODE_UNKNOWN;
+        }
     }
 }

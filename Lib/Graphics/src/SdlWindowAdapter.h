@@ -8,6 +8,8 @@
 #include <Kernel/Graphics.h>
 #include <Ports/Window.h>
 
+#include <SDL2/SDL_scancode.h>
+
 typedef int32_t SDL_Keycode;
 struct SDL_Window;
 
@@ -46,6 +48,7 @@ class SdlWindowAdapter : public cp::Window{
         SDL_Window *m_window;
 
         cp::Key keyFromSdlKey(SDL_Keycode sdlKey);
+        SDL_Scancode sdlScanCodeFromKey(cp::Key);
     };
 }
 
