@@ -6,7 +6,7 @@
 
 #include <Ports/Window.h>
 
-SystemState::SystemState() : m_graphicsAdapter(cg::createGraphicsAdapter()), m_kernel(*m_graphicsAdapter)
+SystemState::SystemState() : m_graphicsAdapter(cg::createGraphicsAdapter()), m_renderer2d(m_graphicsAdapter->getGpuAdapter())
 {
 }
 
@@ -15,28 +15,28 @@ bool SystemState::isRunning() const {
 }
 
 void SystemState::frame() {
-    // TODO
-    //m_graphicsAdapter->getWindow().processEvent(*this, *this);
+    auto size = m_graphicsAdapter->getWindow().getSize();
+    m_graphicsAdapter->getGpuAdapter().beginFrame(size);
+
+    m_renderer2d.updateSize(size);
+
     m_gameLoader.getGame().updateMultiFrameAction();
 
-    m_gameLoader.getGame().render(m_kernel.getRenderer2d());
+    m_gameLoader.getGame().render(m_renderer2d);
 
-    m_kernel.nextFrame();
+    m_graphicsAdapter->getGpuAdapter().endFrame();
 }
 
-void SystemState::onKeyUp(cp::Key key) {
-    m_gameLoader.getGame().processKeyUp(key);
-}
+//void SystemState::onKeyUp(cp::Key key) {
+//    m_gameLoader.getGame().processKeyUp(key);
+//}
+//
+//void SystemState::onKeyDown(cp::Key key) {
+//    if(key == cp::Key::F5){
+//        m_gameLoader.reload();
+//    }
+//
+//    m_gameLoader.getGame().processKeyDown(key);
+//}
 
-void SystemState::onKeyDown(cp::Key key) {
-    if(key == cp::Key::F5){
-        m_gameLoader.reload();
-    }
-
-    m_gameLoader.getGame().processKeyDown(key);
-}
-
-void SystemState::onExit() {
-    m_gameLoader.getGame().exit();
-}
 

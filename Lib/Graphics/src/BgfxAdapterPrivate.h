@@ -7,16 +7,17 @@
 
 #include "BgfxAdapter.h"
 
-#include <Kernel/Engine.h>
 #include <Ports/GpuProgram.h>
-
 #include <Ports/GpuBuffer.h>
+#include <Ports/Texture.h>
 
 #include <bgfx/bgfx.h>
 
 #include <Core/Memory.h>
+#include <Core/Math.h>
 
 #include <filesystem>
+#include <vector>
 
 #include "Enum.h"
 

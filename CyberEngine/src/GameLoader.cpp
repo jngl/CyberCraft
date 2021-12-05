@@ -4,6 +4,7 @@
 
 #include "GameLoader.h"
 
+#include <Core/Debug.h>
 #include <Graphics/Graphics.h>
 
 #include <iostream>
@@ -32,7 +33,7 @@ void GameLoader::reload(){
 
     Func creator = reinterpret_cast<Func>(SDL_LoadFunction(m_gameCodeHandle, "createGame")); // NOLINT
     if(creator == nullptr){
-        throw ck::GraphicsError{SDL_GetError()};
+        throw cc::Error{SDL_GetError()};
     }
 
     m_game = std::unique_ptr<ck::GameBase>(creator());
@@ -40,14 +41,14 @@ void GameLoader::reload(){
 
 ck::GameBase& GameLoader::getGame(){
     if(!m_game){
-        throw ck::GraphicsError("Game not loaded");
+        throw cc::Error("Game not loaded");
     }
     return *m_game;
 }
 
 const ck::GameBase& GameLoader::getGame() const{
     if(!m_game){
-        throw ck::GraphicsError("Game not loaded");
+        throw cc::Error("Game not loaded");
     }
     return *m_game;
 }

@@ -28,11 +28,6 @@ namespace ck
                                 cc::Color color,
                                 cc::Color backgroundColor,
                                 float rotation) = 0;
-
-        /*virtual void drawSprite(TextureHandle texture,
-                                const cc::Vector2f &pos,
-                                float scale,
-                                cc::Color color) = 0;*/
     };
 
     class Camera2D : public cc::Copyable

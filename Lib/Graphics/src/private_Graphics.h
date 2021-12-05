@@ -16,10 +16,8 @@
 
 #include <Ports/Texture.h>
 
-#include <Kernel/Engine.h>
 #include <Ports/Key.h>
 #include <Ports/GpuProgram.h>
-#include <Kernel/Renderer2d.h>
 
 #include <exception>
 #include <string>

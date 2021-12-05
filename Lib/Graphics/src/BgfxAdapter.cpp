@@ -8,13 +8,11 @@
 #include "BimgAdapter.h"
 
 #include <Core/Debug.h>
-
-#include "Kernel/Engine.h"
+#include <Core/Color.h>
 
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
 
-#include <SDL.h>
 #include <SDL2/SDL_syswm.h>
 
 #include <iostream>
@@ -796,7 +794,7 @@ namespace cg::Impl {
             case bgfx::RendererType::WebGPU:
                 return cp::GraphicsApi::WebGPU;
             default:
-                throw ck::GraphicsError{"Unknown Graphics Api"};
+                throw cc::Error{"Unknown Graphics Api"};
         }
     }
 }

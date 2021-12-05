@@ -4,6 +4,9 @@
 
 #include "SdlWindowAdapter.h"
 
+#include <Core/Debug.h>
+#include <Core/Math.h>
+
 #include <SDL.h>
 #include <SDL2/SDL_syswm.h>
 
@@ -12,12 +15,12 @@
 namespace cg::Impl {
     SdlWindowAdapter::SdlWindowAdapter(){
         if(SDL_Init(0) != 0){
-            throw ck::GraphicsError{SDL_GetError()};
+            throw cc::Error{SDL_GetError()};
         }
 
         m_window = SDL_CreateWindow("OpenGL Test", 0, 0, windowSizeXDefault, windowSizeYDefault, SDL_WINDOW_RESIZABLE);
         if (m_window == nullptr) {
-            throw ck::GraphicsError{SDL_GetError()};
+            throw cc::Error{SDL_GetError()};
         }
     }
 
@@ -72,24 +75,24 @@ namespace cg::Impl {
         return cc::Vector2ui{static_cast<uint>(x), static_cast<uint>(y)};
     }
 
-    void SdlWindowAdapter::processEvent(ck::ExitListener &exitListener, ck::KeyListener &keyListener) {
-        SDL_Event event;
-        while (SDL_PollEvent(&event) != 0) {
-            switch(event.type){
-                case SDL_KEYDOWN:
-                    keyListener.onKeyDown(keyFromSdlKey(event.key.keysym.sym));
-                    break;
-                case SDL_KEYUP:
-                    keyListener.onKeyUp(keyFromSdlKey(event.key.keysym.sym));
-                    break;
-                case SDL_QUIT:
-                    exitListener.onExit();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+//    void SdlWindowAdapter::processEvent(ck::ExitListener &exitListener, ck::KeyListener &keyListener) {
+//        SDL_Event event;
+//        while (SDL_PollEvent(&event) != 0) {
+//            switch(event.type){
+//                case SDL_KEYDOWN:
+//                    keyListener.onKeyDown(keyFromSdlKey(event.key.keysym.sym));
+//                    break;
+//                case SDL_KEYUP:
+//                    keyListener.onKeyUp(keyFromSdlKey(event.key.keysym.sym));
+//                    break;
+//                case SDL_QUIT:
+//                    exitListener.onExit();
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//    }
 
     cp::Key SdlWindowAdapter::keyFromSdlKey(SDL_Keycode sdlKey) {
         switch (sdlKey){

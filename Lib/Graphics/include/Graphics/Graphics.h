@@ -5,8 +5,6 @@
 #ifndef CYBERCRAFT_GRAPHICS_H
 #define CYBERCRAFT_GRAPHICS_H
 
-#include <Kernel/Graphics.h>
-
 #include <Ports/GraphicsAdapter.h>
 
 namespace cg{

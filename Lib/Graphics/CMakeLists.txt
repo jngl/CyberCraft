@@ -17,7 +17,7 @@ target_include_directories(LibCyberCraftGraphics PUBLIC
 
 target_link_libraries(LibCyberCraftGraphics
         LibCyberCraftCore
-        LibCyberCraftKernel
+        LibCyberCraftPorts
         bgfx
         ${X11_LIBRARIES}
         Threads::Threads

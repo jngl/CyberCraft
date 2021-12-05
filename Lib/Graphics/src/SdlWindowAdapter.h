@@ -5,7 +5,6 @@
 #ifndef CYBERCRAFT_SDLWINDOWADAPTER_H
 #define CYBERCRAFT_SDLWINDOWADAPTER_H
 
-#include <Kernel/Graphics.h>
 #include <Ports/Window.h>
 
 #include <SDL2/SDL_scancode.h>
@@ -32,9 +31,6 @@ class SdlWindowAdapter : public cp::Window{
         void* sdlNativeWindowHandle();
 
         [[nodiscard]] cc::Vector2ui getSize() const override;
-
-        // TODO
-        void processEvent(ck::ExitListener& exitListener, ck::KeyListener& keyListener) /*override*/;
 
         [[nodiscard]] bool isOpen() const override;
 
