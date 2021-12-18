@@ -8,8 +8,9 @@ add_executable(tests tests.cpp
         Test_id.cpp
         Test_RangeOfNumber.cpp
         Test_math.cpp
-        Test_component.cpp)
-target_link_libraries(tests PRIVATE catch_main LibCyberCraftCore)
+        Test_component.cpp
+        Test_BimgAdapter.cpp)
+target_link_libraries(tests PRIVATE catch_main LibCyberCraftCore LibCyberCraftGraphics)
 
 
 add_test(AllTest tests)

@@ -437,15 +437,18 @@ namespace cg::Impl {
     }
 
     void BgfxTextureFactory::loadTexture(const std::filesystem::path& file) {
-        if(file.extension() != ".dds" /*&& file.extension() != ".png"*/){
+        if(file.extension() != ".dds" &&
+            file.extension() != ".png" &&
+            file.extension() != ".jpg" ){
             return;
         }
+
+        std::cout<<"load texture : "<<file.stem()<<"\n";
 
         std::shared_ptr<BgfxTexture> texture( new BgfxTexture(file.string()));
 
         m_textures.push_back(Texture{file, texture});
 
-        std::cout<<"load texture : "<<file.stem()<<"\n";
     }
 
     std::shared_ptr<cp::Texture> BgfxTextureFactory::loadTextureFromFile(std::string_view filename) {

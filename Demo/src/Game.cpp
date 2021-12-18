@@ -9,7 +9,7 @@
 Game::Game(cp::Ports& ports):
 m_ports(ports),
 m_renderer2d(m_ports.getGpuAdapter()),
-m_textureTest(m_ports.getGpuAdapter().getTextureFactory().loadTextureFromFile("dirt")){
+m_textureTest(m_ports.getGpuAdapter().getTextureFactory().loadTextureFromFile("image8")){
 }
 
 void Game::update() {

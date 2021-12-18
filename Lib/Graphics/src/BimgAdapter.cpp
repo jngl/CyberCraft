@@ -217,6 +217,10 @@ namespace cg::Impl
 
         bimg::ImageContainer* bimgContainer = bimg::imageParse(&s_allocator, dataPtr, size, bimgFormat, &err);
 
+        if(!err.isOk()){
+            return {};
+        }
+
         if(bimgContainer == nullptr){
             return {};
         }
