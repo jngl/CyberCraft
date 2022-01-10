@@ -9,16 +9,10 @@
 #include <exception>
 #include <iostream>
 
+#include <CyberBase/Error.hpp>
+
 namespace cc {
-    class Error : public std::exception {
-    public:
-        explicit Error(std::string_view msg);
-
-        [[nodiscard]] const char *what() const noexcept override;
-
-    private:
-        std::string m_message;
-    };
+    using cb::Error;
 
     namespace impl
     {

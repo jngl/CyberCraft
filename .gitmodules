@@ -1,0 +1,3 @@
+[submodule "Lib/CyberBase"]
+	path = Lib/CyberBase
+	url = git@github.com:jngl/CyberBase.git
