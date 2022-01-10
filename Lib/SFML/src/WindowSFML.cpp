@@ -8,7 +8,7 @@
 
 #include "conversion.h"
 
-#include <Core/Color.h>
+#include <CyberBase/Color.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 
 constexpr int defaultWindowSizeX = 800;

@@ -24,7 +24,7 @@ namespace ck
 
         void updateSize(cc::Vector2ui size);
 
-        void drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cc::Color& color) override;
+        void drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cb::Color& color) override;
         void drawSprite(const cc::Vector2f& pos, const cc::Vector2f& size, const cp::Texture& texture);
 
         private:

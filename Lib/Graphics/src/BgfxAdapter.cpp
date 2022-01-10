@@ -8,7 +8,7 @@
 #include "BimgAdapter.h"
 
 #include <CyberBase/Error.hpp>
-#include <Core/Color.h>
+#include <CyberBase/Color.hpp>
 
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
@@ -540,7 +540,7 @@ namespace cg::Impl {
         return m_handle;
     }
 
-    void BgfxUniform::setColor(const cc::Color & color) {
+    void BgfxUniform::setColor(const cb::Color & color) {
         float colorTmp[4] = {static_cast<float>(color.red) / 255.f,
                              static_cast<float>(color.green) / 255.f,
                              static_cast<float>(color.blue) / 255.f,

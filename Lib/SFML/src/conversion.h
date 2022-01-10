@@ -6,7 +6,7 @@
 #define CYBERCRAFT_CONVERSION_H
 
 #include <Core/Math.h>
-#include <Core/Color.h>
+#include <CyberBase/Color.hpp>
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -17,7 +17,7 @@ namespace ccSf {
         return sf::Vector2<T>(v.x, v.y);
     }
 
-    sf::Color toSfColor(const cc::Color &c);
+    sf::Color toSfColor(const cb::Color &c);
 }
 
 #endif //CYBERCRAFT_CONVERSION_H

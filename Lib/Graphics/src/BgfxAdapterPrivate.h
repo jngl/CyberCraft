@@ -97,7 +97,7 @@ namespace cg::Impl {
 
         bgfx::UniformHandle getHandle();
 
-        void setColor(const cc::Color& color) override;
+        void setColor(const cb::Color& color) override;
         void setTexture(const cp::Texture& texture) override;
 
     private:

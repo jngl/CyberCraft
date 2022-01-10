@@ -62,7 +62,7 @@ namespace ck
     {
     }
 
-    void Renderer2d::drawRectangle(const cc::Vector2f &pos, const cc::Vector2f &size, const cc::Color &color) {
+    void Renderer2d::drawRectangle(const cc::Vector2f &pos, const cc::Vector2f &size, const cb::Color &color) {
         cc::Matrix4f transform;
         transform.addTranslation(pos.x, pos.y, 0.f);
         transform.addScale(size.x, size.y, 1.f);

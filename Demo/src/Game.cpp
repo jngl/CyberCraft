@@ -40,7 +40,7 @@ void Game::draw() {
 
     m_renderer2d.drawSprite(cc::Vector2f{400, 400}, cc::Vector2f{200, 200}, *m_textureTest);
 
-    m_renderer2d.drawRectangle(m_pos, cc::Vector2f{m_playerSize, m_playerSize}, cc::Color{0,255,0});
+    m_renderer2d.drawRectangle(m_pos, cc::Vector2f{m_playerSize, m_playerSize}, cb::Color{0,255,0});
 
 
 

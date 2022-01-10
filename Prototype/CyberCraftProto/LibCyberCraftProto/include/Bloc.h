@@ -42,11 +42,11 @@ struct BlocInfo {
     BlocGroup group;
 };
 
-constexpr cc::Color grassColorMain{45,155,13};
-constexpr cc::Color grassColorDetail{3,249,41};
-constexpr cc::Color stoneColorMain{176, 176, 176};
-constexpr cc::Color transparent{0,0,0,0};
-constexpr cc::Color waterColorMain{33, 105, 197};
+constexpr cb::Color grassColorMain{45,155,13};
+constexpr cb::Color grassColorDetail{3,249,41};
+constexpr cb::Color stoneColorMain{176, 176, 176};
+constexpr cb::Color transparent{0,0,0,0};
+constexpr cb::Color waterColorMain{33, 105, 197};
 
 constexpr std::array<BlocGroupInfo, 4> g_blocGroupArray{
         BlocGroupInfo{

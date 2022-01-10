@@ -8,7 +8,7 @@
 #include <Ports/Texture.h>
 
 #include <Core/Math.h>
-#include <Core/Color.h>
+#include <CyberBase/Color.hpp>
 #include <Core/Bases.h>
 
 namespace ck
@@ -16,7 +16,7 @@ namespace ck
     class ColoredRectangleDrawer : public cc::Copyable
     {
     public:
-        virtual void drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cc::Color& color) = 0;
+        virtual void drawRectangle(const cc::Vector2f& pos, const cc::Vector2f& size, const cb::Color& color) = 0;
     };
 
     class SpriteDrawer : public cc::Copyable
@@ -25,8 +25,8 @@ namespace ck
         virtual void drawSprite(const cp::Texture& texture,
                                 const cc::Vector2f &pos,
                                 const cc::Vector2i &textureIndex,
-                                cc::Color color,
-                                cc::Color backgroundColor,
+                                cb::Color color,
+                                cb::Color backgroundColor,
                                 float rotation) = 0;
     };
 

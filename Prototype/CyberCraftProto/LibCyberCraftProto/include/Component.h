@@ -6,13 +6,13 @@
 #define CYBERCRAFT_COMPONENT_H
 
 #include <Core/Math.h>
-#include <Core/Color.h>
+#include <CyberBase/Color.hpp>
 
 namespace component{
     struct Sprite{
         cc::Vector2i textureIndex;
-        cc::Color color;
-        cc::Color backgroundColor;
+        cb::Color color;
+        cb::Color backgroundColor;
         float rotation = 0; // in degree
     };
 }

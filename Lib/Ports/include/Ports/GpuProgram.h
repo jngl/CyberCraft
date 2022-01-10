@@ -6,11 +6,7 @@
 #define CYBERCRAFT_GPUPROGRAM_H
 
 #include <Core/Bases.h>
-
-namespace cc
-{
-    struct Color;
-}
+#include <CyberBase/Color.hpp>
 
 namespace cp
 {
@@ -30,7 +26,7 @@ namespace cp
             Count
         };
 
-        virtual void setColor(const cc::Color&) = 0;
+        virtual void setColor(const cb::Color&) = 0;
         virtual void setTexture(const Texture&) = 0;
     };
 

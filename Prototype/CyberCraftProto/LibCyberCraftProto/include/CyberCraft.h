@@ -37,8 +37,8 @@ private:
     Player player{
             component::Sprite {
                     cc::Vector2i {0,0},
-                    cc::Color{255,192,0}, // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-                    cc::Color{0,0,0,0}
+                    cb::Color{255,192,0}, // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+                    cb::Color{0,0,0,0}
             },
             cc::Vector2f {3,5} // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     };

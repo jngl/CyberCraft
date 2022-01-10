@@ -24,8 +24,8 @@ namespace ccSf {
     void RenderContextSFML::drawSprite(const cp::Texture& textureHandle,
                                        const cc::Vector2f &pos,
                                        const cc::Vector2i &textureIndex,
-                                       cc::Color color,
-                                       cc::Color backgroundColor,
+                                       cb::Color color,
+                                       cb::Color backgroundColor,
                                        float rotation){
 
         auto texture = dynamic_cast<const Texture*>(&textureHandle);
