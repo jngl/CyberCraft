@@ -6,7 +6,6 @@
 #define CYBERCRAFT_BLOC_H
 
 #include "Component.h"
-#include <Core/Debug.h>
 
 enum class BlocGroup{
     Grass,

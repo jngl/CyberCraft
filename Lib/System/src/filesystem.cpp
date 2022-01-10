@@ -1,7 +1,5 @@
 #include "System/filesystem.hpp"
 
-#include <Core/Debug.h>
-
 #include <SDL.h>
 
 namespace cs {
