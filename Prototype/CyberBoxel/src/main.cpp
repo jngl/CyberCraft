@@ -1,5 +1,5 @@
 #include <Core/Timer.hpp>
-#include <Core/Debug.h>
+#include <CyberBase/Log.hpp>
 
 #include "Renderer.hpp"
 
@@ -109,7 +109,7 @@ private:
     }
 
     void runCommand() {
-        cc::log("Main", "run command : ", mCommandText.data());
+        CB_LOG_INFO << "Main : run command : " << mCommandText.data();
 
         std::string command = mCommandText.data();
         memset(mCommandText.data(), 0, mMaxInputSize);
@@ -127,17 +127,18 @@ private:
 };
 
 int main() {
+    cb::addDefaultLogOutput();
     try {
         Application app;
-        cc::log("Main", "begin main loop");
+        CB_LOG_INFO << "Main : begin main loop";
         app.run();
-        cc::log("Main", "end main loop");
+        CB_LOG_INFO << "Main : end main loop";
     }
     catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
+        CB_LOG_ERROR << e.what();
     }
     catch (...) {
-        std::cerr << "unknown error" << std::endl;
+        CB_LOG_ERROR << "unknown error";
     }
     return 0;
 }

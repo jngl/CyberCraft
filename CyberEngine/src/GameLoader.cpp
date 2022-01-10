@@ -4,7 +4,7 @@
 
 #include "GameLoader.h"
 
-#include <Core/Debug.h>
+#include <CyberBase/Error.hpp>
 #include <Graphics/Graphics.h>
 #include <Ports.h>
 

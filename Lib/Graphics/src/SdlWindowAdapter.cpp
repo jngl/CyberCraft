@@ -4,7 +4,7 @@
 
 #include "SdlWindowAdapter.h"
 
-#include <Core/Debug.h>
+#include <CyberBase/Error.hpp>
 #include <Core/Math.h>
 
 #include <SDL.h>

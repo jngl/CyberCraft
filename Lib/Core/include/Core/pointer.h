@@ -9,7 +9,7 @@
 #include <optional>
 
 #include "Core/Common.h"
-#include "Core/Debug.h"
+#include "CyberBase/Error.hpp"
 
 namespace cc {
     template<class T>

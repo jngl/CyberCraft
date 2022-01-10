@@ -7,7 +7,7 @@
 #include "SdlWindowAdapter.h"
 #include "BimgAdapter.h"
 
-#include <Core/Debug.h>
+#include <CyberBase/Error.hpp>
 #include <Core/Color.h>
 
 #include <bgfx/bgfx.h>

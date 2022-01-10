@@ -5,7 +5,7 @@
 #include "System/DdsFile.h"
 
 #include "System/filesystem.hpp"
-#include "Core/Debug.h"
+#include <CyberBase/Error.hpp>
 
 #include <cstring>
 #include <glad/glad.h>
@@ -64,7 +64,7 @@ namespace cs {
     void readDdsFileType(std::fstream &file) {
         std::array<char, 4> fileCode{0,0,0,0};
         file.read(fileCode.data(), fileCode.size());
-        cc::check("TextureGL", std::strncmp(fileCode.data(), "DDS ", fileCode.size()) == 0, "error in dds file");
+        cb::check(std::strncmp(fileCode.data(), "DDS ", fileCode.size()) == 0, "error in dds file");
     }
 
     void readDdsHeader(std::fstream &file, unsigned int& height, unsigned int& width, unsigned int& fourCC, unsigned int& mipMapCount) {
@@ -88,7 +88,7 @@ namespace cs {
 
         //open file
         std::fstream file(filename2, std::fstream::in | std::fstream::binary);
-        cc::check("TextureGL", file.is_open(), "error with dds file : \"", filename, "\"");
+        cb::check(file.is_open(), std::string("error with dds file : \"")+ std::string(filename)+ "\"");
 
         readDdsFileType(file);
 
@@ -110,7 +110,7 @@ namespace cs {
                 data.format = TextureFormat::DXT5;
                 break;
             default:
-                cc::check("Graphics", false, "invalid dds format");
+                cb::check(false, "invalid dds format");
                 break;
         }
         data.mipmaps.resize(mipMapCount);

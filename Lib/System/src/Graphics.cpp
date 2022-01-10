@@ -1,6 +1,7 @@
 #include "System/Graphics.hpp"
 
-#include <Core/Debug.h>
+#include <CyberBase/Error.hpp>
+#include <CyberBase/Log.hpp>
 #include <algorithm>
 
 #include "System/DdsFile.h"
@@ -37,7 +38,7 @@ namespace cs {
 
     void glCheckError(const std::string &file, unsigned int line) {
         GLenum errorCode = glGetError();
-        cc::check("glCheck", errorCode == GL_NO_ERROR, "An internal OpenGL call failed in ", file, " ( ", line, " ) : ", getGlErrorMessage(errorCode) );
+        cb::check(errorCode == GL_NO_ERROR, "An internal OpenGL call failed in " + file + " ( " + std::to_string(line) + " ) : " + std::string(getGlErrorMessage(errorCode)) );
         //std::cout<<"An internal OpenGL call failed in "<<file<<" ( "<<line<<" ) : "<<getGlErrorMessage(errorCode);
     }
 
@@ -67,7 +68,7 @@ namespace cs {
                 format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
                 break;
         }
-        cc::check("TextureGL", format != 0, "invalid format");
+        cb::check(format != 0, "invalid textture format");
 
         int level = 0;
         for(const auto& mipMap : data.mipmaps){
@@ -82,7 +83,7 @@ namespace cs {
             level++;
         }
 
-        cc::check("TextureGL", id != 0, "error with a texture");
+        cb::check(id != 0, "error with a texture");
 
         return id;
     }
@@ -211,7 +212,7 @@ namespace cs {
             std::string infoLog;
             infoLog.resize(static_cast<size_t>(infologLength), '?');
             glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog.data());
-            std::cout<<infoLog<<"\n";
+            CB_LOG_INFO << infoLog;
         }
     }
 
@@ -227,7 +228,7 @@ namespace cs {
             std::string infoLog;
             infoLog.resize(static_cast<size_t>(infoLogLength), '?');
             glGetProgramInfoLog(obj, infoLogLength, &charsWritten, infoLog.data());
-            std::cout<<"shader info : \""<<infoLog<<"\"\n";
+            CB_LOG_INFO<<"shader info : \""<<infoLog<<"\"";
         }
     }
 
@@ -282,7 +283,6 @@ namespace cs {
         mWithIndex = false;
         mPrimitives = primitives;
         mCount = count;
-        cc::log("Mesh", "\tend");
     }
 
     void Mesh::endLoadWithIndex(Primitives primitives, unsigned int count, const unsigned int *data) {

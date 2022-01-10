@@ -5,7 +5,8 @@
 #include "System/Window.h"
 
 
-#include <Core/Debug.h>
+#include <CyberBase/Log.hpp>
+#include <CyberBase/Error.hpp>
 #include <iostream>
 #include <glad/glad.h>
 #include <imgui.h>
@@ -26,10 +27,10 @@ namespace cs {
     Window::Window(int width, int height) :
             mOpen(true),
             mWindow(nullptr) {
-        cc::log("Window", "construct");
+        CB_LOG_INFO << "Window construct";
         //init sdl
         int error = SDL_Init(SDL_INIT_VIDEO);
-        cc::check("Window", error == 0, "SDL_Init Error: ", SDL_GetError());
+        cb::check(error == 0, std::string("SDL_Init Error: ") + SDL_GetError());
 
         // OpenGL 3.2
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, glMajorVersion);
@@ -43,16 +44,16 @@ namespace cs {
         //sdl window
         mWindow = SDL_CreateWindow("Cyber engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,  // NOLINT
                                    SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-        cc::check("Window", mWindow != nullptr, "SDL_CreateWindow Error: ", SDL_GetError());
+        cb::check(mWindow != nullptr, std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 
         // opengl contex
         mGLContext = SDL_GL_CreateContext(mWindow);
-        cc::check("Window", mGLContext != nullptr, "SDL_GL_CreateContext Error: ", SDL_GetError());
+        cb::check(mGLContext != nullptr, std::string("SDL_GL_CreateContext Error: ") + SDL_GetError());
 
         SDL_GL_MakeCurrent(mWindow, mGLContext);
 
         //glad
-        cc::check("Window", gladLoadGL() != 0, "Something went wrong with glad");
+        cb::check(gladLoadGL() != 0, "Something went wrong with glad");
 
 #ifdef GLAD_DEBUG
         // before every opengl call call pre_gl_call
@@ -64,15 +65,14 @@ namespace cs {
 
         ImGui_ImplSdlGL3_Init(mWindow);
 
-        cc::log("Window", "OpenGL ", GLVersion.major, ".", GLVersion.minor, ", GLSL ",
-                    glGetString(GL_SHADING_LANGUAGE_VERSION));
+        CB_LOG_INFO<< "OpenGL " + std::to_string(GLVersion.major) + "." + std::to_string(GLVersion.minor) + ", GLSL " + std::string((const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
 
         glViewport(0, 0, width, height);
         mResize = true;
     }
 
     Window::~Window() {
-        cc::log("Window", "destruct");
+        CB_LOG_INFO << "Window destruct";
         ImGui_ImplSdlGL3_Shutdown();
         if (mGLContext != nullptr) {
             SDL_GL_DeleteContext(mGLContext);
