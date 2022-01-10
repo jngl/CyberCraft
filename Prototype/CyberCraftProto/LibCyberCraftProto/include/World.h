@@ -32,14 +32,14 @@ public:
 
     [[nodiscard]] constexpr Bloc& getBloc(int x, int y){
         if(x<0 || x>=sizeX || y<0 || y>=sizeY){
-            throw cc::Error("out of bound");
+            throw cb::Error("out of bound");
         }
         return m_blocs[static_cast<size_t>(y*sizeX+x)];
     }
 
     [[nodiscard]] constexpr Bloc getBloc(int x, int y) const {
         if(x<0 || x>=sizeX || y<0 || y>=sizeY){
-            throw cc::Error("out of bound");
+            throw cb::Error("out of bound");
         }
         return m_blocs[static_cast<size_t>(y*sizeX+x)];
     }

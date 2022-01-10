@@ -15,12 +15,12 @@
 namespace cg::Impl {
     SdlWindowAdapter::SdlWindowAdapter(){
         if(SDL_Init(0) != 0){
-            throw cc::Error{SDL_GetError()};
+            throw cb::Error{SDL_GetError()};
         }
 
         m_window = SDL_CreateWindow("OpenGL Test", 0, 0, windowSizeXDefault, windowSizeYDefault, SDL_WINDOW_RESIZABLE);
         if (m_window == nullptr) {
-            throw cc::Error{SDL_GetError()};
+            throw cb::Error{SDL_GetError()};
         }
     }
 

@@ -34,7 +34,7 @@ void GameLoader::reload(cp::Ports& ports){
 
     Func creator = reinterpret_cast<Func>(SDL_LoadFunction(m_gameCodeHandle, "createGame")); // NOLINT
     if(creator == nullptr){
-        throw cc::Error{SDL_GetError()};
+        throw cb::Error{SDL_GetError()};
     }
 
     m_game = std::unique_ptr<ck::Game>(creator(&ports));
@@ -42,14 +42,14 @@ void GameLoader::reload(cp::Ports& ports){
 
 ck::Game& GameLoader::getGame(){
     if(!m_game){
-        throw cc::Error("Game not loaded");
+        throw cb::Error("Game not loaded");
     }
     return *m_game;
 }
 
 const ck::Game& GameLoader::getGame() const{
     if(!m_game){
-        throw cc::Error("Game not loaded");
+        throw cb::Error("Game not loaded");
     }
     return *m_game;
 }

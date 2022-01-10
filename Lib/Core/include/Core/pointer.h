@@ -128,28 +128,28 @@ namespace cc {
 
         constexpr T& value(){
             if(m_pointer == nullptr){
-                throw cc::Error("OptionalRef::value() : no value");
+                throw cb::Error("OptionalRef::value() : no value");
             }
             return *m_pointer;
         }
 
         constexpr const T& value() const{
             if(m_pointer == nullptr){
-                throw cc::Error("OptionalRef::value() : no value");
+                throw cb::Error("OptionalRef::value() : no value");
             }
             return *m_pointer;
         }
 
         constexpr T& valueOrError(std::string_view msg){
             if(m_pointer == nullptr){
-                throw cc::Error(msg);
+                throw cb::Error(msg);
             }
             return *m_pointer;
         }
 
         constexpr const T& valueOrError(std::string_view msg) const{
             if(m_pointer == nullptr){
-                throw cc::Error(msg);
+                throw cb::Error(msg);
             }
             return *m_pointer;
         }

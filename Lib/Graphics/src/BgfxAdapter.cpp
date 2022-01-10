@@ -365,12 +365,12 @@ namespace cg::Impl {
     BgfxTexture::BgfxTexture(std::string_view filePath, uint64_t _flags, Orientation *_orientation) {
         std::optional<cc::ByteArray> data = cc::ByteArray::loadFromFile(filePath);
         if (!data.has_value()) {
-            throw cc::Error("Texture File not found");
+            throw cb::Error("Texture File not found");
         }
 
         std::optional<ImageContainer> imageContainer = imageParse(data.value());
         if (!imageContainer.has_value()){
-            throw cc::Error(std::string("Texture File format not supported : ") + std::string(filePath));
+            throw cb::Error(std::string("Texture File format not supported : ") + std::string(filePath));
         }
 
         if (nullptr != _orientation)
@@ -383,7 +383,7 @@ namespace cg::Impl {
                                  imageContainer->m_numLayers,
                                  bgfx::TextureFormat::Enum(imageContainer->m_format), _flags))
         {
-            throw cc::Error("Invalid Texture");
+            throw cb::Error("Invalid Texture");
         }
 
         load(
@@ -418,7 +418,7 @@ namespace cg::Impl {
                                          bgfxMem);
 
         if(!bgfx::isValid(m_handle)){
-            throw cc::Error("Error when loading a texture");
+            throw cb::Error("Error when loading a texture");
         }
     }
 
@@ -471,7 +471,7 @@ namespace cg::Impl {
         m_handle = bgfx::createShader(bgfxMem);
 
         if(!bgfx::isValid(m_handle)){
-            throw cc::Error("Error when loading a shader");
+            throw cb::Error("Error when loading a shader");
         }
     }
 
@@ -500,7 +500,7 @@ namespace cg::Impl {
         m_handle = bgfx::createProgram(vsh.getHandle(), fsh.getHandle());
 
         if(!bgfx::isValid(m_handle)){
-            throw cc::Error("Error when loading a shader program");
+            throw cb::Error("Error when loading a shader program");
         }
     }
 
@@ -613,7 +613,7 @@ namespace cg::Impl {
         std::string filePath = "./data/shader/" + std::string(cp::GetGraphicsApiShaderType(m_bgfxContext.getApi())) + "/" + std::string(name) + ".bin";
         std::optional<cc::ByteArray> memory = cc::ByteArray::loadFromFile(filePath);
         if(!memory.has_value()){
-            throw cc::Error("error while opening a shader file");
+            throw cb::Error("error while opening a shader file");
         }
         BgfxShader shader(memory.value());
         return shader;
@@ -797,7 +797,7 @@ namespace cg::Impl {
             case bgfx::RendererType::WebGPU:
                 return cp::GraphicsApi::WebGPU;
             default:
-                throw cc::Error{"Unknown Graphics Api"};
+                throw cb::Error{"Unknown Graphics Api"};
         }
     }
 }

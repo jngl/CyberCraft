@@ -12,8 +12,6 @@
 #include <CyberBase/Error.hpp>
 
 namespace cc {
-    using cb::Error;
-
     namespace impl
     {
         template <typename T>
