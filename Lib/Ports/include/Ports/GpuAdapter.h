@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_GPUADAPTER_H
 #define CYBERCRAFT_GPUADAPTER_H
 
-#include <Core/Bases.h>
+#include <CyberBase/Bases.h>
 
 #include "Enums.h"
 

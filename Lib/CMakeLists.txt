@@ -1,5 +1,4 @@
 add_subdirectory(CyberBase)
-add_subdirectory(Core)
 add_subdirectory(Graphics)
 add_subdirectory(Kernel)
 add_subdirectory(SFML)

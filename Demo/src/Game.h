@@ -8,8 +8,8 @@
 #include <Kernel/Game.h>
 #include <Kernel/Renderer2d.h>
 
-#include <Core/Bases.h>
-#include <Core/Math.h>
+#include <CyberBase/Bases.h>
+#include <CyberBase/Math.h>
 #include "Game.h"
 
 namespace cp

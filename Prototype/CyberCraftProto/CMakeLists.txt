@@ -6,7 +6,6 @@ target_link_libraries(
   CyberCraftProto
   PRIVATE project_options
           project_warnings
-          LibCyberCraftCore
           LibCyberCraftGraphics
           LibCyberCraftProto)
           

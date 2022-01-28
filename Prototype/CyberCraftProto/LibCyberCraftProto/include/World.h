@@ -6,7 +6,7 @@
 #define CYBERCRAFT_WORLD_H
 
 #include "Bloc.h"
-#include <Core/Math.h>
+#include <CyberBase/Math.h>
 
 #include <array>
 

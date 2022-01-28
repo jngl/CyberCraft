@@ -10,9 +10,9 @@
 #include "SdlWindowAdapter.h"
 #include "BgfxAdapter.h"
 
-#include <Core/Math.h>
-#include <Core/Bases.h>
-#include <Core/pointer.h>
+#include <CyberBase/Math.h>
+#include <CyberBase/Bases.h>
+#include <CyberBase/pointer.h>
 
 #include <Ports/Texture.h>
 

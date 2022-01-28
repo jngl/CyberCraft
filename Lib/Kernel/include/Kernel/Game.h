@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_KERNEL_GAME_H
 #define CYBERCRAFT_KERNEL_GAME_H
 
-#include <Core/Bases.h>
+#include <CyberBase/Bases.h>
 
 namespace ck {
     class Game: public cc::NonCopyable {

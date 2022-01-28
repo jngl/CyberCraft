@@ -4,7 +4,7 @@
 
 #include "Kernel/Renderer2d.h"
 
-#include <Core/Memory.h>
+#include <CyberBase/Memory.h>
 
 #include <Ports/GpuBuffer.h>
 

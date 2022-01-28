@@ -6,4 +6,4 @@ add_library(LibCyberCraftPorts
         ${Ports_include_files})
 
 target_include_directories(LibCyberCraftPorts PUBLIC include)
-target_link_libraries(LibCyberCraftPorts project_options project_warnings LibCyberCraftCore)
+target_link_libraries(LibCyberCraftPorts project_options project_warnings CyberBase)

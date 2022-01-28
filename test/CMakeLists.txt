@@ -10,7 +10,7 @@ add_executable(tests tests.cpp
         Test_math.cpp
         Test_component.cpp
         Test_BimgAdapter.cpp)
-target_link_libraries(tests PRIVATE catch_main LibCyberCraftCore LibCyberCraftGraphics)
+target_link_libraries(tests PRIVATE catch_main LibCyberCraftGraphics)
 
 
 add_test(AllTest tests)

@@ -3,7 +3,7 @@
 //
 
 #include <catch.hpp>
-#include <Core/Range.h>
+#include <CyberBase/Range.h>
 
 constexpr int g_range_min_1 = 3;
 constexpr int g_range_max_1 = 10;

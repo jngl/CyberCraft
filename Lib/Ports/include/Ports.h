@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_PORTS_H
 #define CYBERCRAFT_PORTS_H
 
-#include <Core/Bases.h>
+#include <CyberBase/Bases.h>
 
 #include <Ports/GpuAdapter.h>
 #include <Ports/Window.h>

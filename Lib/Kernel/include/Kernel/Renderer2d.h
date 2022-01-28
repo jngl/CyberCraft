@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_RENDERER2D_H
 #define CYBERCRAFT_RENDERER2D_H
 
-#include <Core/Bases.h>
+#include <CyberBase/Bases.h>
 
 #include <Kernel/Engine2D.h>
 #include <Ports/GpuAdapter.h>

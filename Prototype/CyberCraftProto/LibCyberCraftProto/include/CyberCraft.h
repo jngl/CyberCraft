@@ -9,7 +9,7 @@
 #include <Kernel/Game.h>
 #include <Ports/Window.h>
 
-#include <Core/pointer.h>
+#include <CyberBase/pointer.h>
 
 #include "Component.h"
 #include "Bloc.h"

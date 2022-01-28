@@ -4,7 +4,7 @@
 
 #include "SystemState.h"
 
-#include <Core/Math.h>
+#include <CyberBase/Math.h>
 
 SystemState::SystemState() :
 m_graphicsAdapter(cg::createGraphicsAdapter()),

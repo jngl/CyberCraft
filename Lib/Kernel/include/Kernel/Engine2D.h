@@ -7,9 +7,9 @@
 
 #include <Ports/Texture.h>
 
-#include <Core/Math.h>
+#include <CyberBase/Math.h>
 #include <CyberBase/Color.hpp>
-#include <Core/Bases.h>
+#include <CyberBase/Bases.h>
 
 namespace ck
 {

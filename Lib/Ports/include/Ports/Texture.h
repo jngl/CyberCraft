@@ -5,8 +5,8 @@
 #ifndef CYBERCRAFT_TEXTURE_H
 #define CYBERCRAFT_TEXTURE_H
 
-#include <Core/Id.h>
-#include <Core/Bases.h>
+#include <CyberBase/Id.h>
+#include <CyberBase/Bases.h>
 
 #include <memory>
 

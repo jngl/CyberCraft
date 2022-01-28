@@ -4,7 +4,7 @@
 
 #include "Renderer.hpp"
 
-#include "Core/PoolAllocator.hpp"
+#include "CyberBase/PoolAllocator.hpp"
 
 #include "System/DdsFile.h"
 

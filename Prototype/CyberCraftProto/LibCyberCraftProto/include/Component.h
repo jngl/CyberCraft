@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_COMPONENT_H
 #define CYBERCRAFT_COMPONENT_H
 
-#include <Core/Math.h>
+#include <CyberBase/Math.h>
 #include <CyberBase/Color.hpp>
 
 namespace component{

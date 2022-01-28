@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_GPUPROGRAM_H
 #define CYBERCRAFT_GPUPROGRAM_H
 
-#include <Core/Bases.h>
+#include <CyberBase/Bases.h>
 #include <CyberBase/Color.hpp>
 
 namespace cp

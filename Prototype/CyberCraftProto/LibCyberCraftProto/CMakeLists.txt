@@ -6,4 +6,4 @@ add_library(LibCyberCraftProto
         ${LibCyberCraftProto_include_files})
 
 target_include_directories(LibCyberCraftProto PUBLIC include)
-target_link_libraries(LibCyberCraftProto project_options project_warnings LibCyberCraftCore LibCyberCraftKernel)
+target_link_libraries(LibCyberCraftProto project_options project_warnings LibCyberCraftKernel)

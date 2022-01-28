@@ -16,7 +16,6 @@ target_include_directories(LibCyberCraftGraphics PUBLIC
         ${SDL2_INCLUDE_DIRS})
 
 target_link_libraries(LibCyberCraftGraphics
-        LibCyberCraftCore
         LibCyberCraftPorts
         bgfx
         ${X11_LIBRARIES}

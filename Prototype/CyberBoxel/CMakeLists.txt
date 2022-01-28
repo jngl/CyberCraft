@@ -4,7 +4,6 @@ add_executable(CyberBoxel ${CB_source_files})
 TARGET_LINK_LIBRARIES(CyberBoxel
             ${OPENGL_LIBRARIES}
             ${CMAKE_DL_LIBS}
-            LibCyberCraftCore
             Glad
             stb
             Imgui

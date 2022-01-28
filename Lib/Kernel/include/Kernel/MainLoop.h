@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_MAINLOOP_H
 #define CYBERCRAFT_MAINLOOP_H
 
-#include <Core/Common.h>
+#include <CyberBase/Common.h>
 
 #include <chrono>
 

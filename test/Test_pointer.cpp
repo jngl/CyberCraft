@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include <Core/pointer.h>
+#include <CyberBase/pointer.h>
 
 constexpr int testValue1 = 42;
 constexpr int testValue2 = -1;

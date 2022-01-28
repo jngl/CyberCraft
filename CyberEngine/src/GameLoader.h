@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_GAMELOADER_H
 #define CYBERCRAFT_GAMELOADER_H
 
-#include <Core/Bases.h>
+#include <CyberBase/Bases.h>
 
 #include <Ports/Key.h>
 #include <Kernel/Game.h>

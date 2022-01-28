@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Core/Math.h>
+#include <CyberBase/Math.h>
 
 #include "../Renderer.hpp"
 

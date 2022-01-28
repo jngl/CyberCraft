@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_GRAPHICSDATA_H
 #define CYBERCRAFT_GRAPHICSDATA_H
 
-#include <Core/Math.h>
+#include <CyberBase/Math.h>
 
 #include <vector>
 

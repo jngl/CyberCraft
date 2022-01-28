@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_SYSTEMIMPL_H
 #define CYBERCRAFT_SYSTEM_H
 
-#include "Core/pointer.h"
+#include "CyberBase/pointer.h"
 #include "Kernel/Engine2D.h"
 #include "Ports/Window.h"
 

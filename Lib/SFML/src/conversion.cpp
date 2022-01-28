@@ -3,7 +3,7 @@
 //
 
 #include <SFML/Graphics.hpp>
-#include <Core/Math.h>
+#include <CyberBase/Math.h>
 
 #include "conversion.h"
 

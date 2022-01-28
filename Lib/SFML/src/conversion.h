@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_CONVERSION_H
 #define CYBERCRAFT_CONVERSION_H
 
-#include <Core/Math.h>
+#include <CyberBase/Math.h>
 #include <CyberBase/Color.hpp>
 
 #include <SFML/System/Vector2.hpp>

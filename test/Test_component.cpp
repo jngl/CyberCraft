@@ -3,9 +3,9 @@
 //
 
 #include <catch.hpp>
-#include <Core/Component.h>
-#include <Core/Common.h>
-#include <Core/Id.h>
+#include <CyberBase/Component.h>
+#include <CyberBase/Common.h>
+#include <CyberBase/Id.h>
 
 using Id = cc::Id<cc::Uint16, struct id>;
 

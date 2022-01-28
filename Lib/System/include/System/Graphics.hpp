@@ -2,8 +2,8 @@
 
 #include <System/GraphicsData.h>
 
-#include <Core/Math.h>
-#include <Core/Id.h>
+#include <CyberBase/Math.h>
+#include <CyberBase/Id.h>
 
 #include <Ports/Texture.h>
 

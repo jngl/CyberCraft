@@ -3,7 +3,7 @@
 //
 
 #include <catch.hpp>
-#include <Core/TypeId.h>
+#include <CyberBase/TypeId.h>
 #include <unordered_map>
 
 struct Foo{};

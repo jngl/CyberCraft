@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_GPUBUFFER_H
 #define CYBERCRAFT_GPUBUFFER_H
 
-#include <Core/Bases.h>
+#include <CyberBase/Bases.h>
 
 namespace cc
 {

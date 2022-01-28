@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_SYSTEMSTATE_H
 #define CYBERCRAFT_SYSTEMSTATE_H
 
-#include <Core/Bases.h>
+#include <CyberBase/Bases.h>
 
 
 #include <Graphics/Graphics.h>

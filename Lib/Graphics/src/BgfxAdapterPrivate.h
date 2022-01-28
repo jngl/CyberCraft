@@ -13,8 +13,8 @@
 
 #include <bgfx/bgfx.h>
 
-#include <Core/Memory.h>
-#include <Core/Math.h>
+#include <CyberBase/Memory.h>
+#include <CyberBase/Math.h>
 
 #include <filesystem>
 #include <vector>

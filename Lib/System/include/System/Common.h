@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_COMMON_H
 #define CYBERCRAFT_COMMON_H
 
-#include "Core/Common.h"
+#include "CyberBase/Common.h"
 
 namespace cs {
 

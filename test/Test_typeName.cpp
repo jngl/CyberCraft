@@ -3,7 +3,7 @@
 //
 
 #include <catch.hpp>
-#include <Core/typeName.h>
+#include <CyberBase/typeName.h>
 
 class Foo{};
 

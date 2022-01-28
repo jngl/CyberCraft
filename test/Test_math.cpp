@@ -3,7 +3,7 @@
 //
 
 #include <catch.hpp>
-#include <Core/Math.h>
+#include <CyberBase/Math.h>
 
 TEST_CASE( "math::equal" ) {
     REQUIRE(!cc::equal<float>(-42.f, 1.f));

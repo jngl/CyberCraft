@@ -5,7 +5,7 @@
 #ifndef CYBERCRAFT_BIMGADAPTER_H
 #define CYBERCRAFT_BIMGADAPTER_H
 
-#include <Core/Memory.h>
+#include <CyberBase/Memory.h>
 
 #include "Enum.h"
 
