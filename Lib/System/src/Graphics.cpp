@@ -212,7 +212,7 @@ namespace cs {
             std::string infoLog;
             infoLog.resize(static_cast<size_t>(infologLength), '?');
             glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog.data());
-            CB_LOG_INFO << infoLog;
+            CB_INFO(cb::log, "Graphics", infoLog);
         }
     }
 
@@ -228,7 +228,7 @@ namespace cs {
             std::string infoLog;
             infoLog.resize(static_cast<size_t>(infoLogLength), '?');
             glGetProgramInfoLog(obj, infoLogLength, &charsWritten, infoLog.data());
-            CB_LOG_INFO<<"shader info : \""<<infoLog<<"\"";
+            CB_INFO(cb::log, "Graphics", "shader info : \"{}\"", infoLog);
         }
     }
 

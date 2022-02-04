@@ -109,7 +109,7 @@ private:
     }
 
     void runCommand() {
-        CB_LOG_INFO << "Main : run command : " << mCommandText.data();
+        CB_INFO(cb::log, "CyberBoxel", "run command : {}", mCommandText.data());
 
         std::string command = mCommandText.data();
         memset(mCommandText.data(), 0, mMaxInputSize);
@@ -127,18 +127,19 @@ private:
 };
 
 int main() {
-    cb::addDefaultLogOutput();
+    cb::log.addOutput(std::make_unique<cb::ConsoleLogger>());
+    cb::log.addOutput(std::make_unique<cb::FileLogger>("log.csv"));
     try {
         Application app;
-        CB_LOG_INFO << "Main : begin main loop";
+        CB_INFO(cb::log, "CyberBoxel", "begin main loop");
         app.run();
-        CB_LOG_INFO << "Main : end main loop";
+        CB_INFO(cb::log, "CyberBoxel", "end main loop");
     }
     catch (const std::exception &e) {
-        CB_LOG_ERROR << e.what();
+        CB_ERROR(cb::log, "CyberBoxel", "Fatal Error : {}", e.what());
     }
     catch (...) {
-        CB_LOG_ERROR << "unknown error";
+        CB_ERROR(cb::log, "CyberBoxel", "Fatal Error : Unknown error");
     }
     return 0;
 }
