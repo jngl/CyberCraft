@@ -1,11 +1,19 @@
+#include <CyberCraft.h>
+
 #include <CyberBase/Log.hpp>
 #include <memory>
 
+#include <DefaultPlatform.h>
+
 int main()
 {
-    cb::MultiLogger log;
-    log.addOutput(std::make_unique<cb::FileLogger>("log.csv"));
-    log.addOutput(std::make_unique<cb::ConsoleLogger>());
+    auto logger = std::make_shared<cb::MultiLogger>();
+    logger->addOutput(std::make_unique<cb::FileLogger>("log.csv"));
+    logger->addOutput(std::make_unique<cb::ConsoleLogger>());
 
-    CB_INFO(log, "main", "Test");
+    auto platform = std::make_unique<dp::DefaultPlatform>(logger);
+
+    cc::CyberCraft cyberCraft(logger, std::move(platform));
+
+    return cyberCraft.run();
 }
