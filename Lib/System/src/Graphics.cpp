@@ -6,6 +6,8 @@
 
 #include "System/DdsFile.h"
 
+cb::ConsoleLogger g_shader_logger;
+
 namespace cs {
 
 /********************************************************
@@ -212,7 +214,7 @@ namespace cs {
             std::string infoLog;
             infoLog.resize(static_cast<size_t>(infologLength), '?');
             glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog.data());
-            CB_INFO(cb::log, "Graphics", infoLog);
+            CB_INFO(g_shader_logger, "Graphics", infoLog);
         }
     }
 
@@ -228,7 +230,7 @@ namespace cs {
             std::string infoLog;
             infoLog.resize(static_cast<size_t>(infoLogLength), '?');
             glGetProgramInfoLog(obj, infoLogLength, &charsWritten, infoLog.data());
-            CB_INFO(cb::log, "Graphics", "shader info : \"{}\"", infoLog);
+            CB_INFO(g_shader_logger, "Graphics", "shader info : \"{}\"", infoLog);
         }
     }
 

@@ -6,6 +6,8 @@
 
 #include <vector>
 
+cb::ConsoleLogger g_logger_boxel_scene;
+
 void BoxelMap::generate() {
     //gen height
     std::array<std::array<float, mSizeZ>, mSizeX> height;
@@ -299,11 +301,11 @@ BoxelScene::BoxelScene() :
     //chunk.loadTexture();
     //chunk.mGrid.generateGrid();
     //chunk.generateMesh();
-    CB_INFO(cb::log, "BoxelScene", "construct end");
+    CB_INFO(g_logger_boxel_scene, "BoxelScene", "construct end");
 }
 
 BoxelScene::~BoxelScene() {
-    CB_INFO(cb::log, "BoxelScene", "BoxelScene destruct");
+    CB_INFO(g_logger_boxel_scene, "BoxelScene", "BoxelScene destruct");
 }
 
 void BoxelScene::addAction(cs::Window &win) {

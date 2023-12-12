@@ -23,11 +23,13 @@ constexpr int glMinorVersion = 2;
 constexpr int doubleBuffer = 1;
 constexpr int depthSize = 24;
 
+cb::ConsoleLogger g_window_logger;
+
 namespace cs {
     Window::Window(int width, int height) :
             mOpen(true),
             mWindow(nullptr) {
-        CB_INFO(cb::log, "Window", "Window construct");
+        CB_INFO(g_window_logger, "Window", "Window construct");
         //init sdl
         int error = SDL_Init(SDL_INIT_VIDEO);
         cb::check(error == 0, std::string("SDL_Init Error: ") + SDL_GetError());
@@ -65,14 +67,14 @@ namespace cs {
 
         ImGui_ImplSdlGL3_Init(mWindow);
 
-        CB_INFO(cb::log, "Window", "OpenGL {}.{}, GLSL {}", std::to_string(GLVersion.major), std::to_string(GLVersion.minor), std::string((const char*)glGetString(GL_SHADING_LANGUAGE_VERSION)));
+        CB_INFO(g_window_logger, "Window", "OpenGL {}.{}, GLSL {}", std::to_string(GLVersion.major), std::to_string(GLVersion.minor), std::string((const char*)glGetString(GL_SHADING_LANGUAGE_VERSION)));
 
         glViewport(0, 0, width, height);
         mResize = true;
     }
 
     Window::~Window() {
-        CB_INFO(cb::log, "Window", "Window destruct");
+        CB_INFO(g_window_logger, "Window", "Window destruct");
         ImGui_ImplSdlGL3_Shutdown();
         if (mGLContext != nullptr) {
             SDL_GL_DeleteContext(mGLContext);

@@ -15,6 +15,8 @@
 #include <vector>
 #include <algorithm>
 
+cb::ConsoleLogger g_renderer_logger;
+
 /********************************************************
  * Sprite Mesh Data
 ********************************************************/
@@ -190,7 +192,7 @@ namespace Renderer {
     static std::unique_ptr<cs::GraphicsContext> g_graphicsContext;
 
     void createRenderer() {
-        CB_INFO(cb::log, "Renderer", "Renderer construct");
+        CB_INFO(g_renderer_logger, "Renderer", "Renderer construct");
 
         g_graphicsContext = std::make_unique<cs::GraphicsContext>();
 
@@ -225,7 +227,7 @@ namespace Renderer {
     }
 
     void destroyRenderer() {
-        CB_INFO(cb::log, "Renderer", "Renderer destruct");
+        CB_INFO(g_renderer_logger, "Renderer", "Renderer destruct");
         g_graphicsContext.reset();
     }
 
@@ -241,7 +243,7 @@ namespace Renderer {
 
     Material_handle createMaterial(const cp::Texture& tex, std::string_view name) {
 
-        CB_INFO(cb::log, "Renderer", "create material \"{}\"", name);
+        CB_INFO(g_renderer_logger, "Renderer", "create material \"{}\"", name);
         Material_handle result = MaterialPool.create();
         result->texture = &tex;
         result->withAlpha = false;
@@ -262,7 +264,7 @@ namespace Renderer {
     cc::PoolAllocator<Model, MaxNumberOfModel> ModelPool;
 
     Model_handle createModel(std::string_view nom) {
-        CB_INFO(cb::log, "Renderer", "Renderer create model \"{}\"", std::string(nom));
+        CB_INFO(g_renderer_logger, "Renderer", "Renderer create model \"{}\"", std::string(nom));
         Model_handle result = ModelPool.create();
         result->nom = nom;
         return result;
@@ -304,7 +306,7 @@ namespace Renderer {
     }
 
     void destroyModel(Model_handle handle) {
-        CB_INFO(cb::log, "Renderer", "destroy model \"{}\"", handle->nom);
+        CB_INFO(g_renderer_logger, "Renderer", "destroy model \"{}\"", handle->nom);
         for(auto& mesh: handle->subMeshs){
             mesh.unload();
         }
@@ -349,12 +351,12 @@ namespace Renderer {
     Object::Object(std::string_view objectName) :
             model(nullptr),
             name(objectName) {
-        CB_INFO(cb::log, "Renderer", "create object \"{}\"", name);
+        CB_INFO(g_renderer_logger, "Renderer", "create object \"{}\"", name);
         objectArray.insert(this);
     }
 
     Object::~Object() {
-        CB_INFO(cb::log, "Renderer", "destroy object");
+        CB_INFO(g_renderer_logger, "Renderer", "destroy object");
         objectArray.erase(this);
     }
 
@@ -370,7 +372,7 @@ namespace Renderer {
  * Camera
 ********************************************************/
     Camera_handle createCamera() {
-        CB_INFO(cb::log, "Renderer", "create camera");
+        CB_INFO(g_renderer_logger, "Renderer", "create camera");
         auto newCamera = std::make_unique<Camera>();
         Camera_handle result = newCamera.get();
         result->perspective = true;
@@ -406,7 +408,7 @@ namespace Renderer {
     cc::PoolAllocator<Sprite, MaxNumberOfSprite> SpritePool;
 
     Sprite_handle createSprite(const cp::Texture& handle) {
-        CB_INFO(cb::log, "Renderer", "create sprite");
+        CB_INFO(g_renderer_logger, "Renderer", "create sprite");
         Sprite_handle result = SpritePool.create();
         result->mMatrix.setIdentity();
         result->mTexture = &handle;

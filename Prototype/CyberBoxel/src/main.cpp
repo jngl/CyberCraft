@@ -9,6 +9,8 @@
 
 #include <memory>
 
+cb::ConsoleLogger g_logger_boxel_main;
+
 class Application {
 public:
     static constexpr int DefaultWindowSizeX = 1024;
@@ -109,7 +111,7 @@ private:
     }
 
     void runCommand() {
-        CB_INFO(cb::log, "CyberBoxel", "run command : {}", mCommandText.data());
+        CB_INFO(g_logger_boxel_main, "CyberBoxel", "run command : {}", mCommandText.data());
 
         std::string command = mCommandText.data();
         memset(mCommandText.data(), 0, mMaxInputSize);
@@ -127,19 +129,19 @@ private:
 };
 
 int main() {
-    cb::log.addOutput(std::make_unique<cb::ConsoleLogger>());
-    cb::log.addOutput(std::make_unique<cb::FileLogger>("log.csv"));
+    //cb::log.addOutput(std::make_unique<cb::ConsoleLogger>());
+    //cb::log.addOutput(std::make_unique<cb::FileLogger>("log.csv"));
     try {
         Application app;
-        CB_INFO(cb::log, "CyberBoxel", "begin main loop");
+        CB_INFO(g_logger_boxel_main, "CyberBoxel", "begin main loop");
         app.run();
-        CB_INFO(cb::log, "CyberBoxel", "end main loop");
+        CB_INFO(g_logger_boxel_main, "CyberBoxel", "end main loop");
     }
     catch (const std::exception &e) {
-        CB_ERROR(cb::log, "CyberBoxel", "Fatal Error : {}", e.what());
+        CB_ERROR(g_logger_boxel_main, "CyberBoxel", "Fatal Error : {}", e.what());
     }
     catch (...) {
-        CB_ERROR(cb::log, "CyberBoxel", "Fatal Error : Unknown error");
+        CB_ERROR(g_logger_boxel_main, "CyberBoxel", "Fatal Error : Unknown error");
     }
     return 0;
 }
