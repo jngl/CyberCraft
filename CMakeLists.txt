@@ -18,8 +18,6 @@ if(ENABLE_UNITY)
   set_target_properties(intro PROPERTIES UNITY_BUILD ON)
 endif()
 
-##### TODO #####
-
 #SFML
 find_package(SFML 2 COMPONENTS system window graphics network audio)
 
