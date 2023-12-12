@@ -1,2 +1,1 @@
-add_subdirectory(CyberCraftProto)
 add_subdirectory(CyberBoxel)
