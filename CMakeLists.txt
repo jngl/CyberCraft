@@ -18,9 +18,6 @@ if(ENABLE_UNITY)
   set_target_properties(intro PROPERTIES UNITY_BUILD ON)
 endif()
 
-#SFML
-find_package(SFML 2 COMPONENTS system window graphics network audio)
-
 #OpenGL
 find_package(OpenGL REQUIRED)
 
@@ -39,4 +36,3 @@ add_subdirectory(third_party)
 add_subdirectory(Lib)
 add_subdirectory(CyberEngine)
 add_subdirectory(Prototype)
-add_subdirectory(CyberCraft)
